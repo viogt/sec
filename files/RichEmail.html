@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✎ Rich Email</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .board { color:lightgrey; }
+    .board button {
+        background-color: white; border: 1px solid white;
+        font-size: 14px;
+    }
+    .board button:hover { border-color:red; cursor:pointer; }
+
+    .sel {
+   	  display:inline-block; border:1px solid lightgrey;
+      padding-left:4px; color:#000; font-size:12px; }
+    .sel * { background-color:#fff; outline:none;
+   	  padding:0px; border:none; cursor:pointer; }
+
+    .modal {
+        display: none; position: fixed; z-index: 1;
+        padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.4); }
+    .modal-content {
+        background-color: #fff; padding: 20px; border-radius:8px;
+        border: 1px solid #888; width: 60%; margin:auto; font-family:sans-serif;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+    .modal-close { color: #aaaaaa; float: right; font-size: 28px; font-weight: bold; }
+    .modal-close:hover { color: #000; cursor: pointer; }
+
+    div[block="1"] { display: inline-block; color:#fff; background-color:#080; padding:0px 8px; border-radius:4px; }
+    div[block="0"] { display: inline-block; color:#fff; background-color:#c00; padding:0px 8px; border-radius:4px; }
+    
+    .keyBtn { background-color: white; border: 1px solid lightgrey; border-radius:6px;
+        font-size: 14px; width:28px;height:24px; position:absolute; left:15px; top:0px;
+    }
+    .keyBtn:hover { border-color:red; cursor:pointer; }
+/*------------------------ Grey Style -------------------------*/
+    .txtStyle {
+      border:1px solid #ddd; padding:40px; border-radius:8px;
+      font: normal 10.5pt Arial,Sans-serif; outline:none;
+      background-color:#eee; line-height: 1.3;
+    }
+    .txtStyle b { border: 1px solid #ccc;
+      background-color:#fff; padding:0px 6px; border-radius:4px; font-weight:normal;
+    }
+    .txtStyle i { color:darkred; }
+    .txtStyle u { text-decoration:none; border-bottom:1px solid red; }
+    .txtStyle hr { border:none; border-top:1px dashed #99b; height:0px; }
+    .txtStyle sup, .txtStyle sub { color:red; font-size:7pt; }
+    .txtStyle strike { color:darkred; }
+    .txtStyle H1 { border: 1px solid #444; font-size:1.4em; color:#fff;
+      background-color:#666; padding: 14px; border-radius:8px; font-weight:normal;
+    }
+    .txtStyle H2 { border: 1px solid #ccc; font-size: inherit;
+      background-color:#fff; padding: 16px; border-radius:8px; font-weight:normal;
+    }
+/*.TB { font:normal 1em Sans-serif; }*/
+    .txtStyle td[qL] { vertical-align: top; padding-right:12px; color:red; text-align:right; width: 60px; font-family:inherit; }
+    .txtStyle td[q1] { vertical-align: top; padding-right:12px; font-size:4em; font-family:inherit; color:#ccc; text-align:right; width: 60px; border-right:1px solid #ccc; }
+    .txtStyle td[q2] { vertical-align: top; padding-left:12px; font-size:inherit;font-family:inherit; }
+
+    .txtStyle div[enum] { display: inline-block; width:20px; font-weight:bold; font-size:1.2em;font-family:inherit; color:#fff;
+      background-color:#666; padding:6px; border-radius:8px; text-align:center; }
+
+/*------------------------ Blue Style -------------------------*/
+    .blueStyle {
+      border:1px solid #dde; padding:40px; border-radius:8px;
+      font: normal 10pt Verdana,Sans-serif; outline:none;
+      background-color:#eef; line-height: 1.3; color:#224;
+    }
+    .blueStyle b { border: 1px solid #ccd; color:#228;
+      background-color:#fff; padding:0px 6px; border-radius:4px; font-weight:normal;
+    }
+    .blueStyle i { color:#33a; }
+    .blueStyle u { text-decoration:none; border-bottom:2px solid blue; }
+    .blueStyle hr { border:none; border-top:1px dashed #99d; height:0px; }
+    .blueStyle sup, .blueStyle sub { color:blue; font-size:7pt; }
+    .blueStyle strike { color:#33a; }
+    .blueStyle H1 { border: 1px solid #224; font-size:1.4em; color:#fff;
+      background-color:#669; padding: 14px; border-radius:8px; font-weight:normal;
+    }
+    .blueStyle H2 { border: 1px solid #ccd; font-size: 1em;
+      background-color:#fff; padding: 16px; border-radius:8px; font-weight:normal;
+    }
+
+    .blueStyle td[qL] { vertical-align: top; padding-right:12px; color:blue; text-align:right; width: 60px; font-family:inherit; }
+    .blueStyle td[q1] { vertical-align: top; padding-right:12px; font-size:4em; font-family:inherit; color:#ccd; text-align:right; width: 60px; border-right:1px solid #ccd; }
+    .blueStyle td[q2] { vertical-align: top; padding-left:12px; font-size:inherit;font-family:inherit; }
+
+    .blueStyle div[enum] { display: inline-block; width:20px; font-weight:bold; font-size:1.2em;font-family:inherit; color:#fff;
+      background-color:#669; padding:6px; border-radius:8px; text-align:center; }
+
+/*------------------------ Yellow Style -------------------------*/
+    .yelStyle {
+      border:1px solid #edd; padding:40px; border-radius:8px;
+      font: normal 10.5pt Arial,Sans-serif; outline:none;
+      background-color:#ffa; line-height: 1.3; color:#622;
+    }
+    .yelStyle b { border: 1px solid #ed4; color:#622;
+      background-color:#fff; padding:0px 6px; border-radius:4px; font-weight:normal;
+    }
+    .yelStyle i { color:#b22; }
+    .yelStyle u { text-decoration:none; border-bottom:1px solid red; }
+    .yelStyle hr { border:none; border-top:1px dashed #b96; height:0px; }
+    .yelStyle sup, .yelStyle sub { color:red; font-size:7pt; }
+    .yelStyle strike { color:#b22; }
+    .yelStyle H1 { border: 1px solid #cc8; font-size:1.4em;
+      background-color:#ee4; padding: 14px; border-radius:8px; font-weight:normal;
+    }
+    .yelStyle H2 { border: 1px solid #ed4; font-size: 1em;
+      background-color:#fff; padding: 16px; border-radius:8px; font-weight:normal;
+    }
+
+    .yelStyle td[qL] { vertical-align: top; padding-right:12px; color:red; text-align:right; width: 60px; font-family:inherit; }
+    .yelStyle td[q1] { vertical-align: top; padding-right:12px; font-size:4em; font-family:inherit; color:#ffdf80; text-align:right; width: 60px; border-right:1px solid #ffdf80; }
+    .yelStyle td[q2] { vertical-align: top; padding-left:12px; font-size:inherit;font-family:inherit; }
+
+    .yelStyle div[enum] { display: inline-block; width:20px; font-weight:bold; font-size:1.2em;font-family:inherit; color:#622;
+      background-color:#ee4; padding:6px; border-radius:8px; text-align:center; }
+/*------------------------ Normal Style -------------------------*/
+    .nrmStyle {
+      border:1px solid #ddd; padding:40px; border-radius:8px;
+      font: normal 10pt Verdana,Sans-serif; outline:none;
+      background-color:#eee; line-height: 1.3;
+    }
+    .nrmStyle hr { border:none; border-top:1px dashed #99b; height:0px; }
+    .nrmStyle b { color:#226; }
+    .nrmStyle i { color:#22c; font-style:normal; }
+    .nrmStyle H1 { border: 1px solid #444; font-size:1.4em; color:#fff;
+      background-color:#666; padding: 14px; border-radius:8px; font-weight:normal;
+    }
+    .nrmStyle H2 { border: 1px solid #ccc; font-size: 1em;
+      background-color:#fff; padding: 16px; border-radius:8px; font-weight:normal;
+    }
+
+    .nrmStyle td[qL] { vertical-align: top; padding-right:12px; color:#99b; text-align:right; width: 60px; font-family:inherit; }
+    .nrmStyle td[q1] { vertical-align: top; padding-right:12px; font-size:4em; font-family:inherit; color:#ccc; text-align:right; width: 60px; border-right:1px solid #ccc; }
+    .nrmStyle td[q2] { vertical-align: top; padding-left:12px; font-size:inherit;font-family:inherit; }
+
+    .nrmStyle div[enum] { display: inline-block; width:20px; font-weight:bold; font-size:1.2em;font-family:inherit; color:#fff;
+      background-color:#666; padding:6px; border-radius:8px; text-align:center; }
+/*------------------------ Black Style -------------------------*/
+    .blckStyle {
+      border:1px solid #002; padding:40px; border-radius:8px;
+      font: normal 10.5pt Arial,Sans-serif; outline:none;
+      background-color:#445; line-height: 1.3; color:#aae;
+    }
+    .blckStyle b {
+      background-color:#000; padding:0px 6px; border-radius:4px; font-weight:normal;
+    }
+    .blckStyle i { color:#fff; font-style:normal; }
+    .blckStyle u { text-decoration:none; border-bottom:4px solid #000; }
+    .blckStyle hr { border:none; border-top:1px dashed #000; height:0px; }
+    .blckStyle sup, .blckStyle sub { color:#000; font-size:7pt; font-weight: bold; }
+    .blckStyle strike { color:#000; }
+    .blckStyle H1 { font-size:1.4em; color:#aae;
+      background-color:#000; padding: 14px; border-radius:8px; font-weight:normal;
+    }
+    .blckStyle H2 { font-size: 1em; color:#002;
+      background-color:#889; padding: 16px; border-radius:8px; font-weight:normal;
+    }
+
+    .blckStyle td[qL] { vertical-align: top; padding-right:12px; color:#000; text-align:right; width: 60px; font-family:inherit; }
+    .blckStyle td[q1] { vertical-align: top; padding-right:12px; font-size:4em; font-family:inherit; color:#000; text-align:right; width: 60px; border-right:1px solid #000; }
+    .blckStyle td[q2] { vertical-align: top; padding-left:12px; font-size:inherit; font-family:inherit; }
+
+    .blckStyle div[enum] { display: inline-block; width:20px; font-weight:bold; font-size:1.2em;font-family:inherit; color:#aae;
+      background-color:#000; padding:6px; border-radius:8px; text-align:center; }
+
+  </style>
+</head>
+<body style="font-size:12pt;margin:10px" onResize='reSize()'>
+  
+  <button id='clpBoard' onClick='toClipBoard(this)' title='Copy in Clipboard' class="keyBtn fa fa-scissors"></button>
+  <button id='showHide' onClick='reSize()' title='Show/Hide the Pannel' class="keyBtn fa fa-sort-desc"></button>
+
+<div id='board' class='board'>
+  <button onClick='exe("removeFormat")' title='Remove format'><i class="fa fa-eraser"></i></button>
+  <button onClick='exe("redo",null)' title='Repeat'><i class="fa fa-repeat"></i></button>
+  <button onClick='exe("undo",null)' title='Undo'><i class="fa fa-undo"></i></button>
+
+  <div class='sel' title='Theme (template)'>
+  <i class="fa fa-image"></i>
+  <select onChange='toggleClass(this)'>
+        <option value='txtStyle'>Grey</option>
+        <option value='blueStyle'>Blue</option>
+        <option value='yelStyle'>Yellow</option>
+        <option value='nrmStyle' selected>Normal</option>blckStyle
+        <option value='blckStyle'>Dark</option>
+  </select>
+  </div>
+
+  <button onClick='exe("bold",null)' title='Bold'><i class="fa fa-bold"></i></button>
+  <button onClick='exe("italic", null)' title='Italic'><i class="fa fa-italic"></i></button>
+  <button onClick='exe("underline", null)' title='Underline'><i class="fa fa-underline"></i></button>
+  <button onClick='exe("strikeThrough",null)' title='Strikethrough'><i class="fa fa-strikethrough" style='font-size:11px;'></i></button>
+
+  | <button onClick='exe("justifyLeft",null)' title='Align left'><i class="fa fa-align-left"></i></button>
+  <button onClick='exe("justifyCenter",null)' title='Align center'><i class="fa fa-align-center"></i></button>
+  <button onClick='exe("justifyRight",null)' title='Align right'><i class="fa fa-align-right"></i></button>
+  <button onClick='exe("justifyFull",null)' title='Justify'><i class="fa fa-align-justify"></i></button>
+
+  | <button onClick='exe("insertunorderedlist",null)' title='Unordered list'><i class="fa fa-list-ul"></i></button>
+  <button onClick='exe("insertorderedlist",null)' title='Ordered list'><i class="fa fa-list-ol"></i></button>
+  <button onClick='exe("indent",null)' title='Indent'><i class="fa fa-indent"></i></button>
+  <button onClick='exe("outdent",null)' title='Dedent'><i class="fa fa-dedent"></i></button>
+
+  | <button onClick='exe("insertHorizontalRule",null)' title='Horizontal line'>┄</button>
+  <button onClick='sel("<H1>","</H1>")' title='Title'><i class="fa fa-header"></i></button>
+  <button onClick='sel("<H2>","</H2>")' title='Subtitle'><i class="fa fa-header" style='font-size:11px;'></i></button>
+  <button onClick='insQuote()' title='Quotation area'><i class="fa fa-quote-left"></i></button>
+
+  | <button onClick='exe("superscript",null)' title='Superscript'><i class="fa fa-superscript"></i></button>
+  <button onClick='exe("subscript",null)' title='Subscript'><i class="fa fa-subscript"></i></button>
+  <button onClick='up_low(true)' title='Upper case font'><i class="fa fa-font"></i><i class="fa fa-long-arrow-up"></i></button>
+  <button onClick='up_low(false)' title='Lower case font'><i class="fa fa-font" style="font-size:.7em"></i><i class="fa fa-long-arrow-down"></i></button>
+  
+  | <button onClick='incFontSize()' title='Change Font Size'><i class="fa fa-text-width"></i></button>
+  <button onClick='insTable()' title='List of items'><i class="fa fa-list"></i></button>
+  <button onClick='insColumns()' title='Two columns with separator'><i class="fa fa-columns"></i></button>
+  <button onClick='insLink()' title='Insert link'><i class="fa fa-link"></i></button>
+
+  | <button onClick='insYesNo(1)' title='OK confirmation (green)'><i class="fa fa-check"></i><i class="fa fa-font" style='font-size:11px;'></i></button>
+  <button onClick='insYesNo(0)' title='Bad confirmation (red)'><i class="fa fa-remove"></i><i class="fa fa-font" style='font-size:11px;'></i></button>
+  <button onClick='toggleWidth(this)' title='Compress width to 600px' class="fa fa-compress"></button>
+  <button onClick='insRemark()' title='Insert a remark/note' class="fa fa-edit"></button>
+
+  <div class='sel' title='font color'>
+    <i class="fa fa-pencil"></i>
+    <button onClick='cul(this,0)' style='color:red'>▣</button><select style='width:14px' onFocus='unsel(this)' onChange='ch_Sibling(this,0)'>
+    <option value="red" selected>red</option>
+    <option value="green">green</option>
+    <option value="blue">blue</option>
+    <option value="white">white</option>
+    <option value="black">black</option>
+    <option value="yellow">yellow</option>
+    <option value="">*custom</option>
+  </select>
+  </div>
+
+  <div class='sel' title='highlight color'>
+    <i class="fa fa-paint-brush"></i>
+    <button onClick='cul(this,1)' style='color:#ff9'>▨</button><select style='width:14px' onFocus='unsel(this)' onChange='ch_Sibling(this,1)'>
+    <option value='#ff9' selected>canary</option>
+    <option value="#ff0">yellow</option>
+    <option value="#bf9">green</option>
+    <option value="#fd9">orange</option>
+    <option value="#fff">white</option>
+    <option value="#000">black</option>
+    <option value="">*custom</option>
+  </select>
+  </div>
+
+  <div class='sel' title='Insert a symbol'>
+    <button style='width:24px' onClick='ins(this)'>⚑</button><select style='width:14px' onChange='symChange(this)'>
+    <option selected>⚑</option>
+    <option >✎</option>
+    <option >✓</option>
+    <option >✘</option>
+    <option >⚠</option>
+    <option >€</option>
+    <option >§</option>
+    <option >±</option>
+    <option >≈</option>
+    <option >°</option>
+    <option >―</option>
+    <option >➝</option>
+    <option >➜</option>
+    <option >☎</option>
+    <option >✉</option>
+  </select>
+  </div>
+
+  <button onClick='show_modal(0)' title='Edit HTML'><i class="fa fa-file-code-o"></i></button>
+  <button onClick='show_modal(1)' title='Edit Style Sheet'><i class="fa fa-file-text-o"></i></button>
+  <form id='Frm' style='display:inline' action='pipe/AAA.pdf' enctype='text/plain' target='_blank' method='POST' onSubmit='return downPDF();'>
+    <input id='Hdn' name='S' type="hidden" value="">
+    <button id='canSend' type="submit" title="Get PDF" class="fa fa-file-pdf-o"></button>
+  </form>
+  <button onClick='show_modal(2)' title='Edit PDF settings'><i class="fa fa-gear"></i></button> |
+  
+  <button onClick='removeDiacrit()' title='Remove Romanian diacritics' class="fa fa-check-square"></button>
+  <button onClick='correctDiacrit()' title='Correct the old Romanian diacritics' class="fa fa-check-square-o"></button>
+  <button onClick='mkCol()' title='Make new color pettern' class="fa fa-wrench"></button>
+
+</div>
+<div id='inCapsul' style='overflow-y:auto'>
+<table><tr><td id='txt' class='nrmStyle' contentEditable>...</td></tr></table>
+</div>
+
+<div id="modal-w" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" onClick='modal_shut()'>&times;</span>
+    <!-- <div id='modal-out' style='max-height:400px;overflow-y:auto'></div> -->
+    <textArea id='modal-out' style='font:normal 10pt Tahoma,Sans-serif; height:400px; width:100%; overflow-y:auto'></textArea>
+    <button onClick='Modal_OK()'>Modify</button>
+    <button onClick='norm()'>Normalize</button>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  function id(x) { return document.getElementById(x); }
+
+  const T = id('txt');
+  var isDirty = false;
+  
+  function reSize() {
+    const bt1 = id('showHide'), bt0 = id('clpBoard'), d1 = id('board'), d2 = id('inCapsul'), M = 20; // body margin as set
+    const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    let offs;
+    if(d1.style.display != 'none') {
+      bt1.className = 'keyBtn fa fa-sort-desc';
+      offs = 0;
+      d1.style.display ='none';
+    }
+    else {
+      d1.style.display = 'block';
+      offs = d1.offsetHeight;
+      bt1.className = 'keyBtn fa fa-sort-asc';
+    }
+    bt1.style.top = (offs+41) + 'px'; bt0.style.top = (offs+15) + 'px';
+    
+    let a = w>800?'800px':'';
+    /*if(/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Windows Phone/i.test(window.navigator.userAgent)) {
+      a = '340px';
+      let Zoom = Math.floor((w-M)/340*100)/100;
+      h = Math.floor(h/Zoom);
+      document.body.style.zoom = Zoom;
+    }*/
+    d1.style.width = a; d2.style.width = a;
+    d2.style.height = (h - offs - M) + 'px';
+    T.focus();
+  }
+  
+  reSize();
+  
+  function exe(sCmd, sValue) { T.focus(); document.execCommand(sCmd, false, sValue); }
+  
+  function clr(fnd) {
+    let n, c, tgs = T.querySelectorAll(fnd), tgsL = tgs.length, nxt = /^\xA0/, prv = /\xA0$/;
+    for(let i=0; i<tgsL; i++) {
+      n = tgs[i].nextSibling; c = n.textContent; if(nxt.test(c)) n.textContent = c.replace(nxt,' ');
+      n = tgs[i].previousSibling; c = n.textContent; if(prv.test(c)) n.textContent = c.replace(prv,' ');
+    }
+  }
+  
+  function sel(tgBeg, tgEnd) { let s = window.getSelection().toString(); if(!s) return; exe("insertHTML", tgBeg + s + tgEnd); }
+
+  function toClipBoard(ob) {
+    if(T.innerHTML.indexOf('&nbsp;') >-1) T.innerHTML = T.innerHTML.replace(/&nbsp;+/g,' ');
+    let p = id('inCapsul');
+    p.contentEditable = true; p.focus();
+    document.execCommand("selectAll", false, null);
+    document.execCommand("copy", false, null);
+    p.contentEditable = false;
+    ob.style.backgroundColor = '#FF0'; window.setTimeout( function() { ob.style.backgroundColor=''; }, 500);
+    T.focus(); isDirty = false;
+  }
+  
+  function ins(o) { exe('insertText', o.textContent); }
+  
+  function up_low(F) {
+    let s = window.getSelection().toString(); if(!s) return;
+    exe('insertText', F?s.toUpperCase():s.toLowerCase());
+  }
+  
+  function toggleClass(ob) { T.className = ob.options[ob.selectedIndex].value; }
+  function ch_Sibling(o, bg) { o.previousSibling.style.color = o.options[o.selectedIndex].value; cul(o.previousSibling, bg);
+  }
+  
+  function cul(ob, bg) {
+    let cl = ob.style.color, s = window.getSelection().toString();
+    if(!cl) {
+      if( !(cl = prompt('Enter the '+ (bg?'Background':'Font') +' Color here:','red'))) return;
+      ob.style.color = cl;
+    }
+    if(s) { exe("insertHTML", '<span style="'+(bg?'background-':'')+'color:'+ cl + '">' + s + '</span>'); clr('span[style]'); }
+  }
+
+  function unsel( ob ) { var x = ob.options[ob.options.length-1]; if(x.selected) x.selected = false; }
+  
+  function insLink() {
+    var sLnk=prompt('Write the URL here','http:\/\/');
+    if(sLnk && sLnk != '' && sLnk != 'http://') exe("createLink", sLnk);
+  }
+
+  function incFontSize() {
+    let s = window.getSelection().toString(); if(!s) return;
+    var Fs = prompt('Enter new Font Size here:','14pt');
+    if(Fs && Fs != '') { exe("insertHTML", '<span style="font-size:'+ Fs + '">' + s + '</span>'); clr('span[style]'); }
+  }
+
+  function insYesNo(F) { exe("insertHTML", '<div block="'+ F  + '">' + (F?'✓ OK':'✘ No') + '</div>'); clr('div[block]'); }
+  
+  T.addEventListener("input", function(){ isDirty = true; }, false);
+  T.addEventListener("paste",function(e) {
+    e.preventDefault();
+    exe('insertText', e.clipboardData.getData('text/plain'));
+  });
+  window.addEventListener("beforeunload", function(event) {
+    if(isDirty) event.returnValue = "Do you want to quit changes?";
+  });
+/*T.addEventListener("paste",function() { setTimeout( function()
+    { T.innerHTML = T.innerHTML.replace(/<div>/gi,'').replace(/<\/div><br>|<\/div>/gi,'<br>'); } ,0);
+  });*/
+
+  function insQuote() {
+    let s = gSel(); if(!s) s='...';
+    exe('insertHTML','<table><tr><td q1>❝</td><td q2>' + s + '</td></tr></table>');
+  }
+  
+  function gSel() {
+    const SL = window.getSelection(); if(SL.isCollapsed) return null;
+    const d = document.createElement('div'); d.appendChild(SL.getRangeAt(0).cloneContents());
+    return d.innerHTML;
+  }
+
+//--------------------------------------------------------------------------------------------------
+  function insTable() {
+    var F, arr = isInsideTable(), cnt = arr.length;
+    var Fs = prompt('Enter Ordered/Unordered/Enum/Big + number of row (ex: o3, u5, e4, b5):','u'+(cnt?cnt:3));
+    if(Fs && ('oueb'.indexOf(F=Fs.charAt(0))>-1)) {
+      var r = parseInt(Fs.substr(1),10), pref = (F!='b')?'<tr><td qL>':'<tr><td q1>'; if(F=='b') F='o';
+      var T = '<table border="0" cellSpacing="0">';
+      for(let i=0; i<r; i++)
+      T += pref + (F=='u'?'▸':(F=='o'?(i+1)+'.':('<div enum>'+ String.fromCharCode(65+i) +'</div>'))) +'</td><td q2>'+ (i<cnt?arr[i]:'...') +'<br><br></td></tr>';
+      exe('insertHTML', T + '</table>');
+    }
+  }
+
+  function isInsideTable() {
+    let s = gSel(); if(s) return s.replace(/\n/g,'').replace(/(\s*<br>\s*)+/g,'<br>').replace(/^<br>|<br>$/g,'').split('<br>');
+    s = window.getSelection();
+    var n = s.focusNode.parentElement;
+    while(n.tagName != 'TABLE')
+      if(n.tagName == 'TD' && n.id) return [];
+      else n = n.parentElement;
+    let ret = [], rs = n.rows, L = rs.length;
+    for(let r=0; r<L; r++) ret.push(rs[r].cells[1].innerHTML.replace(/<br><br>$/,''));
+    s.getRangeAt(0).selectNodeContents(n);
+    return ret;
+  }
+
+  function norm() {
+    var dst = id('modal-out'), x = dst.value;
+    x = x.replace(/\s*\n+\s*/g,'');
+    x = x.replace(/&nbsp;+|\s+/g,' ');
+    x = x.replace(/\s*(<\/h1>|<\/h2>|<br>|<\/tr>|<\/div>|<\/li>|<\/table>|<hr>|<ol>|<ul>)/g,'$1\n');
+    x = x.replace(/(<h1>|<h2>|<table>|<tr>|<div>)/g,'\n$1');
+    dst.value = x;
+  }
+  
+  var iRemark = '20px,|1|background-color:#a00;color:#fff;padding:16px;border:1px solid #800;border-radius:8px;width:100%';
+  function insRemark() {
+    var par, s = window.getSelection().toString();
+    var F = prompt('Enter Cols|Rows|Style:', iRemark); if(!F) return; par = F.split('|'); if(par.length<2) return; iRemark = F;
+      const cls = par[0].split(','), clsL = cls.length, rws = par[1], dc = (clsL==2 && rws==1 && s);
+      var T = '<table border="0" cellSpacing="0" style="'+ par[2] +'">';
+      for(let r=0; r<rws; r++) {
+        T += '<tr>';
+        for(let c=0; c<clsL; c++) T += '<td q2 width="' + cls[c] + '">' + (dc?(c?s:'⚑'):'*') + '</td>';
+        T += '</tr>';
+      }
+      exe('insertHTML', T + '</table>');
+  }
+  
+  function symChange(o) { o.previousSibling.textContent = o.options[o.selectedIndex].text; ins(o.previousSibling); }
+  
+  function toggleWidth(o) {
+    if(T.style.width != '600px') { T.style.width = '600px'; o.className = 'fa fa-expand'; o.title = 'Expand width to 100%'; }
+    else { T.style.width = ''; o.className = 'fa fa-compress'; o.title = 'Compress width to 600px'; }
+  }
+  
+  var Modal = id("modal-w"), patt, modal_mode;
+
+  function winClick(event) {
+    if(event.target == Modal) {
+      Modal.style.display = "none";
+      window.removeEventListener("click", winClick);
+    }
+  }
+  
+  function show_modal(fl) {
+    modal_mode = fl;
+    id("modal-out").value = fl==1?getCurrStyle():(fl==0?T.innerHTML.trim():JSON.stringify(jPDF).replace(/,/g,',\n'));
+    Modal.style.display = "block";
+    window.addEventListener("click", winClick);
+  }
+  
+  function modal_shut() { Modal.style.display = "none"; window.removeEventListener("click", winClick); }
+
+  function getCurrStyle() {
+    const el = document.querySelector('select');
+    const w = el.options[el.selectedIndex].value;
+    const s = document.querySelector("style").textContent;
+
+    patt = new RegExp('\\.'+w+'[\\s\\S]+\\.'+w+'[\\s\\S]+?}');
+    const arr = s.match(patt);
+    return arr[0];
+  }
+  
+  function Modal_OK() {
+    if(modal_mode == 1) {
+      const s = document.querySelector("style");
+      s.textContent = s.textContent.replace(patt,id("modal-out").value);
+    }
+    else if(modal_mode == 0) T.innerHTML = id("modal-out").value;
+    else jPDF = JSON.parse(id("modal-out").value);
+    modal_shut();
+  }
+  
+  function downPDF() {
+    let j, F = prompt('Enter the title:', jPDF.fileName); if(!F) return false;
+    if(T.innerHTML.indexOf('&nbsp;') >-1) T.innerHTML = T.innerHTML.replace(/&nbsp;+/g,' ');
+    const el = document.querySelector('select'), w = el.options[el.selectedIndex].value;
+    jPDF.fileName = F.trim();
+    j = JSON.parse(JSON.stringify(jPDF));
+    j.footer = j.footer.replace('{{title}}',j.fileName);
+    j.content = "<HTML><HEAD><STYLE>"+ getCurrStyle() +"</STYLE></HEAD><BODY class='"+ w +"' style='border:none;"+(j.bkgr?'':'background-color:transparent;padding:0px;')+(j.Times_New_Roman?'font:normal 12pt "Times New Roman";':'') +"'>"+ T.innerHTML +"</HTML>"  ;
+    id('Frm').action = 'pipe/' + j.fileName + '.pdf';
+    id('Hdn').value = JSON.stringify(j);
+    return true;
+  }
+  var jPDF = {
+    fileName:"Untitled",
+    borders:{top:"20mm",right:"20mm",bottom:"15mm",left:"20mm",footer:"5mm"},
+    footer:"<table style=\"width:100%; border-top:1px solid lightgray;font:normal 8pt Sans-serif;color:grey\"><TR><td>{{title}}</td><TD align=\"right\">Page {{page}} of {{pages}}</td></TR></table>",
+    bkgr:false, body:"1", Times_New_Roman:false,
+    content:null
+  }
+  
+  function insColumns() {
+    let Fs = prompt('Padding, Separation line style:','10px,1px solid lightgrey'); if(!Fs) return;
+    let s = Fs.split(','); if(s.length<2) return;
+    exe('insertHTML','<table style="table-layout:fixed;width:100%;"><tr><td valign="top" style="font-size:inherit;font-family:inherit;padding-right:'+ s[0] +';border-right:'+ s[1] +'">*</td><td valign="top" style="font-size:inherit;font-family:inherit;padding-left:'+ s[0] +';">*</td></tr></table>');
+  }
+  
+  function removeDiacrit() {
+    const r = /[ĂăÎîȘșȚțÂâ]/g; if(r.test(T.textContent))
+    T.innerHTML = T.innerHTML.replace(r, function(x){ return "AaIiSsTtAa".charAt("ĂăÎîȘșȚțÂâ".indexOf(x)); });
+  }
+  function correctDiacrit() {
+    const r = /[ŞşŢţ]/g; if(r.test(T.textContent))
+    T.innerHTML = T.innerHTML.replace(r, function(x){ return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); });
+  }
+  
+  function mkHex(x,f) { let r = Math.floor(255-(255-x)*f); return (r>15?'':'0')+r.toString(16); }
+  function mkRGB(r,g,b,factor) {
+    //return 'rgb(' + (255-(255-r)*factor).toFixed(0) + ',' + (255-(255-g)*factor).toFixed(0) + ',' + (255-(255-b)*factor).toFixed(0) + ')';
+    return '#' + mkHex(r,factor) + mkHex(g,factor) + mkHex(b,factor);
+  }
+  function mkCol() {
+  try {
+    let F = prompt('Enter the title:', '#335'); if(!F) return false;
+    if(/^#([a-f\d])([a-f\d])([a-f\d])$/.test(F))
+    F = F.replace(/[a-f\d]/g, function(x){ return x+x; });
+    let res = /^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(F); if(!res) return;
+    let R = parseInt(res[1], 16), G = parseInt(res[2], 16), B = parseInt(res[3], 16);
+
+    const def = { background: .1, bkgr_border: .25, font_color: .9 }
+    
+    let _style = `.custom {
+      border:1px solid #BORDER; padding:40px; border-radius:8px;
+      font: normal 10.5pt Sans-serif; outline:none;
+      background-color:#LIGHT; line-height: 1.3; color:#DARK;
+    }
+    .custom b { border: 1px solid #BORDER;
+      background-color:#fff; padding:0px 6px; border-radius:4px; font-weight:normal;
+    }
+    .custom i { color:#ITALIC; }
+    .custom u { text-decoration:none; border-bottom:1px solid #EMPH; }
+    .custom hr { border:none; border-top:1px dashed #B_DARK; height:0px; }
+    .custom sup, .txtStyle sub { color:#EMPH; font-size:7pt; }
+    .custom strike { color:#ITALIC; }
+    .custom H1 { font-size:1.4em; color:#fff;
+      background-color:#DARK; padding: 14px; border-radius:8px; font-weight:normal;
+    }
+    .custom H2 { border: 1px solid #BORDER; font-size: 1em;
+      background-color:#fff; padding: 16px; border-radius:8px; font-weight:normal;
+    }
+    .custom td[qL] { vertical-align: top; padding-right:12px; color:#EMPH; text-align:right; width: 60px; }
+    .custom td[q1] { vertical-align: top; padding-right:12px; font-size:4em; color:#BORDER; text-align:right; width: 60px; border-right:1px solid #B_DARK; }
+    .custom td[q2] { vertical-align: top; padding-left:12px; }
+
+    .custom div[enum] { display: inline-block; width:20px; font:bold 1.2em Sans-serif; color:#fff;
+      background-color:#B_DARK; padding:6px; border-radius:8px; text-align:center; }`;
+    
+    _style = _style.replace(/#DARK/g,mkRGB(R,G,B,def.font_color));
+    _style = _style.replace(/#LIGHT/g,mkRGB(R,G,B,def.background));
+    _style = _style.replace(/#BORDER/g,mkRGB(R,G,B,def.bkgr_border));
+    _style = _style.replace(/#B_DARK/g,mkRGB(R,G,B,def.bkgr_border+.15));
+
+    if(B>G && B>R) B=255; else if(G>R && G>B) G=170; else R=255;
+
+	  _style = _style.replace(/#ITALIC/g,mkRGB(R,G,B,.9));
+    _style = _style.replace(/#EMPH/g,mkRGB(R,G,B,1));
+
+    const el = document.querySelector('select');
+    const w = el.options[el.selectedIndex].value;
+    patt = new RegExp('\\.'+w+'[\\s\\S]+\\.'+w+'[\\s\\S]+?}');
+
+    _style = _style.replace(/\.custom/g,'.'+w);
+    const s = document.querySelector("style");
+    s.textContent = s.textContent.replace(patt,_style);
+
+    } catch(e) { alert('ERROR: ' + e.message); }
+  }
+
+</script>
+
+</body>
+</html>

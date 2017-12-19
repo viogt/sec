@@ -55,6 +55,7 @@ function grabClip(f) {
     	case 3: bg='#eef'; fg='#004'; bd='#bcf'; break;
     	case 4: bg='#dfd'; fg='#040'; bd='#aea'; break;
     	case 5: bg='#fee'; fg='#400'; bd='#faa'; break;
+    	case 6: bg='#444'; fg='#ddd'; bd='#000'; break;
     }
     s.backgroundColor = bg;
     s.color = fg; s.borderLeft = '24pt solid ' + bd;
@@ -115,6 +116,7 @@ function grabClip(f) {
 <input type='button' onClick='grabClip(3)' style='background-color:#66f'>
 <input type='button' onClick='grabClip(4)' style='background-color:#4f4'>
 <input type='button' onClick='grabClip(5)' style='background-color:#f66'>
+<input type='button' onClick='grabClip(6)' style='background-color:#666'>
 </div>
 <div id='basic' contentEditable='true' style='display:none'><table cellPadding='0' cellSpacing='0' border='0' width='100%'><tr>
 <td style='font-family:sans;font-size:11pt;padding:24pt;'>New, this is the cell to be edited right away.</td>

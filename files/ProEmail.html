@@ -4,7 +4,7 @@
 
 <title>* Email Proforma *</title>
 <style>
-	input[type=button] {
+	.pnl * {
 		min-width:80px; min-height:80px; margin:2px;
 		background-color:#ffa; border:1px solid grey;
 	}
@@ -109,11 +109,13 @@ function grabClip(f) {
 <input type="text" value="20" style="background-color:lightyellow;width:20px" onchange="xPad(this.value)">
 [ ]🔍🎺🎭❗📣❌📝🔲⭕🔒💰💡🚑📢🔔💉🎬➡<br><br>
 
+<div class='pnl'>
 <input type='button' onClick='grabClip(1)' style='background-color:#ccc'>
 <input type='button' onClick='grabClip(2)' style='background-color:#ff6'>
 <input type='button' onClick='grabClip(3)' style='background-color:#66f'>
 <input type='button' onClick='grabClip(4)' style='background-color:#4f4'>
 <input type='button' onClick='grabClip(5)' style='background-color:#f66'>
+</div>
 <div id='basic' contentEditable='true' style='display:none'><table cellPadding='0' cellSpacing='0' border='0' width='100%'><tr>
 <td style='font-family:sans;font-size:11pt;padding:24pt;'>New, this is the cell to be edited right away.</td>
 </tr></table>

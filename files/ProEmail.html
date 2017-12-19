@@ -37,6 +37,25 @@ function xPad(v){
 	var ts = document.getElementsByTagName("TABLE"); v+='px';
 	for(var i in ts) ts[i].cellPadding = v;
 }
+
+function grabClip(f) {
+	const x = document.getElementById('basic'),
+    	s = x.firstChild.rows[0].cells[0].style;
+	var bg, fg, bd;
+    switch(f) {
+    	case 1: bg='#eee'; fg='#333'; bd='#ccc'; break;
+    	case 2: bg='#ffa'; fg='#330'; bd='#dd6'; break;
+    	case 3: bg='#eef'; fg='#004'; bd='#bcf'; break;
+    	case 4: bg='#dfd'; fg='#040'; bd='#aea'; break;
+    	case 5: bg='#fee'; fg='#400'; bd='#faa'; break;
+    }
+    s.backgroundColor = bg;
+    s.color = fg; s.borderLeft = '24pt solid ' + bd;
+    x.style.display = ''; x.focus();
+    document.execCommand('selectAll', false, '');
+    document.execCommand('copy', false, '');
+    x.style.display = 'none';
+}
 </script>
 
 </head>
@@ -82,6 +101,18 @@ function xPad(v){
 <input type="button" value="None!" style="background-color:lightyellow" onclick="Simplify(this)">
 <input type="text" value="20" style="background-color:lightyellow;width:20px" onchange="xPad(this.value)">
 [ ]🔍🎺🎭❗📣❌📝🔲⭕🔒💰💡🚑📢🔔💉🎬➡<br><br>
+
+<input type='button' onClick='grabClip(1)' style='background-color:#ccc'>
+<input type='button' onClick='grabClip(2)' style='background-color:#ff6'>
+<input type='button' onClick='grabClip(3)' style='background-color:#66f'>
+<input type='button' onClick='grabClip(4)' style='background-color:#4f4'>
+<input type='button' onClick='grabClip(5)' style='background-color:#f66'>
+<div id='basic' contentEditable='true' style='display:none'><table cellPadding='0' cellSpacing='0' border='0' width='100%'><tr>
+<td style='font-family:sans;font-size:11pt;padding:24pt;'>New, this is the cell to be edited right away.</td>
+</tr></table>
+</div>
+
+<br><br>
 
 <table cellpadding="12px" cellspacing="0" style="border:1px solid #cccfcc;width:480px; border-radius: 8px;-webkit-border-radius: 8px;-moz-border-radius: 8px;-khtml-border-radius: 8px;"><tbody><tr>
 <td valign="top" width="20px" style="border-right:1px solid #cccfcc">

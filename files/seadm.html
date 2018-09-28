@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+    :root { --fn: normal 16px Arial,sans; --bk: #06e; --bkHover: #04c; --bkSElect:#ccc; --sz: 13pt; }
+
+body {margin:0;}
+
+.navbar {
+    font: normal 24px Arial,sans;
+    overflow: hidden;
+    background-color: #448;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    box-shadow: 0px 2px 6px #668;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #eef;
+    text-align: center;
+    padding: 18px 18px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background: #226;
+    color: #fff;
+}
+
+.sidenav {
+    font: normal 24px Arial,sans;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #eef;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    border-right:1px solid #dde;
+    box-shadow: 2px 0px 8px #888;
+
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #fff;
+    background-color:rgb(0,0,0,1);
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/*--------------------------------- SLIDER --------------------------*/
+
+.slider {
+    -webkit-appearance: none;
+    width: 200px;
+    height: 16px;
+    border-radius: 8px;
+    background-color: #ccc;
+    outline: none;
+    border: thin solid #ccc;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+  box-shadow: 1px 1px 4px #000;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+  box-shadow: 1px 1px 4px #000;
+}
+
+/*--------------------------------- SWITCH --------------------------*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 26px;
+}
+.switch input {display:none;}
+.switch span {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /*box-shadow: 1px 2px 4px #666 inset;*/
+  background-color: #ccc;
+  border-radius: 26px;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.switch span:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  box-shadow: 1px 1px 4px #000;
+  border-radius: 50%;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.switch input:checked + span { background-color: var(--bk); }
+.switch input:focus + span { box-shadow: 0 0 1px #444; }
+.switch input:checked + span:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+table {
+    font: var(--fn);
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+td {
+    padding: 16px 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.main {
+    font: var(--fn);
+    padding: 28px;
+    margin-top: 50px;
+    height: 1500px; /* Used in this example to enable scrolling */
+}
+.content {
+    margin: auto;
+    width: 50%;
+    border: thin solid lightgrey;
+    padding: 10px;
+}
+</style>
+</head>
+
+<body onload='trageTot()'>
+
+<div class="navbar">
+    <a href="javascript:void(0);" style='background-color:#226' class="icon" onclick="openNav()">
+        <i class="fa fa-bars"></i>
+    </a>
+    <a href="javascript:void(0);" onclick="testTable(0)"><i class="fa fa-address-book"></i> Organic</a>
+    <a href="javascript:void(0);" onclick="testTable(1)"><i class="fa fa-address-book-o"></i> Specific</a>
+    <span style='float:right; margin-right:18px;'>
+        <a href="#contact"><i class="fa fa-desktop"></i></a>
+        <a href="javascript:void(0);" onclick="randomData()"><i class="fa fa-cog"></i></a>
+    </span>
+</div>
+
+<div id='main' class="main"></div>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+</div>
+
+<script>
+function id(x) { return document.getElementById(x); }
+function openNav() { id("mySidenav").style.width = "300px"; }
+function closeNav() { id("mySidenav").style.width = "0"; }
+
+function createSwitch(anch, isChecked, cllBack) {
+    let L = document.createElement('label'),
+        I = document.createElement('input'),
+        S = document.createElement('span');
+    L.className = 'switch'; I.type = 'checkbox'; I.checked = isChecked;
+    L.appendChild(I); L.appendChild(S); anch.appendChild(L);
+}
+
+const culori = [ '#a5d6a7', '#e8f5e9', '#ffffff', '#fffde7', '#ffe0b2', '#ffb74d'];
+function sliderColors() { this.style.backgroundColor = culori[this.value-1]; }
+
+function createSlider(anch, vl) {
+    let R = document.createElement('input');
+    R.type = 'range'; R.className = 'slider'; R.min = 1; R.max = 6;
+    R.value = vl; R.style.backgroundColor = culori[vl-1];
+    R.oninput = sliderColors; anch.appendChild(R);
+}
+
+var insTip = 0, tables;
+
+function createTable(anch, tip) {
+    let T = document.createElement('table'),
+        B = document.createElement('tbody'),
+        R = document.createElement('div'),
+        H2 = document.createElement('h2'),
+        culLen = culori.length-1,
+        tbl = tables[tip].data, rws = tbl.length;
+    for(let i=1; i<rws; i++) {
+        let R = document.createElement('tr');
+        let c = document.createElement('td'); c.innerText = tbl[i][1];
+        R.appendChild(c);
+        c = document.createElement('td');
+        if(tip==0) createSwitch(c, Math.random()>0.5?true:false, null);
+        else if(tip==1) createSlider(c, Math.round(Math.random()*culLen)+1);
+        R.appendChild(c);
+        B.appendChild(R);
+    }
+    T.appendChild(B); insTip = tip;
+    if(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
+}
+
+function randomData() {
+    let T = id('main').firstChild; if(!T) return;
+    let R = T.rows, L = R.length, culLen = culori.length-1;
+    for(let i=0; i<L; i++) {
+        let obj = R[i].cells[1];
+        if(insTip==1) {
+            let vl = Math.round(Math.random()*culLen)+1;
+            obj.firstChild.value = vl; obj.firstChild.style.backgroundColor = culori[vl-1];
+        }
+        else if(insTip==0) obj.firstChild.firstChild.checked = Math.random()>0.5?true:false;
+    }
+}
+
+function trageTot() {
+	let el = document.createElement('script');
+	el.onload = function() {
+	    tables = DATA;
+	};
+	el.setAttribute('type', 'text/javascript');
+    el.setAttribute('async', true);
+    el.setAttribute('src', 'tables.js');
+	document.body.appendChild(el);
+}
+
+function testTable(tip) {
+    //let a = id('main');
+    createTable(id('main'), tip);
+}
+
+</script>
+</body>
+</html>

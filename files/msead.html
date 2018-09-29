@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>The Materialize Form Example</title>
+      <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        .fxBtn { width: 120px; }
+    </style>
+    </head>
+
+<body class='container'>
+
+<div style='position:fixed;top:0;z-index:1;width:inherit;'>
+<nav>
+    <div class="nav-wrapper">
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li>
+                <a href="javascript:void()" onClick='openLeft()'><i class="material-icons">menu</i></a>
+                </li>
+            <li><a href="javascript:testTable(0)">Organic</a></li>
+            <li><a href="javascript:testTable(1)">Specific</a></li>
+            <li><a href="javascript:void()">About</a></li>
+            <li><a href="javascript:void()"><i class="material-icons">insert_chart</i></a></li>
+            <li><a href="javascript:randomise()"><i class="material-icons">equalizer</i></a></li>
+        </ul>
+    </div>
+</nav>
+</div>
+
+<div id='main' style='margin-top:72px'></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    //M.AutoInit();
+    var elems, instances;
+    /*try {
+    elems = document.querySelectorAll('.dropdown-trigger');
+    instances = new M.Dropdown.init(elems, { closeOnClick: true });
+    } catch(e) { alert(e.message); }*/
+    
+    trageTot();
+    
+});
+
+function id(x) { return document.getElementById(x); }
+function openLeft() {
+    try {
+    alert('Am ajuns\n' + sideNav);
+    let elem = document.getElementById('slide-out');
+    var instance = M.Sidenav.getInstance(elem);
+    instance.open();
+    } catch(e) { alert(e.message); }
+}
+
+function showToast(msg){ M.toast({html: msg }); }
+
+function dualInput(td) {
+    let d = document.createElement('div'); d.className = 'switch';
+    let s = document.createElement('span'); s.className = 'lever';
+    let i = document.createElement('input'); i.type = 'checkbox'; //i.checked = Math.random()>0.5?true:false;
+    let l = document.createElement('label');
+    l.appendChild(i); l.appendChild(s); d.appendChild(l); td.appendChild(d);
+}
+
+let selOps = ["Foarte rar", "Rar", "Mediu", "Des", "Foarte des"];
+let culori = ["#26a69a", "#80cbc4", "#cddc39", "#ffa726", '#e65100'];
+
+function selInput(rw, td) {
+    let e_id = 'dropDn_' + rw, Lops = selOps.length;
+    let a = document.createElement('a');
+        a.className = 'dropdown-trigger btn fxBtn';
+        a.setAttribute('data-target',e_id);
+        a.textContent = selOps[0];
+        a.href = 'javascript:void()';
+    let u = document.createElement('ul');
+        u.id = e_id;
+        u.className = 'dropdown-content';
+    for(let i=0; i<Lops; i++) {
+        let l = document.createElement('li');
+        let z = document.createElement('a');
+        z.textContent = selOps[i]; z.href = '#!'; z.onclick = handleSel;
+        l.appendChild(z); u.appendChild(l);
+    }
+    td.appendChild(a); td.appendChild(u);
+}
+
+function randomise() {
+    let T = id('main').firstChild, R = T.rows, L = R.length;
+    let optL = selOps.length-1;
+    
+    if(insTip==0) for(let i=0; i<L; i++) {
+        let obj = R[i].cells[1].firstChild.firstChild.firstChild;
+        obj.checked = Math.random()>0.5?true:false;
+    }
+    else if(insTip==1) for(let i=0; i<L; i++) {
+        let obj = R[i].cells[1].firstChild, rnd = Math.round(Math.random()*optL);
+        obj.innerText = selOps[rnd];
+        obj.style.backgroundColor = culori[rnd];
+    }
+}
+
+/*function multiInput(td) {
+    let i = document.createElement('input');
+    i.type = 'range'; i.min = 1; i.max = 5; i.value = Math.round(Math.random()*5);
+    let p = document.createElement('p');
+    //p.appendChild(i);
+    td.appendChild(i);
+}*/
+
+var insTip = -1, tables;
+
+function createTable(anch, tip) {
+    let T = document.createElement('table'),
+        B = document.createElement('tbody'),
+        R = document.createElement('div'),
+        H2 = document.createElement('h2'),
+        culLen = culori.length-1,
+        tbl = tables[tip].data, rws = tbl.length;
+    for(let i=1; i<rws; i++) {
+        let R = document.createElement('tr');
+        let c = document.createElement('td'); c.innerText = tbl[i][1];
+        R.appendChild(c);
+        c = document.createElement('td');
+        if(tip==0) dualInput(c);
+        else if(tip==1) selInput(i, c);
+        R.appendChild(c);
+        B.appendChild(R);
+    }
+    T.appendChild(B); insTip = tip;
+    while(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
+    if(tip==1) {
+        let elems = document.querySelectorAll('.dropdown-trigger');
+        let instances = M.Dropdown.init(elems, {closeOnClick: true});
+    }
+}
+
+/*function mkTable(tbl, fl) {
+    let T = document.getElementById(tbl), R = T.rows, L = R.length;
+    for(let i=0; i<L; i++) {
+            let nd = R[i].cells[1];
+            while(nd.firstChild) nd.removeChild(nd.firstChild);
+            if(fl==1) dualInput(nd);
+            else if(fl==2) multiInput(nd);
+            else selInput(i, nd);
+    }
+}*/
+
+function handleSel() {
+    //alert(this.nodeName + '\n' + this.innerText);
+    let t = this.innerText, L = culori.length;
+    let B = this.parentElement.parentElement.previousSibling;
+    B.innerText = t;
+    for(let i=0; i<L; i++) if(selOps[i]==t) { B.style.backgroundColor = culori[i]; return; }
+    //alert(B.nodeName + '\n' + B.innerText);
+}
+
+function trageTot() {
+	const el = document.createElement('script');
+	el.onload = function() { tables = DATA; showToast('Data loaded'); };
+	el.setAttribute('type', 'text/javascript');
+    el.setAttribute('async', true);
+    el.setAttribute('src', 'tables.js');
+	document.body.appendChild(el);
+}
+
+function testTable(tip) {
+    //let a = id('main');
+    createTable(id('main'), tip);
+}
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@
 body {margin:0;}
 
 .navbar {
-    font: normal 16px Arial,sans;
+    font: normal 18px Arial,sans;
     overflow: hidden;
     background-color: #448;
     position: fixed;
@@ -25,7 +25,7 @@ body {margin:0;}
     display: block;
     color: #eef;
     text-align: center;
-    padding: 16px 12px;
+    padding: 18px 18px;
     text-decoration: none;
 }
 
@@ -82,7 +82,7 @@ body {margin:0;}
 
 .slider {
     -webkit-appearance: none;
-    width: 120px;
+    width: 200px;
     height: 16px;
     border-radius: 8px;
     background-color: #ccc;
@@ -109,6 +109,49 @@ body {margin:0;}
   box-shadow: 1px 1px 4px #000;
 }
 
+/*--------------------------------- DROP BTN --------------------------*/
+.dropbtn {
+    background-color: #bbc;
+    color: #fff;
+    padding: 16px;
+    font: normal 16px Arial, sans;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    width:78px;
+    margin:0;
+    text-align:center;
+    box-shadow: 0px 3px 6px 0px #999;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    /*background-color: #f1f1f1;
+    min-width: 160px;*/
+    overflow-x: hidden;
+    white-space: nowrap;
+    box-shadow: 0px 3px 6px 0px #999;
+    z-index: 1;
+    top:0; left:0;
+}
+
+.dropdown-content a {
+    color: #fff;
+    padding: 16px;
+    font: normal 16px Arial, sans;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    width:78px;
+    margin:0;
+    text-align:center;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.show {display: block;}
 /*--------------------------------- SWITCH --------------------------*/
 .switch {
   position: relative;
@@ -184,7 +227,7 @@ td {
     </a>
     <a href="javascript:void(0);" onclick="testTable(0)"><i class="fa fa-address-book"></i> Organic</a>
     <a href="javascript:void(0);" onclick="testTable(1)"><i class="fa fa-address-book-o"></i> Specific</a>
-    <span style='float:right; margin-right:8px;'>
+    <span style='float:right; margin-right:18px;'>
         <a href="#contact"><i class="fa fa-desktop"></i></a>
         <a href="javascript:void(0);" onclick="randomData()"><i class="fa fa-cog"></i></a>
     </span>
@@ -198,6 +241,10 @@ td {
   <a href="#">Services</a>
   <a href="#">Clients</a>
   <a href="#">Contact</a>
+</div>
+
+<div id="scale" class="dropdown-content">
+<a href='javascript:void()' onClick='answer(this)' style='background-color:#26a69a'>Foarte rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#80cbc4'>Rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#cddc39'>Mediu</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#ffa726'>Des</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#e65100'>Foarte des</a>
 </div>
 
 <script>
@@ -223,6 +270,14 @@ function createSlider(anch, vl) {
     R.oninput = sliderColors; anch.appendChild(R);
 }
 
+function createDrop(anch) {
+    let a = document.createElement('a');
+    a.className = 'dropbtn';
+    a.onclick = unfold;
+    a.innerText = 'N/A';
+    anch.appendChild(a);
+}
+
 var insTip = 0, tables;
 
 function createTable(anch, tip) {
@@ -237,8 +292,8 @@ function createTable(anch, tip) {
         let c = document.createElement('td'); c.innerText = tbl[i][1];
         R.appendChild(c);
         c = document.createElement('td');
-        if(tip==0) createSwitch(c, Math.random()>0.5?true:false, null);
-        else if(tip==1) createSlider(c, Math.round(Math.random()*culLen)+1);
+        if(tip==0) createSwitch(c, false);
+        else if(tip==1) createDrop(c); //createSlider(c, Math.round(Math.random()*culLen)+1);
         R.appendChild(c);
         B.appendChild(R);
     }
@@ -248,14 +303,17 @@ function createTable(anch, tip) {
 
 function randomData() {
     let T = id('main').firstChild; if(!T) return;
-    let R = T.rows, L = R.length, culLen = culori.length-1;
-    for(let i=0; i<L; i++) {
-        let obj = R[i].cells[1];
-        if(insTip==1) {
-            let vl = Math.round(Math.random()*culLen)+1;
-            obj.firstChild.value = vl; obj.firstChild.style.backgroundColor = culori[vl-1];
-        }
-        else if(insTip==0) obj.firstChild.firstChild.checked = Math.random()>0.5?true:false;
+    let R = T.rows, L = R.length;
+    if(insTip==0) for(let i=0; i<L; i++) {
+        R[i].cells[1].firstChild.firstChild.checked = Math.random()>0.5?true:false;
+    }
+    
+    else if(insTip==1) for(let i=0; i<L; i++) {
+            let vl = Math.round(Math.random()*4); //options - 1;
+            let trg = R[i].cells[1].firstChild;
+            let src = SCALE.children[vl];
+            trg.innerText = src.innerText;
+            trg.style.backgroundColor = src.style.backgroundColor;
     }
 }
 
@@ -266,14 +324,32 @@ function trageTot() {
 	};
 	el.setAttribute('type', 'text/javascript');
     el.setAttribute('async', true);
-    el.setAttribute('src', 'res/tables.js');
+    el.setAttribute('src', 'tables.js');
 	document.body.appendChild(el);
+	
+	window.onclick = function(event) {
+	    if(!event.target.matches('.dropbtn') && SCALE.classList.contains('show'))
+	    SCALE.classList.remove('show');
+	};
 }
 
-function testTable(tip) {
-    //let a = id('main');
-    createTable(id('main'), tip);
+const SCALE = document.getElementById('scale'), SCABTN = null;
+
+function unfold() {
+	let el = event.target, rct = el.getBoundingClientRect();
+    if(SCALE.classList.contains('show')) SCALE.classList.remove('show');
+    SCALE.style.top = rct.top + 'px';
+    SCALE.style.left = (rct.left-(78+32)*4) + 'px';
+    SCALE.classList.toggle("show");
+    SCLBTN = el;
 }
+
+function answer(ob) {
+	SCLBTN.innerText = ob.innerText;
+    SCLBTN.style.backgroundColor = ob.style.backgroundColor;
+}
+
+function testTable(tip) { createTable(id('main'), tip); }
 
 </script>
 </body>

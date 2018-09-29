@@ -338,7 +338,7 @@ const SCALE = document.getElementById('scale'), SCABTN = null;
 function unfold() {
 	let el = event.target, rct = el.getBoundingClientRect();
     if(SCALE.classList.contains('show')) SCALE.classList.remove('show');
-    SCALE.style.top = rct.top + 'px';
+    SCALE.style.top = (rct.top + window.scrollY) + 'px';
     SCALE.style.left = (rct.left-(78+32)*4) + 'px';
     SCALE.classList.toggle("show");
     SCLBTN = el;

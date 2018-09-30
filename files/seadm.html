@@ -219,6 +219,21 @@ td {
     border-bottom: 1px solid #eee;
 }
 
+.bullet {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background-color: #ff7043;
+    color: #fff;
+    border-radius: 50%;
+    left: 16px;
+    bottom: 16px;
+    z-index: 6;
+    box-shadow: 0 3px 5px #888;
+    text-align:center;
+    font-size: 32px;
+}
+
 .main {
     font: var(--fn);
     padding: 28px 12px;
@@ -268,15 +283,22 @@ td {
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clinical evaluation<br>
       <i class="fa fa-envelope-o"></i> diana.topa@gmail.com</div>
   </div>
+  <a href="#"><i class="fa fa-address-card"></i>&nbsp;&nbsp;CV & accreditations</a>
+  <a href="#"><i class="fa fa-calendar-check-o"></i>&nbsp;&nbsp;Organic syndroms</a>
+  <a href="#"><i class="fa fa-binoculars"></i>&nbsp;&nbsp;Specific syndroms</a>
+  <a href="#"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Problematics</a>
+  <br><br><hr><br>
 </div>
 
 <div id="scale" class="dropdown-content">
 <a href='javascript:void()' onClick='answer(this)' style='background-color:#26a69a'>F. rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#80cbc4'>Rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#cddc39'>Mediu</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#ffa726'>Des</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#e65100'>F. des</a>
 </div>
 
+<div class='bullet' onclick='openNav()'><i style='margin-top:10px' class="fa fa-info"></i></div>
+
 <script>
 function id(x) { return document.getElementById(x); }
-function openNav() { id("mySidenav").style.left = "0"; }
+function openNav() { let el = id("mySidenav").style, s = el.left; el.left = (s.charAt(0)!='0')?'0':'-306px'; }
 function closeNav() { id("mySidenav").style.left = "-306px"; }
 
 function createSwitch(anch, isChecked, cllBack) {

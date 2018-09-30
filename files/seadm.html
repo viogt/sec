@@ -122,24 +122,26 @@ body {margin:0;}
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
-    width:62px;
+    width:65px;
     margin:0;
     text-align:center;
     box-shadow: 0px 3px 6px 0px #999;
+    float:right;
+    right: 0;
+    
 }
-
 .dropdown-content {
     display: none;
     position: absolute;
-    /*background-color: #f1f1f1;
-    min-width: 160px;*/
     overflow-x: hidden;
     white-space: nowrap;
     box-shadow: 0px 3px 6px 0px #999;
     z-index: 1;
-    top:0; left:0;
+    top:0; /*left:0;*/
+    right: 0;
+    float: right;
+    width: 0px;
 }
-
 .dropdown-content a {
     color: #fff;
     padding: 14px 0px;
@@ -147,14 +149,23 @@ body {margin:0;}
     border: none;
     text-decoration: none;
     display: inline-block;
-    width:62px;
+    width:65px;
     margin:0;
     text-align:center;
 }
+.show {display: block; right: 10px; width:325px;
+    -webkit-animation: fadein 0.4s;
+    animation: fadein 0.4s;
+}
+@-webkit-keyframes fadein {
+    from {width: 65px; } 
+    to {width: 325px;}
+}
 
-.dropdown-content a:hover {background-color: #ddd;}
-
-.show {display: block;}
+@keyframes fadein {
+    from {width: 65px; } 
+    to {width: 325px;}
+}
 /*--------------------------------- SWITCH --------------------------*/
 .switch {
   position: relative;
@@ -222,7 +233,7 @@ td {
 </style>
 </head>
 
-<body onload='trageTot()'>
+<body onload='trageTot()' style='margin:0'>
 
 <div class="navbar">
     <a href="javascript:void(0);" style='background-color:#226' class="icon" onclick="openNav()">
@@ -353,13 +364,14 @@ const SCALE = document.getElementById('scale'), SCABTN = null;
 
 function unfold() {
 	let el = event.target, rct = el.getBoundingClientRect();
-    if(SCALE.classList.contains('show')) SCALE.classList.remove('show');
+	if(SCALE.classList.contains('show')) SCALE.classList.remove('show');
     SCALE.style.top = (rct.top + window.scrollY) + 'px';
-    SCALE.style.left = (rct.left-62*4) + 'px';
+    //SCALE.style.left = (rct.left-260) + 'px';
+    //SCALE.style.right = (rct.left+rct.width) + 'px';
     SCALE.classList.toggle("show");
     SCLBTN = el;
 }
-
+	
 function answer(ob) {
 	SCLBTN.innerText = ob.innerText;
     SCLBTN.style.backgroundColor = ob.style.backgroundColor;

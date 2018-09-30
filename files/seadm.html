@@ -212,6 +212,7 @@ table {
     font: var(--fn);
     border-collapse: collapse;
     border-spacing: 0;
+	width: 100%;
 }
 td {
     padding: 16px 8px;
@@ -242,7 +243,7 @@ td {
     <a href="javascript:void(0);" onclick="testTable(0)"><i class="fa fa-address-book"></i> Organic</a>
     <a href="javascript:void(0);" onclick="testTable(1)"><i class="fa fa-address-book-o"></i> Specific</a>
     <span style='float:right; margin-right:18px;'>
-        <a href="#contact"><i class="fa fa-desktop"></i></a>
+        <a href="javascript:void(0);" onclick="charts()"><i class="fa fa-desktop"></i></a>
         <a href="javascript:void(0);" onclick="randomData()"><i class="fa fa-cog"></i></a>
     </span>
 </div>
@@ -304,7 +305,7 @@ function createDrop(anch) {
     anch.appendChild(a);
 }
 
-var insTip = 0, tables;
+var insTip = -1, tables;
 
 function createTable(anch, tip) {
     let T = document.createElement('table'),
@@ -328,6 +329,7 @@ function createTable(anch, tip) {
 }
 
 function randomData() {
+    if(insTip < 0) return;
     let T = id('main').firstChild; if(!T) return;
     let R = T.rows, L = R.length;
     if(insTip==0) for(let i=0; i<L; i++) {
@@ -380,6 +382,91 @@ function answer(ob) {
 }
 
 function testTable(tip) { createTable(id('main'), tip); }
+
+//----------------------------- Reports -----------------------------------
+
+var isChartLoaded = false;
+const assRes = [ ['Symptom', 'Quote'],['Agresiv', 11],['Labil', 4],['Anxietate',  3],['Perseverari', 2]];
+
+function randResults() {
+    let L = assRes.length;
+    for(let i=1; i<L; i++) assRes[i][1] = Math.round(Math.random()*15);
+}
+
+function charts() {
+    let R, D, T = document.createElement('table'), anch = id('main'), S = T.style;
+    S.width = '100%'; S.height = '100%';
+    if(anch.firstChild) anch.removeChild(anch.firstChild); insTip = -1;
+
+    R = document.createElement('tr'); D = document.createElement('td'); D.id = 'ch1'; D.style.height = '400px';
+    R.appendChild(D); T.appendChild(R)
+    R = document.createElement('tr'); D = document.createElement('td'); D.id = 'ch2'; D.style.height = '400px';
+    R.appendChild(D); T.appendChild(R)
+    R = document.createElement('tr'); D = document.createElement('td'); D.id = 'ch3'; D.style.height = '200px';
+    R.appendChild(D); T.appendChild(R)
+    
+    T.id = 'sChart'; anch.appendChild(T);
+    randResults();
+    if(isChartLoaded) { unuPrep(); doiPrep(); trePrep(); }
+    else {
+        let el = document.createElement('script');
+        el.onload = function() {
+            isChartLoaded = true;
+            unuPrep();
+            doiPrep();
+            trePrep();
+        };
+        el.setAttribute('type', 'text/javascript');
+        el.setAttribute('async', true);
+        el.setAttribute('src', 'https://www.gstatic.com/charts/loader.js');
+        document.body.appendChild(el);
+    }
+}
+
+function unuPrep() {
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(assRes);
+        var options = { title: "Organic Pesonality's Type", pieHole: 0.4 };
+        var chart = new google.visualization.PieChart(id('sChart').rows[0].cells[0]);
+        chart.draw(data, options);
+    }
+}
+
+function doiPrep() {
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(drawChart2);
+    function drawChart2() {
+        var data = google.visualization.arrayToDataTable(assRes);
+        var options = {
+            chart: {
+                title: 'Organic Types of Personality',
+                subtitle: '( Assessment as of ' + (new Date()).toLocaleDateString("de-DE") + ')'
+            },
+            bars: 'vertical'
+        };
+        var chart = new google.charts.Bar(id('sChart').rows[1].cells[0]);
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+}
+
+function trePrep() {
+    google.charts.load('current', {'packages':['gauge']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(assRes);
+        var options = {
+            //width: 500,
+            height: 140,
+            redFrom: 90, redTo: 100,
+            yellowFrom:75, yellowTo: 90,
+            minorTicks: 5
+        };
+        var chart = new google.visualization.Gauge(id('sChart').rows[2].cells[0]);
+        chart.draw(data, options);
+    }
+}
 
 </script>
 </body>

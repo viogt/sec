@@ -38,15 +38,15 @@ body {margin:0;}
 .sidenav {
     font: normal 18px Arial,sans;
     height: 100%;
-    width: 0;
+    width: 300px;
     position: fixed;
     z-index: 1;
     top: 0;
-    left: 0;
+    left: -306px;
     background-color: #eef;
     overflow-x: hidden;
     overflow-y: auto;
-    transition: 0.5s;
+    transition: 0.4s;
     padding-top: 40px;
     border-right:1px solid #dde;
     box-shadow: 2px 0px 8px #888;
@@ -80,7 +80,6 @@ body {margin:0;}
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
 }
-
 /*--------------------------------- SLIDER --------------------------*/
 
 .slider {
@@ -276,8 +275,8 @@ td {
 
 <script>
 function id(x) { return document.getElementById(x); }
-function openNav() { id("mySidenav").style.width = "300px"; }
-function closeNav() { id("mySidenav").style.width = "0"; }
+function openNav() { id("mySidenav").style.width = "0"; }
+function closeNav() { id("mySidenav").style.width = "-306px"; }
 
 function createSwitch(anch, isChecked, cllBack) {
     let L = document.createElement('label'),

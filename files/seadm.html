@@ -357,6 +357,9 @@ function trageTot() {
 	    if(!event.target.matches('.dropbtn') && SCALE.classList.contains('show'))
 	    SCALE.classList.remove('show');
 	};
+	window.onscroll = function() {
+	   if(SCALE.classList.contains('show')) SCALE.classList.remove('show');
+	};
 }
 
 const SCALE = document.getElementById('scale'), SCABTN = null;

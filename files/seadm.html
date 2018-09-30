@@ -76,10 +76,11 @@ body {margin:0;}
     margin-left: 50px;
 }
 
-/*@media screen and (max-height: 450px) {
+@media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
-}*/
+}
+
 /*--------------------------------- SLIDER --------------------------*/
 
 .slider {
@@ -256,9 +257,8 @@ td {
   <a href="#"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Data validation</a>
   <a href="#"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Assessment & reports</a>
   <div style='margin:26px; padding:20px; background-color:#fff; border:1px solid #ccc; border-radius:8px;font:normal 16px Arial,sans;text-align:center;box-shadow: 0px 3px 6px 0px #999;'>
-      <img src='res/Diana_Topa.jpg' width='100%' height='100%'
-      style='margin:0;'><div
-      style='margin:0; padding: 16px; background-color:#ddf;color:#000;text-align:center;'>
+      <img src='res/Diana_Topa.jpg' width='100%' height='100%'>
+      <div style='margin:0; padding: 16px; background-color:#ddf;color:#000;text-align:center;'>
       <big><b>Diana Topa</b></big><br>
       Dr. Phil., MBA
       </div>
@@ -275,8 +275,8 @@ td {
 
 <script>
 function id(x) { return document.getElementById(x); }
-function openNav() { id("mySidenav").style.width = "0"; }
-function closeNav() { id("mySidenav").style.width = "-306px"; }
+function openNav() { id("mySidenav").style.left = "0"; }
+function closeNav() { id("mySidenav").style.left = "-306px"; }
 
 function createSwitch(anch, isChecked, cllBack) {
     let L = document.createElement('label'),

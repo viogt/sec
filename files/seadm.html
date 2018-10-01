@@ -263,11 +263,36 @@ td {
     </span>
 </div>
 
-<div id='main' class="main"></div>
+<div id='main' class="main"><div>
+<h2><i class="fa fa-address-card"></i> About S.E.A.D.</h2>
 
+SEAD stand to <a href='#'>Evaluation and Diagnosis System</a>. The tool aims to do the following. SEAD stand to Evaluation and Diagnosis System. The tool aims to do the following.
+
+<h2><i class="fa fa-calendar-check-o"></i> Problematics addressed</h2>
+
+SEAD is techniques to... Since the clinical psychological science has developed evaluation techniques, it is the time to offer technological solutions as assessment tools. Since the clinical psychological science has developed evaluation techniques, it is the time to offer technological solutions as assessment tools.
+
+<h2><i class="fa fa-binoculars"></i> Solution and toolset</h2>
+
+By means of two basic questionnaires, which yield three forms of psychiatric assessment, SEAD is a toolset for… The two questionnaires (for organic and specific symptoms)... Here is the description of the <a href='#'>working model</a>.
+
+<h2><i class="fa fa-check-circle"></i> Data validation</h2>
+
+From the psychological [clinical] standpoint, data and procedures validation was granted by the … in 2005. From the form-completing standpoint, the answers (data) are validated through <a href='#'>cross-examination</a> of relevant and check-supporting questions, in order to ensure data integrity, fortuitous error proofing and cheating protection.
+
+<h2><i class="fa fa-cogs"></i> Further project</h2>
+
+The range and area ought to be extended over… <a href='#'>databases</a> and facilities. Furthermore, Although the targets being diagnosed are not related to..., there is however a cultural dependency when it comes to questions, the way they are phrased, perceived and answered. The model extension would also include the EU correlation databases on the available records...
+
+<h2><i class="fa fa-address-book"></i> About the author</h2>
+
+Diana Topa is Dr. Phil. since 200X and MBA since 200Y. She had an extensive clinical practice in the Clinic of CH-MD... Here is the <a href='#'>curriculum vitae</a> (résumé) and the <a href='#'>accreditation list</a> of Diana Topa.
+        
+    </div>
+</div>
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="#"><i class="fa fa-address-card"></i>&nbsp;&nbsp;About S.E.A.D.</a>
+  <a href="javascript:void(0)" onclick='setContent();closeNav();'><i class="fa fa-address-card"></i>&nbsp;&nbsp;About S.E.A.D.</a>
   <a href="#"><i class="fa fa-calendar-check-o"></i>&nbsp;&nbsp;Problem and solution</a>
   <a href="#"><i class="fa fa-binoculars"></i>&nbsp;&nbsp;Questionnaires</a>
   <a href="#"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Data validation</a>
@@ -281,7 +306,7 @@ td {
       <div style='margin-top:16px; padding-left:10px; text-align:left;'>
       <i class="fa fa-edit"></i> Specialisation:<br>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clinical evaluation<br>
-      <i class="fa fa-envelope-o"></i> diana.topa@gmail.com</div>
+      <i class="fa fa-envelope-o"></i> <span style='color:blue;text-decoration:underline'>diana.topa@gmail.com</span></div>
   </div>
   <a href="#"><i class="fa fa-address-card"></i>&nbsp;&nbsp;CV & accreditations</a>
   <a href="#"><i class="fa fa-calendar-check-o"></i>&nbsp;&nbsp;Organic syndroms</a>
@@ -309,16 +334,6 @@ function createSwitch(anch, isChecked, cllBack) {
     L.appendChild(I); L.appendChild(S); anch.appendChild(L);
 }
 
-const culori = [ '#a5d6a7', '#e8f5e9', '#ffffff', '#fffde7', '#ffe0b2', '#ffb74d'];
-function sliderColors() { this.style.backgroundColor = culori[this.value-1]; }
-
-function createSlider(anch, vl) {
-    let R = document.createElement('input');
-    R.type = 'range'; R.className = 'slider'; R.min = 1; R.max = 6;
-    R.value = vl; R.style.backgroundColor = culori[vl-1];
-    R.oninput = sliderColors; anch.appendChild(R);
-}
-
 function createDrop(anch) {
     let a = document.createElement('a');
     a.className = 'dropbtn';
@@ -327,14 +342,13 @@ function createDrop(anch) {
     anch.appendChild(a);
 }
 
-var insTip = -1, tables;
+var insTip = -1, tables, basicContent;
 
 function createTable(anch, tip) {
     let T = document.createElement('table'),
         B = document.createElement('tbody'),
         R = document.createElement('div'),
         H2 = document.createElement('h2'),
-        culLen = culori.length-1,
         tbl = tables[tip].data, rws = tbl.length;
     for(let i=1; i<rws; i++) {
         let R = document.createElement('tr');
@@ -347,7 +361,7 @@ function createTable(anch, tip) {
         B.appendChild(R);
     }
     T.appendChild(B); insTip = tip;
-    if(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
+    while(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
 }
 
 function randomData() {
@@ -381,6 +395,8 @@ function trageTot() {
 	    if(!event.target.matches('.dropbtn') && SCALE.classList.contains('show'))
 	    SCALE.classList.remove('show');
 	};
+
+	basicContent = id('main').firstChild.innerHTML;
 }
 
 const SCALE = document.getElementById('scale'), SCABTN = null;
@@ -485,6 +501,12 @@ function trePrep() {
         var chart = new google.visualization.Gauge(id('sChart').rows[2].cells[0]);
         chart.draw(data, options);
     }
+}
+
+function setContent() {
+    let anch = id('main'), d = document.createElement('div');
+    d.innerHTML = basicContent;
+    while(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(d);
 }
 
 </script>

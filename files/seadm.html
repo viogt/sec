@@ -47,10 +47,9 @@ body {margin:0;}
     overflow-x: hidden;
     overflow-y: auto;
     transition: left 0.4s;
-    padding-top: 60px;
+    padding-top: 80px;
     border-right:1px solid #dde;
     box-shadow: 2px 0px 8px #888;
-
 }
 
 .sidenav a {
@@ -310,7 +309,7 @@ Diana Topa is Dr. Phil. since 200X and MBA since 200Y. She had an extensive clin
   <a href="#"><i class="fa fa-address-card"></i>&nbsp;&nbsp;CV & accreditations</a>
   <a href="#"><i class="fa fa-calendar-check-o"></i>&nbsp;&nbsp;Organic syndroms</a>
   <a href="#"><i class="fa fa-binoculars"></i>&nbsp;&nbsp;Specific syndroms</a>
-  <a href="#"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Problematics</a>
+  <a href="javascript:void(0)" onclick='screenWidth()'><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Problematics</a>
   <br><br><hr><br>
 </div>
 
@@ -506,6 +505,11 @@ function setContent() {
     let anch = id('main'), d = document.createElement('div');
     d.innerHTML = basicContent;
     while(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(d);
+}
+	
+function screenWidth() {
+	var scrW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	alert('Screen width: ' + scrW + 'px');
 }
 
 </script>

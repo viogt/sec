@@ -16,7 +16,7 @@ body {margin:0;}
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
     box-shadow: 0px 2px 6px #668;
 }
 
@@ -380,9 +380,6 @@ function trageTot() {
 	window.onclick = function(event) {
 	    if(!event.target.matches('.dropbtn') && SCALE.classList.contains('show'))
 	    SCALE.classList.remove('show');
-	};
-	window.onscroll = function() {
-	   if(SCALE.classList.contains('show')) SCALE.classList.remove('show');
 	};
 }
 

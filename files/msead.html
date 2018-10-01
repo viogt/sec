@@ -13,7 +13,7 @@
     top: 0;
     width: inherit;
     z-index: 2;
-    box-shadow: 0px 2px 6px #668;
+    /*box-shadow: 0px 2px 6px #668;*/
 }
 
 .navbar a {
@@ -21,13 +21,17 @@
     display: block;
     color: #eef;
     text-align: center;
-    padding: 18px 18px;
+    padding: 12px 8px;
     text-decoration: none;
 }
 
-.navbar a:hover {
+/*.navbar a:hover {
     background: #226;
     color: #fff;
+}*/
+.main {
+  margin-top: 72px;
+  color:#000;
 }
 .fxBtn { width: 120px; }
     </style>
@@ -53,16 +57,15 @@
 </nav>
 </div> -->
 
-<div class="navbar">
+<div class="navbar teal z-depth-2">
 <a href="javascript:void()" onClick='openLeft()'><i class="material-icons">menu</i></a>
 <a href="javascript:testTable(0)">Organic</a>
 <a href="javascript:testTable(1)">Specific</a>
-<a href="javascript:void()">About</a>
 <a href="javascript:void()"><i class="material-icons">insert_chart</i></a>
 <a href="javascript:randomise()"><i class="material-icons">equalizer</i>
 </div>
 
-<div id='main' style='margin-top:72px'></div>
+<div id='main' class='main'></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>

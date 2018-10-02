@@ -331,7 +331,7 @@ Diana Topa is Dr. Phil. since 200X and MBA since 200Y. She had an extensive clin
 </div>
 
 <div class='bullet' onclick='openNav()'><i style='margin-top:10px' class="fa fa-info"></i></div>
-<div id='toast' class='pregToast'>Loading...</div>
+<div id='pregToast' class='pregToast'>Loading...</div>
 
 <script>
 function id(x) { return document.getElementById(x); }
@@ -523,7 +523,7 @@ function setContent() {
     while(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(d);
 }
 function toggleToast(ms) {
-	let T = document.getElementById('toast').style;
+	let T = document.getElementById('pregToast').style;
 	T.right = (T.right.charAt(0) == '2')?'-140px':'20px';
 	if(ms) setTimeout(toggleToast,ms);
 }	

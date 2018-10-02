@@ -397,6 +397,7 @@ function trageTot() {
 	let el = document.createElement('script');
 	preToggleToast(1500);
 	el.onload = function() {
+		//preToggleToast(0);
 	    tables = DATA;
 	};
 	el.setAttribute('type', 'text/javascript');
@@ -525,7 +526,7 @@ function setContent() {
 function preToggleToast(ms) {
 	let T = document.getElementById('pregToast').style;
 	T.right = (T.right.charAt(0) == '2')?'-140px':'20px';
-	if(ms) setTimeout( function() { preToggleToast(); }, ms);
+	if(ms) setTimeout( function() { preToggleToast(0); }, ms);
 }	
 function screenWidth() {
 	var scrW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;

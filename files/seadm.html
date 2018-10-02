@@ -395,7 +395,7 @@ function randomData() {
 
 function trageTot() {
 	let el = document.createElement('script');
-	toggleToast(1500);
+	preToggleToast(1500);
 	el.onload = function() {
 	    tables = DATA;
 	};
@@ -443,7 +443,7 @@ function randResults() {
 
 function charts() {
     let R, D, T = document.createElement('table'), anch = id('main'), S = T.style;
-toggleToast(1500);
+preToggleToast(1500);
     S.width = '100%'; S.height = '100%';
     if(anch.firstChild) anch.removeChild(anch.firstChild); insTip = -1;
 
@@ -522,7 +522,7 @@ function setContent() {
     d.innerHTML = basicContent;
     while(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(d);
 }
-function toggleToast(ms) {
+function preToggleToast(ms) {
 	let T = document.getElementById('pregToast').style;
 	T.right = (T.right.charAt(0) == '2')?'-140px':'20px';
 	if(ms) setTimeout(toggleToast,ms);

@@ -244,6 +244,19 @@ td {
     border: thin solid lightgrey;
     padding: 10px;
 }
+.toast {
+    width: 100px;
+    font: normal 16px Arial, sans;
+    padding: 12px 16px;
+    position: absolute;
+    right: -140px;
+    top: 40px;
+    text-align: center;
+    background-color: rgb(0,0,0,0.7);
+    color: #fff;
+    z-index: 3;
+    transition: right 0.4s;
+}
 </style>
 </head>
 
@@ -318,6 +331,7 @@ Diana Topa is Dr. Phil. since 200X and MBA since 200Y. She had an extensive clin
 </div>
 
 <div class='bullet' onclick='openNav()'><i style='margin-top:10px' class="fa fa-info"></i></div>
+<div id='toast' class='toast'>Loading...</div>
 
 <script>
 function id(x) { return document.getElementById(x); }
@@ -381,6 +395,7 @@ function randomData() {
 
 function trageTot() {
 	let el = document.createElement('script');
+	toggleToast(1500);
 	el.onload = function() {
 	    tables = DATA;
 	};
@@ -428,6 +443,7 @@ function randResults() {
 
 function charts() {
     let R, D, T = document.createElement('table'), anch = id('main'), S = T.style;
+toggleToast(1500);
     S.width = '100%'; S.height = '100%';
     if(anch.firstChild) anch.removeChild(anch.firstChild); insTip = -1;
 
@@ -506,7 +522,11 @@ function setContent() {
     d.innerHTML = basicContent;
     while(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(d);
 }
-	
+function toggleToast(ms) {
+	let T = document.getElementById('toast').style;
+	T.right = (T.right.charAt(0) == '2')?'-140px':'20px';
+	if(ms) setTimeout(toggleToast,ms);
+}	
 function screenWidth() {
 	var scrW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 	alert('Screen width: ' + scrW + 'px');

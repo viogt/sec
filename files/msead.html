@@ -62,18 +62,57 @@
 <a href="javascript:testTable(0)">Organic</a>
 <a href="javascript:testTable(1)">Specific</a>
 <a href="javascript:void()"><i class="material-icons">insert_chart</i></a>
-<a href="javascript:randomise()"><i class="material-icons">equalizer</i>
+<a href="javascript:randomise()"><i class="material-icons">equalizer</i></a>
 </div>
 
-<div id='main' class='main'></div>
+<div id='main' class='main'><div><ul class="collapsible">
+        <li class="active">
+            <div class="collapsible-header"><i class="material-icons">search</i>About SEAD</div>
+            <div class="collapsible-body">
+                SEAD stand to <a href='#'>Evaluation and Diagnosis System</a>. The tool aims to do the following. SEAD stand to Evaluation and Diagnosis System. The tool aims to do the following.
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">access_alarm</i>Problematics addressed</div>
+            <div class="collapsible-body">
+                SEAD is techniques to... Since the clinical psychological science has developed evaluation techniques, it is the time to offer technological solutions as assessment tools. Since the clinical psychological science has developed evaluation techniques, it is the time to offer technological solutions as assessment tools.
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">network_check</i>Solution and toolset</div>
+            <div class="collapsible-body">
+                By means of two basic questionnaires, which yield three forms of psychiatric assessment, SEAD is a toolset for… The two questionnaires (for organic and specific symptoms)... Here is the description of the <a href='#'>working model</a>.
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">playlist_add_check</i>Data validation</div>
+            <div class="collapsible-body">
+                From the psychological [clinical] standpoint, data and procedures validation was granted by the … in 2005. From the form-completing standpoint, the answers (data) are validated through <a href='#'>cross-examination</a> of relevant and check-supporting questions, in order to ensure data integrity, fortuitous error proofing and cheating protection.
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">build</i>Further project</div>
+            <div class="collapsible-body">
+                The range and area ought to be extended over… <a href='#'>databases</a> and facilities. Furthermore, Although the targets being diagnosed are not related to..., there is however a cultural dependency when it comes to questions, the way they are phrased, perceived and answered. The model extension would also include the EU correlation databases on the available records...
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">person</i>About the author</div>
+            <div class="collapsible-body">
+                Diana Topa is Dr. Phil. since 200X and MBA since 200Y. She had an extensive clinical practice in the Clinic of CH-MD... Here is the <a href='#'>curriculum vitae</a> (résumé) and the <a href='#'>accreditation list</a> of Diana Topaclass=""
+            </div>
+        </li>
+</ul></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
     
-    //M.AutoInit();
+    M.AutoInit();
     var elems, instances;
+    //elems = document.querySelectorAll('.collapsible');
+    //instances = M.Collapsible.init(elems, options);
     /*try {
     elems = document.querySelectorAll('.dropdown-trigger');
     instances = new M.Dropdown.init(elems, { closeOnClick: true });

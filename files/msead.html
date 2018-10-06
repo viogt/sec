@@ -99,7 +99,7 @@
 <a href="javascript:void()" onClick='openNav()'><i class="material-icons">menu</i></a>
 <a href="javascript:testTable(0)">Organic</a>
 <a href="javascript:testTable(1)">Specific</a>
-<a href="javascript:void()"><i class="material-icons">insert_chart</i></a>
+<a href="javascript:void()" onclick='createCharts()'><i class="material-icons">insert_chart</i></a>
 <a href="javascript:randomise()"><i class="material-icons">equalizer</i></a>
 </div>
 
@@ -202,12 +202,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     M.AutoInit();
-    //var elems = document.querySelectorAll('.fixed-action-btn');
-    //var instances = M.FloatingActionButton.init(elems, options);
-    //var elems, instances;
-    //elems = document.querySelectorAll('.collapsible');
-    //instances = M.Collapsible.init(elems, options);
-    /*try {
+    /*var elems = document.querySelectorAll('.fixed-action-btn');
+    var instances = M.FloatingActionButton.init(elems, options);
+    var elems, instances;
+    elems = document.querySelectorAll('.collapsible');
+    instances = M.Collapsible.init(elems, options);
+    try {
     elems = document.querySelectorAll('.dropdown-trigger');
     instances = new M.Dropdown.init(elems, { closeOnClick: true });
     } catch(e) { alert(e.message); }*/
@@ -351,6 +351,95 @@ function trageTot() {
 function testTable(tip) {
     //let a = id('main');
     createTable(id('main'), tip);
+}
+
+/* -------------------- Charts ------------------------------ */
+
+const DT = {
+  labels: ["Agresiv","Labil","Anxietate","Perseverari"],
+  data: [88,43,31,9],
+  title: "Organic Pesonality's Type",
+  isChartLoaded: false
+};
+
+function randomChartData() { for(let d in DT.data) DT.data[d] = Math.round(Math.random()*100); }
+
+function createCharts() {
+    let D = document.createElement('div'),
+        c1= document.createElement('canvas'),
+        c2= document.createElement('canvas'),
+        anch = id('main');
+    c1.width="undefined"; c1.height="undefined"; c1.id='bars';
+    c2.width="undefined"; c2.height="undefined"; c2.id='douhnuts';
+    D.style.height = '400px';
+    if(anch.firstChild) anch.removeChild(anch.firstChild);
+    insTip = -1;
+    D.appendChild(c1); D.appendChild(c2); anch.appendChild(D);
+    randomChartData();
+    if(DT.isChartLoaded) { makeBars(c1); makeDouhnuts(c2); }
+    else {
+        let el = document.createElement('script');
+        el.onload = function() { isChartLoaded = true; makeBars(c1); makeDouhnuts(c2); };
+        el.setAttribute('type', 'text/javascript');
+        el.setAttribute('async', true);
+        el.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js');
+        document.body.appendChild(el);
+    }
+}
+
+function makeBars(wh) {
+const Ch2 = new Chart(wh.getContext('2d'), {
+    "type":"bar",
+    "data": {
+        "labels": DT.labels,
+        "datasets":[
+            {"label": DT.title,
+            "data": DT.data,
+            "fill":false,
+            "backgroundColor":[
+                "rgba(255, 0, 0, 0.5)",
+                "rgba(255, 255, 0, 0.5)",
+                "rgba(0, 0, 255, 0.5)",
+                "rgba(0, 255, 0, 0.5)"
+            ],
+            "borderColor":[
+                "rgb(255, 0, 0)",
+                "rgb(255, 255, 0)",
+                "rgb(0, 0, 255)",
+                "rgb(0, 255, 0)"
+            ],
+            "borderWidth":1
+            }]
+    },
+    "options":{
+        "scales":{
+            "yAxes":[
+                { "ticks":{ "beginAtZero":true } }
+            ]
+        }
+    }
+});
+}
+
+function makeDouhnuts(wh) {
+const Chat2 = new Chart(wh.getContext('2d'), {
+    "type":"doughnut",
+    "data":{
+        "labels": DT.labels,
+        "datasets":[
+            {
+                "label": DT.title,
+                "data": DT.data,
+                "backgroundColor":[
+                "rgb(255, 0, 0)",
+                "rgb(255, 255, 0)",
+                "rgb(0, 0, 255)",
+                "rgb(0, 255, 0)"
+            ]
+            }
+        ]
+    }
+});
 }
 </script>
 </body>

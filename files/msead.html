@@ -72,8 +72,46 @@
   color:#000;
 }
 .fxBtn { width: 120px; }
-    </style>
-    </head>
+
+/*--------------------------------- DROP BTN --------------------------*/
+.dropbtn {
+    background-color: #bbc;
+    color: #fff;
+    padding: 14px 0px;
+    font: normal 16px Arial, sans;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    width:65px;
+    margin:0;
+    text-align:center;
+    box-shadow: 0px 3px 6px 0px #999;
+}
+.dropdown-content {
+    position: absolute;
+    overflow-x: hidden;
+    white-space: nowrap;
+    box-shadow: 0px 3px 6px 0px #999;
+    z-index: 1;
+    top:0; left:0;
+    width: 0px;
+    transition: width 0.4s;
+}
+.dropdown-content a {
+    color: #fff;
+    padding: 14px 0px;
+    font: normal 16px Arial, sans;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    width:65px;
+    margin:0;
+    text-align:center;
+}
+
+</style>
+</head>
 
 <body class='container'>
 
@@ -191,10 +229,15 @@
   <ul>
     <li><a href='javascript:void()' class="btn-floating red" onclick='createCharts()'><i class="material-icons">insert_chart</i></a></li>
     <li><a href='javascript:void()' class="btn-floating yellow darken-1" onclick='reInstate()'><i class="material-icons">format_quote</i></a></li>
-    <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+    <li><a href='javascript:void()' class="btn-floating green" onclick='tableDrop()'><i class="material-icons">publish</i></a></li>
     <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
   </ul>
 </div>
+
+<div id="scale" class="dropdown-content">
+<a href='javascript:void()' onClick='answer(this)' style='background-color:#26a69a'>F. rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#80cbc4'>Rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#cddc39'>Mediu</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#ffa726'>Des</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#e65100'>F. des</a>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
@@ -453,6 +496,45 @@ function reInstate() {
     anch.appendChild(mainContent);
     const elems = document.querySelectorAll('.collapsible');
     const instances = M.Collapsible.init(elems, {accordion: true});
+}
+
+const SCALE = document.getElementById('scale'), SCABTN = null;
+
+function createDrop(anch) {
+    let a = document.createElement('a');
+    a.className = 'dropbtn';
+    a.onclick = unfold;
+    a.innerText = 'N/A';
+    anch.appendChild(a);
+}
+
+function tableDrop() { //----------------------- drop ----------
+    let T = document.createElement('table'),
+        B = document.createElement('tbody'),
+        anch = id('main'),
+        tbl = tables[1].data, rws = tbl.length;
+    for(let i=1; i<rws; i++) {
+        let R = document.createElement('tr');
+        let c0 = document.createElement('td'), c1 = document.createElement('td');
+        createDrop(c0); c1.innerText = tbl[i][1];
+        R.appendChild(c0); R.appendChild(c1);
+        B.appendChild(R);
+    }
+    T.appendChild(B); insTip = 2;
+    if(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
+}
+function unfold() {
+	let el = event.target, rct = el.getBoundingClientRect();
+    if(SCALE.style.width == '325px') SCALE.style.width = '0';
+    SCALE.style.top = (rct.top + window.scrollY) + 'px';
+    SCALE.style.left = rct.left + 'px';
+    SCALE.style.width = '325px';
+    SCLBTN = el;
+}
+
+function answer(ob) {
+	SCLBTN.innerText = ob.innerText;
+    SCLBTN.style.backgroundColor = ob.style.backgroundColor;
 }
 </script>
 </body>

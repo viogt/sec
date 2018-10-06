@@ -524,12 +524,15 @@ function tableDrop() { //----------------------- drop ----------
     if(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
 }
 function unfold() {
+try {
+alert('am ajuns');
 	let el = event.target, rct = el.getBoundingClientRect();
     if(SCALE.style.width == '325px') SCALE.style.width = '0';
     SCALE.style.top = (rct.top + window.scrollY) + 'px';
     SCALE.style.left = rct.left + 'px';
     SCALE.style.width = '325px';
     SCLBTN = el;
+} catch(e) { alert(e.message); }
 }
 
 function answer(ob) {

@@ -74,7 +74,7 @@
 .fxBtn { width: 120px; }
 
 /*--------------------------------- DROP BTN --------------------------*/
-.dropbtn {
+.dropBtn {
     background-color: #bbc;
     color: #fff;
     padding: 14px 0px;
@@ -88,7 +88,7 @@
     text-align:center;
     box-shadow: 0px 3px 6px 0px #999;
 }
-.dropdown-content {
+.dropDwn-content {
     position: absolute;
     overflow-x: hidden;
     white-space: nowrap;
@@ -98,7 +98,7 @@
     width: 0px;
     transition: width 0.4s;
 }
-.dropdown-content a {
+.dropDwn-content a {
     color: #fff;
     padding: 14px 0px;
     font: normal 16px Arial, sans;
@@ -234,7 +234,7 @@
   </ul>
 </div>
 
-<div id="scale" class="dropdown-content">
+<div id="scale" class="dropDwn-content">
 <a href='javascript:void()' onClick='answer(this)' style='background-color:#26a69a'>F. rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#80cbc4'>Rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#cddc39'>Mediu</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#ffa726'>Des</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#e65100'>F. des</a>
 </div>
 
@@ -502,7 +502,7 @@ const SCALE = document.getElementById('scale'), SCABTN = null;
 
 function createDrop(anch) {
     let a = document.createElement('a');
-    a.className = 'dropbtn';
+    a.className = 'dropBtn';
     a.onclick = unfold;
     a.innerText = 'N/A';
     anch.appendChild(a);

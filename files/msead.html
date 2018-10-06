@@ -189,8 +189,8 @@
     <i class="large material-icons">menu</i>
   </a>
   <ul>
-    <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-    <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+    <li><a href='javascript:void()' class="btn-floating red" onclick='createCharts()'><i class="material-icons">insert_chart</i></a></li>
+    <li><a href='javascript:void()' class="btn-floating yellow darken-1" onclick='reInstate()'><i class="material-icons">format_quote</i></a></li>
     <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
     <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
   </ul>
@@ -448,7 +448,7 @@ const Chat2 = new Chart(wh.getContext('2d'), {
 }
 
 function reInstate() {
-    const anch = id('main');
+    const anch = id('main'); insTip = -1;
     while(anch.firstChild) anch.removeChild(anch.firstChild);
     anch.appendChild(mainContent);
     const elems = document.querySelectorAll('.collapsible');

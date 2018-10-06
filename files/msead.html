@@ -162,7 +162,7 @@
   </div>
 <table style='margin-left:16px;'>
     <tr><td><i class="material-icons">search</i></td><td>
-        <a href="javascript:void(0)" onclick='setContent();closeNav();'>About S.E.A.D.</a>
+        <a href="javascript:void(0)" onclick='reInstate();closeNav();'>About S.E.A.D.</a>
     </td></tr>
     <tr><td><i class="material-icons">access_alarm</i></td><td>
         <a href="#">Problem and solution</a>
@@ -198,6 +198,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
+
+var mainContent = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -266,6 +268,7 @@ function selInput(rw, td) {
 }
 
 function randomise() {
+    if(insTip<0) return;
     let T = id('main').firstChild, R = T.rows, L = R.length;
     let optL = selOps.length-1;
     
@@ -346,6 +349,8 @@ function trageTot() {
     fetch('res/tables.json').then(response => { return response.json(); })
     .then(data => { tables = data; showToast('Data loaded'); })
     .catch(err => { alert('Error: ' + err.message); });
+    
+    mainContent=id("main").firstChild.cloneNode(true);
 }
 
 function testTable(tip) {
@@ -440,6 +445,14 @@ const Chat2 = new Chart(wh.getContext('2d'), {
         ]
     }
 });
+}
+
+function reInstate() {
+    const anch = id('main');
+    while(anch.firstChild) anch.removeChild(anch.firstChild);
+    anch.appendChild(mainContent);
+    const elems = document.querySelectorAll('.collapsible');
+    const instances = M.Collapsible.init(elems, {accordion: true});
 }
 </script>
 </body>

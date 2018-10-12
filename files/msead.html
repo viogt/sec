@@ -74,40 +74,45 @@
 .fxBtn { width: 120px; }
 
 /*--------------------------------- DROP BTN --------------------------*/
-.dropBtn {
+.dropbtn {
     background-color: #bbc;
     color: #fff;
-    padding: 14px 0px;
-    font: normal 16px Arial, sans;
+    padding: 0;
+    font: normal 15px Arial, sans;
     border: none;
-    text-decoration: none;
     display: inline-block;
     cursor: pointer;
     width:65px;
+    height:65px;
+    border-radius:50%;
+    box-shadow: 0px 2px 4px 0px #888;
     margin:0;
-    text-align:center;
-    box-shadow: 0px 3px 6px 0px #999;
+    outline:none;
 }
-.dropDwn-content {
+.dropdown-content {
     position: absolute;
     overflow-x: hidden;
+    height:71px;
     white-space: nowrap;
-    box-shadow: 0px 3px 6px 0px #999;
     z-index: 1;
     top:0; left:0;
     width: 0px;
     transition: width 0.4s;
 }
-.dropDwn-content a {
+.dropdown-content button {
     color: #fff;
-    padding: 14px 0px;
-    font: normal 16px Arial, sans;
+    padding: 0;
+    font: normal 15px Arial, sans;
     border: none;
     text-decoration: none;
     display: inline-block;
     width:65px;
+    height:65px;
+    border-radius:50%;
+    box-shadow: 0px 2px 4px 0px #888;
     margin:0;
-    text-align:center;
+    margin-right:3px;
+    outline:none;
 }
 
 </style>
@@ -234,8 +239,8 @@
   </ul>
 </div>
 
-<div id="scale" class="dropDwn-content">
-<a href='javascript:void()' onClick='answer(this)' style='background-color:#26a69a'>F. rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#80cbc4'>Rar</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#cddc39'>Mediu</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#ffa726'>Des</a><a href='javascript:void()' onClick='answer(this)' style='background-color:#e65100'>F. des</a>
+<div id="scale" class="dropdown-content">
+<button onClick='answer(this)' style='background-color:#26a69a'>F. rar</button><button onClick='answer(this)' style='background-color:#80cbc4'>Rar</button><button onClick='answer(this)' style='background-color:#cddc39'>Mediu</button><button onClick='answer(this)' style='background-color:#ffa726'>Des</button><button onClick='answer(this)' style='background-color:#e65100'>F. des</button>
 </div>
 
 
@@ -413,7 +418,7 @@ function trageTot() {
     mainContent=id("main").firstChild.cloneNode(true);
 	
 window.onclick = function(event) {
-        if(!event.target.matches('.dropBtn') && SCALE.style.width == '325px')
+        if(!event.target.matches('.dropBtn') && SCALE.style.width == '340px')
         SCALE.style.width = '0px';
     }
 
@@ -524,11 +529,11 @@ function reInstate() {
 const SCALE = document.getElementById('scale'), SCABTN = null;
 
 function createDrop(anch) {
-    let a = document.createElement('a');
-    a.className = 'dropBtn';
-    a.onclick = unfold;
-    a.innerText = 'N/A';
-    anch.appendChild(a);
+    let b = document.createElement('button');
+    b.className = 'dropBtn';
+    b.onclick = unfold;
+    b.innerText = 'N/A';
+    anch.appendChild(b);
 }
 
 function tableDrop() { //----------------------- drop ----------
@@ -539,7 +544,7 @@ function tableDrop() { //----------------------- drop ----------
     for(let i=1; i<rws; i++) {
         let R = document.createElement('tr');
         let c0 = document.createElement('td'), c1 = document.createElement('td');
-        createDrop(c0); c1.innerText = tbl[i][1];
+        createDrop(c0); c1.innerText = tbl[i][1]; c0.style.padding = '0';
         R.appendChild(c0); R.appendChild(c1);
         B.appendChild(R);
     }
@@ -548,10 +553,10 @@ function tableDrop() { //----------------------- drop ----------
 }
 function unfold() {
 	let el = event.target, rct = el.getBoundingClientRect();
-    if(SCALE.style.width == '325px') SCALE.style.width = '0';
+    if(SCALE.style.width == '340px') SCALE.style.width = '0';
     SCALE.style.top = (rct.top + window.scrollY) + 'px';
     SCALE.style.left = rct.left + 'px';
-    SCALE.style.width = '325px';
+    SCALE.style.width = '340px';
     SCLBTN = el;
 }
 

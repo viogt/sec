@@ -553,7 +553,7 @@ function tableDrop() { //----------------------- drop ----------
 function unfold() {
 try {
 	let el = event.target, rct = el.getBoundingClientRect();
-	alert(SCALE.style.width);
+	alert(SCALE.outerHTML);
     if(SCALE.style.width == '340px') SCALE.style.width = '0';
     SCALE.style.top = (rct.top + window.scrollY) + 'px';
     SCALE.style.left = rct.left + 'px';

@@ -551,6 +551,7 @@ function tableDrop() { //----------------------- drop ----------
     if(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
 }
 function unfold() {
+try {
 	let el = event.target, rct = el.getBoundingClientRect();
 	alert(SCALE.style.width);
     if(SCALE.style.width == '340px') SCALE.style.width = '0';
@@ -558,6 +559,7 @@ function unfold() {
     SCALE.style.left = rct.left + 'px';
     SCALE.style.width = '340px';
     SCLBTN = el;
+} catch(e) { alert(e.message); }
 }
 
 function answer(ob) {

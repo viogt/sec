@@ -239,8 +239,7 @@
   </ul>
 </div>
 
-<div id="scale" class="DrpDwn-content">
-<button onClick='answer(this)' style='background-color:#26a69a'>F. rar</button><button onClick='answer(this)' style='background-color:#80cbc4'>Rar</button><button onClick='answer(this)' style='background-color:#cddc39'>Mediu</button><button onClick='answer(this)' style='background-color:#ffa726'>Des</button><button onClick='answer(this)' style='background-color:#e65100'>F. des</button>
+<div id="scale" class="DrpDwn-content"><button onClick='answer(this)' style='background-color:#26a69a'>F. rar</button><button onClick='answer(this)' style='background-color:#80cbc4'>Rar</button><button onClick='answer(this)' style='background-color:#cddc39'>Mediu</button><button onClick='answer(this)' style='background-color:#ffa726'>Des</button><button onClick='answer(this)' style='background-color:#e65100'>F. des</button>
 </div>
 
 
@@ -544,7 +543,7 @@ function tableDrop() { //----------------------- drop ----------
     for(let i=1; i<rws; i++) {
         let R = document.createElement('tr');
         let c0 = document.createElement('td'), c1 = document.createElement('td');
-        createDrop(c0); c1.innerText = tbl[i][1]; c0.style.padding = '0';
+        createDrop(c0); c1.innerText = tbl[i][1]; //c0.style.padding = '0';
         R.appendChild(c0); R.appendChild(c1);
         B.appendChild(R);
     }

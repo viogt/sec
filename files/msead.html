@@ -95,7 +95,7 @@
     z-index: 1;
     top:0; left:0;
     width: 0px;
-    transition: width 0.4s;
+    /*transition: width 0.4s;*/
 }
 .DrpDwn-content button {
     color: #fff;
@@ -110,6 +110,7 @@
     margin:0;
     margin-right:3px;
     outline:none;
+    display:none;
 }
 
 </style>
@@ -415,9 +416,11 @@ function trageTot() {
 	
 window.onclick = function(event) {
         if(!event.target.matches('.DrpBtn') && SCALE.style.width == '340px')
-        SCALE.style.width = '0px';
-    }
-
+    CHILD_proc = setInterval(()=>{
+    	CHILD_el--;
+        if(CHILD_el == -1) { SCALE.style.width = '0px'; clearInterval(CHILD_proc); }
+        else SCALE.children[CHILD_el].style.display = 'none';
+    }, rateMS);
 }
 
 function testTable(tip) {
@@ -523,6 +526,7 @@ function reInstate() {
 }
 
 const SCALE = document.getElementById('scale'), SCABTN = null;
+var CHILD_el = -1, CHILD_proc, rateMS = 30;
 
 function createDrop(anch) {
     let b = document.createElement('button');
@@ -547,13 +551,23 @@ function tableDrop() { //----------------------- drop ----------
     T.appendChild(B); insTip = 2;
     if(anch.firstChild) anch.removeChild(anch.firstChild); anch.appendChild(T);
 }
+	
 function unfold() {
 	let el = event.target, rct = el.getBoundingClientRect();
-    if(SCALE.style.width == '340px') SCALE.style.width = '0';
+	if(SCALE.style.width == '340px') {
+    		for(let ch of SCALE.children) ch.style.display = 'none';
+    		CHILD_el = -1;
+    	}
+    
     SCALE.style.top = (rct.top + window.scrollY) + 'px';
     SCALE.style.left = rct.left + 'px';
     SCALE.style.width = '340px';
     SCLBTN = el;
+    CHILD_proc = setInterval(()=>{
+    	CHILD_el++;
+        if(CHILD_el == 5) clearInterval(CHILD_proc);
+        else SCALE.children[CHILD_el].style.display = 'inline';
+    }, rateMS);
 }
 
 function answer(ob) {

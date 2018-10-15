@@ -110,7 +110,7 @@
     margin:0;
     margin-right:3px;
     outline:none;
-    display:none;
+    transition: width 0.2s, height 0.2s;
 }
 
 </style>
@@ -419,7 +419,10 @@ window.onclick = function(event) {
     CHILD_proc = setInterval(()=>{
     	CHILD_el--;
         if(CHILD_el == -1) { SCALE.style.width = '0px'; clearInterval(CHILD_proc); }
-        else SCALE.children[CHILD_el].style.display = 'none';
+        else {
+        	let s = SCALE.children[CHILD_el].style;
+            s.width = '0'; s.height = '0';
+            }
     }, rateMS);
 }
 }
@@ -555,10 +558,12 @@ function tableDrop() { //----------------------- drop ----------
 	
 function unfold() {
 	let el = event.target, rct = el.getBoundingClientRect();
-	if(SCALE.style.width == '340px') {
-    		for(let ch of SCALE.children) ch.style.display = 'none';
-    		CHILD_el = -1;
-    	}    
+    
+    if(SCALE.style.width == '340px') {
+    	for(let ch of SCALE.children) { ch.style.width = '0'; ch.style.height='0';}
+    CHILD_el = -1;
+    }
+    
     SCALE.style.top = (rct.top + window.scrollY) + 'px';
     SCALE.style.left = rct.left + 'px';
     SCALE.style.width = '340px';
@@ -566,7 +571,10 @@ function unfold() {
     CHILD_proc = setInterval(()=>{
     	CHILD_el++;
         if(CHILD_el == 5) clearInterval(CHILD_proc);
-        else SCALE.children[CHILD_el].style.display = 'inline';
+        else {
+        	let s = SCALE.children[CHILD_el].style;
+            s.width = '65px'; s.height = '65px';
+        }
     }, rateMS);
 }
 

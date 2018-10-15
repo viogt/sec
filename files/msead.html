@@ -422,6 +422,7 @@ window.onclick = function(event) {
         else SCALE.children[CHILD_el].style.display = 'none';
     }, rateMS);
 }
+}
 
 function testTable(tip) {
     //let a = id('main');
@@ -557,8 +558,7 @@ function unfold() {
 	if(SCALE.style.width == '340px') {
     		for(let ch of SCALE.children) ch.style.display = 'none';
     		CHILD_el = -1;
-    	}
-    
+    	}    
     SCALE.style.top = (rct.top + window.scrollY) + 'px';
     SCALE.style.left = rct.left + 'px';
     SCALE.style.width = '340px';

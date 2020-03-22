@@ -69,7 +69,8 @@
 
 const URLs = [
     'eng/Aggr2.txt',
-    'eng/Aggr3.txt'
+    'eng/Aggr3.txt',
+    'eng/Aggr4.txt'  
     ],
     CNTs = [URLs.length];
 
@@ -93,8 +94,7 @@ function findWord(wrd) {
     for(let i in CNTs) {
         var Res, Rx = new RegExp(wrd,'gi');
         while (Res = Rx.exec(CNTs[i])) {
-            //alert(Res.index);
-            log.innerText += (`${Res[0]} at ${Res.index} in ${URLs[i]};\n`);
+            //log.innerText += (`${Res[0]} at ${Res.index} in ${URLs[i]};\n`);
             let x1 = Res.index, x2 = x1+2;
             while(x1>=0 && CNTs[i].charAt(x1) != '\n') x1--; x1++;
             while(CNTs[i].charAt(x2) != '\n') x2++; x2--;

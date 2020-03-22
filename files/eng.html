@@ -90,7 +90,7 @@ function logSelection(event) {
     //textarea.addEventListener("select", logSelection);
 
 function findWord(wrd) {
-    var Found = false;
+    var buf = '';
     log.innerText = '';
     for(let i in CNTs) {
         var Res, Rx = new RegExp(wrd,'gi');
@@ -99,11 +99,10 @@ function findWord(wrd) {
             let x1 = Res.index, x2 = x1+2;
             while(x1>=0 && CNTs[i].charAt(x1) != '\n') x1--; x1++;
             while(CNTs[i].charAt(x2) != '\n') x2++; x2--;
-            log.innerText += CNTs[i].substr(x1, x2-x1+1) + "\n\n";
-            Found = true;
+            buf += CNTs[i].substr(x1, x2-x1+1) + "\n\n";
         }
     }
-    if(!Found) log.innerText = "<no occurence found>";
+    log.innerText = (buf==''?"<no occurence found>":buf;
 }
 
 function seePattern(st) {

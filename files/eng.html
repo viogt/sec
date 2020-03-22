@@ -52,13 +52,13 @@
 <table class="tbl">
     <tr>
         <td width="65%">
-            <textarea id="txt" contentEditable>This is a paragraph. Click the button to make me editable.</textarea>            
+            <textarea id="txt" placeholder="Write here..."></textarea>            
         </td>
         <td id="rPanel" style="width:35%; color: #222; background-color: #eee;">
             <div id="panel" style="background-color: red;">
             <input type="checkbox" id="lookUp"> LookUp,
             Theme: <a href="#" onclick="theme(this)" title="Theme">Dark</a><br>
-            <input type="text" id="pattern" placeholder="Pattern here..." onchange="seePattern(this.value)">
+            <input type="text" id="pattern" placeholder="Pattern here..." onchange="seePattern(this)">
             </div>
             <div id="log"></div>
         </td>
@@ -70,8 +70,9 @@
 const URLs = [
     'eng/Aggr2.txt',
     'eng/Aggr3.txt',
-    'eng/Aggr4.txt'  
-    ],
+    'eng/Aggr4.txt',
+    'eng/Aggr1.txt'
+],
     CNTs = [URLs.length];
 
   const log = document.getElementById('log'),
@@ -106,8 +107,11 @@ function findWord(wrd) {
 }
 
 function seePattern(st) {
-    if(st.trim() == '') return;
-    findWord(st);
+    let x = st.value.trim();
+    if(x == '') return;
+    st.style.backgroundColor = 'yellow';
+    findWord(x);
+    setTimeout(function() { st.style.backgroundColor = ''; }, 300);
 }
 
 function theme(o) {
@@ -151,7 +155,7 @@ function seeAllFiles() {
 }
 
 function verify(){
-    for(let i in CNTs) if(typeof CNTs[i] == 'undefined') {
+    for(let i in CNTs) if(typeof CNTs[i] == 'undefined' || CNTs[i]=='') {
         setTimeout(verify, 1000);
         return;
     }

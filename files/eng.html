@@ -56,7 +56,7 @@
         </td>
         <td id="rPanel" style="width:35%; color: #222; background-color: #eee;">
             <div id="panel" style="background-color: red;">
-            <input type="checkbox" id="lookUp"> LookUp,
+            <input type="checkbox" checked id="lookUp"> Word,
             Theme: <a href="#" onclick="theme(this)" title="Theme">Dark</a><br>
             <input type="text" id="pattern" placeholder="Pattern here..." onchange="seePattern(this)">
             </div>
@@ -83,13 +83,20 @@ function logSelection(event) {
   /*log.innerText = window.getSelection().toString();
   const selection = event.target.value.substring(event.target.selectionStart, event.target.selectionEnd);
   log.innerText = `You selected: ${selection}`;*/
-  if(lookUp.checked) findWord( window.getSelection().toString() );
+  findWord( window.getSelection().toString() );
 }
 
     textarea.onselect = logSelection;
     //textarea.addEventListener("select", logSelection);
 
 function findWord(wrd) {
+    var buf='', Rx = new RegExp("^.*" + wrd + ".*$",'gim'), arr;
+    for(let i in CNTs)
+        if(arr = CNTs[i].match(Rx)) buf += arr.join("\n\n") + "\n\n";
+    log.innerText = buf?buf:"<no occurence found>";
+}
+
+/*function findWord(wrd) {
     var buf = '';
     log.innerText = '';
     for(let i in CNTs) {
@@ -104,12 +111,12 @@ function findWord(wrd) {
     }
     log.innerText = buf==''?"<no occurence found>":buf;
 }
-
+*/
 function seePattern(st) {
     let x = st.value.trim();
     if(x == '') return;
     st.style.backgroundColor = 'yellow';
-    findWord(x);
+    findWord(lookUp.checked ? "\\b"+x+"\\b" : x);
     setTimeout(function() { st.style.backgroundColor = ''; }, 300);
 }
 
@@ -132,6 +139,11 @@ function theme(o) {
 }
 
 function xhrFile(ix) {
+    fetch(URLs[ix]).then(res => res.text())
+    .then(txt => CNTs[ix]=txt)
+    .catch(err => log.innerText += err);
+}
+/*function xhrFile(ix) {
     const rq = new XMLHttpRequest();
     rq.open("GET", URLs[ix], true);
     rq.onreadystatechange = ()=>{
@@ -141,7 +153,7 @@ function xhrFile(ix) {
         }
     }
     rq.send(null);
-}
+}*/
 
 function getAllFiles() {
     for(let i in URLs) xhrFile(i);

@@ -58,7 +58,7 @@
             <div id="panel" style="background-color: red;">
             <input type="checkbox" checked id="lookUp"> Word,
             Theme: <a href="#" onclick="theme(this)" title="Theme">Dark</a><br>
-            <input type="text" id="pattern" placeholder="Pattern here..." onchange="seePattern(this)">
+            <input type="text" id="pattern" placeholder="Use ? for one letter, * - for many" onchange="seePattern(this)">
             </div>
             <div id="log"></div>
         </td>
@@ -114,10 +114,10 @@ function findWord(wrd) {
 }
 */
 function seePattern(st) {
-    let x = st.value.trim();
-    if(x == '') return;
+    let x = st.value.trim(); if(x == '') return;
     st.style.backgroundColor = 'yellow';
-    findWord(lookUp.checked ? "\\b"+x+"\\b" : x);
+    if(lookUp.checked) x="\\b" + x.replace(/\?/g,'\\w').replace(/\*/g,'\\w*') + "\\b";
+    findWord(x);
     setTimeout(function() { st.style.backgroundColor = ''; }, 300);
 }
 

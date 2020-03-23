@@ -70,131 +70,44 @@ case-law, precedent
 	fair balance to be struck between the competing interests
 	once the court is satisfied that..., it embarks on the substantive analysis of the circumstances complained.
 	chance to put the matters right.
-	
 
 - not in itself sufficient to attract the applicability of Article
 
+* Consistency of domestic case-law (precedence) * Adversarial proceedings * Equality of arms * Administration of evidence * Witness evidence, witnesses called * Expert opinions * Reasoning of judicial decisions * Public hearing
 
-* Consistency of domestic case-law (precedence)
-* Adversarial proceedings
-* Equality of arms
-* Administration of evidence
-* Witness evidence, witnesses called
-* Expert opinions
-* Reasoning of judicial decisions
-* Public hearing
+* judicial independence* and impartiality * tribunal established by law (territorial competence and investigative comp.) * right to a fair trial (procedural guarantees/safeguards) * equality of arms s and adversarial proceedings (striking a fair balance between the parties) * a public hearings and hearing in one's presence * reasons for decisions (...) * effective remedy, appeals
 
-
-* judicial independence* and impartiality
-* tribunal established by law (territorial competence and investigative comp.)
-* right to a fair trial (procedural guarantees/safeguards)
-* equality of arms s and adversarial proceedings (striking a fair balance between the parties)
-* a public hearings and hearing in one's presence
-* reasons for decisions (...)
-* effective remedy, appeals
-
-
-* absence of pre-action notification to the defendants
-* failure to summon and vicious summonsing
-* breach of the rule of random allocation of cases
-* distortion and misapplication of substantive law and the Criminal Procedure Code
-
-
-A4, margins 3.5 cm, 12 pt text, 10 pt footnote, 1.5 line,
-all numbers as figures, pages numbered consecutively, divided in numbered paragraphs, divided in:
-* "Facts"
-* "Complaints or statements of violations" and
-* "Information about the exhaustion of domestic remedies and compliance with the time-limit set out in Article 35 § 1".
-+ additional explanations in a separate document up to 20 pages.
-	
+* absence of pre-action notification to the defendants * failure to summon and vicious summonsing * breach of the rule of random allocation of cases * distortion and misapplication of substantive law and the Criminal Procedure Code
 
 * Everyone charged with criminal offences shall be presumed innocent until found guilty according to the law.
-
 * Subjected to politically motivated and improperly influenced criminal prosecution and convictions which have no legal basis.
-
 * Unlawful misconduct for which the state is responsible under the Convention.
-
 * Flagrant violation of rule of law and Convention rights.
-
 * What is especially noteworthy is that, perhaps uniquely in the history.
-
 * They and their families are in enforced exile, in a very precarious position as fugitive from justice.
-
 * The court files were improperly doctored to give the appearance of legal regular proceedings.
-
 * Orchestrated by and to the benefit of the culprit.
-
 * Not only did the court lack jurisdiction.
-
 * Breach of the rule of random allocation of cases.
-
 * Nor did it specify what property he is alleged to have appropriated.
-
 * The allegation is without any justification in law and fact.
-
 * The distortion and misapplication of substantive law and the Code of Criminal Procedure.
 
+* Right to confront prosecution witnesses. * Presumption of innocence. * Absence of legal certainty (with reasonable certainty). * Unfair and unequal legal proceedings. * No proper or sufficient reasons for decisions. * Violation of "tribunal established by law" requirements. * Right to an independent and impartial tribunal. * Freedom of speech.
 
-   * Right to confront prosecution witnesses.
-   * Presumption of innocence.
-   * Absence of legal certainty (with reasonable certainty).
-   * Unfair and unequal legal proceedings.
-   * No proper or sufficient reasons for decisions.
-   * Violation of "tribunal established by law" requirements.
-   * Right to an independent and impartial tribunal.
-   * Freedom of speech.
+A. Right and access to a court: * litigants should have an effective judicial remedy enabling them to assert their civil rights * brought before a court or tribunal. * a  right that is practical and effective
 
+B. Waiver: An individual cannot be deemed to have waived a right if he or she had no knowledge of the existence of the right. * Right to prompt implementation of a final and binding judicial decision * Guarantees against outside pressure
 
-A. Right and access to a court
+Criteria for assessing impartiality: * a subjective test: behaviour of a particular judge, that is, whether the judge held any personal prejudice or bias in a given case; * an objective test: tribunal, composition, offers sufficient guarantees.
 
+Article 6 breached: * absence of legal certainty * unfair and unequal proceedings * no proper or sufficient reasons for the decisions * violation of the "established by law" requirements (jurisdiction, composition) * right to defence * right to confront prosecution witnesses * improper prosecution * criminal liability limitation period (statute of limitation) * classification of crimes
 
-   * litigants should have an effective judicial remedy enabling them to assert their civil rights
-   * brought before a court or tribunal.
-   * a  right that is practical and effective
-
-
-B. Waiver: An individual cannot be deemed to have waived a right if he or she had no knowledge of the existence of the right.
-
-
-   * Right to prompt implementation of a final and binding judicial decision
-   * Guarantees against outside pressure
-
-
-Criteria for assessing impartiality:
-
-
-   * a subjective test: behaviour of a particular judge, that is, whether the judge held any personal prejudice or bias in a given case;
-
-
-   * an objective test: tribunal, composition, offers sufficient guarantees.
-
-
-Article 6 breached
-
-
-   * absence of legal certainty
-   * unfair and unequal proceedings
-   * no proper or sufficient reasons for the decisions
-   * violation of the "established by law" requirements (jurisdiction, composition)
-   * right to defence
-   * right to confront prosecution witnesses
-   * improper prosecution
-
-
-   * criminal liability limitation period (statute of limitation)
-   * classification of crimes
-
-
-
-
-Fairness
-   *  Equality of arms is an inherent feature of a fair trial. It requires that each party be given a reasonable opportunity to present his case under conditions that do not place him at a disadvantage vis-à-vis his opponent. Equality of arms requires that a fair balance be struck between the parties, and applies to criminal and civil cases.
-   * Subjective test of impartiality: the judge displayed hostility or ill will or has arranged to have a case assigned to himself for personal reasons.
-   * Objective test: concerns hierarchical or other links between the judge and other persons involved in the proceedings which objectively justify misgivings as to the impartiality of the tribunal, and thus fail to meet the Convention standard under the objective test.
+Fairness: *  Equality of arms is an inherent feature of a fair trial. It requires that each party be given a reasonable opportunity to present his case under conditions that do not place him at a disadvantage vis-à-vis his opponent. Equality of arms requires that a fair balance be struck between the parties, and applies to criminal and civil cases. * Subjective test of impartiality: the judge displayed hostility or ill will or has arranged to have a case assigned to himself for personal reasons. * Objective test: concerns hierarchical or other links between the judge and other persons involved in the proceedings which objectively justify misgivings as to the impartiality of the tribunal, and thus fail to meet the Convention standard under the objective test.
 
 Article 6. Right to a fair trial: 1. Everyone is entitled to a hearing
-	2. Tribunal established by law: composition, impartiality and independence; territorial jurisd. & investigative; breach of the principle of random allocation of cases.
+2. Tribunal established by law: composition, impartiality and independence; territorial jurisd. & investigative; breach of the principle of random allocation of cases.
 3. Equality of arms and adversarial proceedings: witnesses; essential materials (disclosure of evidence); expertise.
 
-	4. Reasoning of judicial decisions: Reasoned decisions oblige judges to base their reasoning on objective arguments, and also preserve the rights of the defence. National courts should indicate with sufficient clarity the grounds on which they base their decision - distortion and misapplication of substantive law and the Code of Criminal Procedure; absence of legal certainty, no proper or sufficient reasons for decisions; improper prosecution; criminal liability limitation period (statute of limitation); classification of crimes; aplicarea retroactiva a legii; decizii pe presupuneri;
-	Article 13. Right to an effective remedy: Everyone whose rights and freedoms as set forth in this Convention are violated shall have an effective remedy before a national authority notwithstanding that the violation has been committed by persons acting in an official capacity.
+4. Reasoning of judicial decisions: Reasoned decisions oblige judges to base their reasoning on objective arguments, and also preserve the rights of the defence. National courts should indicate with sufficient clarity the grounds on which they base their decision - distortion and misapplication of substantive law and the Code of Criminal Procedure; absence of legal certainty, no proper or sufficient reasons for decisions; improper prosecution; criminal liability limitation period (statute of limitation); classification of crimes; aplicarea retroactiva a legii; decizii pe presupuneri;
+Article 13. Right to an effective remedy: Everyone whose rights and freedoms as set forth in this Convention are violated shall have an effective remedy before a national authority notwithstanding that the violation has been committed by persons acting in an official capacity.

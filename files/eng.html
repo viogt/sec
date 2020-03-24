@@ -38,6 +38,8 @@
         box-sizing: border-box;
         white-space: nowrap;
       }
+      #log p { margin: 0px; margin-bottom: 12px; padding: 0px; }
+      #log p > span { color: blue; font-weight: bold; }
       #pattern {
         width:100%;
         padding: 8px 12px;
@@ -89,30 +91,37 @@ function logSelection(event) {
 
     textarea.onselect = logSelection;
     //textarea.addEventListener("select", logSelection);
-
+/*
 function findWord(wrd) {
     var buf='', Rx = new RegExp("^.*" + wrd + ".*$",'gim'), arr;
     for(let i in CNTs)
         if(arr = CNTs[i].match(Rx)) buf += arr.join("\n\n") + "\n\n";
     log.innerText = buf?buf:"<no occurence found>";
 }
-
-/*function findWord(wrd) {
-    var buf = '';
-    log.innerText = '';
+*/
+function findWord(wrd) {
+    while(log.firstChild) log.removeChild(log.lastChild);
+    var Res, Rx = new RegExp("^.*(" + wrd + ").*$",'gim');
     for(let i in CNTs) {
-        var Res, Rx = new RegExp(wrd,'gi');
         while (Res = Rx.exec(CNTs[i])) {
-            //log.innerText += (`${Res[0]} at ${Res.index} in ${URLs[i]};\n`);
-            let x1 = Res.index, x2 = x1+2;
-            while(x1>=0 && CNTs[i].charAt(x1) != '\n') x1--; x1++;
-            while(CNTs[i].charAt(x2) != '\n') x2++; x2--;
-            buf += CNTs[i].substr(x1, x2-x1+1) + "\n\n";
+            let parts = Res[0].split(Res[1]);
+
+            let par = document.createElement('p'), sp = document.createElement('span');
+            sp.appendChild(document.createTextNode(Res[1]));
+            
+            par.appendChild(document.createTextNode(parts[0]));
+	        par.appendChild(sp);
+	        par.appendChild(document.createTextNode(parts[1]));
+	        if(parts.length > 2) for(let i=2, L = parts.length; i<L; i++) {
+	            par.appendChild(sp.cloneNode(true));
+	            par.appendChild(document.createTextNode(parts[i]));
+	        }
+	        log.appendChild(par);
         }
     }
-    log.innerText = buf==''?"<no occurence found>":buf;
+    if(!log.firstChild) log.appendChild(document.createTextNode("<no occurence found>"));
 }
-*/
+
 function seePattern(st) {
     let x = st.value.trim(); if(x == '') return;
     st.style.backgroundColor = 'yellow';

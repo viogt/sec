@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HighLight JS Code</title>
+    <style>
+        * { box-sizing: border-box; }
+        textarea { border:none; margin:0; outline: none; }
+        body { margin: 10px; }
+        #out {
+            overflow-y:auto;
+            width:100%;
+            height: calc(100vh - 260px);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body onload="hilite()">
+
+<table width="100%" border="1" cellpadding="2" cellspacing="0" style="table-layout: fixed; font: normal 12px Monospace;height:230px;">
+<tr>
+    <td bgcolor='#ddf' height="20px">Original <button onclick='hilite()'>Highlight!</button></td>
+    <td bgcolor='#ddf' height="20px">Result <input type="checkbox" id='tabs' value="false" onclick='hilite()'/>Tabs to Spaces</td>
+</tr>
+<tr>
+    <td valign='top' width="50%">
+        <textarea id='code' style="width:100%; height:100%;" onchange="hilite()">
+
+function setFileType(fName) {
+	const ix = fName.lastIndexOf('.');
+	if(ix<0) return "text/plain";
+	const Ext = fName.substr(ix);
+	if(Ext == '.js') return "text/javascript"; // comment
+	
+	const a = this.b;
+	var c = 234.56 || true;
+	
+	/*if(".css.html".includes(Ext))*/ return "text/"+Ext.substr(1);
+        if(".jpeg.png.gif.bmp.webp.ico".includes(Ext)) /*return "image/"+Ext.substr(1);*/
+        if(".xml.pdf".includes(Ext)) return "application/"+Ext.substr(1);
+    return "text/plain";
+}
+
+        </textarea>            
+    </td>
+    <td valign='top' width="50%">
+        <textarea id='res' style="width:100%; height:100%;">
+        </textarea>            
+    </td>
+</tr></table>
+
+<div id='out'></div>
+
+<script>
+const keyWords = '.var.function.const.let.if.else.for.while.this.null.true.false.break.case.catch.continue.default.delete.do.in.instanceof.new.return.switch.throw.try.typeof.with.class.';
+var preced = false;
+
+    function hilite() {
+        var cd = document.getElementById('code').value.trim(),
+            tabs = document.getElementById('tabs'),
+            buf = '<div style="border:1px solid #ccb;background-color:#f0f0ef;width:100%;overflow-x:auto;">';
+            buf +='<table cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;line-height:1.4;width:auto;"><tr>';
+            buf +='<td valign="top" align="right" style="background-color:#d0d0cf;color:#663;padding: 6px 18px;">';
+        
+        if(tabs.checked) cd = cd.replace(/\t/gm,'  ');
+        buf += numLines(cd) + '</td><td valign="top" style="padding:6px 18px;"><pre>';
+        
+        var rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.*\w+\(*)|(\d+\.*\d*)/gm;
+        var fin = cd.replace(rgx, fnd => {
+
+            let ch = fnd.charAt(0), ch1 = fnd.charAt(1);
+            if(ch == '/' && ch1 && (ch1 == '/' || ch1 == '*'))
+            return `<span style="color:#6aa">${fnd.replace(/</gm, '&lt;').replace(/>/gm, '&gt;')}</span>`;
+            
+            if(ch == '"' || ch == "'" || ch == '`') {
+                fnd = fnd.replace(/</gm, '&lt;').replace(/>/gm, '&gt;');
+                if(ch == '`') fnd = fnd.replace(/(\$\{[^\}]*\})/gm, m => {
+                    return '${<i style="color:#f60;">' + m.substr(2, m.length-3) + '</i>}';
+                });
+                return `<span style="color:#a00;">${fnd}</span>`;
+            }
+            
+            ch1 = fnd.charAt(fnd.length-1);
+            if(ch == '.' && ch1 == '(')
+            return `.<span style="color:purple">${fnd.substr(1, fnd.length-2)}</span>(`;
+            
+            if(ch1 == '(') {
+                var fn = fnd.substr(0,fnd.length-1);
+                if(keyWords.includes('.'+fn+'.'))
+                return `<b style="color:#080;">${fn}</b>(`;
+                else 
+                return `<span style="color:#00c;">${fn}</span>(`;
+            }
+            
+            if('.null.true.false.'.includes('.'+fnd+'.'))
+            return `<span style="color:#00c;">${fnd}</span>`;
+
+            if(keyWords.includes('.'+fnd+'.'))
+                return `<b style="color:#080;">${fnd}</b>`;
+            
+            if(!isNaN(fnd))
+            return `<span style="color:#f60;">${fnd}</span>`;
+            
+            return fnd;
+        });
+        
+        buf += fin + '</pre></td></tr></table></div>';
+        document.getElementById('out').innerHTML = buf;
+        const res = document.getElementById('res');
+        res.value = buf;
+        res.select();
+        document.execCommand('copy');
+    }
+    
+    function numLines(txt) {
+        const L = txt.split('\n').length;
+        var nTxt = '<pre>';
+        for(var i=0; i<L; i++) nTxt += (i+1)+(i<L-1?'\n':'</pre>');
+        return nTxt;
+    }
+</script>
+</body>
+</html>

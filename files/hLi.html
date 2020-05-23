@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HighLight JS Code</title>
+    <style>
+        * { box-sizing: border-box; }
+        textarea { border:none; margin:0; outline: none; }
+        body { margin: 10px; }
+        #out {
+            overflow-y:auto;
+            width:100%;
+            height: calc(100vh - 260px);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body onload="hilite()">
+
+<table width="100%" border="1" cellpadding="2" cellspacing="0" style="table-layout: fixed; font: normal 12px Monospace;height:230px;">
+<tr>
+    <td bgcolor='#ddf' height="20px">Original <button onclick='hilite()'>Highlight!</button></td>
+    <td bgcolor='#ddf' height="20px">Result <input type="checkbox" id='tabs' value="false" onclick='hilite()'/>Tabs to Spaces <button onclick='changeCol()'>Change colors</button></td>
+</tr>
+<tr>
+    <td valign='top' width="50%">
+        <textarea id='code' style="width:100%; height:100%;" onchange="hilite()" onpaste="setTimeout(hilite,0)">
+function aFunction(fName) { // --- comment
+    if(ch == '.' && ch1 == '(')
+        return `.<span style="color:${cMethods}">${fnd.substr(1, fnd.length-2)}</span>(`;
+    /* another comment */   
+    if(ch1 == '(') {
+        var fn = fnd.substr(0,fnd.length-1);
+        if(keyWords.includes('.'+fn+'.'))
+            return `<b style="color:${cKeyWords};">${fn}</b>(`;
+        else 
+            return `<span style="color:${cFunctions};">${fn}</span>(`;
+    }
+    else return null;
+}
+        </textarea>            
+    </td>
+    <td valign='top' width="50%">
+        <textarea id='res' style="width:100%; height:100%;">
+        </textarea>            
+    </td>
+</tr></table>
+
+<div id='out'></div>
+
+<script>
+const keyWords = '.var.function.const.let.if.else.for.while.this.null.true.false.break.case.catch.continue.default.delete.do.in.instanceof.new.return.switch.throw.try.typeof.with.class.';
+var cFont = '#000',
+    cKeyWords = '#080',
+    cComments = '#6aa',
+    cStrings = '#a00',
+    cNumbers = '#f60',
+    cMethods = 'purple',
+    cFunctions = '#00c',
+    cTrueFalse = '#00c',
+    cSubStr = '#f60',
+    cBorder = '#ccb',
+    cBackGround = '#f0f0ef',
+    cBgLines = '#d0d0cf',
+    cFgLines = '#663',
+    curIndex = 0;
+
+
+    function hilite() {
+        var cd = document.getElementById('code').value.trim(),
+            tabs = document.getElementById('tabs'),
+            buf = `<div style="border:1px solid ${cBorder};background-color:${cBackGround};width:100%;overflow-x:scroll;">`;
+            buf +='<table cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;line-height:1.4;"><tr>';
+            buf +=`<td valign="top" align="right" style="background-color:${cBgLines};color:${cFgLines};padding: 6px 18px;width:auto;">`;
+        
+        if(tabs.checked) cd = cd.replace(/\t/gm,'  ');
+        buf += `${numLines(cd)}</td><td valign="top" style="padding:6px 18px;color:${cFont};"><pre>`;
+        
+        var ch, i = 0, end, sec;
+        while(ch = cd.charAt(i)) {
+          
+            if(ch == '\/') { // comment
+                if((ch = cd.charAt(i+1)) == '\/') {
+                    if((end = cd.indexOf('\n', i+2))<0) end = cd.length;
+
+                    sec = `<span style="color:${cComments};">${cd.slice(i, end)}</span>`;
+                    cd = cd.substr(0, i) + sec + cd.substr(end);
+                    i += sec.length;
+                }
+                else if(ch == '*') {
+                    end = cd.indexOf("*\/", i+2) + 2;
+
+                    sec = `<span style="color:${cComments};">${cd.slice(i, end)}</span>`;
+                    cd = cd.substr(0, i) + sec + cd.substr(end);
+                    i += sec.length;
+                }
+                else i++;
+                continue;
+            }
+            
+            if(ch == '"' || ch == "'" || ch == "`") { // string
+                end = i+1;
+                while(1) {
+                    end = cd.indexOf(ch, end);
+                    if(cd.charAt(end-1) != "\\") break; else end++;
+                }
+                sec = cd.slice(i, end+1);
+                sec = sec.replace(/</g, '&lt;');
+                sec = sec.replace(/>/g, '&gt;');
+                if(ch == "`") sec = sec.replace(/\$\{([^\}]*)\}/g, `\${<span style="color:${cSubStr}">$1</span>}`);
+                
+                sec = `<span style="color:${cStrings};">${sec}</span>`;
+                cd = cd.substr(0, i) + sec + cd.substr(end+1);
+                i += sec.length;
+                continue;
+            }
+
+            if((ch >= 'A' && ch <='Z') || (ch >= 'a' && ch <='z') || ch == '_') { // keyword, method, function
+                end = i+1; ch = cd.charAt(end);
+                var cl, tg;
+                while((ch >= 'A' && ch <='Z') || (ch >= 'a' && ch <='z') || (ch >= '0' && ch <= '9') || ch == '_') {
+                    end++; ch = cd.charAt(end);
+                }
+                if(cd.charAt(i-1) == '.') { cl = cMethods; tg = 'span'; }
+                else if(cd.charAt(end) == '(') {
+                    if(keyWords.includes('.'+cd.slice(i, end)+'.')) { cl = cKeyWords; tg = 'b'; }
+                    else { cl = cFunctions; tg = 'span'; }
+                }
+                else if(keyWords.includes('.'+cd.slice(i, end)+'.')) { cl = cKeyWords; tg = 'b'; }
+                else { // variable
+                    cl = ''; tg = 'u';
+                }
+                sec = `<${tg} style="color:${cl};">${cd.slice(i, end)}</${tg}>`;
+                cd = cd.substr(0, i) + sec + cd.substr(end);
+                i += sec.length;
+                continue;
+            }
+
+            if(ch >= '0' && ch <= '9') { // Numbers
+                end = i+1; ch = cd.charAt(end);
+                while((ch >= '0' && ch <= '9') || ch == '.') {
+                    end++; ch = cd.charAt(end);
+                }
+                if(cd.charAt(i-1) == '-') i--;
+                sec = `<span style="color:${cNumbers};">${cd.slice(i, end)}</span>`;
+                cd = cd.substr(0, i) + sec + cd.substr(end);
+                i += sec.length;
+                continue;
+            }
+            i++;
+        }
+
+        buf += `${cd}</pre></td></tr></table></div>`;
+        document.getElementById('out').innerHTML = buf;
+        const res = document.getElementById('res').value = buf;
+        res.value = buf;
+        res.select();
+        document.execCommand('copy');
+    }
+    
+    function numLines(txt) {
+        const L = txt.split('\n').length;
+        var nTxt = '<pre>';
+        for(var i=0; i<L; i++) nTxt += (i+1)+(i<L-1?'\n':'</pre>');
+        return nTxt;
+    }
+    
+    function changeCol() {
+        curIndex++; if(curIndex>3) curIndex = 0;
+        switch(curIndex) {
+
+        case 0:
+            cFont = '#000';
+            cKeyWords = '#080';
+            cComments = '#6aa';
+            cStrings = '#a00';
+            cNumbers = '#f60';
+            cMethods = 'purple';
+            cFunctions = '#00c';
+            cTrueFalse = '#00c';
+            cSubStr = '#f60';
+            cBorder = '#ccb';
+            cBackGround = '#f0f0ef';
+            cBgLines = '#d0d0cf';
+            cFgLines = '#663';
+            break;
+
+        case 1:
+            cFont = '#000';
+            cKeyWords = '#00a';
+            cComments = '#669';
+            cStrings = '#080';
+            cNumbers = '#00f';
+            cMethods = 'purple';
+            cFunctions = 'purple';
+            cTrueFalse = '#00f';
+            cSubStr = '#840';
+            cBorder = '#d8d8ea';
+            cBackGround = '#eef';
+            cBgLines = '#d8d8ea';
+            cFgLines = '#669';
+            break;
+
+        case 2:
+            cFont = '#cce';
+            cKeyWords = '#68e';
+            cComments = '#66a';
+            cStrings = '#0b2';
+            cNumbers = '#04f';
+            cMethods = '#c6e';
+            cFunctions = '#c6e';
+            cTrueFalse = '#04f';
+            cSubStr = '#b93';
+            cBorder = '#000';
+            cBackGround = '#223';
+            cBgLines = '#000';
+            cFgLines = '#559';
+            break;
+
+        case 3:
+            cFont = '#ccc';
+            cKeyWords = '#e0e0e0';
+            cComments = '#666';
+            cStrings = '#ee8';
+            cNumbers = '#ff0';
+            cMethods = '#af8';
+            cFunctions = '#af8';
+            cTrueFalse = '#ff0';
+            cSubStr = '#ff0';
+            cBorder = '#000';
+            cBackGround = '#222';
+            cBgLines = '#000';
+            cFgLines = '#666';
+            break;
+
+        default: changeCol();
+        }
+        hilite();
+    }
+</script>
+</body>
+</html>

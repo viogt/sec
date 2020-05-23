@@ -64,6 +64,8 @@ var cFont = '#000',
     cBgLines = '#d0d0cf',
     cFgLines = '#663',
     curIndex = 0;
+const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
+//const rgx = /\".*\"|\'.*\'|`.*`|(\/\/.*$)|(\/\*.*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
 
 
     function hilite() {
@@ -76,7 +78,6 @@ var cFont = '#000',
         if(tabs.checked) cd = cd.replace(/\t/gm,'  ');
         buf += `${numLines(cd)}</td><td valign="top" style="padding:6px 18px;color:${cFont};"><pre>`;
         
-        var rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.*\w+\(*)|(\d+\.*\d*)/gm;
         var fin = cd.replace(rgx, fnd => {
 
             let ch = fnd.charAt(0), ch1 = fnd.charAt(1);

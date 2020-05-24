@@ -19,7 +19,14 @@
 
 <table width="100%" border="1" cellpadding="2" cellspacing="0" style="table-layout: fixed; font: normal 12px Monospace;height:230px;">
 <tr>
-    <td bgcolor='#ddf' height="20px">Original <button onclick='hilite()'>Highlight!</button></td>
+    <td bgcolor='#ddf' height="20px">Original <button onclick='hilite()'>Highlight!</button>
+    <select onchange="changeLang(this)">
+        <option selected>Javascript</option>
+        <option>C</option>
+        <option>C++</option>
+        <option>Java</option>
+    </select>
+    </td>
     <td bgcolor='#ddf' height="20px">Result <input type="checkbox" id='tabs' value="false" onclick='hilite()'/>Tabs to Spaces <button onclick='changeCol()'>Change colors</button></td>
 </tr>
 <tr>
@@ -31,7 +38,7 @@ function aFunction(fName) { // --- comment
     /* another comment */
     if(ch1 == '(') {
         var fn = fnd.substr(0,fnd.length-1);
-        if(keyWords.includes('.'+fn+'.'))
+        if(keyWords[lang].includes('.'+fn+'.'))
             return `<b style="color:${cKeyWords};">${fn}</b>(`;
         else
             return `<span style="color:${cFunctions};">${fn}</span>(`;
@@ -49,7 +56,12 @@ function aFunction(fName) { // --- comment
 <div id='out'></div>
 
 <script>
-const keyWords = '.var.function.const.let.if.else.for.while.this.null.true.false.break.case.catch.continue.default.delete.do.in.instanceof.new.return.switch.throw.try.typeof.with.class.';
+const keyWords = [ // js, c, c++, java
+    '.var.function.const.let.if.else.for.while.this.null.true.false.break.case.catch.continue.default.delete.do.in.instanceof.new.return.switch.throw.try.typeof.with.class.',
+    '.auto.break.case.char.const.continue.default.do.double.else.enum.extern.float.for.goto.int.long.register.return.short.signed.sizeof.static.struct.switch.typedef.union.unsigned.void.volatile.while.',
+    '.and.and_eq.asm.atomic_cancel.atomic_commit.atomic_noexcept.auto.bitand.bitor.bool.break.case.catch.char.char8_t.char16_t.char32_t.class.compl.concept.const.consteval.constexpr.constinit.const_cast.continue.co_await.co_return.co_yield.decltype.delete.do.double.dynamic_cast.else.enum.explicit.export.extern.false.',
+    '.abstract.assert.boolean.break.byte.case.catch.char.class.const.continue.default.do.double.else.enum.extends.final.finally.float.for.goto.if.implements.import.instanceof.int.interface.long.native.new.package.private.protected.public.return.short.static.strictfp.super.switch.synchronized.this.throw.throws.transient.try.void.volatile.while.true.false.null.'
+];
 var cFont = '#000',
     cKeyWords = '#080',
     cComments = '#6aa',
@@ -63,7 +75,8 @@ var cFont = '#000',
     cBackGround = '#f0f0ef',
     cBgLines = '#d0d0cf',
     cFgLines = '#663',
-    curIndex = 0;
+    curIndex = 0,
+    lang = 0;
 
 //const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
 const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
@@ -98,15 +111,15 @@ const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*
                 }
                 else {
                     var fn = fnd.substr(0,fnd.length-1);
-                    if(keyWords.includes('.'+fn+'.')) return `<b style="color:${cKeyWords};">${fn}</b>(`;
+                    if(keyWords[lang].includes('.'+fn+'.')) return `<b style="color:${cKeyWords};">${fn}</b>(`;
                     return `<span style="color:${cFunctions};">${fn}</span>(`;
                 }
             }
             else {
               if('.null.true.false.'.includes('.'+fnd+'.')) return `<span style="color:${cTrueFalse};">${fnd}</span>`;
-              if(keyWords.includes('.'+fnd+'.')) return `<b style="color:${cKeyWords};">${fnd}</b>`;
+              if(keyWords[lang].includes('.'+fnd+'.')) return `<b style="color:${cKeyWords};">${fnd}</b>`;
               if(!isNaN(fnd)) return `<span style="color:${cNumbers};">${fnd}</span>`;
-              return `<span style="border-bottom:thin dotted ${cComments};">${fnd}</span>`; //-- variable
+              return `<span style="border-bottom:thin dotted;">${fnd}</span>`; //-- variable
             }
 
             return fnd;
@@ -199,6 +212,8 @@ const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*
         }
         hilite();
     }
+    
+    function changeLang(sel) { lang=sel.selectedIndex; hilite(); }
 </script>
 </body>
 </html>

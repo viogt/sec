@@ -23,26 +23,26 @@
     <td bgcolor='#ddf' height="20px">Result <input type="checkbox" id='tabs' value="false" onclick='hilite()'/>Tabs to Spaces <button onclick='changeCol()'>Change colors</button></td>
 </tr>
 <tr>
-    <td valign='top' width="50%">
+    <td valign='top' width="50%" height="100%">
         <textarea id='code' style="width:100%; height:100%;" onchange="hilite()" onpaste="setTimeout(hilite,0)">
 function aFunction(fName) { // --- comment
     if(ch == '.' && ch1 == '(')
         return `.<span style="color:${cMethods}">${fnd.substr(1, fnd.length-2)}</span>(`;
-    /* another comment */   
+    /* another comment */
     if(ch1 == '(') {
         var fn = fnd.substr(0,fnd.length-1);
         if(keyWords.includes('.'+fn+'.'))
             return `<b style="color:${cKeyWords};">${fn}</b>(`;
-        else 
+        else
             return `<span style="color:${cFunctions};">${fn}</span>(`;
     }
     else return null;
 }
-        </textarea>            
+        </textarea>
     </td>
-    <td valign='top' width="50%">
+    <td valign='top' width="50%" height="100%">
         <textarea id='res' style="width:100%; height:100%;">
-        </textarea>            
+        </textarea>
     </td>
 </tr></table>
 
@@ -64,9 +64,9 @@ var cFont = '#000',
     cBgLines = '#d0d0cf',
     cFgLines = '#663',
     curIndex = 0;
-const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
-//const rgx = /\".*\"|\'.*\'|`.*`|(\/\/.*$)|(\/\*.*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
 
+//const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
+const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
 
     function hilite() {
         var cd = document.getElementById('code').value.trim(),
@@ -74,24 +74,22 @@ const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*
             buf = `<div style="border:1px solid ${cBorder};background-color:${cBackGround};width:100%;overflow-x:auto;">`;
             buf +='<table cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;line-height:1.4;"><tr>';
             buf +=`<td valign="top" align="right" style="background-color:${cBgLines};color:${cFgLines};padding: 6px 18px;width:auto;">`;
-        
+
         if(tabs.checked) cd = cd.replace(/\t/gm,'  ');
         buf += `${numLines(cd)}</td><td valign="top" style="padding:6px 18px;color:${cFont};"><pre>`;
-        
+
         var fin = cd.replace(rgx, fnd => {
 
             let ch = fnd.charAt(0), ch1 = fnd.charAt(1);
             if(ch == '/' && ch1 && (ch1 == '/' || ch1 == '*'))
             return `<span style="color:${cComments};">${fnd.replace(/</gm, '&lt;').replace(/>/gm, '&gt;')}</span>`;
-            
+
             if(ch == '"' || ch == "'" || ch == '`') {
                 fnd = fnd.replace(/</gm, '&lt;').replace(/>/gm, '&gt;');
-                if(ch == '`') fnd = fnd.replace(/(\$\{[^\}]*\})/gm, m => {
-                    return '${<i style="color:' + cSubStr + ';">' + m.substr(2, m.length-3) + '</i>}';
-                });
+                if(ch == '`') fnd = fnd.replace(/\$\{([^\}]+)\}/gm, '${<i style="color:'+cSubStr+';">$1</i>}');
                 return `<span style="color:${cStrings};">${fnd}</span>`;
             }
-            
+
             ch1 = fnd.charAt(fnd.length-1);
             if(ch == '.' || ch1 == '(') {
                 if(ch == '.') {
@@ -104,19 +102,16 @@ const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*
                     return `<span style="color:${cFunctions};">${fn}</span>(`;
                 }
             }
+            else {
+              if('.null.true.false.'.includes('.'+fnd+'.')) return `<span style="color:${cTrueFalse};">${fnd}</span>`;
+              if(keyWords.includes('.'+fnd+'.')) return `<b style="color:${cKeyWords};">${fnd}</b>`;
+              if(!isNaN(fnd)) return `<span style="color:${cNumbers};">${fnd}</span>`;
+              return `<span style="border-bottom:thin dotted ${cComments};">${fnd}</span>`; //-- variable
+            }
 
-            if('.null.true.false.'.includes('.'+fnd+'.'))
-            return `<span style="color:${cTrueFalse};">${fnd}</span>`;
-
-            if(keyWords.includes('.'+fnd+'.'))
-                return `<b style="color:${cKeyWords};">${fnd}</b>`;
-            
-            if(!isNaN(fnd))
-            return `<span style="color:${cNumbers};">${fnd}</span>`;
-            
             return fnd;
         });
-        
+
         buf += fin + '</pre></td></tr></table></div>';
         document.getElementById('out').innerHTML = buf;
         const res = document.getElementById('res');
@@ -124,14 +119,14 @@ const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*
         res.select();
         document.execCommand('copy');
     }
-    
+
     function numLines(txt) {
         const L = txt.split('\n').length;
         var nTxt = '<pre>';
         for(var i=0; i<L; i++) nTxt += (i+1)+(i<L-1?'\n':'</pre>');
         return nTxt;
     }
-    
+
     function changeCol() {
         curIndex++; if(curIndex>3) curIndex = 0;
         switch(curIndex) {

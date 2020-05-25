@@ -26,7 +26,7 @@
         <option>C++</option>
         <option>Java</option>
     </select>
-    </td>
+     <input type="checkbox" id="vars" value="false" onclick='hilite()'/> Check variables</td>
     <td bgcolor='#ddf' height="20px">Result <input type="checkbox" id='tabs' value="false" onclick='hilite()'/>Tabs to Spaces <button onclick='changeCol()'>Change colors</button></td>
 </tr>
 <tr>
@@ -76,14 +76,18 @@ var cFont = '#000',
     cBgLines = '#d0d0cf',
     cFgLines = '#663',
     curIndex = 0,
-    lang = 0;
+    lang = 0,
+    checkVars = false;
+    
+var codeTxt = document.getElementById('code'),
+    tabs = document.getElementById('tabs'),
+    vars = document.getElementById('vars');
 
 //const rgx = /((?<![\\])['"`])((?:.(?!(?<![\\])\1))*.?)\1|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
-const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)/gm;
+const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*$)|(\/\*[^\*]*\*\/)|(\.?[A-Za-z_]\w*\(?)|(\d+(\.\d+)?)|(<|>)/gm;
 
     function hilite() {
-        var cd = document.getElementById('code').value.trim(),
-            tabs = document.getElementById('tabs'),
+        var cd = codeTxt.value.trim(),
             buf = `<div style="border:1px solid ${cBorder};background-color:${cBackGround};width:100%;overflow-x:auto;">`;
             buf +='<table cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;line-height:1.4;"><tr>';
             buf +=`<td valign="top" align="right" style="background-color:${cBgLines};color:${cFgLines};padding: 6px 18px;width:auto;">`;
@@ -102,6 +106,8 @@ const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*
                 if(ch == '`') fnd = fnd.replace(/\$\{([^\}]+)\}/gm, '${<i style="color:'+cSubStr+';">$1</i>}');
                 return `<span style="color:${cStrings};">${fnd}</span>`;
             }
+            
+            if(ch == '<' || ch == '>') return fnd.replace(/</gm, '&lt;').replace(/>/gm, '&gt;');
 
             ch1 = fnd.charAt(fnd.length-1);
             if(ch == '.' || ch1 == '(') {
@@ -119,7 +125,7 @@ const rgx = /"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)'|`((?:\\.|[^`\\])*)`|(\/\/.*
               if('.null.true.false.'.includes('.'+fnd+'.')) return `<span style="color:${cTrueFalse};">${fnd}</span>`;
               if(keyWords[lang].includes('.'+fnd+'.')) return `<b style="color:${cKeyWords};">${fnd}</b>`;
               if(!isNaN(fnd)) return `<span style="color:${cNumbers};">${fnd}</span>`;
-              return `<span style="border-bottom:thin dotted;">${fnd}</span>`; //-- variable
+              if(vars.checked) return `<span style="border-bottom:thin dotted;">${fnd}</span>`; //-- variable
             }
 
             return fnd;

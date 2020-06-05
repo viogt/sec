@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>> Diacritice</title>
+</head>
+<body>
+
+<input type="button" value="Diacritice" onclick="Diac()" />
+
+<textarea id="TXT" rows="20" cols="80" onchange="Diac()">
+    Cum s-a ajuns în situaţia 2014-2015: este un element important când un grup de persoane, cu interese, în 2011, după ce a fost scoasă povara Investprivatbank de pe Banca de Economii au considerat că ar fi interesant să intre iniţial în Banca de Economii ca ulterior să preia controlul asupra Băncii de Economii.
+    
+    Astfel, în anul 2011 avem atacuri raider şi atunci 18,5 % care au aparţinut altor acţionari a intrat în posesia altui grup de interese, iniţial prin off-shore, ca ulterior să vedem un alt grup de interese care a preluat acele acţiuni şi deja s-a înregistrat în alte 4 companii ruseşti, legalizate pe sub masă de către Banca Naţională, ca în cele din urmă cu aceste 18,5 procente să intre noi reprezentanţi ai aşa-numitor minoritari în componenţa Consiliului de Administrare la Banca de Economii, ulterior să pregătească teren pentru a prelua controlul.
+
+    atat atît cît : pînă ; pana . si , in atât cat sa - preîntâmpinat preîntîmpinat
+    Atat Atît Cît Pînă Pana Si In Atât Cat Sa
+    ATAT ATÎT CÎT PÎNĂ PANA SI IN CAT SA .  
+   
+    Ulterior, în 2013 deja era aplicat scenariul de decapitalizare intenţionată, regizată faţă de Banca de Economii. Era foarte evident că toată construcţia respectivă este parte a unui spectacol, a unui regizor care stă în spate”, declara fostul ministru al Finanţelor, Veaceslav Negruţa, în martie 2015.
+</textarea>
+
+<script>
+    
+    const txt = document.getElementById("TXT");
+    
+    function repl(src, c1, c2, f1, f2) {
+        let ch;
+        for(let i=1, L=src.length-1; i<L; i++) {
+            if((ch=src.charAt(i))==c1 || ch==c2)
+                src = src.substr(0,i) + (ch==c1?f1:f2) + src.substr(i+1);
+        }
+        return src;
+    }
+    
+    function Diac() {
+        var T = txt.value.trim();
+
+        let r = /[ŞşŢţ]/g; if(r.test(T))
+            T = T.replace(r, x=>{ return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); });
+
+        r = / {2,}/g; if(r.test(T)) T = T.replace(r, ' ');
+        r = /( |\t)*\n( |\t)*/g; if(r.test(T)) T = T.replace(r, '\n');
+        r = /( |\t)+(\.|\,|\)|;|\:|\%|\!|\?)/g; if(r.test(T)) T = T.replace(r, '$2');
+        r = /(\()( |\t)+/g; if(r.test(T)) T = T.replace(r, '$1');
+        r = /\n{3,}/g; if(r.test(T)) T = T.replace(r, '\n\n');
+        
+        r = /([a-zA-Z]+)(î|â)([a-zA-ZîÎăĂșȘțȚâÂ]+)/gi; if(r.test(T)) T = T.replace(r, (x, L1, L2, L3)=>{
+            let suf = L1.toLowerCase();
+
+            if(suf == 'pre' || suf=='re' || suf=='des') {
+                L3 = repl(L3, 'î', 'Î', 'â', 'Â');
+                return L1 + (L2=='â' || L2=='Â'?(L2=='â'?'î':'Î'):L2) + L3;
+            }
+            return L1 + (L2=='î' || L2=='Î'?(L2=='î'?'â':'Â'):L2) + L3;
+        });
+        
+        r = /p(â|a)n(ă|a)/gi; if(r.test(T)) T = T.replace(r, (x,L1,L2)=>{
+            if(L1=='a' || L1=='A') x = x.replace(L1, L1=='a'?'â':'Â');
+            if(L2=='a' || L2=='A') x = x.replace(L2, L2=='a'?'ă':'Ă');
+            return x;
+        });
+        
+        r = /\b(c|at)(a)(t|te|tea|ți)\b/gi; if(r.test(T)) T = T.replace(r, (x,L1,L2,L3)=>{
+            return L1 + (L2=='a'?'â':'Â') + L3;
+        });
+        
+        const Arr = ["(s)i", "ș", "(i)n", "î", "s(a)", "ă", "(i)ntre", "î", "dup(a)", "ă"];
+
+        for(let i=0, L=Arr.length; i<L; i+=2) {
+            r = new RegExp('\\b' + Arr[i] + '\\b', 'gi');
+            if(r.test(T)) T = T.replace(r, (x, lttr)=>{
+                return x.replace(lttr, (lttr>='a'?Arr[i+1]:Arr[i+1].toUpperCase()));
+            });
+        }
+
+        txt.value = T;
+        txt.select();
+        //txt.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+    }
+</script>
+</body>
+</html>

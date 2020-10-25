@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+    	input { font-size: 18pt; width: 40px; text-align: right; }
+      body { font-size: 18pt; font-family: sans; }
+      div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; margin-top: 10pt; }
+    </style>
+</head>
+
+<body onload='solve()'>
+
+<h2>Quadratic Function Solver:</h2>
+  
+  <input id="Coef_A" onChange="solve()">x<sup>2</sup>
+  <input id="Coef_B" value="+5" onChange="solve()">x
+  <input id="Coef_C" value="-14" onChange="solve()"> = 0
+  <div id='result'></div>
+  <canvas id="graph" width="600" height="600" style="border: 1px solid black;"></canvas>
+
+
+
+<script>
+
+  const Coef_A = document.getElementById('Coef_A'),
+  		  Coef_B = document.getElementById('Coef_B'),
+  		  Coef_C = document.getElementById('Coef_C'),
+  		  canvas = document.getElementById('graph');
+  var   xERROR = ''; //--- check input errors
+
+
+  
+/* =============== SOLVER ============= */
+
+function solve() {
+
+    /* ----- Get Coefficients ---- */
+
+	xERROR = '';
+    var a = getCoef(Coef_A, true); //--- 'true' means empty is allowed
+    var b = getCoef(Coef_B, false);
+    var c = getCoef(Coef_C, false);
+
+	if(xERROR != '') { writeResult("ERROR:" + xERROR); return; }
+    
+ 	/* ----- Get Solutions ---- */
+        
+    var solution1, solution2, isReal = true;
+      	qx = b*b - 4*a*c; //--- factor under the Square Root: real or complex
+
+	if(qx > 0) { //--- Equation has REAL roots/solutions
+    	solution1 = (-b + Math.sqrt(qx))/(2*a),
+    	solution2 = (-b - Math.sqrt(qx))/(2*a);
+	}
+    else { //--- Equation has COMPLEX roots/solutions
+      isReal = false;
+    	solution1 = "[complex]";
+      solution2 = (-b/(2*a)) + "±" + Math.sqrt(-qx)/(2*a) + 'i';
+	}
+    
+    // ---- Print the Results ----
+    
+    writeResult(`Coefficients: a=${a}, b=${b}, c=${c}\nSolutions: {${solution1}, ${solution2}}`);
+    
+    drawGraph(a, b, c, solution1, solution2, isReal);
+
+}
+
+function writeResult(txt) {
+	document.getElementById('result').innerText = txt;
+}
+
+function getCoef(elem, empt) {
+   var x = elem.value.trim();
+   if(x=='' && !empt) { xERROR += "\nCoefficient can't be empty."; return 0; }
+   if(x=='' || x=='+' || x=='-') return parseInt(x+'1');
+   else if(isNaN(x)) { xERROR += "\nCoefficient is not a number."; return 0; }
+   var res = parseInt(x);
+   if(res == 0) { xERROR += "\nCoefficient can't be zero."; return 0; }
+   if(!empt) elem.value = (res>0 ? "+" + res.toString(): res.toString());
+   return res;
+}
+
+
+
+/* ================ GRAPH FUNCTION ================== */
+
+function drawGraph(a, b, c, solution1, solution2, isReal) {
+
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  canvas.width = canvas.width;
+
+/* -------- Draw the Grid ---------- */
+
+var wid = parseInt(canvas.width), orig = wid/2, unit = 20;
+ctx.beginPath();
+ctx.strokeStyle = "#ddd";
+for(var x=unit; x<wid; x+=unit) {
+	ctx.moveTo(x, 0);
+  ctx.lineTo(x, wid);
+	ctx.moveTo(0, x);
+  ctx.lineTo(wid, x);
+}
+ctx.stroke();
+ctx.beginPath();
+ctx.strokeStyle = "#000";
+	ctx.moveTo(orig, 0);
+  ctx.lineTo(orig, wid);
+	ctx.moveTo(0, orig);
+  ctx.lineTo(wid, orig);
+  ctx.stroke();
+
+ctx.font = "10px Arial";
+var pnts = orig/unit-1;
+for(var X = -pnts; X<=pnts; X+=2) {
+	ctx.moveTo(orig + X*unit, orig-4);
+  ctx.lineTo(orig + X*unit, orig+4);
+	ctx.fillText(X,orig + X*unit + 4,orig+12);
+    
+  if(X != 0) {
+    	ctx.moveTo(orig-4, orig - X*unit);
+    	ctx.lineTo(orig+4, orig - X*unit);
+		ctx.fillText(X,orig+4, orig - X*unit + 8);
+  }
+}
+ctx.stroke();
+
+/* ------- Draw Graph -------- */
+
+//var a=1, b=-3, c=-4, solution1 = -1, solution2 = 4; //--- coefficients
+ctx.beginPath(); ctx.lineWidth = 3; ctx.strokeStyle = "#00c";
+
+for(var X=-pnts; X<=pnts; X+=1/unit) {
+	var Y = a*X*X + b*X + c;
+  if(X == -pnts) ctx.moveTo(orig + X*unit, orig - Y*unit);
+  ctx.lineTo(orig + X*unit, orig - Y*unit);
+}
+ctx.stroke();
+
+/* ------ Mark the Solutions/Roots ----- */
+
+if(isReal) {
+  ctx.beginPath();
+  ctx.strokeStyle = "#F00"; ctx.fillStyle = "#fff";
+  var radius = 4, X = solution1, Y = a*X*X + b*X + c;
+  ctx.arc(orig + X*unit,orig - Y*unit,radius, 0, 2*Math.PI);
+  ctx.fill(); ctx.stroke();
+  ctx.beginPath();
+  X = solution2, Y = a*X*X + b*X + c;
+  ctx.arc(orig + X*unit,orig - Y*unit,radius, 0, 2*Math.PI);
+  ctx.fill(); ctx.stroke();
+}
+
+ctx.font = "24px Arial"; ctx.fillStyle = "#c00";
+ctx.fillText('{' + solution1 + ', ' + solution2 + '}',10, 28);
+ctx.stroke();
+
+}
+</script>
+
+</body>
+</html>

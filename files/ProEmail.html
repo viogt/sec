@@ -1,6 +1,9 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0053)http://one-postviorel.rhcloud.com/files/ProEmail.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>* Email Proforma *</title>
 <style>
@@ -8,66 +11,42 @@
 		min-width:100px; min-height:100px; margin:4px;
 		background-color:#ffa; border:1px solid grey;
 	}
+	button { width: 50px; height: 20px; border: thin solid #000; margin: 2px 4px; outline:none; }
 </style>
-	
-<script type="text/javascript">
-function ImpData(culoare)
-{
-		var luni = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
-		var zileSaptamana = ["Luni","Marti","Miercuri","Joi","Vineri","Sambata","Duminica"];
-		var h, m, x, z,	L = new Date(); x = L.getDate(); x = (x<10?'0'+x:x); z = L.getDay()-1; if(z<0) z=6;
-		h = L.getHours(); if(h<10) h = '0'+h; m = L.getMinutes(); if(m<10) m = '0'+m; h = (culoare==''?'':('<SPAN style="color:' + culoare + '">')) + h + ':' + m + (culoare==''?'':'</SPAN>');
-		document.write(zileSaptamana[z] + ', ' + x + ' ' + luni[L.getMonth()] + ' ' + L.getFullYear() + ', ' + h);
-}
-var fntsNum = 4, arr = [];
-function Simplify(ob){
-  var ts, fnts = [{'name':'Serif!', 'value':'serif', 'size':'12pt'},
-    {'name':'Verdana', 'value':'Verdana,sans-serif', 'size':'10pt'},
-    {'name':'Calibri', 'value':'Calibri,sans-serif', 'size':'11pt'},
-    {'name':'Sans!', 'value':'sans-serif', 'size':'10pt'},
-    {'name':'None!', 'value':null, 'size':null}
-  ];
-  fntsNum++; if(fntsNum >= fnts.length) fntsNum = 0; ob.value = fnts[fntsNum].name;
-  ts = document.querySelectorAll('TD[style]');
-  
-  if(arr.length<1) for(var i=0, TL = ts.length; i<TL; i++) arr.push(ts[i].style.fontFamily + '/' + ts[i].style.fontSize);
-
-  if(fnts[fntsNum].name == 'None!') for(var i=0, TL = ts.length; i<TL; i++)
-	{ var sp = arr[i].split('/'); ts[i].style.fontFamily = sp[0]; ts[i].style.fontSize = sp[1]; }
-  else for(var i=0, TL = ts.length; i<TL; i++)
-	{ ts[i].style.fontFamily = fnts[fntsNum].value; ts[i].style.fontSize = fnts[fntsNum].size; }
-	
-	for(var i=0, ts = document.getElementsByTagName("TABLE"), TL = ts.length; i<TL; i++)
-	{ if('width' in ts[i]) ts[i].width = null; if('style' in ts[i]) ts[i].style.width = null; }
-}
-function xPad(v){
-	var ts = document.getElementsByTagName("TABLE"); v+='px';
-	for(var i in ts) ts[i].cellPadding = v;
-}
-
-function grabClip(f) {
-	const x = document.getElementById('basic'),
-    	s = x.firstChild.rows[0].cells[0].style;
-	var bg, fg, bd;
-    switch(f) {
-    	case 1: bg='#eee'; fg='#333'; bd='#ccc'; break;
-    	case 2: bg='#ffa'; fg='#330'; bd='#dd6'; break;
-    	case 3: bg='#eef'; fg='#004'; bd='#bcf'; break;
-    	case 4: bg='#dfd'; fg='#040'; bd='#aea'; break;
-    	case 5: bg='#fee'; fg='#400'; bd='#faa'; break;
-    	case 6: bg='#444'; fg='#ddd'; bd='#000'; break;
-    }
-    s.backgroundColor = bg;
-    s.color = fg; s.borderLeft = '24pt solid ' + bd;
-    x.style.display = ''; x.focus();
-    document.execCommand('selectAll', false, '');
-    document.execCommand('copy', false, '');
-    x.style.display = 'none';
-}
-</script>
-
 </head>
 <body style="font:normal 1em Arial;">
+
+<button onclick="arrange(0)" style="background-color:#f60;"></button>
+<button onclick="arrange(1)" style="background-color:#06c;"></button>
+<button onclick="arrange(2)" style="background-color:#093;"></button>
+<button onclick="arrange(3)" style="background-color:#b3f;"></button>
+<button onclick="arrange(4)" style="background-color:#369;"></button>
+<button onclick="arrange(5)" style="background-color:#c90;"></button>
+<button onclick="arrange(6)" style="background-color:#c69;"></button>
+<button onclick="arrange(7)" style="background-color:#aaa;"></button>
+
+<div id="board" style="border:1px dashed grey; padding:24px;" onclick="copyThat()">
+<table id="tblClip" cellpadding="0" cellspacing="0" border="0" width="100%" style="font:normal 15px sans-serif;background-color:#ccc;">
+  <tr>
+    <td style="width:10%;"></td>
+    <td style="width:80%;background-color:#444;color:#fff;padding:6%;">
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    </td>
+    <td style="width:10%;"></td>
+  </tr>
+  <tr>
+    <td style="width:10%;"></td>
+    <td style="width:80%;background-color:#f0f0f0;padding:6%;">
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.<br><br>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    </td>
+    <td style="width:10%;"></td>
+  </tr>
+</table>
+</div>
+<div id='clip' contentEditable='true' style='display:none'></div>
+
+
 
 <br>✔✘✓✅☻☺➨▶▼▲€★∎✎▉⚑📎
 . <span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTM5jWRgMAAAAVdEVYdENyZWF0aW9uIFRpbWUAMi8xNy8wOCCcqlgAAAQRdEVYdFhNTDpjb20uYWRvYmUueG1wADw/eHBhY2tldCBiZWdpbj0iICAgIiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDQuMS1jMDM0IDQ2LjI3Mjk3NiwgU2F0IEphbiAyNyAyMDA3IDIyOjExOjQxICAgICAgICAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp4YXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iPgogICAgICAgICA8eGFwOkNyZWF0b3JUb29sPkFkb2JlIEZpcmV3b3JrcyBDUzM8L3hhcDpDcmVhdG9yVG9vbD4KICAgICAgICAgPHhhcDpDcmVhdGVEYXRlPjIwMDgtMDItMTdUMDI6MzY6NDVaPC94YXA6Q3JlYXRlRGF0ZT4KICAgICAgICAgPHhhcDpNb2RpZnlEYXRlPjIwMDktMDUtMjVUMDU6MzE6NDJaPC94YXA6TW9kaWZ5RGF0ZT4KICAgICAgPC9yZGY6RGVzY3JpcHRpb24+CiAgICAgIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiCiAgICAgICAgICAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyI+CiAgICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2UvcG5nPC9kYzpmb3JtYXQ+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAQDy8MAAADOSURBVDiNxZMtDsJAEIXf9BIMBoNBgeAQGLgCR+ohEFxgMQiOgICEBIPBUFKDwSB4iKbd7g+BUsEkI3Z3vrczO7NCEm0saUUDkKaAn3HjDLqr5Pea1QgPD1CNkGSQzUd4c0flpUgQFFNVI1zeUHk0AzXCNC8OfTjNUXkdJll0QY1wPrbcYivIZpTY/mX6dDon9ZsmQxu83gv8dTaj+CU6amqEo0H4BrtjAQPhHASDpEbY6dug68nCXwmUIugROLtwTOCt+d2oCzhd+PtvfAG76Zui5ezZQwAAAABJRU5ErkJggg=="></span>
@@ -263,96 +242,107 @@ Textul...</td></tr></tbody></table>
 	</tbody></table></td></tr>
 	<tr><td style="padding-left:16;padding-bottom:24">Final...</td></tr>
 </tbody></table>
-<br>
-<!--
-<IMG src="ProEmailPics/accept1.png" /><IMG src="ProEmailPics/accept2.png" /><IMG src="ProEmailPics/accept3.png" />
-<IMG src="ProEmailPics/arrow.png" /><IMG src="ProEmailPics/bulb.png" /><IMG src="ProEmailPics/clock1.png" />
-<IMG src="ProEmailPics/clock2.png" /><IMG src="ProEmailPics/coffeecup.png" /><IMG src="ProEmailPics/computer.png" />
-<IMG src="ProEmailPics/content.png" /><IMG src="ProEmailPics/find.png" /><IMG src="ProEmailPics/globe.png" />
-<IMG src="ProEmailPics/Help_Circle_Blue.png" /><IMG src="ProEmailPics/Hourglass.png" /><IMG src="ProEmailPics/Info_Box_Blue.png" />
-<IMG src="ProEmailPics/lightbulb.png" /><IMG src="ProEmailPics/linux.png" /><IMG src="ProEmailPics/lock_open.png" />
-<IMG src="ProEmailPics/look.png" /><IMG src="ProEmailPics/mail_write.png" /><IMG src="ProEmailPics/money.png" />
-<IMG src="ProEmailPics/newspaper.png" /><IMG src="ProEmailPics/ok.png" /><IMG src="ProEmailPics/project.png" />
-<IMG src="ProEmailPics/question.png" /><IMG src="ProEmailPics/questionmark.png" /><IMG src="ProEmailPics/report.png" />
-<IMG src="ProEmailPics/report1.png" /><IMG src="ProEmailPics/sad.png" /><IMG src="ProEmailPics/smile.png" />
-<IMG src="ProEmailPics/tabs.png" /><IMG src="ProEmailPics/warning.png" /><IMG src="ProEmailPics/write.png" />
-<BR><BR>
--->
 
-<!-- --------------- TABLE ALBASTRU ----------------------------------
-<table cellpadding="4" cellspacing="10" width="700px" style="color: #3D545F; font:normal 10pt Calibri,Verdana; background-color: #B9CAD2">
-<tr>
-	<td align="right" valign="top" width='20px'></td>
-	<td valign="top" align="center" width="310px" style="font:bold 14pt Calibri,Arial;color:#E7ECEF;border-left: 1px solid #E7ECEF; border-right: 1px solid #8AA4B3; border-top: 1px solid #E7ECEF; border-bottom: 1px solid #8AA4B3;">Questions:</td>
-	<td valign="top" align="center" width="310px" style="font:bold 14pt Calibri,Arial;color:#E7ECEF;border-left: 1px solid #E7ECEF; border-right: 1px solid #8AA4B3; border-top: 1px solid #E7ECEF; border-bottom: 1px solid #8AA4B3;">Answers:</td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'>(1)</td>
-	<td valign="top" width="310px">...</td>
-	<td valign="top" width="310px" style="background-color:#E7ECEF; border-right: 1px solid #E7ECEF; border-left: 1px solid #8AA4B3; border-bottom: 1px solid #E7ECEF; border-top: 1px solid #8AA4B3;">...</td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'>(2)</td>
-	<td valign="top" width="310px">...</td>
-	<td valign="top" width="310px" style="background-color:#E7ECEF; border-right: 1px solid #E7ECEF; border-left: 1px solid #8AA4B3; border-bottom: 1px solid #E7ECEF; border-top: 1px solid #8AA4B3;">...</td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'>(3)</td>
-	<td valign="top" width="310px">...</td>
-	<td valign="top" width="310px" style="background-color:#E7ECEF; border-right: 1px solid #E7ECEF; border-left: 1px solid #8AA4B3; border-bottom: 1px solid #E7ECEF; border-top: 1px solid #8AA4B3;">...</td>
-</tr>
-</table>
-<br>
-<!-- --------------- TABLE GRI/ALB-NEGRU ----------------------------------
-<table cellpadding="6" cellspacing="14" width="720px" bgcolor='#EEEEEE' style="font:normal 10pt Calibri,Arial;color:#000000">
-<tr>
-	<td align="right" valign="top" width='20px'></td>
-	<td valign="top" align="center" width="300px" style="background-color:#DDDDDD;padding:2px;font:bold 14pt Calibri,Arial;color:#aaaaaa;border-right:1px solid #BBBBBB;border-bottom:1px solid #BBBBBB;">Questions:</td>
-	<td valign="top" align="center" width="300px" style="background-color:#DDDDDD;padding:2px;font:bold 14pt Calibri,Arial;color:#aaaaaa;border-right:1px solid #BBBBBB;border-bottom:1px solid #BBBBBB;">Answers:</td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'>(a)</td>
-	<td valign="top" width="300px">...</td>
-	<td valign="top" width="300px" style="background-color:#FFFFFF;border-left:1px solid #CCCCCC;border-top:1px solid #CCCCCC;">...</td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'>(b)</td>
-	<td valign="top" width="300px">...</td>
-	<td valign="top" width="300px" style="background-color:#FFFFFF;border-left:1px solid #CCCCCC;border-top:1px solid #CCCCCC;">...</td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'>(c)</td>
-	<td valign="top" width="300px">...</td>
-	<td valign="top" width="300px" style="background-color:#FFFFFF;border-left:1px solid #CCCCCC;border-top:1px solid #CCCCCC;">...</td>
-</tr>
-</table>
-<br>
+<script>
 
-<!-- --------------- TABLE GALBEN ----------------------------------
-<table cellpadding="0" cellspacing="0" width="760px" bgcolor='#FFFEAA' style="font:normal 11pt Calibri,Arial;color:#BB8811">
-<tr>
-	<td align="right" valign="top" width='20px'></td>
-	<td valign="top" align="center" width="340px" style="font:bold 14pt Calibri,Arial;color:#EEDD44;">Q u e s t i o n s:</DIV></td>
-	<td valign="top" align="center" width="340px" bgColor="#FFFF55" style="font:bold 14pt Calibri,Arial;color:#EEDD44;">A n s w e r s:</DIV></td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'><p style="padding-top:18px;padding-right:4px">[A]</p></td>
-	<td valign="top" width="340px"><p style="padding-top:18px">...</p></td>
-	<td valign="top" width="340px" style="padding:10px" bgColor="#FFFF55"><p style="padding:8px;background-color:#FFFFCC;border: 1px solid #DDDDCC;">...</p></td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'><p style="padding-top:18px;padding-right:4px">[B]</p></td>
-	<td valign="top" width="340px"><p style="padding-top:18px">...</p></td>
-	<td valign="top" width="340px" style="padding:10px" bgColor="#FFFF55"><p style="padding:8px;background-color:#FFFFCC;border: 1px solid #DDDDCC;">...</p></td>
-</tr>
-<tr>
-	<td align="right" valign="top" width='20px'><p style="padding-top:18px;padding-right:4px">[C]</p></td>
-	<td valign="top" width="340px"><p style="padding-top:18px">...</p></td>
-	<td valign="top" width="340px" style="padding:10px" bgColor="#FFFF55"><p style="padding:8px;background-color:#FFFFCC;border: 1px solid #DDDDCC;">...</p></td>
-</tr>
-</table>
-<br>
--->
+  const cls = [
+{ margin: "#fff0e6", head: "#f60", headText: "#fff", body: "#fff", bodyText: "#620"},
+{ margin: "#e6f0ff", head: "#06c", headText: "#fff", body: "#fff", bodyText: "#013"},
+{ margin: "#e6ffee", head: "#093", headText: "#fff", body: "#fff", bodyText: "#031"},
+{ margin: "#eee6ff", head: "#b3f", headText: "#fff", body: "#fff", bodyText: "#103"},
+{ margin: "#d9e6f2", head: "#369", headText: "#fff", body: "#fff", bodyText: "#234"},
+{ margin: "#fff2cc", head: "#c90", headText: "#fff", body: "#fff", bodyText: "#330"},
+{ margin: "#f2d9e6", head: "#c69", headText: "#fff", body: "#fff", bodyText: "#413"},
+{ margin: "#eee", head: "#666", headText: "#fff", body: "#fff", bodyText: "#333"}
+  ];
+
+  const _dv = document.getElementById("board"),
+        _cl = document.getElementById('clip'),
+        _tb = document.getElementById('tblClip');
+
+  function arrange(ix) {
+      _tb.style.backgroundColor = cls[ix].margin;
+    let box = _tb.rows[0].cells[1].style;
+      box.backgroundColor = cls[ix].head;
+      box.color = cls[ix].headText;
+    box = _tb.rows[1].cells[1].style;
+      box.backgroundColor = cls[ix].body;
+      box.color = cls[ix].bodyText;
+  }
+  
+  
+  function copyThat() {
+    _dv.style.backgroundColor = '#f00';
+    setTimeout(()=>{ _dv.style.backgroundColor = '';},400);
+    var hd = _tb.rows[0].cells[1].innerText,
+        bd = _tb.rows[1].cells[1].innerText;
+        _tb.rows[0].cells[1].innerText = '.';
+        _tb.rows[1].cells[1].innerText = '.';
+    const _cl = document.getElementById('clip');
+    _cl.style.display = '';
+    _cl.innerHTML = _dv.innerHTML;
+    _cl.focus();
+    document.execCommand('selectAll', false, '');
+    document.execCommand('copy', false, '');
+    _cl.style.display = 'none';
+        _tb.rows[0].cells[1].innerText = hd;
+        _tb.rows[1].cells[1].innerText = bd;
+  }
 
 
-</body></html>
+function ImpData(culoare)
+{
+		var luni = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
+		var zileSaptamana = ["Luni","Marti","Miercuri","Joi","Vineri","Sambata","Duminica"];
+		var h, m, x, z,	L = new Date(); x = L.getDate(); x = (x<10?'0'+x:x); z = L.getDay()-1; if(z<0) z=6;
+		h = L.getHours(); if(h<10) h = '0'+h; m = L.getMinutes(); if(m<10) m = '0'+m; h = (culoare==''?'':('<SPAN style="color:' + culoare + '">')) + h + ':' + m + (culoare==''?'':'</SPAN>');
+		document.write(zileSaptamana[z] + ', ' + x + ' ' + luni[L.getMonth()] + ' ' + L.getFullYear() + ', ' + h);
+}
+var fntsNum = 4, arr = [];
+function Simplify(ob){
+  var ts, fnts = [{'name':'Serif!', 'value':'serif', 'size':'12pt'},
+    {'name':'Verdana', 'value':'Verdana,sans-serif', 'size':'10pt'},
+    {'name':'Calibri', 'value':'Calibri,sans-serif', 'size':'11pt'},
+    {'name':'Sans!', 'value':'sans-serif', 'size':'10pt'},
+    {'name':'None!', 'value':null, 'size':null}
+  ];
+  fntsNum++; if(fntsNum >= fnts.length) fntsNum = 0; ob.value = fnts[fntsNum].name;
+  ts = document.querySelectorAll('TD[style]');
+  
+  if(arr.length<1) for(var i=0, TL = ts.length; i<TL; i++) arr.push(ts[i].style.fontFamily + '/' + ts[i].style.fontSize);
+
+  if(fnts[fntsNum].name == 'None!') for(var i=0, TL = ts.length; i<TL; i++)
+	{ var sp = arr[i].split('/'); ts[i].style.fontFamily = sp[0]; ts[i].style.fontSize = sp[1]; }
+  else for(var i=0, TL = ts.length; i<TL; i++)
+	{ ts[i].style.fontFamily = fnts[fntsNum].value; ts[i].style.fontSize = fnts[fntsNum].size; }
+	
+	for(var i=0, ts = document.getElementsByTagName("TABLE"), TL = ts.length; i<TL; i++)
+	{ if('width' in ts[i]) ts[i].width = null; if('style' in ts[i]) ts[i].style.width = null; }
+}
+function xPad(v){
+	var ts = document.getElementsByTagName("TABLE"); v+='px';
+	for(var i in ts) ts[i].cellPadding = v;
+}
+
+function grabClip(f) {
+	const x = document.getElementById('basic'),
+    	s = x.firstChild.rows[0].cells[0].style;
+	var bg, fg, bd;
+    switch(f) {
+    	case 1: bg='#eee'; fg='#333'; bd='#ccc'; break;
+    	case 2: bg='#ffa'; fg='#330'; bd='#dd6'; break;
+    	case 3: bg='#eef'; fg='#004'; bd='#bcf'; break;
+    	case 4: bg='#dfd'; fg='#040'; bd='#aea'; break;
+    	case 5: bg='#fee'; fg='#400'; bd='#faa'; break;
+    	case 6: bg='#444'; fg='#ddd'; bd='#000'; break;
+    }
+    s.backgroundColor = bg;
+    s.color = fg; s.borderLeft = '24pt solid ' + bd;
+    x.style.display = ''; x.focus();
+    document.execCommand('selectAll', false, '');
+    document.execCommand('copy', false, '');
+    x.style.display = 'none';
+}
+</script>
+</body>
+</html>

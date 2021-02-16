@@ -18,7 +18,11 @@
   <div id='result'></div>
   <canvas id="graph" width="600" height="600" style="border: 1px solid black;"></canvas>
 
-
+<br>
+<input type="button" value="Generate " onclick="generateEquations()" style="width:140px"/>
+<input type="text" id="nEqu" value="10" style="width:40px" /> random equations
+<input id="withSolutions" type="checkbox" value=false/> with factors and solutions
+<div id='outEqu' style='font:normal 11pt Arial;line-height: 2;'></div>
 
 <script>
 
@@ -157,6 +161,82 @@ ctx.fillText('{' + solution1 + ', ' + solution2 + '}',10, 28);
 ctx.stroke();
 
 }
+
+/* ==================== Generate Quadratic ================== */
+
+function isPrime(x) { if(x<0) x=-x; return (x == 4 || x == 6 || x == 8 || x == 9 || x == 10)?false:true; }
+function divis(lmt,ac,a) {
+	if(lmt<0) lmt = -lmt;
+	for(var i=2; i<lmt; i++)
+    if(i != a && ac % i == 0) return i;
+    return 0;
+}
+function fract(x,y) {
+	let sgn = (x*y < 0)?'-':'', intr = 0, ad = '',  cul = "red";
+	if(x%y==0) return ` <font color="${cul}">${x/y}</font>`;
+    
+	x = Math.abs(x); y = Math.abs(y);
+	const primes = [2,3,5,7,11,13,17];
+	for(var p of primes) if(x%p==0 && y%p==0) { x /= p; y /= p; }
+
+if(x > y) {
+	intr = Math.floor(x/y);
+    ad = ` <font color="${cul}">${sgn}${intr}<sup>${x-intr*y}</sup>/<sub>${y}</sub></font> <span style="font-size:small;color:grey;">(=${sgn}<sup>${x}</sup>/<sub>${y}</sub>)</span>`;
+    }
+else ad = ` <font color="${cul}">${sgn}<sup>${x}</sup>/<sub>${y}</sub></font>`;
+return ad;
+}
+
+function getRandEquation(withSol) {
+
+var rng = 20, hlf = Math.floor(rng/2), a, b, c, ac, f1, f2, eq = "x²";
+while(true){
+	a = Math.floor(Math.random()*rng) - hlf;
+	c = Math.floor(Math.random()*rng) - hlf;
+    if(a==0 || c==0) continue;
+    ac = a*c;
+    if(isPrime(a) && isPrime(c)) { f1=ac; f2=1; b = f1+f2; break; }
+	
+    f1 = divis(ac,ac,a);
+    if(f1 == 0) { alert("Schucher!"); break; }
+    f2 = ac/f1;
+    b = f1+f2;
+    if(b != 0) break;
+}
+
+if(a==-1) eq = '-' + eq;
+else if(a!=1) eq = a + eq;
+
+if(b==-1) eq += '-x';
+else if(b==1) eq += '+x';
+else if(b>0) eq += ('+' + b + 'x');
+else eq += (b+'x');
+
+if(c>0) eq += ('+'+c);
+else eq += c;
+
+eq = `<font color="blue">${eq} = 0</font>`;
+
+var cul = 'green';
+if(withSol) return eq + ` ➜ Factors: {<font color="${cul}">${(f1)}</font>, <font color="${cul}">${f2}</font>}, Solutions: {${fract(-f1,a)}, ${fract(-f2,a)}}`;
+return eq;
+}
+
+
+const outEqu = document.getElementById('outEqu'),
+withSolutions = document.getElementById('withSolutions'),
+nEqu = document.getElementById('nEqu');
+
+function generateEquations() {
+	var n = parseInt(nEqu.value);
+    if(isNaN(n) || n<1) return;
+    var wSol = withSolutions.checked;
+    
+    var res = '', _cul = "blue";
+	for(var i=0; i<n; i++)	res += `${i+1}. ${getRandEquation(wSol)}<br>`;
+	outEqu.innerHTML = res;
+}
+
 </script>
 
 </body>

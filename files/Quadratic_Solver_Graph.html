@@ -35,8 +35,7 @@ div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; m
   <div id='result'></div>
   <canvas id="graph" width="600" height="600" style="border: 1px solid black;"></canvas>
 
-<div class="Pnl">
-<div onclick="generateEquations()">Generate</div> <div id="nEqu" contentEditable>10</div> random equations <div onclick="tggle(this)">without</div> factors and solutions.</div>
+<div class="Pnl"><div onclick="generateEquations(getRandEquation)">Generate</div> <div id="nEqu" contentEditable>10</div> random equations <div onclick="tggle(this)">without</div> factors and solutions <div onclick="generateEquations(getByCompletion)">or by completion</div>.</div>
 <table id='outEqu' class="equations"></table>
 
 <script>
@@ -179,7 +178,6 @@ ctx.stroke();
 
 /* ==================== Generate Quadratic ================== */
 
-
 function isPrime(x) { if(x<0) x=-x; return (x == 4 || x == 6 || x == 8 || x == 9 || x == 10)?false:true; }
 function divis(lmt,ac,a) {
 	if(lmt<0) lmt = -lmt;
@@ -231,11 +229,36 @@ function getRandEquation() {
 }
 
 
+function getByCompletion() {
+  var rng = 10, hlf = Math.floor(rng/2), a, b, c, eq = "x²", coef = [];
+  while(coef.length < 4) {
+    var cf = Math.floor(Math.random()*rng) - hlf;
+    if(cf == 0 || coef.includes(cf)) continue;
+    coef.push(cf);
+  }
+  a = coef[0]*coef[2];
+  b = coef[0]*coef[3] + coef[1]*coef[2];
+  c = coef[1]*coef[3];
+
+  if(a==-1) eq = '-' + eq;
+  else if(a!=1) eq = a + eq;
+  
+  if(b==-1) eq += '-x';
+  else if(b==1) eq += '+x';
+  else if(b>0) eq += ('+' + b + 'x');
+  else eq += (b+'x');
+  
+  if(c>0) eq += ('+'+c);
+  else eq += c;
+
+  return [eq+" = 0", '{'+ fract(coef[1],coef[0]) +', '+ fract(coef[3], coef[2]) +'}', '{'+ fract(-coef[1],coef[0]) +', '+ fract(-coef[3], coef[2]) +'}'];
+}
+
 const outEqu = document.getElementById('outEqu'),
 nEqu = document.getElementById('nEqu');
 var wSol = false;
 
-function generateEquations() {
+function generateEquations(fnc) {
 	var n = parseInt(nEqu.innerText), R, C, sol;
   if(isNaN(n) || n<1) return;
 
@@ -252,20 +275,18 @@ function generateEquations() {
 
   for(var i=0; i<n; i++) {
     R = T.insertRow(-1);
-    sol = getRandEquation();
+    sol = fnc();
 
     R.insertCell(-1).innerText = (i+1)+'.';
     R.insertCell(-1).innerText = sol[0];
     if(wSol) {
-      R.insertCell(-1).innerText =  sol[1];
+      R.insertCell(-1).innerHTML =  sol[1];
       R.insertCell(-1).innerHTML = sol[2];
     }
   }
 }
 
 function tggle(el) { el.innerText = (el.innerText == 'with')?'without':'with'; wSol = !wSol; }
-
-</script>
 
 </body>
 </html>

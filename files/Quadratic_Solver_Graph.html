@@ -3,7 +3,7 @@
 <head>
 <style>
 input { font-size: 18pt; width: 40px; text-align: right; }
-body { font-size: 18pt; font-family: sans; }
+body { font-size: 18pt; font-family: Arial, sans-serif; }
 div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; margin-top: 10pt; }
 .equations td { padding: 2px 10px; }
 .equations td:nth-child(3) { background-color: #eef; }
@@ -22,11 +22,12 @@ div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; m
   <div id='result'></div>
   <canvas id="graph" width="600" height="600" style="border: 1px solid black;"></canvas>
 
-<br>
+<div>
 <input type="button" value="Generate " onclick="generateEquations()" style="width:80px"/>
 <input type="text" id="nEqu" value="10" style="width:40px;text-align:center;" /> random equations
 <input id="withSolutions" type="checkbox" value=false/> with factors and solutions
 <table id='outEqu' class="equations"></table>
+</div>
 
 <script>
 

@@ -6,9 +6,22 @@ input { font-size: 18pt; width: 40px; text-align: right; }
 body { font-size: 18pt; font-family: Arial, sans-serif; }
 div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; margin-top: 10pt; }
 .equations td { padding: 2px 10px; }
-.equations td:nth-child(3) { background-color: #eef; }
+.equations td:nth-child(1) { border-right: thin solid orange; text-align: right; }
+.equations td:nth-child(3) { border-left: thin solid orange; }
 .equations { border-collapse: collapse; font: normal 12pt Arial, sans-serif; }
+.equations tr:nth-child(odd) { background-color: #eef; }
 .equations tr:hover { cursor: pointer; background-color: lightgrey; }
+
+.Pnl { font: normal 12pt sans-serif; margin: 12px 0; }
+.Pnl div {
+	padding: 0 6px;
+  border: thin solid lightgrey;
+  border-radius: 4px;
+  display: inline;
+  outline: none;
+}
+.Pnl div:hover { cursor: pointer; background-color: #ff0; }
+
 </style>
 </head>
 
@@ -22,11 +35,8 @@ div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; m
   <div id='result'></div>
   <canvas id="graph" width="600" height="600" style="border: 1px solid black;"></canvas>
 
-<div style="font-size:12pt">
-<input type="button" value="Generate " onclick="generateEquations()" style="width:120px"/>
-<input type="text" id="nEqu" value="10" style="width:40px;text-align:center;" /> random equations
-<input id="withSolutions" type="checkbox" value=false/> with factors and solutions
-</div>
+<div class="Pnl">
+<div onclick="generateEquations()">Generate</div> <div id="nEqu" contentEditable>10</div> random equations <div onclick="tggle(this)">without</div> factors and solutions.</div>
 <table id='outEqu' class="equations"></table>
 
 <script>
@@ -169,6 +179,7 @@ ctx.stroke();
 
 /* ==================== Generate Quadratic ================== */
 
+
 function isPrime(x) { if(x<0) x=-x; return (x == 4 || x == 6 || x == 8 || x == 9 || x == 10)?false:true; }
 function divis(lmt,ac,a) {
 	if(lmt<0) lmt = -lmt;
@@ -183,7 +194,7 @@ function fract(x,y) {
 	const primes = [2,3,5,7,11,13,17];
 	for(var p of primes) if(x%p==0 && y%p==0) { x /= p; y /= p; }
 
-  if(x > y) return `${sgn}${intr = Math.floor(x/y)}<sup>${x-intr*y}</sup>/<sub>${y}</sub><span style="font-size:small;color:grey;">(=${sgn}<sup>${x}</sup>/<sub>${y}</sub>)</span>`;
+  if(x > y) return `${sgn}${intr = Math.floor(x/y)}<sup>${x-intr*y}</sup>/<sub>${y}</sub><span style="font-size:small;color:#88c;">(=${sgn}<sup>${x}</sup>/<sub>${y}</sub>)</span>`;
 
 return `${sgn}<sup>${x}</sup>/<sub>${y}</sub>`;
 }
@@ -221,11 +232,11 @@ function getRandEquation() {
 
 
 const outEqu = document.getElementById('outEqu'),
-withSolutions = document.getElementById('withSolutions'),
 nEqu = document.getElementById('nEqu');
+var wSol = false;
 
 function generateEquations() {
-	var n = parseInt(nEqu.value), wSol = withSolutions.checked, R, C, sol;
+	var n = parseInt(nEqu.innerText), R, C, sol;
   if(isNaN(n) || n<1) return;
 
   const T = outEqu;
@@ -251,6 +262,8 @@ function generateEquations() {
     }
   }
 }
+
+function tggle(el) { el.innerText = (el.innerText == 'with')?'without':'with'; wSol = !wSol; }
 
 </script>
 

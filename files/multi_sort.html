@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Multi-Sort</title>
+    <style>
+table { border-collapse: collapse; font: normal 10pt sans-serif; }
+td { vertical-align: top; padding: 2px; }
+.highlight tr:hover { cursor: pointer; background-color: #eef; }
+.panel {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 300px;
+  height: 200px;
+  overflow: auto;
+  font: normal 10pt sans-serif;
+  word-break: normal;
+  border: 1px solid #bce;
+  white-space: nowrap;
+  padding: 10px;
+  border-radius: 4px;
+}
+.entete {
+  display: block;
+  box-sizing: border-box;
+  width: 600px;
+  font:normal 10pt sans-serif;
+  padding: 10px;
+}
+#sels { display: inline-block; border: 1px solid #bce; font: normal 10pt sans-serif; color: darkred; width: 204px; height: 20px; padding: 1px 4px; border-radius: 4px; }
+input[type=button] { width: 80px; }
+
+input[type=radio] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+input[type=radio] + label:before { content: "🟢"; }
+input[type=radio]:checked + label:before { content: "🔴"; }
+    </style>
+  </head>
+  <body>
+
+<input type="radio" checked="checked" name="radio"> <label>One</label>
+<input type="radio" name="radio"> <label>Two</label>
+<input type="radio" name="radio"> <label>Three</label>
+<input type="radio" name="radio"> <label>Four</label>
+
+  <div class="entete">
+    <input type="button" onclick="genData()" value="Generate"> data of <input type="text" id="genData" value="10" style="width:30px; text-align:center;"> records: (link to <a href="mat.html">materialize</a>)
+  </div>
+  
+  <div id='origLeft' class='panel'></div>
+  <div id='origRight' class='panel'></div>
+
+    <table><tr>
+      <td>
+        <select id='opts' size='4' onchange="addToSels()">
+          <option>id</option>
+          <option>name</option>
+          <option>code</option>
+          <option>date</option>
+        </select>
+      </td>
+      <td>▶</td>
+      <td>
+        <div id='sels' size='4'></div><br>
+        <input type="button" value="clear" onclick="clearSels()">
+      </td>
+      <td>
+        <input type="radio" name="asc" checked onclick="checkAsc()" value="1"> Ascending
+        <input type="radio" name="asc" onclick="checkAsc()" value="-1"> Descending<br>
+        <input type="button" value="sort" onclick="goSort()">
+      </td>
+    </tr></table>
+
+    <div id='sortLeft' class='panel'></div>
+    <div id='sortRight' class='panel'></div>
+
+    <script>
+const origLeft = document.getElementById("origLeft"),
+      origRight = document.getElementById("origRight"),
+      sortLeft = document.getElementById("sortLeft"),
+      sortRight = document.getElementById("sortRight"),
+      opts = document.getElementById("opts"),
+      sels = document.getElementById("sels");
+var _ASC = 1;
+
+/*------------ Prototype Array --------------*/
+
+Array.prototype.pickRandom = function() {
+  return this[Math.floor(Math.random()*this.length)];
+}
+
+Array.prototype.toTable = function(whereTo) {
+  var T = document.createElement('table'), R, C;
+  T.className = 'highlight';
+  R = T.insertRow(-1), HD = this[0];
+  for(let key in HD) if(HD.hasOwnProperty(key)) {
+    C = document.createElement('th');
+    C.innerText = key.toUpperCase();
+    R.appendChild(C);
+  }
+  for(var el of this) {
+    R = T.insertRow(-1);
+    for(let key in el) if(el.hasOwnProperty(key))
+      R.insertCell(-1).innerText = el[key];
+  }
+  whereTo.innerHTML = '';
+  whereTo.appendChild(T);
+}
+
+Array.prototype.toText = function(whereTo) {
+  var Res = 'Data = [\n';
+  for(var el of this) {
+    Res += JSON.stringify(el) + '\n';
+  }
+  whereTo.innerText = Res+'];\n';
+}
+
+Array.prototype.SORT = function(flds, asc) {
+  var fldsLen = flds.length, fl;
+  this.sort((a,b)=>{
+    for(var i=0; i<fldsLen; i++) {
+      fl = flds[i];
+      if(a[fl] != b[fl]) return (a[fl] > b[fl] ? 1:-1)*asc;
+    }
+    return 0;
+  });
+}
+
+var SELS = [];
+function addToSels() {
+  var txt = opts.options[opts.selectedIndex].text;
+  if(SELS.includes(txt)) return;
+  SELS.push(txt);
+  sels.innerText = SELS.join("➜");
+}
+
+function clearSels() {
+  sels.innerHTML = '';
+  opts.selectedIndex = -1;
+  sortLeft.innerHTML = '';
+  sortRight.innerHTML = '';
+  SELS = [];
+}
+
+function checkAsc() {
+  var els = document.getElementsByName('asc');
+  for(var el of els) if(el.checked) { _ASC = 1*el.value; return; }
+}
+
+function goSort() {
+  if(SELS.length < 1 || J.length < 1) return;
+  J.SORT(SELS, _ASC);
+  J.toTable(sortLeft);
+  J.toText(sortRight);
+}
+
+var names = ['Viorel','Darius','Razvan','Diana','Cabron'];
+var codes = ['09333','80404','91109'];
+var dates = ['2020-01-20','2020-01-21','2020-01-22','2020-01-23'];
+
+Array.prototype.generate = function(size) {
+  for(var i=0; i<size; i++)
+  this.push({id:i+100, name:names.pickRandom(), code:codes.pickRandom(), date:dates.pickRandom()});
+}
+
+var J = [];
+function genData() {
+  var size = document.getElementById("genData").value;
+  if(isNaN(size) || size*1 < 1) return;
+  J = [];
+  J.generate(size);
+  J.toTable(origLeft);
+  J.toText(origRight);
+}
+    </script>
+  </body>
+</html>

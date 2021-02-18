@@ -38,6 +38,15 @@ input[type=radio] {
 }
 input[type=radio] + label:before { content: "🟢"; }
 input[type=radio]:checked + label:before { content: "🔴"; }
+.tggle {
+  display: inline;
+  background-color: #fff;
+  border: 1px solid #bce;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font: normal 11pt Arial, sans-serif;
+}
+.tggle:hover { cursor:pointer; background-color: yellow; }
     </style>
   </head>
   <body>
@@ -69,9 +78,8 @@ input[type=radio]:checked + label:before { content: "🔴"; }
         <input type="button" value="clear" onclick="clearSels()">
       </td>
       <td>
-        <input type="radio" name="asc" checked onclick="checkAsc()" value="1"> Ascending
-        <input type="radio" name="asc" onclick="checkAsc()" value="-1"> Descending<br>
         <input type="button" value="sort" onclick="goSort()">
+        <div class='tggle' onclick="checkAsc(this)">Ascending &darr;</div>
       </td>
     </tr></table>
 
@@ -146,9 +154,15 @@ function clearSels() {
   SELS = [];
 }
 
-function checkAsc() {
-  var els = document.getElementsByName('asc');
-  for(var el of els) if(el.checked) { _ASC = 1*el.value; return; }
+function checkAsc(el) {
+  if(el.innerText.substr(0,3) == 'Asc') {
+    el.innerHTML = 'Descending &uarr;';
+    _ASC = -1;
+  }
+  else {
+    el.innerHTML = 'Ascending &darr;';
+    _ASC = 1;
+  }
 }
 
 function goSort() {

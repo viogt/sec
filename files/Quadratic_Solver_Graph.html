@@ -12,7 +12,7 @@ div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; m
 .equations tr:nth-child(odd) { background-color: #eef; }
 .equations tr:hover { cursor: pointer; background-color: lightgrey; }
 
-.Pnl { font: normal 12pt sans-serif; margin: 12px 0; }
+.Pnl { font: normal 12pt sans-serif; margin: 12px 0; background-color: #fff; }
 .Pnl div {
 	padding: 0 6px;
   border: thin solid lightgrey;
@@ -21,6 +21,8 @@ div { border:1px solid lightgrey; padding:12px; background-color: lightyellow; m
   outline: none;
 }
 .Pnl div:hover { cursor: pointer; background-color: #ff0; }
+.expl { padding: 3px 2px; border: thin solid #66d; font-size: small; color:#66d; border-radius: 3px; }
+.expl1 { padding: 3px 2px; border: thin solid #4a4; font-size: small; color:#4a4; border-radius: 3px; }
 
 </style>
 </head>
@@ -190,9 +192,9 @@ function fract(x,y) {
     
 	x = Math.abs(x); y = Math.abs(y);
 	const primes = [2,3,5,7,11,13,17];
-	for(var p of primes) if(x%p==0 && y%p==0) { x /= p; y /= p; }
+	for(var p of primes) while(x%p==0 && y%p==0) { x /= p; y /= p; }
 
-  if(x > y) return `${sgn}${intr = Math.floor(x/y)}<sup>${x-intr*y}</sup>/<sub>${y}</sub><span style="font-size:small;color:#88c;">(=${sgn}<sup>${x}</sup>/<sub>${y}</sub>)</span>`;
+  if(x > y) return `${sgn}${intr = Math.floor(x/y)}<sup>${x-intr*y}</sup>/<sub>${y}</sub><span class="expl">=${sgn}<sup>${x}</sup>/<sub>${y}</sub></span>`;
 
 return `${sgn}<sup>${x}</sup>/<sub>${y}</sub>`;
 }
@@ -230,7 +232,7 @@ function getRandEquation() {
 
 
 function getByCompletion() {
-  var rng = 10, hlf = Math.floor(rng/2), a, b, c, eq = "x²", coef = [];
+  var rng = 10, hlf = Math.floor(rng/2), a, b, c, eq, eqX = "x²", coef = [];
   while(coef.length < 4) {
     var cf = Math.floor(Math.random()*rng) - hlf;
     if(cf == 0 || coef.includes(cf)) continue;
@@ -240,8 +242,8 @@ function getByCompletion() {
   b = coef[0]*coef[3] + coef[1]*coef[2];
   c = coef[1]*coef[3];
 
-  if(a==-1) eq = '-' + eq;
-  else if(a!=1) eq = a + eq;
+  if(a==-1) eq = '-' + eqX;
+  else if(a!=1) eq = a + eqX;
   
   if(b==-1) eq += '-x';
   else if(b==1) eq += '+x';
@@ -250,8 +252,17 @@ function getByCompletion() {
   
   if(c>0) eq += ('+'+c);
   else eq += c;
+  
+  //----------------------------------------------------------
+  if(b/a==-1) eqX += '-x';
+  else if(b/a==1) eqX += '+x';
+  else if(b/a > 0) eqX += ('+' + fract(b,a) + 'x');
+  else eqX += (fract(b,a)+'x');
+  
+  eqX += (c/a > 0 ? '+':'') + fract(c,a);
+  eqX += ' <span class="expl1">add ' + fract(b*b,4*a*a) + '</span>';
 
-  return [eq+" = 0", '{'+ fract(coef[1],coef[0]) +', '+ fract(coef[3], coef[2]) +'}', '{'+ fract(-coef[1],coef[0]) +', '+ fract(-coef[3], coef[2]) +'}'];
+  return [eq+" = 0", eqX, '{'+ fract(-coef[1],coef[0]) +', '+ fract(-coef[3], coef[2]) +'}'];
 }
 
 const outEqu = document.getElementById('outEqu'),
@@ -269,7 +280,7 @@ function generateEquations(fnc) {
     C = document.createElement("TH"); C.innerText = '#'; R.appendChild(C);
     C = document.createElement("TH"); C.innerText = 'Equation'; R.appendChild(C);
     if(wSol) {
-      C = document.createElement("TH"); C.innerText = 'Factors'; R.appendChild(C);
+      C = document.createElement("TH"); C.innerText = (fnc==getRandEquation)?'Factors':'Completion'; R.appendChild(C);
       C = document.createElement("TH"); C.innerText = 'Solutions'; R.appendChild(C);
     }
 

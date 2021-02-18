@@ -11,6 +11,14 @@
 		background-color:#ffa; border:1px solid grey;
 	}
 	button { width: 50px; height: 20px; border: thin solid #000; margin: 2px 4px; outline:none; }
+  span {
+    margin: 5px;
+    padding: 6px;
+    border: 1px solid grey;
+    border-radius: 3px;
+  }
+  span:hover { cursor: pointer; background-color: yellow; }
+  div { padding: 10px; }
 </style>
 </head>
 <body style="font:normal 1em Arial;">
@@ -45,16 +53,19 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
 </table>
 </div>
 <div id='clip' contentEditable='true' style='display:none'></div>
+<input id="txt" type="text" style='display:none' value=""/>
 
+<br>
+<div onclick="getSymbol()" style="font-size:1.4em; line-height:2;width:100%;">
+<span>€</span> <span>§</span> <span>±</span> <span>°</span> <span>✎</span> <span>⚑</span> <span>📎</span> <span>📌</span> <span>▉</span> <span>★</span> <span>≈</span> <span>∼</span> <span>✔</span> <span>✖</span> <span>✘</span> <span>❌</span> <span>✅</span> <span>&nbsp;</span><br>
 
+<span>①</span> <span>②</span> <span>③</span> <span>④</span> <span>⑤</span> <span>⑥</span> <span>⑦</span> <span>⑧</span> <span>⑨</span> <span>⑩</span> <span>Ⓐ</span> <span>Ⓑ</span> <span>Ⓒ</span> <span>Ⓓ</span> <span>Ⓔ</span> <span>Ⓕ</span> <span>Ⓖ</span> <span>Ⓗ</span> <span>Ⓘ</span> <span>Ⓙ</span><br>
 
-<br><div>
-€ § ± ° ✎ ⚑ 📎 📌▉  ★ ≈ ∼ ✔ ✖ ✘ ❌ ✅ [&nbsp;]
-</div>
-<div>① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ</div>
-<div>➊ ➋ ➌ ➍ ➎ ➏ ➐ ➑ ➒ ➓ ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ ⁺ ∞</div>
-<div>● ☏ ✆ ⌕ ✉ ✍ ❤ ⨀ ⨂ ◉ ⚠ ☢ ⁂ ₿ ░ ▣ ☝👍 „ “ ❮ ❯ « »</div>
-<div> ⸱ – ➝ 🠖 ⇢ &rarr; &larr; &uarr; &darr; ➜ ➤</div>
+<span>➊</span> <span>➋</span> <span>➌</span> <span>➍</span> <span>➎</span> <span>➏</span> <span>➐</span> <span>➑</span> <span>➒</span> <span>➓</span> <span>⁰</span> <span>¹</span> <span>²</span> <span>³</span> <span>⁴</span> <span>⁵</span> <span>⁶</span> <span>⁷</span> <span>⁸</span> <span>⁹</span> <span>⁺</span> <span>∞</span><br>
+
+<span>●</span> <span>☏</span> <span>✆</span> <span>⌕</span> <span>✉</span> <span>✍</span> <span>❤</span> <span>⨀</span> <span>⨂</span> <span>◉</span> <span>⚠</span> <span>☢</span> <span>⁂</span> <span>₿</span> <span>░</span> <span>▣</span> <span>☝</span> <span>👍</span> <span>„</span> <span>“</span> <span>❮</span> <span>❯</span> <span>«</span> <span>»</span><br>
+
+<span>⸱</span> <span>–</span> <span>➝</span> <span>🠖</span> <span>⇢</span> <span>&rarr;</span> <span>&larr;</span> <span>&uarr;</span> <span>&darr;</span> <span>➜</span> <span>➤</span></div>
 <br>
 
 <script>
@@ -72,7 +83,8 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
 
   const _dv = document.getElementById("board"),
         _cl = document.getElementById('clip'),
-        _tb = document.getElementById('tblClip');
+        _tb = document.getElementById('tblClip'),
+        _txt= document.getElementById('txt');
 
   function arrange(ix) {
       _tb.style.backgroundColor = cls[ix].margin;
@@ -88,12 +100,11 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
   
   function copyThat() {
     _dv.style.backgroundColor = '#f00';
-    setTimeout(()=>{ _dv.style.backgroundColor = '';},400);
+    setTimeout(()=>{ _dv.style.backgroundColor = '';},300);
     var hd = _tb.rows[0].cells[1].innerText,
         bd = _tb.rows[1].cells[1].innerText;
         _tb.rows[0].cells[1].innerText = '.';
         _tb.rows[1].cells[1].innerText = '.';
-    const _cl = document.getElementById('clip');
     _cl.style.display = '';
     _cl.innerHTML = _dv.innerHTML;
     _cl.focus();
@@ -104,6 +115,17 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
         _tb.rows[1].cells[1].innerText = bd;
   }
 
+  function getSymbol() {
+    var el = event.target; if(el.tagName != 'SPAN') return;
+    el.style.backgroundColor = 'orange';
+    setTimeout(()=>{ el.style.backgroundColor = ''; },300);
+    _txt.style.display = '';
+    _txt.value = el.innerText;
+    _txt.focus();
+    document.execCommand('selectAll', false, '');
+    document.execCommand('copy', false, '');
+    _txt.style.display = 'none';
+  }
 </script>
 </body>
 </html>

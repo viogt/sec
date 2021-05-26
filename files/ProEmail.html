@@ -97,7 +97,7 @@ Lorem ipsum dolor sit _amet_, consectetuer adipiscing elit, sed diam nonummy nib
     let ob = _tb.rows[1].cells[1], dvs = ob.querySelectorAll("b");
     for(var d of dvs) d.style.borderColor = cls[ix].border;
     if(ob.innerHTML.indexOf('_') >= 0)
-    ob.innerHTML = ob.innerHTML.replace(/\_([^\_]+)\_/g, "<b style='font-weight:normal; padding:0px 6px; border:1px solid red;'>$1</b>");
+    ob.innerHTML = ob.innerHTML.replace(/\_([^\_]+)\_/g, `<b style='font-weight:normal; padding:0px 6px; border:1px solid ${cls[ix].border};'>$1</b>`);
 
     copyThat();
   }

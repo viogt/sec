@@ -33,8 +33,8 @@
 <button onclick="arrange(7)" style="background-color:#aaa;"></button>
 <button onclick="arrange(8)" style="background-color:#000;"></button>
 
-<div id="board" style="border:1px dashed grey; padding:24px;" onclick="copyThat()">
-<table id="tblClip" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,sans-serif;font-size:15px; background-color:#ccc;">
+<div id="board" style="border:1px dashed grey; padding:24px;" contentEditable='true'>
+<table id="tblClip" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,sans-serif;font-size:15px; background-color:#ccc;line-height:1.4;">
   <tr>
     <td style="width:10vw;"></td>
     <td style="width:80vw;background-color:#666;color:#fff;padding:5vw;">
@@ -45,7 +45,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
   <tr>
     <td style="width:10vw;"></td>
     <td style="width:80vw;background-color:#f0f0f0;padding:5vw;">
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit _amet_, consectetuer adipiscing elit, sed diam nonummy nibh _euismod_ tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
     </td>
     <td style="width:10vw;"></td>
   </tr>
@@ -69,15 +69,15 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
 
 <script>
   const cls = [
-{ margin: "#fff0e6", head: "#f60", headText: "#fff", body: "#fff", bodyText: "#620"},
-{ margin: "#e6f0ff", head: "#06c", headText: "#fff", body: "#fff", bodyText: "#013"},
-{ margin: "#e6ffee", head: "#093", headText: "#fff", body: "#fff", bodyText: "#031"},
-{ margin: "#eee6ff", head: "#96c", headText: "#fff", body: "#fff", bodyText: "#103"},
-{ margin: "#d9e6f2", head: "#369", headText: "#fff", body: "#fff", bodyText: "#234"},
-{ margin: "#fff2cc", head: "#c90", headText: "#fff", body: "#fff", bodyText: "#330"},
-{ margin: "#f2d9e6", head: "#c69", headText: "#fff", body: "#fff", bodyText: "#413"},
-{ margin: "#eee",    head: "#666", headText: "#fff", body: "#fff", bodyText: "#333"},
-{ margin: "#444",    head: "#000", headText: "#aaa", body: "#222", bodyText: "#fff"}
+{ margin: "#fff0e6", head: "#f60", headText: "#fff", body: "#fff", bodyText: "#620", border: "#f00"},
+{ margin: "#e6f0ff", head: "#06c", headText: "#fff", body: "#fff", bodyText: "#013", border: "#00f"},
+{ margin: "#e6ffee", head: "#093", headText: "#fff", body: "#fff", bodyText: "#031", border: "#0e0"},
+{ margin: "#eee6ff", head: "#96c", headText: "#fff", body: "#fff", bodyText: "#103", border: "#b8e"},
+{ margin: "#d9e6f2", head: "#369", headText: "#fff", body: "#fff", bodyText: "#234", border: "#00f"},
+{ margin: "#fff2cc", head: "#c90", headText: "#fff", body: "#fff", bodyText: "#330", border: "#f00"},
+{ margin: "#f2d9e6", head: "#c69", headText: "#fff", body: "#fff", bodyText: "#413", border: "#e8b"},
+{ margin: "#eee",    head: "#666", headText: "#fff", body: "#fff", bodyText: "#333", border: "#f00"},
+{ margin: "#444",    head: "#000", headText: "#aaa", body: "#222", bodyText: "#fff", border: "#880"}
   ];
 
   const _dv = document.getElementById("board"),
@@ -93,25 +93,24 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
     box = _tb.rows[1].cells[1].style;
       box.backgroundColor = cls[ix].body;
       box.color = cls[ix].bodyText;
+
+    let ob = _tb.rows[1].cells[1], dvs = ob.querySelectorAll("b");
+    for(var d of dvs) d.style.borderColor = cls[ix].border;
+    if(ob.innerHTML.indexOf('_') >= 0)
+    ob.innerHTML = ob.innerHTML.replace(/\_([^\_]+)\_/g, "<b style='font-weight:normal; padding:0px 6px; border:1px solid red;'>$1</b>");
+
     copyThat();
   }
-  
-  
+
   function copyThat() {
     _dv.style.backgroundColor = '#f00';
     setTimeout(()=>{ _dv.style.backgroundColor = '';},300);
-    var hd = _tb.rows[0].cells[1].innerText,
-        bd = _tb.rows[1].cells[1].innerText;
-        _tb.rows[0].cells[1].innerText = '.';
-        _tb.rows[1].cells[1].innerText = '.';
     _cl.style.display = '';
     _cl.innerHTML = _dv.innerHTML;
     _cl.focus();
     document.execCommand('selectAll', false, '');
     document.execCommand('copy', false, '');
     _cl.style.display = 'none';
-        _tb.rows[0].cells[1].innerText = hd;
-        _tb.rows[1].cells[1].innerText = bd;
   }
 
   function getSymbol() {
@@ -125,6 +124,9 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
     document.execCommand('copy', false, '');
     _txt.style.display = 'none';
   }
+  
+  arrange(7);
+  
 </script>
 </body>
 </html>

@@ -94,10 +94,10 @@ Lorem ipsum dolor sit _amet_, consectetuer adipiscing elit, sed diam nonummy nib
       box.backgroundColor = cls[ix].body;
       box.color = cls[ix].bodyText;
 
-    let ob = _tb.rows[1].cells[1], dvs = ob.querySelectorAll("b");
+    let ob = _tb.rows[1].cells[1], dvs = ob.querySelectorAll("i");
     for(var d of dvs) d.style.borderColor = cls[ix].border;
     if(ob.innerHTML.indexOf('_') >= 0)
-    ob.innerHTML = ob.innerHTML.replace(/\_([^\_]+)\_/g, `<b style='font-weight:normal; border:1px solid ${cls[ix].border};'>&nbsp;$1&nbsp;</b>`);
+    ob.innerHTML = ob.innerHTML.replace(/\_([^\_]+)\_/g, `<i style='font-style: normal; padding: 0 6px; border:1px solid ${cls[ix].border};'>$1</i>`);
 
     copyThat();
   }

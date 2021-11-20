@@ -4,33 +4,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>✍ Compare Transliteration</title>
     <style>
-    body { margin: 8px; }
-    textarea {
-      box-sizing: border-box;
-      margin: 0;
-      width:30vw;
+    * { box-sizing: border-box; }
+
+    body { margin: 0; }
+    div {
+      width:33%;
       height:90vh;
+      padding: 4px;
+      display: inline-block;
+    }
+    textarea {
       padding: 8px 18px;
       font: normal 16px Arial,sans-serif;
       border: 1px solid grey;
+      width: 100%;
+      height: 100%;
     }
     textarea::placeholder { font-size: 24px; }
+    .panel {
+      width:100%;
+      height:9vh;
+      padding: 4px;
+      display: block;
+      text-align:center;
+    }
     button {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-      height: 6vh;
-      font: normal 2vw Arial,sans-serif;
+      padding: 12px;
+      margin: auto;
+      height: 100%;
+      font: normal 16px Arial,sans-serif;
       background-color: lightgreen;
       border: none;
       border-radius: 6px;
-      width:30vw;
+      width:30%;
       outline: none;
     }
     pre { display: none; }
     @media screen and (max-width: 800px) {
-      textarea {
-        width:90vw;
+      div {
+        width:100%;
         height:30vh;
       }
     }
@@ -127,14 +139,15 @@ Grigoriy
 Tatyana
 Ekaterina
 </pre>
-<textarea id="cyr" placeholder="Paste here the List in Cyrillic..."></textarea>
-<textarea id="lat" placeholder="Paste here the transcripted List with Latin letters..."></textarea>
-<textarea id="unMatch" placeholder="The mismatched items will appear here..."></textarea>
-<br>
-<button onclick="sampleData()">AMPLE DATA</button>
-<button onclick="matchTrans()" style="background-color:orange">CHECK THE MATCH</button>
-<button onclick="clearData()" style="background-color:lightblue">CLEAR DATA</button>
+<div><textarea id="cyr" placeholder="Paste here the List in Cyrillic..."></textarea></div>
+<div><textarea id="lat" placeholder="Paste here the transcripted List with Latin letters..."></textarea></div>
+<div><textarea id="unMatch" placeholder="The mismatched items will appear here..."></textarea></div>
 
+<div class='panel'>
+<button onclick="sampleData()">SAMPLE<br>DATA</button>
+<button onclick="matchTrans()" style="background-color:orange">CHECK<br>THE MATCH</button>
+<button onclick="clearData()" style="background-color:lightblue">CLEAR<br>DATA</button>
+</div>
 
 <script>
 

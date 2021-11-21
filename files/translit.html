@@ -27,8 +27,6 @@
       height:10vh;
       padding: 4px;
       display: block;
-      /*position: fixed;
-      bottom: 0;*/
     }
     button {
       padding: 0;
@@ -40,7 +38,9 @@
       border: none;
       width:33.3%;
       outline: none;
+      transition: transform .4s ease;
     }
+    button:hover { transform: translateY(-1vh); }
     pre { display: none; }
     @media screen and (max-width: 800px) {
       div {
@@ -196,13 +196,19 @@ function sampleData() {
 }
 
 function matchTrans() {
-    let cr = Cyr.value.trim(), lt = Lat.value.trim();
-    if(cr == '' || cr.indexOf(' (?)')>0) return;
 try {
+    let cr = Cyr.value.trim(), lt = Lat.value.trim();
+    let RxD = / \(\?\)/g;
+    if(cr == '' || lt == '') return;
+    if(cr.includes(' (?)')) cr = cr.replace(RxD,'');
+    if(lt.includes(' (?)')) lt = lt.replace(RxD,'');
+
     let cyr = cr.split('\n'),
         lat = lt.split('\n');
     
         lat = lat.map(el => el.trim());
+    
+    //cyr.sort(); lat.sort();
 
     for(let i in cyr) {
       
@@ -229,7 +235,6 @@ try {
   
 } catch(e) { alert(e.message); }
 }
-
 
 </script>
 </body>

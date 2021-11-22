@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>✍ Compare Transliteration</title>
+    <style>
+    * { box-sizing: border-box; }
+
+    body { margin: 0; }
+    .txt_area {
+      width:33.3%;
+      height:100vh;
+      padding: 8px;
+      display: inline-block;
+      float:left;
+      background-color: #eef;
+    }
+    textarea {
+      padding: 8px 18px;
+      font: normal 16px Arial,sans-serif;
+      border: 1px dashed grey;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      outline:none;
+    }
+    textarea::placeholder { font-size: 18px; font-style: italic; margin-right: 80px; }
+    pre { display: none; }
+    
+    .fix_panel {
+        position: fixed;
+        top: 10px;
+        right: 20px;
+        width: 78px;
+        z-index: 100;
+    }
+    .fix_panel > span {
+        width:100%;
+        padding:0;
+        padding: 8px;
+        border-radius: 12px;
+        height: 94px;
+        margin:0;
+        text-align: center;
+        margin-top: 20px;
+        display:inline-block;
+        font-size: 40px;
+        cursor: pointer;
+    }
+    .fix_panel > span > label {
+        display: block;
+        font: normal 14px Arial,sans-serif;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    @media screen and (max-width: 800px) {
+      .txt_area {
+        width:100%;
+        height:33.3vh;
+      }
+    }
+    </style>
+  </head>
+<body>
+
+<div class="fix_panel">
+<span style="color:#060; background-color:rgba(60, 179, 113,.5)" onclick="sampleData()">
+    <i class="fa fa-download"></i>
+    <label>Sample data</label>
+</span>
+<span style="color:#800; background-color:rgba(220, 0, 0,.5)" onclick="matchTrans()">
+    <i class="fa fa-check-circle"></i>
+    <label>Check translit.</label>
+</span>
+<span style="color:#808; background-color:rgba(238, 130, 238,.5)" onclick="clearData()">
+    <i class="fa fa-times-circle"></i>
+    <label>Clear data</label>
+</span>
+<span style="color:#008; background-color:rgba(0, 0, 220,.5)" onclick="showMatch()">
+    <i class="fa fa-info-circle"></i>
+    <label>Show match</label>
+</span>
+<span style="color:#840; background-color:rgba(255, 165, 0,.5)" onclick="matchTrans(true)">
+    <i class="fa fa-sort-alpha-asc"></i>
+    <label>Sort the lists</label>
+</span>
+<span style="color:#066; background-color:rgba(0, 153, 153,.5)">
+    <i class="fa fa-upload"></i>
+    <label>Sample full data</label>
+</span>
+</div>
+
+<pre id="pre_cyr">
+Александр
+Данила
+Елена
+Анастасия
+Алексей
+Евгений
+Кирилл
+Анна
+Ксения
+Мариянна
+Сергей
+Никита
+Наталья
+Мария
+Андрей
+Артём
+Ольга
+Александра
+Дмитрий
+Иван
+Светлана
+Софья
+Михаил
+Пётр
+Юлия
+Дарья
+Павел
+Егор
+Мария
+Полина
+Илья
+Матвей
+Ирина
+Елизавета
+Константин
+Максим
+Екатерина
+Валерия
+Виктор
+Григорий
+Татьяна
+Екатерина
+</pre>
+<pre id="pre_lat">
+Ivan
+Svetlana
+Sofya
+Yevgeniy
+Eugeny
+Ibrahim
+Mikhail
+Petr
+Yuliya
+Darya
+Pavel
+Egor
+Mariya
+Polina
+Ilya
+Matvey
+Irina
+Elizaveta
+Konstantin
+Aleksandr
+Danila
+Elena
+Anastasiya
+Aleksey
+Kirill
+Annetta
+Kseniya
+Sergey
+Nikita
+Natalia
+Maria
+Andrey
+Artem
+Olga
+Aleksandra
+Dmitriy
+Maksim
+Ekaterina
+Valeriya
+Viktor
+Grigoriy
+Tatyana
+Ekaterina
+</pre>
+<div class='txt_area'><textarea id="cyr" placeholder="Paste here the List in Cyrillic..."></textarea></div>
+<div class='txt_area'><textarea id="lat" placeholder="Paste here the transcripted List with Latin letters..."></textarea></div>
+<div class='txt_area'><textarea id="unMatch" placeholder="The mismatched items will appear here..."></textarea></div>
+
+<script>
+
+//  http://transliteration.ru/mvd_1047/
+//  https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio
+
+const Trans = [
+['ья', '(ya|ia|iya)'],
+['ай', '(ay|ai)'],
+['ой', '(oy|oi)'],
+['ий', '(iy|ii)'],
+['уй', '(uy|ui)'],
+['ый', '(yy|yi)'],
+['эй', '(ey|yey)'],
+['юй', '(yuy|yui)'],
+['ей', '(ey|yey)'],
+['ия', '(ia|iya)'],
+
+['а',	'a'],['б',	'b'],['в', 'v'],['г', 'g'],['д', 'd'],
+['е', 'e'],['ё', 'e'],['ж', 'zh'],['з', 'z'],['и', 'i'],
+['й', 'i'],['к',	'k'],['л',	'l'],['м',	'm'],['н',	'n'],
+['о',	'o'],['п',	'p'],['р',	'r'],['с',	's'],['т',	't'],
+['у',	'u'],['ф',	'f'],['х', 'kh'],['ц', 'ts'],['ч', 'ch'],
+['ш', 'sh'],['щ', 'shsh'],['ъ', 'ie'],['ы', 'y'],['ь', ''],
+['э', 'e'],['ю', 'yu'],['я', 'ya']
+];
+
+    const Cyr = document.getElementById("cyr"),
+          Lat = document.getElementById("lat"),
+          unMatch = document.getElementById("unMatch");
+    
+    var _show = false;
+
+function clearData() {
+  Cyr.value = '';
+  Lat.value = '';
+  unMatch.value = '';
+  unMatch.style.backgroundColor = '';
+}
+
+function sampleData() {
+  Cyr.value = document.getElementById("pre_cyr").innerText;
+  Lat.value = document.getElementById("pre_lat").innerText;;
+  unMatch.value = '';
+  matchTrans();
+}
+
+function showMatch() {
+    _show = !_show;
+    matchTrans();
+}
+
+function matchTrans(_sort = false) {
+try {
+    let cr = Cyr.value.trim(), lt = Lat.value.trim();
+    if(cr == '' || lt == '') return;
+
+	let RxD = / → .+/gm;
+    if(RxD.test(cr)) cr = cr.replace(RxD,'');
+    if(cr.includes(" \n")) cr = cr.replace(/ +$/gm,'');
+    if(RxD.test(lt)) lt = lt.replace(RxD,'');
+    if(lt.includes(" \n")) lt = lt.replace(/ +$/gm,'');
+
+    let cyr = cr.split('\n'),
+        lat = lt.split('\n');
+    
+        lat = lat.map(el => el.trim());
+    
+    if(_sort) { cyr.sort(); lat.sort(); }
+
+    for(let i in cyr) {
+      
+      let w = cyr[i].trim().toLowerCase();
+      if(w.charAt(0) == 'е' || w.charAt(0) == 'ё') w = "(e|ye)" + w.slice(1);
+      Trans.forEach(lit => { w = w.replaceAll(lit[0],lit[1]); });
+      
+      let Rx = new RegExp('^'+w.charAt(0).toUpperCase() + w.slice(1) + '$','i');
+
+      let ix = lat.findIndex(val => Rx.test(val));
+      if(ix < 0) cyr[i] += ' → ?';
+      else {
+          if(_show) cyr[i] += ' → ' + lat[ix];
+          lat[ix] = '+' + lat[ix];
+      }
+    }
+
+    Cyr.value = cyr.join('\n');
+    lat = lat.map(el => (el.charAt(0)=='+'?el.slice(1):el+' → ?'));
+    Lat.value = lat.join('\n');
+    
+    Rx = / → \?$/;
+    cr = cyr.filter(e=>Rx.test(e));
+    lt = lat.filter(e=>Rx.test(e));
+    unMatch.value  = `✍  MISMATCHED (${cr.length} Cyrillic):\n\n${cr.join('\n')}\n\n✍  MISMATCHED (${lt.length} Transliterated):\n\n${lt.join('\n')}`;
+    unMatch.style.backgroundColor = '#ffd';
+
+} catch(e) { alert(e.message); }
+}
+
+</script>
+</body>
+</html>

@@ -55,6 +55,12 @@
         -ms-user-select: none;
         user-select: none;
     }
+    
+    .pulse { animation: pulse-animation 1s 1; }
+    @keyframes pulse-animation {
+        0% { box-shadow: 0 0 0 0px rgba(200, 0, 0, 0.8); }
+        100% { box-shadow: 0 0 0 20px rgba(200, 0, 0, 0); }
+    }
 
     @media screen and (max-width: 800px) {
       .txt_area {
@@ -87,10 +93,10 @@
     <i class="fa fa-sort-alpha-asc"></i>
     <label>Sort the lists</label>
 </span>
-<span style="color:#066; background-color:rgba(0, 153, 153,.5)">
+<!-- <span style="color:#066; background-color:rgba(0, 153, 153,.5)">
     <i class="fa fa-upload"></i>
     <label>Sample full data</label>
-</span>
+</span> -->
 </div>
 
 <pre id="pre_cyr">
@@ -261,7 +267,7 @@ try {
       if(w.charAt(0) == 'е' || w.charAt(0) == 'ё') w = "(e|ye)" + w.slice(1);
       Trans.forEach(lit => { w = w.replaceAll(lit[0],lit[1]); });
       
-      let Rx = new RegExp('^'+w.charAt(0).toUpperCase() + w.slice(1) + '$','i');
+      let Rx = new RegExp('^'+ w + '$','i');
 
       let ix = lat.findIndex(val => Rx.test(val));
       if(ix < 0) cyr[i] += ' → ?';
@@ -283,6 +289,14 @@ try {
 
 } catch(e) { alert(e.message); }
 }
+
+document.querySelectorAll('span').forEach(e => e.addEventListener("click", function(e) {
+    let el = e.target.tagName != 'SPAN' ? e.target.parentElement : e.target;
+    el.classList.remove("pulse");
+    void el.offsetWidth;
+    el.classList.add("pulse");
+    navigator.vibrate(100);
+}, false));
 
 </script>
 </body>

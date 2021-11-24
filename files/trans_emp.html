@@ -59,6 +59,22 @@
         -ms-user-select: none;
         user-select: none;
     }
+
+    .pregToast {
+        width: 180px;
+        font: normal 24px Arial, sans-serif;
+        padding-top: 18px;
+        height: 60px;
+        position: absolute;
+    	left: calc(40vw - 90px);
+        top: -60px;
+        text-align: center;
+        background-color: rgb(0,0,0,0.5);
+        color: #fff;
+        border-radius: 6px;
+        z-index: 33;
+        transition: top .3s ease;
+    }
     
     .pulse { animation: pulse-animation 1s 1; }
     @keyframes pulse-animation {
@@ -205,6 +221,7 @@ Svetlana Petrovna Nikolaeva
 <div class='txt_area'><textarea id="cyr" placeholder="Paste here the List in Cyrillic..."></textarea></div>
 <div class='txt_area'><textarea id="lat" placeholder="Paste here the transcripted List with Latin letters..."></textarea></div>
 <div class='txt_area'><textarea id="unMatch" placeholder="The mismatched items will appear here..."></textarea></div>
+<div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
 
 <script>
 
@@ -245,30 +262,18 @@ function clearData() {
 }
 
 function sampleData(tip) {
-try {
   Cyr.value = document.getElementById("pre_cyr").innerText.trim().split('\n').map(e => {
       if(tip==0) return e.split(' ')[0];
       if(tip==1) return e;
       return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
-      
-      //if(e.split(' ').length < 3) { alert(e); return 'XXXXXX'; }
-      //return e.split(' ')[2].toUpperCase();
-      //else return e.split(' ')[2].toUpperCase();
-      //else { let x = e.split(' '); return `${x[2].toUpperCase()} ${x[0]} ${x[1]}`};
   }).join('\n');
   Lat.value = document.getElementById("pre_lat").innerText.trim().split('\n').map(e => {
       if(tip==0) return e.split(' ')[0];
       if(tip==1) return e;
       return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
-      
-      //if(e.split(' ').length < 3) { alert(e); return 'XXXXXX'; }
-      //return e.split(' ')[2].toUpperCase();
-      //else return e.split(' ')[2].toUpperCase();
-      //else { let x = e.split(' '); return `${x[2].toUpperCase()} ${x[0]} ${x[1]}`};
   }).join('\n');
   unMatch.value = '';
   matchTrans();
-} catch(e) { alert('ERROR: ' + e.message); }
 }
 
 function showMatch() {
@@ -279,7 +284,7 @@ function showMatch() {
 function matchTrans(_sort = false) {
 try {
     let cr = Cyr.value.trim(), lt = Lat.value.trim();
-    if(cr == '' || lt == '') return;
+    if(cr == '' || lt == '') { preToggleToast(600); return; }
 
 	let RxD = / → .+/gm;
     if(RxD.test(cr)) cr = cr.replace(RxD,'');
@@ -328,6 +333,12 @@ try {
 
 function moreInfo() {
     unMatch.value += `${unMatch.value==''?'':'\n\n'}✍  TRANSLITERATION TABLE:\n\n${Trans.map(e => e.join(' → ')).join('\n')}\n\n- https://en.wikipedia.org/wiki/Romanization_of_Russian\n- http://transliteration.ru/mvd_1047/\n- https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio`;
+}
+
+function preToggleToast(ms) {
+	let T = document.querySelector('.pregToast').style;
+	T.top = ms?'60px':'-60px';
+	if(ms) setTimeout( function() { preToggleToast(0); }, ms);
 }
 
 document.querySelectorAll('span').forEach(e => e.addEventListener("click", function(e) {

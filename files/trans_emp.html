@@ -25,7 +25,7 @@
       height: 100%;
       outline:none;
       resize: none;
-      white-space: nowrap;
+      white-space: pre;
     }
     textarea::placeholder { font-size: 16px; font-style: italic; margin-right: 80px; }
     pre { display: none; }
@@ -220,7 +220,7 @@ Svetlana Petrovna Nikolaeva
 </pre>
 <div class='txt_area'><textarea id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
 <div class='txt_area'><textarea id="lat" placeholder="Paste transcript here"></textarea></div>
-<div class='txt_area'><textarea id="unMatch" placeholder="Mismatched result"></textarea></div>
+<div class='txt_area'><textarea id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
 
 <script>
@@ -252,7 +252,7 @@ const Trans = [
           Lat = document.getElementById("lat"),
           unMatch = document.getElementById("unMatch");
     
-    var _show = false;
+    var _show = false, _srtPrfm = true;
 
 function clearData() {
   Cyr.value = '';
@@ -273,6 +273,7 @@ function sampleData(tip) {
       return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
   }).join('\n');
   unMatch.value = '';
+  _srtPrfm = true;
   matchTrans();
 }
 
@@ -297,7 +298,10 @@ try {
     
         lat = lat.map(el => el.trim());
     
-    if(_sort) { cyr.sort(); lat.sort(); }
+    if(_sort) {
+        if(_srtPrfm) {cyr.sort(); lat.sort(); _srtPrfm = false; }
+        else { cyr.reverse(); lat.reverse(); }
+    }
 
     for(let i in cyr) {
       
@@ -349,6 +353,9 @@ document.querySelectorAll('span').forEach(e => e.addEventListener("click", funct
     //navigator.vibrate(100);
 }, false));
 
+function setSort() { _srtPrfm = true; }
+Cyr.addEventListener('input', setSort);
+Lat.addEventListener('input', setSort);
 </script>
 </body>
 </html>

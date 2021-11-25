@@ -27,7 +27,7 @@
       resize: none;
       white-space: nowrap;
     }
-    textarea::placeholder { font-size: 18px; font-style: italic; margin-right: 80px; }
+    textarea::placeholder { font-size: 16px; font-style: italic; margin-right: 80px; }
     pre { display: none; }
     
     .fix_panel {
@@ -75,7 +75,7 @@
         z-index: 33;
         transition: top .3s ease;
     }
-    
+
     .pulse { animation: pulse-animation 1s 1; }
     @keyframes pulse-animation {
         0% { box-shadow: 0 0 0 0px rgba(200, 0, 0, 0.8); }
@@ -218,9 +218,9 @@ Dmitriy Vasilievich Aleksandrov
 Ivan Illarionovich Serov
 Svetlana Petrovna Nikolaeva
 </pre>
-<div class='txt_area'><textarea id="cyr" placeholder="Paste here the List in Cyrillic..."></textarea></div>
-<div class='txt_area'><textarea id="lat" placeholder="Paste here the transcripted List with Latin letters..."></textarea></div>
-<div class='txt_area'><textarea id="unMatch" placeholder="The mismatched items will appear here..."></textarea></div>
+<div class='txt_area'><textarea id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
+<div class='txt_area'><textarea id="lat" placeholder="Paste transcript here"></textarea></div>
+<div class='txt_area'><textarea id="unMatch" placeholder="Mismatched result"></textarea></div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
 
 <script>

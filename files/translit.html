@@ -2,161 +2,242 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>✍ Compare Transliteration</title>
     <style>
     * { box-sizing: border-box; }
 
-    body { margin: 0; }
-    div {
+    body { margin: 0; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAAXNSR0IArs4c6QAAAC5JREFUGFdj3HLiw38fCwFGBiwALIhLAVwHNgUoxqErwLALWQFWh8AUYJWEORIADqsbc0rybwUAAAAASUVORK5CYII=) repeat; }
+    .txt_area {
       width:33.3%;
-      height:90vh;
-      padding: 4px;
+      height:100vh;
+      padding: 8px;
       display: inline-block;
       float:left;
     }
     textarea {
       padding: 8px 18px;
       font: normal 16px Arial,sans-serif;
-      border: 1px solid grey;
+      border: 1px dashed grey;
+      border-radius: 8px;
       width: 100%;
       height: 100%;
+      outline:none;
+      resize: none;
+      white-space: pre;
     }
-    textarea::placeholder { font-size: 24px; font-style: italic; }
-    .panel {
-      width:100%;
-      height:10vh;
-      padding: 4px;
-      display: block;
+    .bk {
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='300' height='300' preserveAspectRatio='none' viewBox='0 0 300 300'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1023%26quot%3b)' fill='none'%3e%3crect width='300' height='300' x='0' y='0' fill='rgba(235%2c 241%2c 248%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c110 C 12%2c94.6 36%2c26 60%2c33 C 84%2c40 96%2c136.8 120%2c145 C 144%2c153.2 156%2c80.2 180%2c74 C 204%2c67.8 216%2c117.8 240%2c114 C 264%2c110.2 288%2c66.8 300%2c55L300 300L0 300z' fill='rgba(222%2c 237%2c 253%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c268 C 12%2c258.6 36%2c225.8 60%2c221 C 84%2c216.2 96%2c244.2 120%2c244 C 144%2c243.8 156%2c219.8 180%2c220 C 204%2c220.2 216%2c258.2 240%2c245 C 264%2c231.8 288%2c172.2 300%2c154L300 300L0 300z' fill='rgba(210%2c 231%2c 253%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1023'%3e%3crect width='300' height='300' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+background-repeat: no-repeat;
+background-size: 100% 100%;
     }
-    button {
-      padding: 0;
-      float:left;
-      margin: 0;
-      height: 100%;
-      font: normal 2.2vh Arial,sans-serif;
-      background-color: lightgreen;
-      border: none;
-      width:33.3%;
-      outline: none;
-      transition: transform .4s ease;
+    .x_bk {
+background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' version='1.1' viewBox='0 0 63.5 63.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -233)'%3E%3Cpath d='m10.2 228a19.8 19.8 0 0 0-19.8 19.8 19.8 19.8 0 0 0 18.9 19.8l3.09 11.6a9.09 9.09 0 0 0-5.14 8.17 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-7.49-8.94l-2.46-11.5a19.8 19.8 0 0 0 7.61-4.03l12.1 9.53a9.09 9.09 0 0 0-0.869 3.85 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-5.1 1.57l-11.7-9.86a19.8 19.8 0 0 0 3.29-8.96l15 2.24a9.09 9.09 0 0 0 8.97 7.73 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-8.15 5.08l-16-2.39a19.8 19.8 0 0 0-19.6-16.5zm39.8 17.2 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.23-3.23 0.0527-0.212-0.311-0.0465-0.218-0.218zm-1.32 25.8 1.75 1.75-8.73 8.73-5.24-5.24 1.75-1.75 3.49 3.49zm-36.2 10.7 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.7-3.7z' fill='rgba(210%2c 231%2c 253%2c 1)'/%3E%3C/g%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-color: rgba(235, 241, 248, 1);
     }
+    textarea::placeholder { font-size: 20px; font-style: italic; color: #8ae; }
     pre { display: none; }
+    
+    .fix_panel {
+        position: fixed;
+        top: 0px;
+        height: 100vh;
+        right: 0px;
+        width: 120px;
+        z-index: 100;
+        text-align: center;
+        overflow-y: scroll;
+    }
+    .fix_panel > span {
+        width:80px;
+        padding: 8px;
+        border-radius: 12px;
+        height: 94px;
+        margin:0;
+        text-align: center;
+        margin-top: 20px;
+        display: inline-block;
+        font-size: 40px;
+        cursor: pointer;
+    }
+    .fix_panel > span > label {
+        display: block;
+        font: normal 14px Arial,sans-serif;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .pregToast {
+        width: 180px;
+        font: normal 24px Arial, sans-serif;
+        padding-top: 18px;
+        height: 60px;
+        position: absolute;
+    	left: calc(40vw - 90px);
+        top: -60px;
+        text-align: center;
+        background-color: rgb(0,0,100,0.5);
+        color: #fff;
+        border-radius: 6px;
+        z-index: 33;
+        transition: top .3s ease;
+    }
+
+    .pulse { animation: pulse-animation 1s 1; }
+    @keyframes pulse-animation {
+        0% { box-shadow: 0 0 0 0px rgba(200, 0, 0, 0.8); }
+        100% { box-shadow: 0 0 0 20px rgba(200, 0, 0, 0); }
+    }
+
     @media screen and (max-width: 800px) {
-      div {
+      .txt_area {
         width:100%;
-        height:30vh;
+        height:33.3vh;
       }
     }
     </style>
   </head>
 <body>
 
+<div class="fix_panel">
+<span style="color:#060; background-color:rgba(60, 179, 113,.5)" onclick="sampleData(0)">
+    <i class="fa fa-download"></i>
+    <label>Sample data</label>
+</span>
+<span style="color:#800; background-color:rgba(220, 0, 0,.5)" onclick="matchTrans()">
+    <i class="fa fa-check-circle"></i>
+    <label>Check translit.</label>
+</span>
+<span style="color:#808; background-color:rgba(238, 130, 238,.5)" onclick="clearData()">
+    <i class="fa fa-times-circle"></i>
+    <label>Clear data</label>
+</span>
+<span style="color:#008; background-color:rgba(0, 0, 220,.5)" onclick="showMatch()">
+    <i class="fa fa-info-circle"></i>
+    <label>Show match</label>
+</span>
+<span style="color:#840; background-color:rgba(255, 165, 0,.5)" onclick="matchTrans(true)">
+    <i class="fa fa-sort-alpha-asc"></i>
+    <label>Sort the lists</label>
+</span>
+<span style="color:#066; background-color:rgba(0, 153, 153,.5)" onclick="sampleData(1)">
+    <i class="fa fa-upload"></i>
+    <label>Sample full data<small><sup>1</sup></small></label>
+</span>
+<span style="color:#b20; background-color:rgba(204, 51, 0,.5)" onclick="sampleData(2)">
+    <i class="fa fa-cloud-upload"></i>
+    <label>Sample full data<small><sup>2</sup></small></label>
+</span>
+<span style="color:#570; background-color:rgba(153, 204, 0,.5)" onclick="moreInfo()">
+    <i class="fa fa-wrench"></i>
+    <label>Translit. rules</label>
+</span>
+</div>
+
 <pre id="pre_cyr">
-Александр
-Данила
-Елена
-Анастасия
-Алексей
-Евгений
-Кирилл
-Анна
-Ксения
-Мариянна
-Сергей
-Никита
-Наталья
-Мария
-Андрей
-Артём
-Ольга
-Александра
-Дмитрий
-Иван
-Светлана
-Софья
-Михаил
-Пётр
-Юлия
-Дарья
-Павел
-Егор
-Мария
-Полина
-Илья
-Матвей
-Ирина
-Елизавета
-Константин
-Максим
-Екатерина
-Валерия
-Виктор
-Григорий
-Татьяна
-Екатерина
+Александр Васильевич Александров
+Данила Илларионович Татаров
+Елена Ивановна Николаева
+Алексей Ильич Васнецов
+Евгений Петрович Крылов
+Кирилл Алексеевич Татаров
+Анна Ивановна Селезнёва
+Ксения Владимировна Иванова
+Мариянна Петровна Ким
+Изя Марковна Гинзбург
+Сергей Ильич Васнецов
+Никита Илларионович Крылов
+Наталья Ивановна Николаева
+Мария Владимировна Иванова
+Андрей Алексеевич Татаров
+Артём Петрович Крылов
+Ольга Ивановна Селезнёва
+Александра Петровна Иванова
+Дмитрий Васильевич Александров
+Иван Илларионович Серов
+Светлана Петровна Николаева
+Софья Владимировна Ким
+Михаил Петрович Крылов
+Пётр Ильич Васнецов
+Юлия Ивановна Селезнёва
+Дарья Владимировна Серова
+Павел Васильевич Татаров
+Магомед Каримович Дудаев
+Егор Илларионович Александров
+Мария Петровна Иванова
+Анастассия Владимировна Николаева
+Полина Владимировна Серова
+Илья Алексеевич Крылов
+Матвей Ильич Васнецов
+Ирина Петровна Николаева
+Елизавета Ивановна Иванова
+Константин Илларионович Татаров
+Максим Петрович Васнецов
+Екатерина Петровна Иванова
+Валерия Владимировна Николаева
+Виктор Васильевич Крылов
+Григорий Ильич Васнецов
+Татьяна Ивановна Селезнёва
+Екатерина Владимировна Ким
 </pre>
 <pre id="pre_lat">
-Ivan
-Svetlana
-Sofya
-Yevgeniy
-Eugeny
-Ibrahim
-Mikhail
-Petr
-Yuliya
-Darya
-Pavel
-Egor
-Mariya
-Polina
-Ilya
-Matvey
-Irina
-Elizaveta
-Konstantin
-Aleksandr
-Danila
-Elena
-Anastasiya
-Aleksey
-Kirill
-Annetta
-Kseniya
-Sergey
-Nikita
-Natalia
-Maria
-Andrey
-Artem
-Olga
-Aleksandra
-Dmitriy
-Maksim
-Ekaterina
-Valeriya
-Viktor
-Grigoriy
-Tatyana
-Ekaterina
+Sofia Vladimirovna Kim
+Mikhail Petrovich Krylov
+Petr Ilyich Vasnetsov
+Yulia Ivanovna Selezneva
+Daria Vladimirovna Serova
+Pavel Vasilievich Tatarov
+Egor Illarionovich Aleksandrov
+Maria Petrovna Ivanova
+Polina Vladimirovna Serova
+Ilya Alekseevich Krylov
+Matvey Ilyich Vasnetsov
+Aleksandr Vasilievich Aleksandrov
+Danila Illarionovich Tatarov
+Elena Ivanovna Nikolaeva
+Anastasia Vladimirovna Nikolaeva
+Aleksey Ilyich Vasnetsov
+Yevgeniy Petrovich Krylov
+Kirill Alekseevich Tatarov
+Anna Ivanovna Selezneva
+Ksenia Vladimirovna Ivanova
+Maryanna Petrovna Kim
+Sergei Ilyich Vasnetsov
+Nikita Illarionovich Krylov
+Ibrahim Ahmatovich Karamazin
+Natalya Ivanovna Nikolaeva
+Maria Vladimirovna Ivanova
+Andrey Alekseevich Tatarov
+Artem Petrovich Krylov
+Irina Petrovna Nikolaeva
+Elizaveta Ivanovna Ivanova
+Konstantin Illarionovich Tatarov
+Maksim Petrovich Vasnetsov
+Ekaterina Petrovna Ivanova
+Valeria Vladimirovna Nikolaeva
+Viktor Vasilievich Krylov
+Grigorii Ilyich Vasnetsov
+Tatiana Ivanovna Selezneva
+Ekaterina Vladimirovna Kim
+Olga Ivanovna Selezneva
+Aleksandra Petrovna Ivanova
+Dmitriy Vasilievich Aleksandrov
+Ivan Illarionovich Serov
+Svetlana Petrovna Nikolaeva
 </pre>
-<div><textarea id="cyr" placeholder="Paste here the List in Cyrillic..."></textarea></div>
-<div><textarea id="lat" placeholder="Paste here the transcripted List with Latin letters..."></textarea></div>
-<div><textarea id="unMatch" placeholder="The mismatched items will appear here..."></textarea></div>
-
-<div class='panel'>
-<button onclick="sampleData()">SAMPLE<br>DATA</button>
-<button onclick="matchTrans()" style="background-color:orange">CHECK<br>THE MATCH</button>
-<button onclick="clearData()" style="background-color:lightblue">CLEAR<br>DATA</button>
-</div>
+<div class='txt_area'><textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
+<div class='txt_area'><textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea></div>
+<div class='txt_area'><textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
+<div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
 
 <script>
 
-//  http://transliteration.ru/mvd_1047/
-//  https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio
-
 const Trans = [
 ['ья', '(ya|ia|iya)'],
+['ье', '(ie|e|ye)'],
+['ьи', '(yi|i)'],
 ['ай', '(ay|ai)'],
 ['ой', '(oy|oi)'],
 ['ий', '(iy|ii)'],
@@ -164,77 +245,128 @@ const Trans = [
 ['ый', '(yy|yi)'],
 ['эй', '(ey|yey)'],
 ['юй', '(yuy|yui)'],
-['ей', '(ey|yey)'],
-['ия', '(ia|iya)'],
+['ей', '(ey|yey|ei)'],
+['ия', '(ia|iya|ya)'],
 
-['а',	'a'],['б',	'b'],['в', 'v'],['г', 'g'],['д', 'd'],
-['е', 'e'],['ё', 'e'],['ж', 'zh'],['з', 'z'],['и', 'i'],
-['й', 'i'],['к',	'k'],['л',	'l'],['м',	'm'],['н',	'n'],
-['о',	'o'],['п',	'p'],['р',	'r'],['с',	's'],['т',	't'],
-['у',	'u'],['ф',	'f'],['х', 'kh'],['ц', 'ts'],['ч', 'ch'],
-['ш', 'sh'],['щ', 'shsh'],['ъ', 'ie'],['ы', 'y'],['ь', ''],
-['э', 'e'],['ю', 'yu'],['я', 'ya']
+['а','a'],['б','b'],['в','v'],['г','g'],['д','d'],
+['е','e'],['ё','e'],['ж','zh'],['з','z'],['и','i'],
+['й','i'],['к','k'],['л','l'],['м','m'],['н','n'],
+['о','o'],['п','p'],['р','r'],['с','s'],['т','t'],
+['у','u'],['ф','f'],['х','kh'],['ц','ts'],['ч','ch'],
+['ш','sh'],['щ','shsh'],['ъ','ie'],['ы','y'],['ь',''],
+['э','e'],['ю','yu'],['я','ya']
 ];
 
     const Cyr = document.getElementById("cyr"),
           Lat = document.getElementById("lat"),
           unMatch = document.getElementById("unMatch");
+    
+    var _show = false, _srtPrfm = true;
 
 function clearData() {
   Cyr.value = '';
   Lat.value = '';
   unMatch.value = '';
-  unMatch.style.backgroundColor = '';
 }
 
-function sampleData() {
-  Cyr.value = document.getElementById("pre_cyr").innerText;
-  Lat.value = document.getElementById("pre_lat").innerText;;
+function sampleData(tip) {
+  Cyr.value = document.getElementById("pre_cyr").innerText.trim().split('\n').map(e => {
+      if(tip==0) return e.split(' ')[0];
+      if(tip==1) return e;
+      return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
+  }).join('\n');
+  Lat.value = document.getElementById("pre_lat").innerText.trim().split('\n').map(e => {
+      if(tip==0) return e.split(' ')[0];
+      if(tip==1) return e;
+      return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
+  }).join('\n');
   unMatch.value = '';
+  _srtPrfm = true;
   matchTrans();
 }
 
-function matchTrans() {
+function showMatch() {
+    _show = !_show;
+    matchTrans();
+}
+
+function matchTrans(_sort = false) {
 try {
     let cr = Cyr.value.trim(), lt = Lat.value.trim();
-    let RxD = / \(\?\)/g;
-    if(cr == '' || lt == '') return;
-    if(cr.includes(' (?)')) cr = cr.replace(RxD,'');
-    if(lt.includes(' (?)')) lt = lt.replace(RxD,'');
+    if(cr == '' || lt == '') { preToggleToast(600); return; }
+
+	let RxD = / → .+/gm;
+    if(RxD.test(cr)) cr = cr.replace(RxD,'');
+    if(cr.includes(" \n")) cr = cr.replace(/ +$/gm,'');
+    if(RxD.test(lt)) lt = lt.replace(RxD,'');
+    if(lt.includes(" \n")) lt = lt.replace(/ +$/gm,'');
 
     let cyr = cr.split('\n'),
         lat = lt.split('\n');
     
         lat = lat.map(el => el.trim());
     
-    //cyr.sort(); lat.sort();
+    if(_sort) {
+        if(_srtPrfm) {cyr.sort(); lat.sort(); _srtPrfm = false; }
+        else { cyr.reverse(); lat.reverse(); }
+    }
 
     for(let i in cyr) {
       
-      let w = cyr[i].trim().toLowerCase();
-      if(w.charAt(0) == 'е' || w.charAt(0) == 'ё') w = "(e|ye)" + w.slice(1);
+      let w = cyr[i].trim().toLowerCase(); if(w == '') continue;
+      if(w.charAt(0) == 'е' || w.charAt(0) == 'ё') w = "(ye|e)" + w.slice(1);
+      let Rx = / (е|ё)/ig;
+      if(Rx.test(w)) w = w.replace(Rx," (ye|e)");
+      
       Trans.forEach(lit => { w = w.replaceAll(lit[0],lit[1]); });
       
-      let Rx = new RegExp('^'+w.charAt(0).toUpperCase() + w.slice(1) + '$','i');
+      Rx = new RegExp('^'+ w + '$','i');
 
       let ix = lat.findIndex(val => Rx.test(val));
-      if(ix < 0) cyr[i] += ' (?)';
-      else lat[ix] = '+' + lat[ix];
+      if(ix < 0) cyr[i] += ' → ?';
+      else {
+          if(_show) cyr[i] += ' → ' + lat[ix];
+          lat[ix] = '+' + lat[ix];
+      }
     }
 
     Cyr.value = cyr.join('\n');
-    lat = lat.map(el => (el.charAt(0)=='+'?el.slice(1):el+' (?)'));
+    lat = lat.map(el => (el.charAt(0)=='+'?el.slice(1):el+' → ?'));
     Lat.value = lat.join('\n');
     
-    Rx = / \(\?\)$/;
-    unMatch.value  = '✍  MISMATCHED (Cyrillic):\n\n' + cyr.filter(e=>Rx.test(e)).join('\n');
-    unMatch.value += '\n\n✍  MISMATCHED (Transliterated):\n\n' + lat.filter(e=>Rx.test(e)).join('\n');
-    unMatch.style.backgroundColor = '#ffd';
+    unMatch.style.backgroundColor = '#ffa';
+    setTimeout(()=>{ unMatch.style.backgroundColor = ''; }, 400);
+    
+    Rx = / → \?$/;
+    cr = cyr.filter(e=>Rx.test(e));
+    lt = lat.filter(e=>Rx.test(e));
+    unMatch.value  = `✍  MISMATCHED (${cr.length}/${cyr.length} Cyrillic):\n\n${cr.join('\n')}\n\n✍  MISMATCHED (${lt.length}/${lat.length} Transliterated):\n\n${lt.join('\n')}`;
 
-  
-} catch(e) { alert(e.message); }
+
+} catch(e) { alert("ERROR: " + e.message); }
 }
 
+function moreInfo() {
+    unMatch.value += `${unMatch.value==''?'':'\n\n'}✍  TRANSLITERATION TABLE:\n\n${Trans.map(e => e.join(' → ')).join('\n')}\n\n- https://en.wikipedia.org/wiki/Romanization_of_Russian\n- http://transliteration.ru/mvd_1047/\n- https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio`;
+}
+
+function preToggleToast(ms) {
+	let T = document.querySelector('.pregToast').style;
+	T.top = ms?'60px':'-60px';
+	if(ms) setTimeout( function() { preToggleToast(0); }, ms);
+}
+
+document.querySelectorAll('span').forEach(e => e.addEventListener("click", function(e) {
+    let el = e.target.tagName != 'SPAN' ? e.target.parentElement : e.target;
+    el.classList.remove("pulse");
+    void el.offsetWidth;
+    el.classList.add("pulse");
+    //navigator.vibrate(100);
+}, false));
+
+function setSort() { _srtPrfm = true; }
+Cyr.addEventListener('input', setSort);
+Lat.addEventListener('input', setSort);
 </script>
 </body>
 </html>

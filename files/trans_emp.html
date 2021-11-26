@@ -14,7 +14,6 @@
       padding: 8px;
       display: inline-block;
       float:left;
-      background-color: #eef;
     }
     textarea {
       padding: 8px 18px;
@@ -27,7 +26,17 @@
       resize: none;
       white-space: pre;
     }
-    textarea::placeholder { font-size: 16px; font-style: italic; margin-right: 80px; }
+    .bk {
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='300' height='300' preserveAspectRatio='none' viewBox='0 0 300 300'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1023%26quot%3b)' fill='none'%3e%3crect width='300' height='300' x='0' y='0' fill='rgba(235%2c 241%2c 248%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c110 C 12%2c94.6 36%2c26 60%2c33 C 84%2c40 96%2c136.8 120%2c145 C 144%2c153.2 156%2c80.2 180%2c74 C 204%2c67.8 216%2c117.8 240%2c114 C 264%2c110.2 288%2c66.8 300%2c55L300 300L0 300z' fill='rgba(222%2c 237%2c 253%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c268 C 12%2c258.6 36%2c225.8 60%2c221 C 84%2c216.2 96%2c244.2 120%2c244 C 144%2c243.8 156%2c219.8 180%2c220 C 204%2c220.2 216%2c258.2 240%2c245 C 264%2c231.8 288%2c172.2 300%2c154L300 300L0 300z' fill='rgba(210%2c 231%2c 253%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1023'%3e%3crect width='300' height='300' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+background-repeat: no-repeat;
+background-size: 100% 100%;
+    }
+    .x_bk {
+background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' version='1.1' viewBox='0 0 63.5 63.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -233)'%3E%3Cpath d='m10.2 228a19.8 19.8 0 0 0-19.8 19.8 19.8 19.8 0 0 0 18.9 19.8l3.09 11.6a9.09 9.09 0 0 0-5.14 8.17 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-7.49-8.94l-2.46-11.5a19.8 19.8 0 0 0 7.61-4.03l12.1 9.53a9.09 9.09 0 0 0-0.869 3.85 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-5.1 1.57l-11.7-9.86a19.8 19.8 0 0 0 3.29-8.96l15 2.24a9.09 9.09 0 0 0 8.97 7.73 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-8.15 5.08l-16-2.39a19.8 19.8 0 0 0-19.6-16.5zm39.8 17.2 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.23-3.23 0.0527-0.212-0.311-0.0465-0.218-0.218zm-1.32 25.8 1.75 1.75-8.73 8.73-5.24-5.24 1.75-1.75 3.49 3.49zm-36.2 10.7 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.7-3.7z' fill='rgba(210%2c 231%2c 253%2c 1)'/%3E%3C/g%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-color: rgba(235, 241, 248, 1);
+    }
+    textarea::placeholder { font-size: 20px; font-style: italic; color: #8ae; }
     pre { display: none; }
     
     .fix_panel {
@@ -69,7 +78,7 @@
     	left: calc(40vw - 90px);
         top: -60px;
         text-align: center;
-        background-color: rgb(0,0,0,0.5);
+        background-color: rgb(0,0,100,0.5);
         color: #fff;
         border-radius: 6px;
         z-index: 33;
@@ -218,9 +227,9 @@ Dmitriy Vasilievich Aleksandrov
 Ivan Illarionovich Serov
 Svetlana Petrovna Nikolaeva
 </pre>
-<div class='txt_area'><textarea id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
-<div class='txt_area'><textarea id="lat" placeholder="Paste transcript here"></textarea></div>
-<div class='txt_area'><textarea id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
+<div class='txt_area'><textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
+<div class='txt_area'><textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea></div>
+<div class='txt_area'><textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
 
 <script>
@@ -258,7 +267,6 @@ function clearData() {
   Cyr.value = '';
   Lat.value = '';
   unMatch.value = '';
-  unMatch.style.backgroundColor = '';
 }
 
 function sampleData(tip) {
@@ -326,13 +334,16 @@ try {
     lat = lat.map(el => (el.charAt(0)=='+'?el.slice(1):el+' → ?'));
     Lat.value = lat.join('\n');
     
+    unMatch.style.backgroundColor = '#ffa';
+    setTimeout(()=>{ unMatch.style.backgroundColor = ''; }, 400);
+    
     Rx = / → \?$/;
     cr = cyr.filter(e=>Rx.test(e));
     lt = lat.filter(e=>Rx.test(e));
     unMatch.value  = `✍  MISMATCHED (${cr.length}/${cyr.length} Cyrillic):\n\n${cr.join('\n')}\n\n✍  MISMATCHED (${lt.length}/${lat.length} Transliterated):\n\n${lt.join('\n')}`;
-    unMatch.style.backgroundColor = '#ffd';
 
-} catch(e) { alert(e.message); }
+
+} catch(e) { alert("ERROR: " + e.message); }
 }
 
 function moreInfo() {

@@ -295,7 +295,7 @@ function sampleData(tip) {
       return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
   }).join('\n');
   unMatch.value = '';
-  _srtPrfm = true;
+  setSortIcon();
   matchTrans();
 }
 
@@ -383,12 +383,9 @@ document.querySelectorAll('span').forEach(e => e.addEventListener("click", funct
 }, false));
 
 function setInp() {
-try {
-    _srtPrfm = true;
     unMatch.value = '';
     setSortIcon();
     if(Cyr.value.trim() !='' && Lat.value.trim() !='') matchTrans();
-} catch(e) { alert(e.message); }
 }
 Cyr.addEventListener('input', setInp);
 Lat.addEventListener('input', setInp);
@@ -398,6 +395,7 @@ function inScene() {
     st.right = st.right == '-120px'?'0px':'-120px';
 }
 function setSortIcon() {
+    _srtPrfm = true;
     let i = document.getElementById("sortIcon").classList;
     i.remove('fa-sort-alpha-asc','fa-sort-alpha-desc');
     i.add('fa-sort-alpha-asc');

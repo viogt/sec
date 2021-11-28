@@ -18,6 +18,7 @@
     textarea {
       padding: 8px 18px;
       font: normal 16px Arial,sans-serif;
+      color: #006;
       border: 1px solid #b4c8f0;
       border-radius: 8px;
       width: 100%;
@@ -48,6 +49,7 @@ background-color: rgba(235, 241, 248, 1);
         z-index: 100;
         text-align: center;
         overflow-y: scroll;
+        transition: right .3s ease;
     }
     .fix_panel > span {
         width:80px;
@@ -84,6 +86,16 @@ background-color: rgba(235, 241, 248, 1);
         z-index: 33;
         transition: top .3s ease;
     }
+    .rBut {
+        width: 12px;
+        height: 160px;
+        position: fixed;
+    	top: calc(100vh / 2 - 80px);
+        background-color: #c00;
+        border-radius: 12px 0 0 12px;
+        right: 0px;
+        z-index: 101;
+    }
 
     .pulse { animation: pulse-animation 1s 1; }
     @keyframes pulse-animation {
@@ -119,7 +131,7 @@ background-color: rgba(235, 241, 248, 1);
     <label>Show<br>match</label>
 </span>
 <span style="color:#840; background-color:rgba(255, 165, 0,.5)" onclick="matchTrans(true)">
-    <i class="fa fa-sort-alpha-asc"></i>
+    <i id="sortIcon" class="fa fa-sort-alpha-asc"></i>
     <label>Sort<br>the lists</label>
 </span>
 <span style="color:#066; background-color:rgba(0, 153, 153,.5)" onclick="sampleData(1)">
@@ -232,6 +244,7 @@ Svetlana Petrovna Nikolaeva
 <div class='txt_area'><textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
 
+<div class="rBut" onclick="inScene()"></div>
 <script>
 
 const Trans = [
@@ -267,6 +280,7 @@ function clearData() {
   Cyr.value = '';
   Lat.value = '';
   unMatch.value = '';
+  setSortIcon();
 }
 
 function sampleData(tip) {
@@ -307,8 +321,12 @@ try {
         lat = lat.map(el => el.trim());
     
     if(_sort) {
-        if(_srtPrfm) {cyr.sort(); lat.sort(); _srtPrfm = false; }
-        else { cyr.reverse(); lat.reverse(); }
+        if(_srtPrfm) { cyr.sort(); lat.sort(); _srtPrfm = false; }
+        else {
+            cyr.reverse(); lat.reverse();
+            let i = document.getElementById("sortIcon").classList;
+            i.toggle('fa-sort-alpha-asc'); i.toggle('fa-sort-alpha-desc');
+        }
     }
 
     for(let i in cyr) {
@@ -364,9 +382,26 @@ document.querySelectorAll('span').forEach(e => e.addEventListener("click", funct
     //navigator.vibrate(100);
 }, false));
 
-function setSort() { _srtPrfm = true; }
-Cyr.addEventListener('input', setSort);
-Lat.addEventListener('input', setSort);
+function setInp() {
+try {
+    _srtPrfm = true;
+    unMatch.value = '';
+    setSortIcon();
+    if(Cyr.value.trim() !='' && Lat.value.trim() !='') matchTrans();
+} catch(e) { alert(e.message); }
+}
+Cyr.addEventListener('input', setInp);
+Lat.addEventListener('input', setInp);
+
+function inScene() {
+    let st = document.querySelector(".fix_panel").style;
+    st.right = st.right == '-120px'?'0px':'-120px';
+}
+function setSortIcon() {
+    let i = document.getElementById("sortIcon").classList;
+    i.remove('fa-sort-alpha-asc','fa-sort-alpha-desc');
+    i.add('fa-sort-alpha-asc');
+}
 </script>
 </body>
 </html>

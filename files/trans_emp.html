@@ -7,7 +7,7 @@
     <style>
     * { box-sizing: border-box; }
 
-    body { margin: 0; }
+    body { margin: 0; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAAXNSR0IArs4c6QAAAC5JREFUGFdj3HLiw38fCwFGBiwALIhLAVwHNgUoxqErwLALWQFWh8AUYJWEORIADqsbc0rybwUAAAAASUVORK5CYII=) repeat; }
     .txt_area {
       width:33.3%;
       height:100vh;
@@ -18,7 +18,7 @@
     textarea {
       padding: 8px 18px;
       font: normal 16px Arial,sans-serif;
-      border: 1px dashed grey;
+      border: 1px solid #b4c8f0;
       border-radius: 8px;
       width: 100%;
       height: 100%;
@@ -40,10 +40,11 @@ background-color: rgba(235, 241, 248, 1);
     pre { display: none; }
     
     .fix_panel {
-        position: fixed;
+        position: absolute;
         top: 0px;
         height: 100vh;
-        right: 0px;
+        /*right: 0px;*/
+        left: calc(100vw - 120px);
         width: 120px;
         z-index: 100;
         text-align: center;
@@ -104,35 +105,35 @@ background-color: rgba(235, 241, 248, 1);
 <div class="fix_panel">
 <span style="color:#060; background-color:rgba(60, 179, 113,.5)" onclick="sampleData(0)">
     <i class="fa fa-download"></i>
-    <label>Sample data</label>
+    <label>Sample<br>data</label>
 </span>
 <span style="color:#800; background-color:rgba(220, 0, 0,.5)" onclick="matchTrans()">
     <i class="fa fa-check-circle"></i>
-    <label>Check translit.</label>
+    <label>Check<br>translit.</label>
 </span>
 <span style="color:#808; background-color:rgba(238, 130, 238,.5)" onclick="clearData()">
     <i class="fa fa-times-circle"></i>
-    <label>Clear data</label>
+    <label>Clear<br>data</label>
 </span>
 <span style="color:#008; background-color:rgba(0, 0, 220,.5)" onclick="showMatch()">
     <i class="fa fa-info-circle"></i>
-    <label>Show match</label>
+    <label>Show<br>match</label>
 </span>
 <span style="color:#840; background-color:rgba(255, 165, 0,.5)" onclick="matchTrans(true)">
     <i class="fa fa-sort-alpha-asc"></i>
-    <label>Sort the lists</label>
+    <label>Sort<br>the lists</label>
 </span>
 <span style="color:#066; background-color:rgba(0, 153, 153,.5)" onclick="sampleData(1)">
     <i class="fa fa-upload"></i>
-    <label>Sample full data<small><sup>1</sup></small></label>
+    <label>Sample<br>full data<small><sup>1</sup></small></label>
 </span>
 <span style="color:#b20; background-color:rgba(204, 51, 0,.5)" onclick="sampleData(2)">
     <i class="fa fa-cloud-upload"></i>
-    <label>Sample full data<small><sup>2</sup></small></label>
+    <label>Sample<br>full data<small><sup>2</sup></small></label>
 </span>
 <span style="color:#570; background-color:rgba(153, 204, 0,.5)" onclick="moreInfo()">
     <i class="fa fa-wrench"></i>
-    <label>Translit. rules</label>
+    <label>Translit.<br>rules</label>
 </span>
 </div>
 
@@ -367,6 +368,24 @@ document.querySelectorAll('span').forEach(e => e.addEventListener("click", funct
 function setSort() { _srtPrfm = true; }
 Cyr.addEventListener('input', setSort);
 Lat.addEventListener('input', setSort);
+
+
+//------------------- Pushable -------------------------
+
+var drag_x = 0;
+const drag_w = 120, drag_ele = document.querySelector('.fix_panel');
+
+const mouseDownHandler = function (e) {
+    drag_x = e.clientX;    
+    document.addEventListener('mousemove', mouseMoveHandler);
+};
+const mouseMoveHandler = function (e) {
+    drag_ele.style.left = `${e.clientX < drag_x ? 0: window.innerWidth-drag_w}px`;
+    drag_ele.style.top = '0px';
+    document.removeEventListener('mousemove', mouseMoveHandler);
+};
+
+drag_ele.addEventListener('mousedown', mouseDownHandler);
 </script>
 </body>
 </html>

@@ -369,23 +369,51 @@ function setSort() { _srtPrfm = true; }
 Cyr.addEventListener('input', setSort);
 Lat.addEventListener('input', setSort);
 
+//------------------- Draggable -------------------------
 
-//------------------- Pushable -------------------------
+let drag_x = 0, drag_w = 120, drag_ele = document.querySelector('.fix_panel');
 
-var drag_x = 0;
-const drag_w = 120, drag_ele = document.querySelector('.fix_panel');
-
-const mouseDownHandler = function (e) {
+const mouseDownHandler = function(e) {
     drag_x = e.clientX;    
-    document.addEventListener('mousemove', mouseMoveHandler);
+    drag_ele.style.border = '1px dashed red';
+document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
 };
-const mouseMoveHandler = function (e) {
-    drag_ele.style.left = `${e.clientX < drag_x ? 0: window.innerWidth-drag_w}px`;
+const mouseMoveHandler = function(e) {
     drag_ele.style.top = '0px';
-    document.removeEventListener('mousemove', mouseMoveHandler);
+    drag_ele.style.left = `${drag_ele.offsetLeft + e.clientX - drag_x}px`;
+    drag_x = e.clientX;
 };
+const mouseUpHandler = function(e) {
+    //window.cancelBubble = true;
+    //window.stopImmediatePropagation();
+    //window.stopPropagation();
+    //void drag_ele.offsetWidth;
+    
+    //StopEvent();
+    
+    let L = window.innerWidth;
+    drag_ele.style.left = `${drag_x > L/2 ? L-drag_w:0}px`;
+    drag_ele.style.border = 'none';  
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+    
+    //throw new Error("Here we stop");
+    StopEvent();
 
+};
 drag_ele.addEventListener('mousedown', mouseDownHandler);
+
+function StopEvent(pE) {
+   if (!pE)
+     if (window.event) pE = window.event;
+     else return;
+  if (pE.cancelBubble != null) pE.cancelBubble = true;
+  if (pE.stopPropagation) pE.stopPropagation();
+  if (pE.preventDefault) pE.preventDefault();
+  if (window.event) pE.returnValue = false;
+  if (pE.cancel != null) pE.cancel = true;
+}  // StopEvent
 </script>
 </body>
 </html>

@@ -321,7 +321,7 @@ function sampleData(tip) {
 }
 
 function bigDataSim() {
-    let Qt = prompt("Please enter the number of persons:", "400");
+    let Qt = prompt("Please enter the number of persons:", "4000");
     if (Qt == null || isNaN(Qt) || Qt < 1) { preToggleToast(600); return; }
     if(Qt > 300) spinOn(true);
 
@@ -433,7 +433,8 @@ document.querySelectorAll('span').forEach(e => e.addEventListener("click", funct
 function setInp() {
     unMatch.value = '';
     setSortIcon();
-    if(Cyr.value.trim() !='' && Lat.value.trim() !='') matchTrans();
+    if(Cyr.value.trim() !='' && Lat.value.trim() !='') //matchTrans();
+    { spinOn(true); setTimeout(matchTrans, 0); }
 }
 Cyr.addEventListener('input', setInp);
 Lat.addEventListener('input', setInp);

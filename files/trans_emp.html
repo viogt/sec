@@ -18,6 +18,7 @@
     textarea {
       padding: 8px 18px;
       font: normal 16px Arial,sans-serif;
+      color: #006;
       border: 1px solid #b4c8f0;
       border-radius: 8px;
       width: 100%;
@@ -40,31 +41,35 @@ background-color: rgba(235, 241, 248, 1);
     pre { display: none; }
     
     .fix_panel {
-        position: absolute;
+        position: fixed;
         top: 0px;
         height: 100vh;
-        /*right: 0px;*/
-        left: calc(100vw - 120px);
+        right: 0px;
         width: 120px;
         z-index: 100;
-        text-align: center;
+        font-family: Arial,sans-serif;
+        font-size: 13px;
+        padding: 20px;
+        padding-top: 0;
         overflow-y: scroll;
+        transition: right .3s ease;
+    }
+    .fix_panel i {
+        font-size: 3em;
+        display: block;
     }
     .fix_panel > span {
-        width:80px;
-        padding: 8px;
-        border-radius: 12px;
-        height: 94px;
+        width: 100%;
+        padding: 1em 0;
+        border-radius: 1em;
         margin:0;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 1.8em;
         display: inline-block;
-        font-size: 40px;
         cursor: pointer;
     }
     .fix_panel > span > label {
         display: block;
-        font: normal 14px Arial,sans-serif;
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
@@ -84,6 +89,24 @@ background-color: rgba(235, 241, 248, 1);
         border-radius: 6px;
         z-index: 33;
         transition: top .3s ease;
+    }
+    .rBut {
+        width: 12px;
+        height: 160px;
+        position: fixed;
+    	top: calc(100vh / 2 - 80px);
+        background-color: #000;
+        border-radius: 12px 0 0 12px;
+        right: 0px;
+        z-index: 101;
+    }
+    .spin {
+        font-size: 120px;
+        position: absolute;
+        z-index: 102;
+        top: calc(100vh / 2 - 60px);
+        left: calc(100vw / 2 - 60px);
+        display: none;
     }
 
     .pulse { animation: pulse-animation 1s 1; }
@@ -120,7 +143,7 @@ background-color: rgba(235, 241, 248, 1);
     <label>Show<br>match</label>
 </span>
 <span style="color:#840; background-color:rgba(255, 165, 0,.5)" onclick="matchTrans(true)">
-    <i class="fa fa-sort-alpha-asc"></i>
+    <i id="sortIcon" class="fa fa-sort-alpha-asc"></i>
     <label>Sort<br>the lists</label>
 </span>
 <span style="color:#066; background-color:rgba(0, 153, 153,.5)" onclick="sampleData(1)">
@@ -130,6 +153,14 @@ background-color: rgba(235, 241, 248, 1);
 <span style="color:#b20; background-color:rgba(204, 51, 0,.5)" onclick="sampleData(2)">
     <i class="fa fa-cloud-upload"></i>
     <label>Sample<br>full data<small><sup>2</sup></small></label>
+</span>
+<span style="color:#60c; background-color:rgba(153, 51, 255,.5)" onclick="bigDataSim()">
+    <i class="fa fa-archive"></i>
+    <label>Simulate<br>big data<small><sup>3</sup></small></label>
+</span>
+<span style="color:#06b; background-color:rgba(0, 153, 230,.5)" onclick="iconSize()">
+    <i id="menuSize" class="fa fa-compress"></i>
+    <label>Menu<br>size</label>
 </span>
 <span style="color:#570; background-color:rgba(153, 204, 0,.5)" onclick="moreInfo()">
     <i class="fa fa-wrench"></i>
@@ -233,6 +264,8 @@ Svetlana Petrovna Nikolaeva
 <div class='txt_area'><textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
 
+<div class="rBut" onclick="inScene()"></div>
+<i class="spin fa fa-spinner fa-pulse"></i>
 <script>
 
 const Trans = [
@@ -268,6 +301,7 @@ function clearData() {
   Cyr.value = '';
   Lat.value = '';
   unMatch.value = '';
+  setSortIcon();
 }
 
 function sampleData(tip) {
@@ -282,8 +316,29 @@ function sampleData(tip) {
       return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
   }).join('\n');
   unMatch.value = '';
-  _srtPrfm = true;
+  setSortIcon();
   matchTrans();
+}
+
+function bigDataSim() {
+    let Qt = prompt("Please enter the number of persons:", "400");
+    if (Qt == null || isNaN(Qt) || Qt < 1) { preToggleToast(600); return; }
+    if(Qt > 300) spinOn(true);
+
+    let Cr = document.getElementById("pre_cyr").innerText.trim().split('\n'),
+        Lt = document.getElementById("pre_lat").innerText.trim().split('\n');
+    let CR = [], LT = [], L = Math.min(Cr.length,Lt.length);
+    
+    while(Qt > 0) {
+        CR = CR.concat(Cr.slice(0, Math.min(L,Qt)));
+        LT = LT.concat(Lt.slice(0, Math.min(L,Qt)));
+        Qt -= L;
+    }
+    Cyr.value = CR.join('\n');
+    Lat.value = LT.join('\n');
+    unMatch.value = '';
+    setSortIcon();
+    setTimeout(matchTrans, 0);
 }
 
 function showMatch() {
@@ -304,12 +359,16 @@ try {
 
     let cyr = cr.split('\n'),
         lat = lt.split('\n');
-    
+
         lat = lat.map(el => el.trim());
     
     if(_sort) {
-        if(_srtPrfm) {cyr.sort(); lat.sort(); _srtPrfm = false; }
-        else { cyr.reverse(); lat.reverse(); }
+        if(_srtPrfm) { cyr.sort(); lat.sort(); _srtPrfm = false; }
+        else {
+            cyr.reverse(); lat.reverse();
+            let i = document.getElementById("sortIcon").classList;
+            i.toggle('fa-sort-alpha-asc'); i.toggle('fa-sort-alpha-desc');
+        }
     }
 
     for(let i in cyr) {
@@ -342,6 +401,7 @@ try {
     cr = cyr.filter(e=>Rx.test(e));
     lt = lat.filter(e=>Rx.test(e));
     unMatch.value  = `✍  MISMATCHED (${cr.length}/${cyr.length} Cyrillic):\n\n${cr.join('\n')}\n\n✍  MISMATCHED (${lt.length}/${lat.length} Transliterated):\n\n${lt.join('\n')}`;
+    spinOn(false);
 
 
 } catch(e) { alert("ERROR: " + e.message); }
@@ -349,6 +409,11 @@ try {
 
 function moreInfo() {
     unMatch.value += `${unMatch.value==''?'':'\n\n'}✍  TRANSLITERATION TABLE:\n\n${Trans.map(e => e.join(' → ')).join('\n')}\n\n- https://en.wikipedia.org/wiki/Romanization_of_Russian\n- http://transliteration.ru/mvd_1047/\n- https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio`;
+}
+
+function spinOn(fl) {
+    let s = document.querySelector('.spin').style;
+    s.display = fl?'block':'none';
 }
 
 function preToggleToast(ms) {
@@ -365,55 +430,38 @@ document.querySelectorAll('span').forEach(e => e.addEventListener("click", funct
     //navigator.vibrate(100);
 }, false));
 
-function setSort() { _srtPrfm = true; }
-Cyr.addEventListener('input', setSort);
-Lat.addEventListener('input', setSort);
+function setInp() {
+    unMatch.value = '';
+    setSortIcon();
+    if(Cyr.value.trim() !='' && Lat.value.trim() !='') matchTrans();
+}
+Cyr.addEventListener('input', setInp);
+Lat.addEventListener('input', setInp);
 
-//------------------- Draggable -------------------------
+function inScene() {
+    let st = document.querySelector(".fix_panel").style;
+    st.right = st.right == '-120px'?'0px':'-120px';
+}
+function setSortIcon() {
+    _srtPrfm = true;
+    let i = document.getElementById("sortIcon").classList;
+    i.remove('fa-sort-alpha-asc','fa-sort-alpha-desc');
+    i.add('fa-sort-alpha-asc');
+}
 
-let drag_x = 0, drag_w = 120, drag_ele = document.querySelector('.fix_panel');
-
-const mouseDownHandler = function(e) {
-    drag_x = e.clientX;    
-    drag_ele.style.border = '1px dashed red';
-document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
-};
-const mouseMoveHandler = function(e) {
-    drag_ele.style.top = '0px';
-    drag_ele.style.left = `${drag_ele.offsetLeft + e.clientX - drag_x}px`;
-    drag_x = e.clientX;
-};
-const mouseUpHandler = function(e) {
-    //window.cancelBubble = true;
-    //window.stopImmediatePropagation();
-    //window.stopPropagation();
-    //void drag_ele.offsetWidth;
-    
-    //StopEvent();
-    
-    let L = window.innerWidth;
-    drag_ele.style.left = `${drag_x > L/2 ? L-drag_w:0}px`;
-    drag_ele.style.border = 'none';  
-    document.removeEventListener('mousemove', mouseMoveHandler);
-    document.removeEventListener('mouseup', mouseUpHandler);
-    
-    //throw new Error("Here we stop");
-    StopEvent();
-
-};
-drag_ele.addEventListener('mousedown', mouseDownHandler);
-
-function StopEvent(pE) {
-   if (!pE)
-     if (window.event) pE = window.event;
-     else return;
-  if (pE.cancelBubble != null) pE.cancelBubble = true;
-  if (pE.stopPropagation) pE.stopPropagation();
-  if (pE.preventDefault) pE.preventDefault();
-  if (window.event) pE.returnValue = false;
-  if (pE.cancel != null) pE.cancel = true;
-}  // StopEvent
+function iconSize() {
+    const st = document.querySelector('.fix_panel').style, rd = '9px';
+    if(st.fontSize == rd) {
+        st.fontSize = '13px';
+        st.width = '120px';
+    }
+    else {
+        st.fontSize = rd;
+        st.width = '90px';
+    }
+    const i = document.getElementById('menuSize');
+    i.classList.toggle('fa-expand'); i.classList.toggle('fa-compress');
+}
 </script>
 </body>
 </html>

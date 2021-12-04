@@ -7,165 +7,192 @@
     <style>
     * { box-sizing: border-box; }
 
-    body { margin: 0; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAAXNSR0IArs4c6QAAAC5JREFUGFdj3HLiw38fCwFGBiwALIhLAVwHNgUoxqErwLALWQFWh8AUYJWEORIADqsbc0rybwUAAAAASUVORK5CYII=) repeat; }
+    body { margin: 0; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAAXNSR0IArs4c6QAAADRJREFUGFdjZHDp+M+wp4IBG2BkYGD4z+DSwYBNAUQSBLAoQEhiUYAqiaYAUxJJAXZJqAIAflsTzeLXaHkAAAAASUVORK5CYII=) repeat; }
     .txt_area {
-      width:33.3%;
-      height:100vh;
-      padding: 8px;
-      display: inline-block;
-      float:left;
+        position: absolute;
+        padding: 5px;
+        float:left;
     }
     textarea {
       padding: 8px 18px;
       font: normal 16px Arial,sans-serif;
-      color: #006;
-      border: 1px solid #b4c8f0;
+      color: #aae;
+      border: 1px solid #048;
       border-radius: 8px;
-      width: 100%;
-      height: 100%;
+      margin: 5px;
+      float: left;
+      display: inline-block;
       outline:none;
       resize: none;
       white-space: pre;
     }
     .bk {
-background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='300' height='300' preserveAspectRatio='none' viewBox='0 0 300 300'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1023%26quot%3b)' fill='none'%3e%3crect width='300' height='300' x='0' y='0' fill='rgba(235%2c 241%2c 248%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c110 C 12%2c94.6 36%2c26 60%2c33 C 84%2c40 96%2c136.8 120%2c145 C 144%2c153.2 156%2c80.2 180%2c74 C 204%2c67.8 216%2c117.8 240%2c114 C 264%2c110.2 288%2c66.8 300%2c55L300 300L0 300z' fill='rgba(222%2c 237%2c 253%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c268 C 12%2c258.6 36%2c225.8 60%2c221 C 84%2c216.2 96%2c244.2 120%2c244 C 144%2c243.8 156%2c219.8 180%2c220 C 204%2c220.2 216%2c258.2 240%2c245 C 264%2c231.8 288%2c172.2 300%2c154L300 300L0 300z' fill='rgba(210%2c 231%2c 253%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1023'%3e%3crect width='300' height='300' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+/*background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='300' height='300' preserveAspectRatio='none' viewBox='0 0 300 300'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1023%26quot%3b)' fill='none'%3e%3crect width='300' height='300' x='0' y='0' fill='rgba(235%2c 241%2c 248%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c110 C 12%2c94.6 36%2c26 60%2c33 C 84%2c40 96%2c136.8 120%2c145 C 144%2c153.2 156%2c80.2 180%2c74 C 204%2c67.8 216%2c117.8 240%2c114 C 264%2c110.2 288%2c66.8 300%2c55L300 300L0 300z' fill='rgba(222%2c 237%2c 253%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c268 C 12%2c258.6 36%2c225.8 60%2c221 C 84%2c216.2 96%2c244.2 120%2c244 C 144%2c243.8 156%2c219.8 180%2c220 C 204%2c220.2 216%2c258.2 240%2c245 C 264%2c231.8 288%2c172.2 300%2c154L300 300L0 300z' fill='rgba(210%2c 231%2c 253%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1023'%3e%3crect width='300' height='300' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
 background-repeat: no-repeat;
-background-size: 100% 100%;
+background-size: 100% 100%;*/
+    background-color: #224;
     }
     .x_bk {
-background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' version='1.1' viewBox='0 0 63.5 63.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -233)'%3E%3Cpath d='m10.2 228a19.8 19.8 0 0 0-19.8 19.8 19.8 19.8 0 0 0 18.9 19.8l3.09 11.6a9.09 9.09 0 0 0-5.14 8.17 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-7.49-8.94l-2.46-11.5a19.8 19.8 0 0 0 7.61-4.03l12.1 9.53a9.09 9.09 0 0 0-0.869 3.85 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-5.1 1.57l-11.7-9.86a19.8 19.8 0 0 0 3.29-8.96l15 2.24a9.09 9.09 0 0 0 8.97 7.73 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-8.15 5.08l-16-2.39a19.8 19.8 0 0 0-19.6-16.5zm39.8 17.2 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.23-3.23 0.0527-0.212-0.311-0.0465-0.218-0.218zm-1.32 25.8 1.75 1.75-8.73 8.73-5.24-5.24 1.75-1.75 3.49 3.49zm-36.2 10.7 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.7-3.7z' fill='rgba(210%2c 231%2c 253%2c 1)'/%3E%3C/g%3E%3C/svg%3E");
+/*background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' version='1.1' viewBox='0 0 63.5 63.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -233)'%3E%3Cpath d='m10.2 228a19.8 19.8 0 0 0-19.8 19.8 19.8 19.8 0 0 0 18.9 19.8l3.09 11.6a9.09 9.09 0 0 0-5.14 8.17 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-7.49-8.94l-2.46-11.5a19.8 19.8 0 0 0 7.61-4.03l12.1 9.53a9.09 9.09 0 0 0-0.869 3.85 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-5.1 1.57l-11.7-9.86a19.8 19.8 0 0 0 3.29-8.96l15 2.24a9.09 9.09 0 0 0 8.97 7.73 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-8.15 5.08l-16-2.39a19.8 19.8 0 0 0-19.6-16.5zm39.8 17.2 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.23-3.23 0.0527-0.212-0.311-0.0465-0.218-0.218zm-1.32 25.8 1.75 1.75-8.73 8.73-5.24-5.24 1.75-1.75 3.49 3.49zm-36.2 10.7 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.7-3.7z' fill='rgba(210%2c 231%2c 253%2c 1)'/%3E%3C/g%3E%3C/svg%3E");
 background-repeat: no-repeat;
-background-color: rgba(235, 241, 248, 1);
+background-color: rgba(235, 241, 248, 1);*/
+    background-color: #224;
     }
-    textarea::placeholder { font-size: 20px; font-style: italic; color: #8ae; }
+    textarea::placeholder { font-size: 20px; font-style: italic; color: #06b; }
     pre { display: none; }
     
     .fix_panel {
-        position: fixed;
-        top: 0px;
-        height: 100vh;
-        right: 0px;
-        width: 120px;
+        position: absolute;
         z-index: 100;
         font-family: Arial,sans-serif;
-        font-size: 13px;
-        padding: 20px;
-        padding-top: 0;
-        overflow-y: scroll;
-        transition: right .3s ease;
+        padding: 5px;
+        overflow: auto;
+        white-space: nowrap;
     }
-    .fix_panel i {
-        font-size: 3em;
-        display: block;
-    }
-    .fix_panel > span {
-        width: 100%;
-        padding: 1em 0;
-        border-radius: 1em;
-        margin:0;
+    .fix_panel > div {
+        width: 60px; height: 60px;
+        padding: 6px 0;
+        border-radius: 9px;
+        margin: 5px;
         text-align: center;
-        margin-top: 1.8em;
         display: inline-block;
         cursor: pointer;
+        border: 1px solid #048;
+        color: #06b;
+        background-color: #224;
     }
-    .fix_panel > span > label {
+    .fix_panel > div > i {
+        font-size: 26px;
         display: block;
+    }
+    .fix_panel > div > label {
+        display: block;
+        font-size: 11px;
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
     }
 
     .pregToast {
-        width: 180px;
         font: normal 24px Arial, sans-serif;
-        padding-top: 18px;
+        padding: 18px 24px;
         height: 60px;
         position: absolute;
     	left: calc(40vw - 90px);
         top: -60px;
         text-align: center;
-        background-color: rgb(0,0,100,0.5);
-        color: #fff;
+        background-color: #002;
+        color: #eef;
         border-radius: 6px;
-        z-index: 33;
+        border: 1px solid #048;
+        z-index: 103;
         transition: top .3s ease;
     }
-    .rBut {
-        width: 12px;
-        height: 160px;
-        position: fixed;
-    	top: calc(100vh / 2 - 80px);
-        background-color: #000;
-        border-radius: 12px 0 0 12px;
-        right: 0px;
-        z-index: 101;
-    }
     .spin {
-        font-size: 120px;
+        font-size: 140px;
+        color: #008;
         position: absolute;
         z-index: 102;
-        top: calc(100vh / 2 - 60px);
-        left: calc(100vw / 2 - 60px);
+        top: calc(100vh / 2 - 70px);
+        left: calc(100vw / 2 - 70px);
         display: none;
+    }
+    .infoPad {
+        font: normal 16px Arial, sans-serif;
+        padding: 28px 28px;
+        position: absolute;
+        top: 0px; left: -100vw; height: 100vh; width: 100vw;
+        background-color: rgb(0,0,0,0.85);
+        color: #fff;
+        z-index: 103;
+        overflow: auto;
+        transition: left .4s ease;
+    }
+    .infoPad a { color: #99f; }
+    .infoPadTitle {
+        font-size: 20px;
+        color:#ffa;
+        margin: 28px 0;
+    }
+    .cancelIcon {
+        float: right;
+        top: 0px; right: 0px;
+        font-size: 34px; color: #fff;
+        background-color: #600;
+        width: 50px; height: 50px;
+        padding-top: 8px;
+        text-align: center;
+        border-radius: 50%;
+        cursor: pointer;
+        position: sticky;
+        box-shadow: 0 0 8px 3px #900 inset;
     }
 
     .pulse { animation: pulse-animation 1s 1; }
     @keyframes pulse-animation {
         0% { box-shadow: 0 0 0 0px rgba(200, 0, 0, 0.8); }
-        100% { box-shadow: 0 0 0 20px rgba(200, 0, 0, 0); }
+        100% { box-shadow: 0 0 0 10px rgba(200, 0, 0, 0); }
     }
 
-    @media screen and (max-width: 800px) {
+    /*@media screen and (max-width: 800px) {
       .txt_area {
         width:100%;
         height:33.3vh;
       }
-    }
+    }*/
     </style>
   </head>
-<body>
+<body onload="init(false)" onresize="init(false)">
 
 <div class="fix_panel">
-<span style="color:#060; background-color:rgba(60, 179, 113,.5)" onclick="sampleData(0)">
+<div onclick="sampleData(0)">
     <i class="fa fa-download"></i>
     <label>Sample<br>data</label>
-</span>
-<span style="color:#800; background-color:rgba(220, 0, 0,.5)" onclick="matchTrans()">
+</div>
+<div onclick="matchTrans()">
     <i class="fa fa-check-circle"></i>
     <label>Check<br>translit.</label>
-</span>
-<span style="color:#808; background-color:rgba(238, 130, 238,.5)" onclick="clearData()">
+</div>
+<div onclick="clearData()">
     <i class="fa fa-times-circle"></i>
     <label>Clear<br>data</label>
-</span>
-<span style="color:#008; background-color:rgba(0, 0, 220,.5)" onclick="showMatch()">
+</div>
+<div onclick="showMatch()">
     <i class="fa fa-info-circle"></i>
     <label>Show<br>match</label>
-</span>
-<span style="color:#840; background-color:rgba(255, 165, 0,.5)" onclick="matchTrans(true)">
+</div>
+<div onclick="matchTrans(true)">
     <i id="sortIcon" class="fa fa-sort-alpha-asc"></i>
     <label>Sort<br>the lists</label>
-</span>
-<span style="color:#066; background-color:rgba(0, 153, 153,.5)" onclick="sampleData(1)">
+</div>
+<div onclick="sampleData(1)">
     <i class="fa fa-upload"></i>
     <label>Sample<br>full data<small><sup>1</sup></small></label>
-</span>
-<span style="color:#b20; background-color:rgba(204, 51, 0,.5)" onclick="sampleData(2)">
+</div>
+<div onclick="sampleData(2)">
     <i class="fa fa-cloud-upload"></i>
     <label>Sample<br>full data<small><sup>2</sup></small></label>
-</span>
-<span style="color:#60c; background-color:rgba(153, 51, 255,.5)" onclick="bigDataSim()">
+</div>
+<div onclick="bigDataSim()">
     <i class="fa fa-archive"></i>
     <label>Simulate<br>big data<small><sup>3</sup></small></label>
-</span>
-<span style="color:#06b; background-color:rgba(0, 153, 230,.5)" onclick="iconSize()">
-    <i id="menuSize" class="fa fa-compress"></i>
-    <label>Menu<br>size</label>
-</span>
-<span style="color:#570; background-color:rgba(153, 204, 0,.5)" onclick="moreInfo()">
+</div>
+<div onclick="init(true)">
+    <i id="menuSize" class="fa fa-retweet"></i>
+    <label>Menu<br>position</label>
+</div>
+<div onclick="uniqueSet(this)">
+    <i class="fa fa-flag-checkered"></i>
+    <label>Uniques<br>Set OFF</label>
+</div>
+<div onclick="duotone()">
+    <i class="fa fa-adjust"></i>
+    <label>Duotone<br>or colour</label>
+</div>
+<div onclick="moreInfo(true)">
     <i class="fa fa-wrench"></i>
     <label>Translit.<br>rules</label>
-</span>
+</div>
 </div>
 
 <pre id="pre_cyr">
@@ -259,12 +286,24 @@ Dmitriy Vasilievich Aleksandrov
 Ivan Illarionovich Serov
 Svetlana Petrovna Nikolaeva
 </pre>
-<div class='txt_area'><textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
-<div class='txt_area'><textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea></div>
-<div class='txt_area'><textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
-<div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;EMPTY</div>
+<div class='txt_area'>
+    <textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea>
+    <textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea>
+    <textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea>
+</div>
+<div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;<span></span></div>
+<!-- <div class='infoPad'>
+    <i class="fa fa-times cancelIcon" onclick="moreInfo(false)"></i>
+    <div class="infoPadTitle"><big><i class="fa fa-wrench"></i></big>&nbsp;&nbsp;Translit. rules:</div>
+    <code></code>
+    <div class="infoPadTitle"><big><i class="fa fa-info-circle"></i></big>&nbsp;&nbsp;Useful links:</div>
+    <ul>
+        <li><a target="_blank" href="https://en.wikipedia.org/wiki/Romanization_of_Russian">https://en.wikipedia.org/wiki/Romanization_of_Russian</a></li>
+        <li><a target="_blank" href="http://transliteration.ru/mvd_1047/">http://transliteration.ru/mvd_1047/</a></li>
+        <li><a target="_blank" href="https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio">https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio</a></li>
+    </ul>
+</div> -->
 
-<div class="rBut" onclick="inScene()"></div>
 <i class="spin fa fa-spinner fa-pulse"></i>
 <script>
 
@@ -295,7 +334,55 @@ const Trans = [
           Lat = document.getElementById("lat"),
           unMatch = document.getElementById("unMatch");
     
-    var _show = false, _srtPrfm = true;
+    var _show = false, _srtPrfm = true, _unique = false;
+
+function notEmpty(ob) { return /\S/mg.test(ob.value); }
+
+var menuPos = 0;
+function init(fl) {
+try {
+    const   pnl = document.querySelector(".fix_panel"),
+            Bd = document.querySelector('.txt_area');
+   
+    let tW = window.innerWidth, tH = window.innerHeight, txW, txH, s;
+    
+    if(fl) menuPos = menuPos < 3 ? menuPos+1 : 0;
+    
+    if(menuPos == 0 || menuPos == 2) {
+        s = pnl.style;
+        s.whiteSpace="nowrap";
+        s.left = '0px';
+        s.height = '80px'; s.width = `${tW}px`;
+        s = Bd.style;
+        s.left = '0px';
+        s.height = `${tH - 70}px`; s.width = `${tW}px`;
+        
+        txH = (tH-110)/3; txW = tW-20;
+        
+        if(menuPos == 0) { pnl.style.top = '0px'; Bd.style.top = '70px'; }
+        else { pnl.style.top = `${tH - 80}px`; Bd.style.top = '0px'; }
+    }
+    else {
+        s = pnl.style;
+        s.whiteSpace="normal";
+        s.top = '0px';
+        s.height = `${tH}px`; s.width = '80px';
+        s = Bd.style;
+        s.top = '0px';
+        s.height = `${tH}px`; s.width = `${tW-80}px`;
+        
+        txH = (tH-40)/3; txW = tW-90;
+        
+        if(menuPos == 1) { pnl.style.left = `${tW-80}px`; Bd.style.left = '0px'; }
+        else { pnl.style.left = '0px'; Bd.style.left = '70px'; }
+    }
+  
+    Bd.querySelectorAll("textarea").forEach(e => {
+        e.style.height = `${txH}px`;
+        e.style.width = `${txW}px`;
+    });
+} catch(er) { alert(er.message); }  
+}
 
 function clearData() {
   Cyr.value = '';
@@ -322,8 +409,8 @@ function sampleData(tip) {
 
 function bigDataSim() {
     let Qt = prompt("Please enter the number of persons:", "4000");
-    if (Qt == null || isNaN(Qt) || Qt < 1) { preToggleToast(600); return; }
-    if(Qt > 300) spinOn(true);
+    if(Qt == null || isNaN(Qt) || Qt < 1) { preToggleToast('CANCEL',600); return; }
+    if(Qt < 300) preToggleToast(`${Qt} rcs`,800);
 
     let Cr = document.getElementById("pre_cyr").innerText.trim().split('\n'),
         Lt = document.getElementById("pre_lat").innerText.trim().split('\n');
@@ -338,18 +425,30 @@ function bigDataSim() {
     Lat.value = LT.join('\n');
     unMatch.value = '';
     setSortIcon();
-    setTimeout(matchTrans, 0);
+    matchTrans();
 }
 
 function showMatch() {
     _show = !_show;
+    preToggleToast(`Show ${_show?'ON':'OFF'}`,800);
     matchTrans();
 }
 
 function matchTrans(_sort = false) {
+    /*let cr = Cyr.value.trim(), lt = Lat.value.trim(); // empty
+    if(cr == '' || lt == '') { preToggleToast('EMPTY',600); return; }*/
+    if(!notEmpty(Cyr) || !notEmpty(Lat)) { preToggleToast('EMPTY',600); return; }
+    if((Cyr.value.match(/\n/mg) || []).length > 300) {
+        spinOn(true);
+        setTimeout(()=>{ matchProc(_sort,true); },0);
+    }
+    else matchProc(_sort,false);
+}
+
+function matchProc(_sort = false, _spin) {
 try {
     let cr = Cyr.value.trim(), lt = Lat.value.trim();
-    if(cr == '' || lt == '') { preToggleToast(600); return; }
+    if(cr == '' || lt == '') { preToggleToast('EMPTY',600); return; }
 
 	let RxD = / → .+/gm;
     if(RxD.test(cr)) cr = cr.replace(RxD,'');
@@ -361,6 +460,8 @@ try {
         lat = lt.split('\n');
 
         lat = lat.map(el => el.trim());
+    
+    if(_unique) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
     
     if(_sort) {
         if(_srtPrfm) { cyr.sort(); lat.sort(); _srtPrfm = false; }
@@ -394,21 +495,22 @@ try {
     lat = lat.map(el => (el.charAt(0)=='+'?el.slice(1):el+' → ?'));
     Lat.value = lat.join('\n');
     
-    unMatch.style.backgroundColor = '#ffa';
+    unMatch.style.backgroundColor = '#448';
     setTimeout(()=>{ unMatch.style.backgroundColor = ''; }, 400);
     
     Rx = / → \?$/;
     cr = cyr.filter(e=>Rx.test(e));
     lt = lat.filter(e=>Rx.test(e));
     unMatch.value  = `✍  MISMATCHED (${cr.length}/${cyr.length} Cyrillic):\n\n${cr.join('\n')}\n\n✍  MISMATCHED (${lt.length}/${lat.length} Transliterated):\n\n${lt.join('\n')}`;
-    spinOn(false);
-
+    if(_spin) spinOn(false);
 
 } catch(e) { alert("ERROR: " + e.message); }
 }
 
-function moreInfo() {
-    unMatch.value += `${unMatch.value==''?'':'\n\n'}✍  TRANSLITERATION TABLE:\n\n${Trans.map(e => e.join(' → ')).join('\n')}\n\n- https://en.wikipedia.org/wiki/Romanization_of_Russian\n- http://transliteration.ru/mvd_1047/\n- https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio`;
+function moreInfo(fl) {
+    let el = document.querySelector('.infoPad');
+    el.querySelector('code').innerText = Trans.map(e => e.join(' → ')).join('\n');
+    el.style.left = fl?'0px': `-${window.innerWidth}px`;
 }
 
 function spinOn(fl) {
@@ -416,14 +518,18 @@ function spinOn(fl) {
     s.display = fl?'block':'none';
 }
 
-function preToggleToast(ms) {
-	let T = document.querySelector('.pregToast').style;
-	T.top = ms?'60px':'-60px';
-	if(ms) setTimeout( function() { preToggleToast(0); }, ms);
+function preToggleToast(txt, ms) {
+	let T = document.querySelector('.pregToast');
+	if(ms) {
+	    T.querySelector('span').innerText = txt;
+	    T.style.top = '120px';
+	}
+	else T.style.top = '-60px';
+	if(ms) setTimeout( function() { preToggleToast(null, 0); }, ms);
 }
 
-document.querySelectorAll('span').forEach(e => e.addEventListener("click", function(e) {
-    let el = e.target.tagName != 'SPAN' ? e.target.parentElement : e.target;
+document.querySelectorAll('div').forEach(e => e.addEventListener("click", function(e) {
+    let el = e.target.tagName != 'div' ? e.target.parentElement : e.target;
     el.classList.remove("pulse");
     void el.offsetWidth;
     el.classList.add("pulse");
@@ -433,16 +539,17 @@ document.querySelectorAll('span').forEach(e => e.addEventListener("click", funct
 function setInp() {
     unMatch.value = '';
     setSortIcon();
-    if(Cyr.value.trim() !='' && Lat.value.trim() !='') //matchTrans();
-    { spinOn(true); setTimeout(matchTrans, 0); }
+    //if(Cyr.value.trim() !='' && Lat.value.trim() !='') {
+    if(notEmpty(Cyr) && notEmpty(Lat)) {
+        const rusPat = /[а-я]/mgi;
+        if(!rusPat.test(Cyr.value)) { preToggleToast('Not Cyrillic',600); Cyr.value = ''; return; }
+        if(rusPat.test(Lat.value)) { preToggleToast('Not Latin',600); Lat.value = ''; return; }
+        matchTrans();
+    }
 }
 Cyr.addEventListener('input', setInp);
 Lat.addEventListener('input', setInp);
 
-function inScene() {
-    let st = document.querySelector(".fix_panel").style;
-    st.right = st.right == '-120px'?'0px':'-120px';
-}
 function setSortIcon() {
     _srtPrfm = true;
     let i = document.getElementById("sortIcon").classList;
@@ -450,18 +557,27 @@ function setSortIcon() {
     i.add('fa-sort-alpha-asc');
 }
 
-function iconSize() {
-    const st = document.querySelector('.fix_panel').style, rd = '9px';
-    if(st.fontSize == rd) {
-        st.fontSize = '13px';
-        st.width = '120px';
+function uniqueSet(el) {
+    const sp = el.querySelector('label');
+    _unique = !_unique; //sp.slice(-3) == 'OFF'?true:false;
+    sp.innerHTML = `Uniques<br>Set ${_unique?'ON':'OFF'}`;
+    preToggleToast(`Unique ${_unique?'ON':'OFF'}`,800);
+}
+
+var duoCurr = 0, duoArr = [];
+function duotone() {
+    duoCurr++; if(duoCurr > 2) duoCurr = 0;
+    const duoEls = document.querySelector(".fix_panel").querySelectorAll('div');
+    if(duoCurr == 0) {
+        duoEls.forEach((e,i) => { e.style.color = duoArr[i][0]; e.style.backgroundColor = duoArr[i][1]; });
+    }
+    else if(duoCurr == 1) {
+        if(duoArr.length < 1) duoEls.forEach(e => { duoArr.push([e.style.color, e.style.backgroundColor]); });
+        duoEls.forEach(e => { e.style.color = "#224"; e.style.backgroundColor = "#06b"; e.style.border = "1px solid #000"; });
     }
     else {
-        st.fontSize = rd;
-        st.width = '90px';
+        duoEls.forEach(e => { e.style.color = "#fff"; e.style.backgroundColor = "#06b"; e.style.border = "none"; });        
     }
-    const i = document.getElementById('menuSize');
-    i.classList.toggle('fa-expand'); i.classList.toggle('fa-compress');
 }
 </script>
 </body>

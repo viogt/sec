@@ -7,97 +7,137 @@
     <style>
     * { box-sizing: border-box; }
 
-    body { margin: 0; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAAXNSR0IArs4c6QAAAC5JREFUGFdj3HLiw38fCwFGBiwALIhLAVwHNgUoxqErwLALWQFWh8AUYJWEORIADqsbc0rybwUAAAAASUVORK5CYII=) repeat; }
+    body { margin: 0; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAAXNSR0IArs4c6QAAADRJREFUGFdjZHDp+M+wp4IBG2BkYGD4z+DSwYBNAUQSBLAoQEhiUYAqiaYAUxJJAXZJqAIAflsTzeLXaHkAAAAASUVORK5CYII=) repeat; }
     .txt_area {
-      width:33.3%;
-      height:100vh;
-      padding: 8px;
-      display: inline-block;
-      float:left;
+        position: absolute;
+        padding: 5px;
+        float: left;
     }
-    textarea {
+    .area1 {
+       top: 80px; left: 0; width: 100vw; height: calc(100vh - 80px);
+       --txtW: calc(100vw - 20px);
+       --txtH: calc((100vh - 120px) / 3);
+    }
+    .area2 {
+       top: 0px; left: 0; width: calc(100vw - 80px); height: 100vh; 
+       --txtW: calc(100vw - 90px);
+       --txtH: calc((100vh - 40px) / 3);
+    }
+    .area3 {
+       top: 0px; left: 0; width: 100vw; height: calc(100vh - 80px); 
+       --txtW: calc(100vw - 20px);
+       --txtH: calc((100vh - 120px) / 3);
+    }
+    .area4 {
+       top: 0px; left: 80px; width: calc(100vw - 80px); height: 100vh; 
+       --txtW: calc(100vw - 100px);
+       --txtH: calc((100vh - 40px) / 3);
+    }
+    .txt_area > textarea {
       padding: 8px 18px;
       font: normal 16px Arial,sans-serif;
-      color: #006;
-      border: 1px solid #b4c8f0;
+      width: var(--txtW); /*100%; /*calc(100vw - 20px);*/
+      height: var(--txtH); /*calc(90% / 3); /*calc((100% - 120px) / 3);*/
+      color: #aae;
+      border: 1px solid #048;
       border-radius: 8px;
-      width: 100%;
-      height: 100%;
+      margin: 5px;
+      float: left;
+      display: inline-block;
       outline:none;
       resize: none;
       white-space: pre;
     }
     .bk {
-background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='300' height='300' preserveAspectRatio='none' viewBox='0 0 300 300'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1023%26quot%3b)' fill='none'%3e%3crect width='300' height='300' x='0' y='0' fill='rgba(235%2c 241%2c 248%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c110 C 12%2c94.6 36%2c26 60%2c33 C 84%2c40 96%2c136.8 120%2c145 C 144%2c153.2 156%2c80.2 180%2c74 C 204%2c67.8 216%2c117.8 240%2c114 C 264%2c110.2 288%2c66.8 300%2c55L300 300L0 300z' fill='rgba(222%2c 237%2c 253%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c268 C 12%2c258.6 36%2c225.8 60%2c221 C 84%2c216.2 96%2c244.2 120%2c244 C 144%2c243.8 156%2c219.8 180%2c220 C 204%2c220.2 216%2c258.2 240%2c245 C 264%2c231.8 288%2c172.2 300%2c154L300 300L0 300z' fill='rgba(210%2c 231%2c 253%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1023'%3e%3crect width='300' height='300' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+background-image: url("data:image/svg+xml,%3Csvg width='300' height='300' version='1.1' viewBox='0 0 79.4 79.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -218)'%3E%3Cpath d='m0 297v-56.9s20.6-8.12 29.8-4.64c7.6 2.89 8.34 14.8 15.2 19.2 7.77 4.98 19.5 1.01 26.9 6.57 4.05 3.07 7.51 13.3 7.51 13.3v22.5z' fill='%23048'/%3E%3Cpath d='m0 265c33.9 3.52 49 15.2 52.9 31.8h-52.9z' fill='%23024'/%3E%3C/g%3E%3C/svg%3E");
 background-repeat: no-repeat;
-background-size: 100% 100%;
+/*background-size: auto 100%;*/
+    background-color: #224;
     }
     .x_bk {
-background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' version='1.1' viewBox='0 0 63.5 63.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -233)'%3E%3Cpath d='m10.2 228a19.8 19.8 0 0 0-19.8 19.8 19.8 19.8 0 0 0 18.9 19.8l3.09 11.6a9.09 9.09 0 0 0-5.14 8.17 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-7.49-8.94l-2.46-11.5a19.8 19.8 0 0 0 7.61-4.03l12.1 9.53a9.09 9.09 0 0 0-0.869 3.85 9.09 9.09 0 0 0 9.09 9.09 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-5.1 1.57l-11.7-9.86a19.8 19.8 0 0 0 3.29-8.96l15 2.24a9.09 9.09 0 0 0 8.97 7.73 9.09 9.09 0 0 0 9.09-9.09 9.09 9.09 0 0 0-9.09-9.09 9.09 9.09 0 0 0-8.15 5.08l-16-2.39a19.8 19.8 0 0 0-19.6-16.5zm39.8 17.2 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.23-3.23 0.0527-0.212-0.311-0.0465-0.218-0.218zm-1.32 25.8 1.75 1.75-8.73 8.73-5.24-5.24 1.75-1.75 3.49 3.49zm-36.2 10.7 3.7 3.7 3.7-3.7 1.85 1.85-3.7 3.7 3.7 3.7-1.85 1.85-3.7-3.7-3.7 3.7-1.85-1.85 3.7-3.7-3.7-3.7z' fill='rgba(210%2c 231%2c 253%2c 1)'/%3E%3C/g%3E%3C/svg%3E");
+background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='300' height='300' version='1.1' viewBox='0 0 79.4 79.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -218)'%3E%3Cpath d='m0 297v-56.9s20.6-8.12 29.8-4.64c7.6 2.89 8.34 14.8 15.2 19.2 7.77 4.98 19.5 1.01 26.9 6.57 4.05 3.07 7.51 13.3 7.51 13.3v22.5z' fill='%23048'/%3E%3Cpath d='m0 265c33.9 3.52 49 15.2 52.9 31.8h-52.9z' fill='%23024'/%3E%3C/g%3E%3C/svg%3E%0A");
 background-repeat: no-repeat;
-background-color: rgba(235, 241, 248, 1);
+    background-color: #224;
     }
-    textarea::placeholder { font-size: 20px; font-style: italic; color: #8ae; }
+    textarea::placeholder { font-size: 20px; font-style: italic; color: #06b; }
     pre { display: none; }
     
     .fix_panel {
-        position: fixed;
-        top: 0px;
-        height: 100vh;
-        right: 0px;
-        width: 120px;
+        position: absolute;
         z-index: 100;
         font-family: Arial,sans-serif;
-        font-size: 13px;
-        padding: 20px;
-        padding-top: 0;
-        overflow-y: scroll;
-        transition: right .3s ease;
+        padding: 5px;
+        overflow: auto;
+        white-space: nowrap;
     }
-    .fix_panel i {
-        font-size: 3em;
-        display: block;
-    }
-    .fix_panel > span {
-        width: 100%;
-        padding: 1em 0;
-        border-radius: 1em;
-        margin:0;
+    .fix_panel > div {
+        width: 60px; height: 60px;
+        padding: 6px 0;
+        border-radius: 9px;
+        margin: 5px;
         text-align: center;
-        margin-top: 1.8em;
         display: inline-block;
         cursor: pointer;
     }
-    .fix_panel > span > label {
+    .fix_panel > div > i {
+        font-size: 26px;
         display: block;
+    }
+    .fix_panel > div > label {
+        display: block;
+        font-size: 11px;
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
     }
+    
+    .font1 {
+        border: none;
+        color: #06b;
+        background-color: #224;
+    }
+    .font2 {
+        border: none;
+        color: #224;
+        background-color: #06b;
+    }
+    .font3 {
+        border: none;
+        color: #aac;
+        background-color: none;
+    }
+    
+    .panel1 {
+        top: 0; left: 0; width: 100vw; height: 80px;
+        white-space: nowrap;
+    }
+    .panel2 {
+        top: 0; left: calc(100vw - 80px); width: 80px; height: 100vh;
+        white-space: normal;
+    }
+    .panel3 {
+        top: calc(100vh - 80px); left: 0; width: 100vw; height: 80px;
+        white-space: nowrap;
+    }
+    .panel4 {
+        top: 0; left: 0; width: 80px; height: 100vh;
+        white-space: normal;
+    }
 
     .pregToast {
         font: normal 24px Arial, sans-serif;
-        padding: 18px 28px;
+        padding: 18px 24px;
         height: 60px;
         position: absolute;
     	left: calc(40vw - 90px);
         top: -60px;
         text-align: center;
-        background-color: rgb(0,0,100,0.5);
-        color: #fff;
+        background-color: #002;
+        color: #eef;
         border-radius: 6px;
-        z-index: 33;
+        border: 1px solid #048;
+        z-index: 103;
         transition: top .3s ease;
-    }
-    .rBut {
-        width: 12px;
-        height: 160px;
-        position: fixed;
-    	top: calc(100vh / 2 - 80px);
-        background-color: #000;
-        border-radius: 12px 0 0 12px;
-        right: 0px;
-        z-index: 101;
     }
     .spin {
         font-size: 140px;
@@ -142,68 +182,68 @@ background-color: rgba(235, 241, 248, 1);
     .pulse { animation: pulse-animation 1s 1; }
     @keyframes pulse-animation {
         0% { box-shadow: 0 0 0 0px rgba(200, 0, 0, 0.8); }
-        100% { box-shadow: 0 0 0 20px rgba(200, 0, 0, 0); }
+        100% { box-shadow: 0 0 0 10px rgba(200, 0, 0, 0); }
     }
 
-    @media screen and (max-width: 800px) {
+    /*@media screen and (max-width: 800px) {
       .txt_area {
         width:100%;
         height:33.3vh;
       }
-    }
+    }*/
     </style>
   </head>
 <body>
 
-<div class="fix_panel">
-<span style="color:#060; background-color:rgba(60, 179, 113,.5)" onclick="sampleData(0)">
+<div class="fix_panel panel1">
+<div class="font1" onclick="sampleData(0)">
     <i class="fa fa-download"></i>
     <label>Sample<br>data</label>
-</span>
-<span style="color:#800; background-color:rgba(220, 0, 0,.5)" onclick="matchTrans()">
+</div>
+<div class="font1" onclick="matchTrans()">
     <i class="fa fa-check-circle"></i>
     <label>Check<br>translit.</label>
-</span>
-<span style="color:#808; background-color:rgba(238, 130, 238,.5)" onclick="clearData()">
+</div>
+<div class="font1" onclick="clearData()">
     <i class="fa fa-times-circle"></i>
     <label>Clear<br>data</label>
-</span>
-<span style="color:#008; background-color:rgba(0, 0, 220,.5)" onclick="showMatch()">
+</div>
+<div class="font1" onclick="showMatch()">
     <i class="fa fa-info-circle"></i>
     <label>Show<br>match</label>
-</span>
-<span style="color:#840; background-color:rgba(255, 165, 0,.5)" onclick="matchTrans(true)">
+</div>
+<div class="font1" onclick="matchTrans(true)">
     <i id="sortIcon" class="fa fa-sort-alpha-asc"></i>
     <label>Sort<br>the lists</label>
-</span>
-<span style="color:#066; background-color:rgba(0, 153, 153,.5)" onclick="sampleData(1)">
+</div>
+<div class="font1" onclick="sampleData(1)">
     <i class="fa fa-upload"></i>
     <label>Sample<br>full data<small><sup>1</sup></small></label>
-</span>
-<span style="color:#b20; background-color:rgba(204, 51, 0,.5)" onclick="sampleData(2)">
+</div>
+<div class="font1" onclick="sampleData(2)">
     <i class="fa fa-cloud-upload"></i>
     <label>Sample<br>full data<small><sup>2</sup></small></label>
-</span>
-<span style="color:#60c; background-color:rgba(153, 51, 255,.5)" onclick="bigDataSim()">
+</div>
+<div class="font1" onclick="bigDataSim()">
     <i class="fa fa-archive"></i>
     <label>Simulate<br>big data<small><sup>3</sup></small></label>
-</span>
-<span style="color:#06b; background-color:rgba(0, 153, 230,.5)" onclick="iconSize()">
-    <i id="menuSize" class="fa fa-compress"></i>
-    <label>Menu<br>size</label>
-</span>
-<span style="color:#840; background-color:rgba(255, 153, 0,.5)" onclick="uniqueSet(this)">
+</div>
+<div class="font1" onclick="init(true)">
+    <i id="menuSize" class="fa fa-retweet"></i>
+    <label>Menu<br>position</label>
+</div>
+<div class="font1" onclick="uniqueSet(this)">
     <i class="fa fa-flag-checkered"></i>
     <label>Uniques<br>Set OFF</label>
-</span>
-<span style="color:#570; background-color:rgba(153, 204, 0,.5)" onclick="duotone()">
+</div>
+<div class="font1" onclick="duotone()">
     <i class="fa fa-adjust"></i>
     <label>Duotone<br>or colour</label>
-</span>
-<span style="color:#909; background-color:rgba(255, 0, 255,.5)" onclick="moreInfo(true)">
+</div>
+<div class="font1" onclick="moreInfo(true)">
     <i class="fa fa-wrench"></i>
     <label>Translit.<br>rules</label>
-</span>
+</div>
 </div>
 
 <pre id="pre_cyr">
@@ -297,11 +337,13 @@ Dmitriy Vasilievich Aleksandrov
 Ivan Illarionovich Serov
 Svetlana Petrovna Nikolaeva
 </pre>
-<div class='txt_area'><textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
-<div class='txt_area'><textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea></div>
-<div class='txt_area'><textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
+<div class='txt_area area1'>
+    <textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea>
+    <textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea>
+    <textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea>
+</div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;<span></span></div>
-<div class='infoPad'>
+<!-- <div class='infoPad'>
     <i class="fa fa-times cancelIcon" onclick="moreInfo(false)"></i>
     <div class="infoPadTitle"><big><i class="fa fa-wrench"></i></big>&nbsp;&nbsp;Translit. rules:</div>
     <code></code>
@@ -311,9 +353,8 @@ Svetlana Petrovna Nikolaeva
         <li><a target="_blank" href="http://transliteration.ru/mvd_1047/">http://transliteration.ru/mvd_1047/</a></li>
         <li><a target="_blank" href="https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio">https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio</a></li>
     </ul>
-</div>
+</div> -->
 
-<div class="rBut" onclick="inScene()"></div>
 <i class="spin fa fa-spinner fa-pulse"></i>
 <script>
 
@@ -347,6 +388,18 @@ const Trans = [
     var _show = false, _srtPrfm = true, _unique = false;
 
 function notEmpty(ob) { return /\S/mg.test(ob.value); }
+
+var menuPos = 1;
+function init(fl) {
+    const   pnl = document.querySelector(".fix_panel"),
+            Bdy = document.querySelector('.txt_area');
+    
+    pnl.classList.remove(`panel${menuPos}`);
+    Bdy.classList.remove(`area${menuPos}`);
+    menuPos = menuPos < 4 ? menuPos+1 : 1;
+    pnl.classList.add(`panel${menuPos}`);
+    Bdy.classList.add(`area${menuPos}`);
+}
 
 function clearData() {
   Cyr.value = '';
@@ -459,7 +512,7 @@ try {
     lat = lat.map(el => (el.charAt(0)=='+'?el.slice(1):el+' → ?'));
     Lat.value = lat.join('\n');
     
-    unMatch.style.backgroundColor = '#ffa';
+    unMatch.style.backgroundColor = '#448';
     setTimeout(()=>{ unMatch.style.backgroundColor = ''; }, 400);
     
     Rx = / → \?$/;
@@ -486,14 +539,14 @@ function preToggleToast(txt, ms) {
 	let T = document.querySelector('.pregToast');
 	if(ms) {
 	    T.querySelector('span').innerText = txt;
-	    T.style.top = '60px';
+	    T.style.top = '120px';
 	}
 	else T.style.top = '-60px';
 	if(ms) setTimeout( function() { preToggleToast(null, 0); }, ms);
 }
 
-document.querySelectorAll('span').forEach(e => e.addEventListener("click", function(e) {
-    let el = e.target.tagName != 'SPAN' ? e.target.parentElement : e.target;
+document.querySelectorAll('div').forEach(e => e.addEventListener("click", function(e) {
+    let el = e.target.tagName != 'div' ? e.target.parentElement : e.target;
     el.classList.remove("pulse");
     void el.offsetWidth;
     el.classList.add("pulse");
@@ -514,29 +567,11 @@ function setInp() {
 Cyr.addEventListener('input', setInp);
 Lat.addEventListener('input', setInp);
 
-function inScene() {
-    let st = document.querySelector(".fix_panel").style;
-    st.right = st.right == '-120px'?'0px':'-120px';
-}
 function setSortIcon() {
     _srtPrfm = true;
     let i = document.getElementById("sortIcon").classList;
     i.remove('fa-sort-alpha-asc','fa-sort-alpha-desc');
     i.add('fa-sort-alpha-asc');
-}
-
-function iconSize() {
-    const st = document.querySelector('.fix_panel').style, rd = '9px';
-    if(st.fontSize == rd) {
-        st.fontSize = '13px';
-        st.width = '120px';
-    }
-    else {
-        st.fontSize = rd;
-        st.width = '90px';
-    }
-    const i = document.getElementById('menuSize');
-    i.classList.toggle('fa-expand'); i.classList.toggle('fa-compress');
 }
 
 function uniqueSet(el) {
@@ -546,23 +581,14 @@ function uniqueSet(el) {
     preToggleToast(`Unique ${_unique?'ON':'OFF'}`,800);
 }
 
-var duoCurr = 0, duoArr = [];
+var duoCurr = 1;
 function duotone() {
-    duoCurr++; if(duoCurr > 3) duoCurr = 0;
-    const duoEls = document.querySelector(".fix_panel").querySelectorAll('span');
-    if(duoCurr == 0) {
-        duoEls.forEach((e,i) => { e.style.color = duoArr[i][0]; e.style.backgroundColor = duoArr[i][1]; });
-    }
-    else if(duoCurr == 1) {
-        if(duoArr.length < 1) duoEls.forEach(e => { duoArr.push([e.style.color, e.style.backgroundColor]); });
-        duoEls.forEach(e => { e.style.color = "#79d"; e.style.backgroundColor = "#fff"; e.style.border = "1px solid #b4c8f0"; });
-    }
-    else if(duoCurr == 2) {
-        duoEls.forEach(e => { e.style.color = "#fff"; e.style.backgroundColor = "#79d"; e.style.border = "none"; });
-    }
-    else {
-        duoEls.forEach(e => { e.style.color = "#008"; e.style.backgroundColor = ""; e.style.border = "none"; });
-    }
+    let old = duoCurr;
+    duoCurr =  duoCurr < 3 ? duoCurr+1 : 1;
+    document.querySelector(".fix_panel").querySelectorAll('div').forEach(e => {
+        e.classList.remove(`font${old}`);
+        e.classList.add(`font${duoCurr}`);
+    });
 }
 </script>
 </body>

@@ -344,7 +344,9 @@ try {
     const   pnl = document.querySelector(".fix_panel"),
             Bd = document.querySelector('.txt_area');
    
-    let tW = window.innerWidth, tH = window.innerHeight, txW, txH, s;
+    let tW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+    tH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
+    txW, txH, s;
     
     if(fl) menuPos = menuPos < 3 ? menuPos+1 : 0;
     

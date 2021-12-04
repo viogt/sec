@@ -548,7 +548,7 @@ function uniqueSet(el) {
 
 var duoCurr = 0, duoArr = [];
 function duotone() {
-    duoCurr++; if(duoCurr > 2) duoCurr = 0;
+    duoCurr++; if(duoCurr > 3) duoCurr = 0;
     const duoEls = document.querySelector(".fix_panel").querySelectorAll('span');
     if(duoCurr == 0) {
         duoEls.forEach((e,i) => { e.style.color = duoArr[i][0]; e.style.backgroundColor = duoArr[i][1]; });
@@ -557,8 +557,11 @@ function duotone() {
         if(duoArr.length < 1) duoEls.forEach(e => { duoArr.push([e.style.color, e.style.backgroundColor]); });
         duoEls.forEach(e => { e.style.color = "#79d"; e.style.backgroundColor = "#fff"; e.style.border = "1px solid #b4c8f0"; });
     }
+    else if(duoCurr == 2) {
+        duoEls.forEach(e => { e.style.color = "#fff"; e.style.backgroundColor = "#79d"; e.style.border = "none"; });
+    }
     else {
-        duoEls.forEach(e => { e.style.color = "#fff"; e.style.backgroundColor = "#79d"; e.style.border = "none"; });        
+        duoEls.forEach(e => { e.style.color = "#008"; e.style.backgroundColor = ""; e.style.border = "none"; });
     }
 }
 </script>

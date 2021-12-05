@@ -243,6 +243,10 @@ background-size: auto 100%;
     <i class="fa fa-adjust"></i>
     <label>Duotone<br>or colour</label>
 </div>
+<div class="font1" onclick="lightTheme()">
+    <i class="fa fa-sun-o"></i>
+    <label>Light<br>theme</label>
+</div>
 <div class="font1" onclick="moreInfo(true)">
     <i class="fa fa-wrench"></i>
     <label>Translit.<br>rules</label>
@@ -592,6 +596,11 @@ function duotone() {
         e.classList.remove(`font${old}`);
         e.classList.add(`font${duoCurr}`);
     });
+}
+
+function lightTheme() {
+    document.location.href = 'https://viogt.github.io/sec/files/translit.html';
+
 }
 </script>
 </body>

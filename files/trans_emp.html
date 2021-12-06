@@ -110,7 +110,12 @@ background-size: auto 100%;
         color: #aac;
         background-color: none;
     }
-    
+    .font4 {
+        border: none;
+        color: #aac;
+        background-image: linear-gradient(#556, #000);
+    }
+
     .panel1 {
         top: 0; left: 0; width: 100vw; height: 80px;
         white-space: nowrap;
@@ -155,12 +160,13 @@ background-size: auto 100%;
         font: normal 16px Arial, sans-serif;
         padding: 28px 28px;
         position: absolute;
-        top: 0px; left: -100vw; height: 100vh; width: 100vw;
+        top: -100vh; left: 0; height: 100vh; width: 100vw;
         background-color: rgb(0,0,0,0.85);
         color: #fff;
         z-index: 103;
-        overflow: auto;
-        transition: left .4s ease;
+        white-space: normal;
+        overflow-X: scroll;
+        transition: top .4s ease;
     }
     .infoPad a { color: #99f; }
     .infoPadTitle {
@@ -350,7 +356,7 @@ Svetlana Petrovna Nikolaeva
     <textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea>
 </div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;<span></span></div>
-<!-- <div class='infoPad'>
+<div class='infoPad'>
     <i class="fa fa-times cancelIcon" onclick="moreInfo(false)"></i>
     <div class="infoPadTitle"><big><i class="fa fa-wrench"></i></big>&nbsp;&nbsp;Translit. rules:</div>
     <code></code>
@@ -360,7 +366,7 @@ Svetlana Petrovna Nikolaeva
         <li><a target="_blank" href="http://transliteration.ru/mvd_1047/">http://transliteration.ru/mvd_1047/</a></li>
         <li><a target="_blank" href="https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio">https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio</a></li>
     </ul>
-</div> -->
+</div>
 
 <i class="spin fa fa-spinner fa-pulse"></i>
 <script>
@@ -533,8 +539,11 @@ try {
 
 function moreInfo(fl) {
     let el = document.querySelector('.infoPad');
-    el.querySelector('code').innerText = Trans.map(e => e.join(' → ')).join('\n');
-    el.style.left = fl?'0px': `-${window.innerWidth}px`;
+    if(fl) {
+        el.querySelector('code').innerText = Trans.map(e => e.join(' → ')).join('\n');
+        el.style.top = '0px';
+    }
+    else el.style.top = '-100vh';
 }
 
 function spinOn(fl) {
@@ -591,7 +600,7 @@ function uniqueSet(el) {
 var duoCurr = 1;
 function duotone() {
     let old = duoCurr;
-    duoCurr =  duoCurr < 3 ? duoCurr+1 : 1;
+    duoCurr =  duoCurr < 4 ? duoCurr+1 : 1;
     document.querySelector(".fix_panel").querySelectorAll('div').forEach(e => {
         e.classList.remove(`font${old}`);
         e.classList.add(`font${duoCurr}`);

@@ -112,12 +112,13 @@ background-color: rgba(235, 241, 248, 1);
         font: normal 16px Arial, sans-serif;
         padding: 28px 28px;
         position: absolute;
-        top: 0px; left: -100vw; height: 100vh; width: 100vw;
+        top: -100vh; left: 0; height: 100vh; width: 100vw;
         background-color: rgb(0,0,0,0.85);
         color: #fff;
         z-index: 103;
-        overflow: auto;
-        transition: left .4s ease;
+        white-space: normal;
+        overflow-X: scroll;
+        transition: top .4s ease;
     }
     .infoPad a { color: #99f; }
     .infoPadTitle {
@@ -477,8 +478,11 @@ try {
 
 function moreInfo(fl) {
     let el = document.querySelector('.infoPad');
-    el.querySelector('code').innerText = Trans.map(e => e.join(' → ')).join('\n');
-    el.style.left = fl?'0px': `-${window.innerWidth}px`;
+    if(fl) {
+        el.querySelector('code').innerText = Trans.map(e => e.join(' → ')).join('\n');
+        el.style.top = '0px';
+    }
+    else el.style.top = '-100vh';
 }
 
 function spinOn(fl) {

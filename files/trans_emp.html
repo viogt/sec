@@ -425,7 +425,7 @@ function norm(av, cf, mn) {
 }
 function alterSVGbg(rule, slctr, rcvr) {
 try {
-    alert(document.getElementById('curStyle').cssRules.length);
+    //alert(document.getElementById('curStyle').cssRules.length);
     const   sh = document.styleSheets[1],
             r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
     if(!r) return;

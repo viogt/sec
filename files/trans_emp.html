@@ -424,15 +424,14 @@ function norm(av, cf, mn) {
 	return `'%23${av[0]}${av[1]}${av[2]}'`;
 }
 function alterSVGbg(rule, slctr, rcvr) {
-try {
-    const   sh = document.styleSheets[1],
-            r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
+    const sh = document.styleSheets[1];
+    if(!sh.hasOwnProperty('cssRules')) return;
+    const r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
     if(!r) return;
     let s = r.style[slctr];
     if(wRepl.length < 1) {
         let x = s.match(/'%23(.+?)'/g);
         if(x) x.forEach(e => wRepl.push(e));
-        //alert(wRepl.join(', '));
     }
     let rc = 0, cf = 1.4;
     s = s.replace(/'%23(.+?)'/g, e => {
@@ -443,7 +442,6 @@ try {
     });
     r.style[slctr] = s;
     if(!rcvr) setTimeout(()=>{ alterSVGbg(rule, slctr, true); }, 600);
-} catch(e) { alert(e.message); }
 }
 
 var themeBk = ['#445','#449','#484','#944'], themeCnt = 0;

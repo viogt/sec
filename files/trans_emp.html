@@ -275,7 +275,7 @@ function showMatch() {
 function matchTrans(_sort = false) {
     /*let cr = Cyr.value.trim(), lt = Lat.value.trim(); // empty
     if(cr == '' || lt == '') { preToggleToast('EMPTY',600); return; }*/
-    if(!notEmpty(Cyr) || !notEmpty(Lat)) { preToggleToast('EMPTY',600); return; }
+    if(!notEmpty(Cyr) || !notEmpty(Lat)) { preToggleToast('EMPTY',600, true); return; }
     if((Cyr.value.match(/\n/mg) || []).length > 300) {
         spinOn(true);
         setTimeout(()=>{ matchProc(_sort,true); },0);
@@ -286,7 +286,7 @@ function matchTrans(_sort = false) {
 function matchProc(_sort = false, _spin) {
 try {
     let cr = Cyr.value.trim(), lt = Lat.value.trim();
-    if(cr == '' || lt == '') { preToggleToast('EMPTY',600); return; }
+    if(cr == '' || lt == '') { preToggleToast('EMPTY',600, true); return; }
 
 	let RxD = / → .+/gm;
     if(RxD.test(cr)) cr = cr.replace(RxD,'');
@@ -365,7 +365,7 @@ function preToggleToast(txt, ms, bg = false) {
 	    T.querySelector('span').innerText = txt;
 	    T.style.top = '120px';
 	    setTimeout( ()=>{ preToggleToast(null, 0); }, ms);
-	    if(txt == 'EMPTY') alterSVGbg('.bk', 'backgroundImage', false);
+	    if(bg) alterSVGbg('.bk', 'backgroundImage', false);
 	}
 	else T.style.top = '-60px';
 }
@@ -384,8 +384,8 @@ function setInp() {
     //if(Cyr.value.trim() !='' && Lat.value.trim() !='') {
     if(notEmpty(Cyr) && notEmpty(Lat)) {
         const rusPat = /[а-я]/mgi;
-        if(!rusPat.test(Cyr.value)) { preToggleToast('Not Cyrillic',600); Cyr.value = ''; return; }
-        if(rusPat.test(Lat.value)) { preToggleToast('Not Latin',600); Lat.value = ''; return; }
+        if(!rusPat.test(Cyr.value)) { preToggleToast('Not Cyrillic',600, true); Cyr.value = ''; return; }
+        if(rusPat.test(Lat.value)) { preToggleToast('Not Latin',600, true); Lat.value = ''; return; }
         matchTrans();
     }
 }

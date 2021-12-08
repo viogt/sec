@@ -65,6 +65,10 @@
     <i class="fa fa-wrench"></i>
     <label>Translit.<br>rules</label>
 </div>
+<div class="font1" onclick="toScene(true)">
+    <i class="fa fa-video-camera"></i>
+    <label>Launch<br>demo</label>
+</div>
 </div>
 
 <pre id="pre_cyr">
@@ -174,6 +178,10 @@ Svetlana Petrovna Nikolaeva
         <li><a target="_blank" href="http://transliteration.ru/mvd_1047/">http://transliteration.ru/mvd_1047/</a></li>
         <li><a target="_blank" href="https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio">https://enguide.ru/magazine/angliyskaya-transliteraciya-russkih-fio</a></li>
     </ul>
+</div>
+<div class='scene'>
+    <i class="fa fa-play" onclick='toScene(true)'></i>
+    <i class="fa fa-stop" onclick='toScene(false)'></i>
 </div>
 
 <i class="spin fa fa-spinner fa-pulse"></i>
@@ -424,9 +432,9 @@ function norm(av, cf, mn) {
 	return `'%23${av[0]}${av[1]}${av[2]}'`;
 }
 function alterSVGbg(rule, slctr, rcvr) {
-    const sh = document.styleSheets[1];
-    //if(!sh.hasOwnProperty('cssRules')) return;
-    const r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
+try {
+    const   sh = document.styleSheets[1],
+            r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
     if(!r) return;
     let s = r.style[slctr];
     if(wRepl.length < 1) {
@@ -442,6 +450,7 @@ function alterSVGbg(rule, slctr, rcvr) {
     });
     r.style[slctr] = s;
     if(!rcvr) setTimeout(()=>{ alterSVGbg(rule, slctr, true); }, 600);
+} catch(e) { return; }
 }
 
 var themeBk = ['#445','#449','#484','#944'], themeCnt = 0;
@@ -449,6 +458,32 @@ function chTheme() {
     themeCnt =  themeCnt < 3 ? themeCnt+1 : 0;
     wRepl = [];
     document.getElementById('curStyle').href = `translit_${themeCnt+1}.css`;
+}
+
+const scene = {
+    sceneIx: 0, times: 0, intervalIx: 0,
+    scenes: ['matchTrans(true)', 1, 'sampleData(1)', 1, 'init()', 4, 'duotone()', 4, 'chTheme()', 1,
+        'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1]
+}
+function toScene(fl) {
+    if(fl) {
+        document.querySelector('.scene').style.display = 'block';
+        scene.sceneIx = 0; scene.times = 0;
+        Function( scene.scenes[0] )();
+        scene.intervalIx = setInterval(()=>{
+            scene.times++;
+            if(scene.times == scene.scenes[scene.sceneIx+1]) {
+                scene.times = 0;
+                scene.sceneIx += 2;
+                if(scene.sceneIx >= scene.scenes.length) toScene(false);
+            }
+            Function( scene.scenes[scene.sceneIx] )();
+        }, 1000);
+    }
+    else {
+        document.querySelector('.scene').style.display = 'none';
+        if(scene.intervalIx) clearInterval(scene.intervalIx);
+    }
 }
 
 function lightTheme() {

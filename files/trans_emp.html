@@ -442,7 +442,7 @@ try {
         else return norm([cl.substr(0,2), cl.substr(2,2), cl.substr(4,2)], cf, 255);
     });
     r.style[slctr] = s;
-    setTimeout(()=>{ alert(rule + '\n' + slctr); alterSVGbg(rule, slctr, true); }, 800);
+    if(!rcvr) setTimeout(()=>{ alert(rule); alterSVGbg(rule, slctr, true); }, 800);
 } catch(e) { alert(e.message); }
 }
 

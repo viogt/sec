@@ -435,7 +435,7 @@ try {
         if(x) x.forEach(e => wRepl.push(e));
         alert(wRepl.join(', '));
     }
-    let rc = 0;
+    let rc = 0, cf = 1.4;
     s = s.replace(/'%23(.+?)'/g, e => {
         if(rcvr) return wRepl[rc++];
         let cl = e.slice(4,e.length-1),r,g,b;

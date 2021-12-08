@@ -177,6 +177,19 @@ background-size: auto 100%;
         position: sticky;
         box-shadow: 0 0 8px 3px #900 inset;
     }
+    
+    .scene {
+        background-color: #ccc;
+        font-size: 28pt;
+        padding: 18px 24px;
+        border-radius: 12px;
+        user-select: none;
+        color: #222;
+        cursor: pointer;
+        z-index: 111;
+        position: fixed;
+        bottom: 28px; left: 28px;
+    }
 
     .pulse { animation: pulse-animation 1s 1; }
     @keyframes pulse-animation {

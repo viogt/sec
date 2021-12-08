@@ -359,16 +359,13 @@ function spinOn(fl) {
     s.display = fl?'block':'none';
 }
 
-function preToggleToast(txt, ms) {
+function preToggleToast(txt, ms, bg = false) {
 	let T = document.querySelector('.pregToast');
 	if(ms) {
 	    T.querySelector('span').innerText = txt;
 	    T.style.top = '120px';
 	    setTimeout( ()=>{ preToggleToast(null, 0); }, ms);
-	    if(txt == 'EMPTY') {
-	        chRule('.bk', 'backgroundImage', ['383848','202030','2a2a3a','334'], ['557','224','335','446']);
-	        setTimeout( ()=> { chRule('.bk', 'backgroundImage', ['557','224','335','446'], ['383848','202030','2a2a3a','334']); }, ms);
-	    }
+	    if(txt == 'EMPTY') alterSVGbg('.bk', 'backgroundImage', false);
 	}
 	else T.style.top = '-60px';
 }
@@ -419,18 +416,41 @@ function duotone() {
     });
 }
 
-function chRule(rule, slctr, what, inWhat) {
+var wRepl = [];
+function norm(av, cf, mn) {
+	for(let i in av)
+    	av[i] = Math.min( Math.floor( parseInt(av[i],16)*cf ), mn).toString(16);
+    if(mn>100) for(let i in av) av[i] = ('0'+av[i]).slice(-2);
+	return `'%23${av[0]}${av[1]}${av[2]}'`;
+}
+function alterSVGbg(rule, slctr, rcvr) {
+try {
+    alert(document.getElementById('curStyle').cssRules.length);
     const   sh = document.styleSheets[1],
             r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
     if(!r) return;
     let s = r.style[slctr];
-    for(let i in what) s = s.replace(`%23${what[i]}`, `%23${inWhat[i]}`);
+    if(wRepl.length < 1) {
+        let x = s.match(/'%23(.+?)'/g);
+        if(x) x.forEach(e => wRepl.push(e));
+        alert(wRepl.join(', '));
+    }
+    let rc = 0;
+    s = s.replace(/'%23(.+?)'/g, e => {
+        if(rcvr) return wRepl[rc++];
+        let cl = e.slice(4,e.length-1),r,g,b;
+        if(cl.length == 3) return norm([cl.charAt(0), cl.charAt(1), cl.charAt(2)], cf, 15);
+        else return norm([cl.substr(0,2), cl.substr(2,2), cl.substr(4,2)], cf, 255);
+    });
     r.style[slctr] = s;
+    setTimeout(()=>{ alterSVGbg(rule, slctr, true); }, 600);
+} catch(e) { alert(e.message); }
 }
 
 var themeBk = ['#445','#449','#484','#944'], themeCnt = 0;
 function chTheme() {
     themeCnt =  themeCnt < 3 ? themeCnt+1 : 0;
+    wRepl = [];
     document.getElementById('curStyle').href = `translit_${themeCnt+1}.css`;
 }
 

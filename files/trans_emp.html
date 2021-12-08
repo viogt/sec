@@ -432,7 +432,7 @@ try {
     if(wRepl.length < 1) {
         let x = s.match(/'%23(.+?)'/g);
         if(x) x.forEach(e => wRepl.push(e));
-        alert(wRepl.join(', '));
+        //alert(wRepl.join(', '));
     }
     let rc = 0, cf = 1.4;
     s = s.replace(/'%23(.+?)'/g, e => {
@@ -442,7 +442,7 @@ try {
         else return norm([cl.substr(0,2), cl.substr(2,2), cl.substr(4,2)], cf, 255);
     });
     r.style[slctr] = s;
-    if(!rcvr) setTimeout(()=>{ alert(rule); alterSVGbg(rule, slctr, true); }, 800);
+    if(!rcvr) setTimeout(()=>{ alterSVGbg(rule, slctr, true); }, 600);
 } catch(e) { alert(e.message); }
 }
 

@@ -378,7 +378,7 @@ function preToggleToast(txt, ms, bg = false) {
 	else T.style.top = '-60px';
 }
 
-document.querySelectorAll('div').forEach(e => e.addEventListener("click", function(e) {
+document.querySelector('.fix_panel').querySelectorAll('div').forEach(e => e.addEventListener("click", function(e) {
     let el = e.target.tagName != 'div' ? e.target.parentElement : e.target;
     el.classList.remove("pulse");
     void el.offsetWidth;

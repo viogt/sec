@@ -465,9 +465,13 @@ const scene = {
     scenes: ['matchTrans(true)', 1, 'sampleData(1)', 1, 'init()', 4, 'duotone()', 4, 'chTheme()', 1,
         'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1]
 }
-function toScene(fl) {
+function toScene(fl, act = false) {
+    const   e = document.querySelector('.scene'),
+            i = e.querySelector('i');
     if(fl) {
-        document.querySelector('.scene').style.display = 'block';
+        if(i.style.color == 'red') return;
+        e.style.display = 'block';
+        i.style.color = 'red';
         scene.sceneIx = 0; scene.times = 0;
         Function( scene.scenes[0] )();
         scene.intervalIx = setInterval(()=>{
@@ -481,15 +485,18 @@ function toScene(fl) {
         }, 1000);
     }
     else {
-        document.querySelector('.scene').style.display = 'none';
+        if(act && i.style.color == 'red') return;
+        i.style.color = '';
+        e.style.display = 'none';
         if(scene.intervalIx) clearInterval(scene.intervalIx);
     }
 }
 
 function lightTheme() {
     document.location.href = 'https://viogt.github.io/sec/files/translit.html';
-
 }
+
+setTimeout(()=>{ toScene(false, true); }, 5000);
 </script>
 </body>
 </html>

@@ -38,11 +38,14 @@
       border-radius: 8px;
       margin: 5px;
       float: left;
-      display: inline-block;
+      display: block;
       outline:none;
       resize: none;
       white-space: pre;
     }
+    textarea::-webkit-scrollbar { width: 8px; background: #202030; }
+    textarea::-webkit-scrollbar-thumb { background: #334; }
+
     .bk {
 background-image: url("data:image/svg+xml,%3Csvg width='300' height='300' version='1.1' style='background-color:%23383848' viewBox='0 0 79.4 79.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0 -218)'%3E%3Cpath d='m0 243s1.1 0.0341 2.67-1.01c2.37-1.57 6.05-4.27 10.6-2.67 6.62 2.35 14.6 4.25 21.4 3.58 7.66-0.758 22.4-6.87 30-6.43 2.76 0.16 7.45 3.3 10.2 4.72 3.36 1.73 4.54 1.8 4.54 1.8v54.2h-79.4z' fill='%23334'/%3E%3Cpath d='m0 261s1.8-0.618 4.13 0.0915c2.56 0.779 5.75 1.56 7.87 1.42 8.91-0.599 16.1-9.31 25-9.45 11.2-0.174 23 8.92 34.1 8.13 3.93-0.28 8.22-0.189 8.22-0.189l-1e-6 35.7h-79.4z' fill='%232a2a3a'/%3E%3Cpath d='m0 277s4.75-0.832 6.73-1.86c4.75-2.47 10.2-5.2 15.8-4.76 12 0.945 16.7 15.1 28.7 14.4 5.37-0.307 11-6.43 16.3-7.75s7.11 1.12 11.9 0l-1e-6 19.8h-79.4z' fill='%23202030'/%3E%3C/g%3E%3C/svg%3E");
 background-size: auto 100%;
@@ -63,7 +66,10 @@ background-size: auto 100%;
         padding: 5px;
         overflow: auto;
         white-space: nowrap;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
+    .fix_panel::-webkit-scrollbar {  display: none; }
     .fix_panel > div {
         width: 60px; height: 60px;
         padding: 6px 0;
@@ -128,7 +134,7 @@ background-size: auto 100%;
         padding: 18px 24px;
         height: 60px;
         position: absolute;
-    	left: calc(40vw - 90px);
+    	  left: calc(40vw - 90px);
         top: -60px;
         text-align: center;
         background-color: #000;
@@ -181,7 +187,7 @@ background-size: auto 100%;
     .scene {
         background-color: #ccc;
         font-size: 28pt;
-        padding: 18px 24px;
+        padding: 12px 24px;
         border-radius: 12px;
         user-select: none;
         color: #222;

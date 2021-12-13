@@ -194,8 +194,32 @@ background-size: auto 100%;
         cursor: pointer;
         z-index: 111;
         position: fixed;
-        box-shadow: 3px 5px 8px #222;
+        box-shadow: 1px 5px 8px #222;
         bottom: 28px; left: 28px;
+    }
+    .showNumber {
+      padding: 28px 0;
+      border: 1px solid #505;
+      color: #505;
+      background-color: rgb(255,255,255,0.4);
+      text-align: center;
+      width: 300px;
+      left: calc((100vw - 300px) / 2);
+      font: normal 28px monospace;
+      position: absolute;
+      top: -300px;
+      box-shadow: 1px 5px 9px #000;
+      border-radius: 6px;
+      transition: top .6s ease;
+      z-index: 106;
+    }
+    .showNumber > input {
+      font-size: inherit;
+      color: inherit;
+      border: 1px solid #707;
+      width: 80px;
+      text-align:center;
+      border-radius:4px;
     }
 
     .pulse { animation: pulse-animation 1s 1; }

@@ -37,7 +37,7 @@
     <i class="fa fa-cloud-upload"></i>
     <label>Sample<br>full data<small><sup>2</sup></small></label>
 </div>
-<div class="font1" onclick="bigDataSim()">
+<div class="font1" onclick="showNumber(true)">
     <i class="fa fa-archive"></i>
     <label>Simulate<br>big data<small><sup>3</sup></small></label>
 </div>
@@ -184,6 +184,13 @@ Svetlana Petrovna Nikolaeva
     <i class="fa fa-stop" onclick='toScene(false)'></i>
 </div>
 
+<div class="showNumber">
+  <div style="font-size:16px">Enter the number of names:</div>
+  <input id='numNames' type="text" value="4000"/>
+  &nbsp;<i class="fa fa-check" onclick='getNumber()'></i>
+  &nbsp;<i class="fa fa-times" onclick='showNumber(false)'></i>
+</div>
+
 <i class="spin fa fa-spinner fa-pulse"></i>
 <script>
 
@@ -253,11 +260,19 @@ function sampleData(tip) {
   matchTrans();
 }
 
-function bigDataSim() {
-    let Qt = prompt("Please enter the number of persons:", "4000");
-    if(Qt == null || isNaN(Qt) || Qt < 1) { preToggleToast('CANCEL',600); return; }
-    if(Qt < 300) preToggleToast(`${Qt} rcs`,800);
+function showNumber(fl) {
+  let st = document.querySelector('.showNumber').style;
+  st.top = (fl && st.top != '200px')?'200px':'-300px';
+}
+function getNumber() {
+	let v = document.getElementById('numNames').value;
+    showNumber(false);
+    if(isNaN(v) || parseInt(v,10) < 1) preToggleToast('WRONG',600);
+    else bigDataSim(parseInt(v,10));
+}
 
+function bigDataSim(Qt) {
+    if(Qt < 300) preToggleToast(`${Qt} rcs`,800);
     let Cr = document.getElementById("pre_cyr").innerText.trim().split('\n'),
         Lt = document.getElementById("pre_lat").innerText.trim().split('\n');
     let CR = [], LT = [], L = Math.min(Cr.length,Lt.length);

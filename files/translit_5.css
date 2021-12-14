@@ -134,7 +134,7 @@ background-size: auto 100%;
         padding: 18px 24px;
         height: 60px;
         position: absolute;
-    	left: calc(40vw - 90px);
+    	  left: calc(40vw - 90px);
         top: -60px;
         text-align: center;
         background-color: #303;
@@ -198,30 +198,35 @@ background-size: auto 100%;
         bottom: 28px; left: 28px;
     }
     .showNumber {
-      padding: 28px 0;
-      border: 1px solid #505;
-      color: #505;
-      background-color: rgb(255,255,255,0.4);
-      text-align: center;
-      width: 300px;
-      left: calc((100vw - 300px) / 2);
-      font: normal 28px monospace;
+      padding: 30px 34px;
+      background-color: rgba(255,255,255,.5);
+      border: 1px solid #606;
+      width: 340px;
+      left: calc((100vw - 340px) / 2);
       position: absolute;
       top: -300px;
-      box-shadow: 1px 5px 9px #000;
+      box-shadow: 0px 5px 9px #000;
       border-radius: 6px;
       transition: top .6s ease;
       z-index: 106;
     }
-    .showNumber > input {
+    .showNumber > div {
+      color: #505;
+      background-color: #ede;
+      text-align: center;
+      padding: 16px 0;
+      width: 100%; height: 100%;
+      font: normal 28px monospace;
+      border-radius: 4px;
+    }
+    .showNumber > div > input {
       font-size: inherit;
       color: inherit;
-      border: 1px solid #707;
+      border: thin solid #c6c;
       width: 80px;
       text-align:center;
       border-radius:4px;
     }
-
     .pulse { animation: pulse-animation 1s 1; }
     @keyframes pulse-animation {
         0% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 1); }

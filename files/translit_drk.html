@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link id='curStyle' rel="stylesheet" href="translit_1.css">
-    <title>✍ Compare Transliteration</title>
+    <title>✎ Translit</title>
   </head>
 <body>
 
@@ -362,7 +362,7 @@ try {
     Rx = / → \?$/;
     cr = cyr.filter(e=>Rx.test(e));
     lt = lat.filter(e=>Rx.test(e));
-    unMatch.value  = `✍  MISMATCHED (${cr.length}/${cyr.length} Cyrillic):\n\n${cr.join('\n')}\n\n✍  MISMATCHED (${lt.length}/${lat.length} Transliterated):\n\n${lt.join('\n')}`;
+    unMatch.value  = `⚑ MISMATCHED (${cr.length}/${cyr.length} Cyrillic):\n\n${cr.join('\n')}\n\n⚑ MISMATCHED (${lt.length}/${lat.length} Transliterated):\n\n${lt.join('\n')}`;
     if(_spin) spinOn(false);
 
 } catch(e) { alert("ERROR: " + e.message); }
@@ -371,8 +371,9 @@ try {
 function moreInfo(fl) {
     let el = document.querySelector('.infoPad');
     if(fl) {
-        el.querySelector('code').innerText = Trans.map(e => e.join(' → ')).join('\n');
-        el.style.top = '0px';
+      let Ar = Trans.map(e => e.join(' → '));
+      el.querySelector('code').innerText = Ar.filter(e=>e.includes('|')).join('\n') +  '\n\n' + Ar.filter(e=>!e.includes('|')).join(', ');
+      el.style.top = '0px';
     }
     else el.style.top = '-100vh';
 }

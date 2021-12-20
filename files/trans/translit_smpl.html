@@ -28,7 +28,7 @@
         background-color: #fc9;
       }
       td {
-        padding: 4px;
+        padding: 4px 6px;
         margin: 0;
         border-bottom: 1px solid var(--ln);
       }
@@ -39,11 +39,20 @@
       }
       td:nth-child(5) {
         border-left: 1px solid var(--ln);
+        padding-left: 12px;
+      }
+      span {
+        font: italic 18px sans-serif;
+        color: var(--fn);
+        text-aling: center;
+        margin: calc(100vh / 2 - 36px) 20% 0 20%;
+        display: block;
       }
     </style>
   </head>
   <body>
     <div contenteditable="true">
+      <span>Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...</span>
       <table></table>
     </div>
 
@@ -83,7 +92,14 @@ function dispatch() {
   else process(Cmp.cyr.split('\n'), Cmp.lat.split('\n'));
 }
 
+var rmvSpan = true;
+
 function makeTable(rs) {
+  if(rmvSpan) {
+    //document.querySelector('div').removeChild(document.querySelector('span'));
+    document.querySelector('span').remove();
+    rmvSpan = false;
+  }
   let T = document.querySelector('table'), Cnt = 1;
   while(T.rows.length > 0) T.deleteRow(0);
   rs.forEach(r => {

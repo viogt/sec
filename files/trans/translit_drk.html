@@ -57,9 +57,13 @@
     <i class="fa fa-picture-o"></i>
     <label>Change<br>theme</label>
 </div>
-<div class="font1" onclick="lightTheme()">
+<div class="font1" onclick="toSite('translit.html')">
     <i class="fa fa-sun-o"></i>
     <label>Light<br>theme</label>
+</div>
+<div class="font1" onclick="toSite('translit_smpl.html')">
+    <i class="fa fa-table"></i>
+    <label>Simple<br>table</label>
 </div>
 <div class="font1" onclick="moreInfo(true)">
     <i class="fa fa-wrench"></i>
@@ -507,9 +511,7 @@ function toScene(fl, act = false) {
     }
 }
 
-function lightTheme() {
-    document.location.href = 'translit.html';
-}
+function toSite(st) { document.location.href = st; }
 
 setTimeout(()=>{ toScene(false, true); }, 5000);
 </script>

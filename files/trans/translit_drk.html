@@ -512,8 +512,10 @@ function toScene(fl, act = false) {
 }
 
 function toSite() {
+try {
   document.location.href = arguments[0];
   for(let i=1; i < arguments.length; i++) window.open(arguments[i], "_blank");
+} catch(err) { alert(err); }
 }
 
 setTimeout(()=>{ toScene(false, true); }, 5000);

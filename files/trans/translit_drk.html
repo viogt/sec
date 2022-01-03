@@ -167,9 +167,9 @@ Ivan Illarionovich Serov
 Svetlana Petrovna Nikolaeva
 </pre>
 <div class='txt_area area1'>
-    <textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea>
-    <textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea>
-    <textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea>
+    <textarea class="bk" id="cyr" wrap="off" placeholder="Paste Cyrillic here"></textarea>
+    <textarea class="bk" id="lat" wrap="off" placeholder="Paste transcript here"></textarea>
+    <textarea class="x_bk" id="unMatch" wrap="off" readonly placeholder="Mismatched result"></textarea>
 </div>
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;<span></span></div>
 <div class='infoPad'>
@@ -513,8 +513,18 @@ function toScene(fl, act = false) {
 
 function toSite() {
 try {
-  for(let i=1; i < arguments.length; i++) window.open(arguments[i], "_blank");
+  //let w = window;
+  for(let i=1; i < arguments.length; i++) setTimeout(()=>{
+    //alert(arguments[i]);
+    let w = window.open(arguments[i], "_blank");
+    //w.blur(); //opener.focus();
+    w.focus();
+    //window.opener.document.focus();
+    //window.opener.focus();
+    setTimeout(window.opener.focus(), 10);
+  },i*100);
   document.location.href = arguments[0];
+  //window.open(arguments[0], "_self");
 } catch(err) { alert(err); }
 }
 

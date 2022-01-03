@@ -40,7 +40,7 @@
       display: block;
       outline:none;
       resize: none;
-      white-space: pre;
+      /*white-space: pre;*/
     }
     textarea::-webkit-scrollbar { width: 8px; height: 8px; background: #303; }
     textarea::-webkit-scrollbar-thumb { background: #606; }

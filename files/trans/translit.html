@@ -25,7 +25,7 @@
       height: 100%;
       outline:none;
       resize: none;
-      white-space: pre;
+      /*white-space: pre;*/
     }
     .bk {
 background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='300' height='300' preserveAspectRatio='none' viewBox='0 0 300 300'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1023%26quot%3b)' fill='none'%3e%3crect width='300' height='300' x='0' y='0' fill='rgba(235%2c 241%2c 248%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c110 C 12%2c94.6 36%2c26 60%2c33 C 84%2c40 96%2c136.8 120%2c145 C 144%2c153.2 156%2c80.2 180%2c74 C 204%2c67.8 216%2c117.8 240%2c114 C 264%2c110.2 288%2c66.8 300%2c55L300 300L0 300z' fill='rgba(222%2c 237%2c 253%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c268 C 12%2c258.6 36%2c225.8 60%2c221 C 84%2c216.2 96%2c244.2 120%2c244 C 144%2c243.8 156%2c219.8 180%2c220 C 204%2c220.2 216%2c258.2 240%2c245 C 264%2c231.8 288%2c172.2 300%2c154L300 300L0 300z' fill='rgba(210%2c 231%2c 253%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1023'%3e%3crect width='300' height='300' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
@@ -169,9 +169,9 @@ background-color: rgba(235, 241, 248, 1);
       font-size: inherit;
       color: inherit;
       border: thin solid #b4c8f0;
-      width: 80px;
-      text-align:center;
-      border-radius:4px;
+      width: 100px;
+      text-align: center;
+      border-radius: 4px;
     }
 
     .pulse { animation: pulse-animation 1s 1; }
@@ -336,9 +336,9 @@ Dmitriy Vasilievich Aleksandrov
 Ivan Illarionovich Serov
 Svetlana Petrovna Nikolaeva
 </pre>
-<div class='txt_area'><textarea class="bk" id="cyr" placeholder="Paste Cyrillic here"></textarea></div>
-<div class='txt_area'><textarea class="bk" id="lat" placeholder="Paste transcript here"></textarea></div>
-<div class='txt_area'><textarea class="x_bk" id="unMatch" readonly placeholder="Mismatched result"></textarea></div>
+<div class='txt_area'><textarea class="bk" id="cyr" wrap="off" placeholder="Paste Cyrillic here"></textarea></div>
+<div class='txt_area'><textarea class="bk" id="lat" wrap="off" placeholder="Paste transcript here"></textarea></div>
+<div class='txt_area'><textarea class="x_bk" id="unMatch" wrap="off" readonly placeholder="Mismatched result"></textarea></div>
 
 <div class='pregToast'><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;<span></span></div>
 
@@ -548,7 +548,7 @@ function preToggleToast(txt, ms) {
 	    T.querySelector('span').innerText = txt;
 	    T.style.top = '60px';
 	}
-	else T.style.top = '-60px';
+	else T.style.top = `-${T.getBoundingClientRect().height}px`; //'-60px';
 	if(ms) setTimeout( function() { preToggleToast(null, 0); }, ms);
 }
 

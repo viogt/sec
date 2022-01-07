@@ -61,7 +61,7 @@
     <i class="fa fa-sun-o"></i>
     <label>Light<br>theme</label>
 </div>
-<div class="font1" onclick="toSite('translit_smpl.html','cyr.txt','lat.txt')">
+<div class="font1" onclick="toSite('translit_smpl.html')">
     <i class="fa fa-table"></i>
     <label>Simple<br>table</label>
 </div>
@@ -511,22 +511,7 @@ function toScene(fl, act = false) {
     }
 }
 
-function toSite() {
-try {
-  //let w = window;
-  for(let i=1; i < arguments.length; i++) setTimeout(()=>{
-    //alert(arguments[i]);
-    let w = window.open(arguments[i], "_blank");
-    //w.blur(); //opener.focus();
-    w.focus();
-    //window.opener.document.focus();
-    //window.opener.focus();
-    setTimeout(window.opener.focus(), 10);
-  },i*100);
-  document.location.href = arguments[0];
-  //window.open(arguments[0], "_self");
-} catch(err) { alert(err); }
-}
+function toSite(site) { document.location.href = site; }
 
 setTimeout(()=>{ toScene(false, true); }, 5000);
 </script>

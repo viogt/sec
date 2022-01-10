@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>PASTE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Table Translit</title>
     <style>
       :root {
-        --ln: #cce;
-        --fn: #999;
+        --ln: #ccd;
+        --fn: #aab;
       }
       body { margin: 4px; }
-      div {
+      .main {
         width: calc(100vw - 8px);
         height: calc(100vh - 8px);
         border: 1px solid var(--ln);
@@ -41,18 +41,107 @@
         border-left: 1px solid var(--ln);
         padding-left: 12px;
       }
-      span {
+      .hint {
         font: italic 18px sans-serif;
         color: var(--fn);
         text-aling: center;
         margin: calc(100vh / 2 - 36px) 20% 0 20%;
         display: block;
       }
+
+.setting_panel {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 100;
+  top: -400px;
+  right: 0px;
+  width: 300px;
+  border: 1px solid var(--ln);
+  background-color: #fff;
+  transition: top .3s ease;
+}
+
+.set_item {
+  box-sizing: border-box;
+	font: normal 15px Arial,sans-serif;
+  border-bottom: 1px solid var(--ln);
+  width: 100%;
+  white-space: nowrap;
+  padding: 12px 4px;
+  text-align: center;
+}
+.set_item div {
+  padding: 6px 10px;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 6px;
+  user-select: none;
+}
+.set_item div[selected] {
+	background-color: #6a6;
+  color: #fff;
+}
+.set_item span {
+	font-size: 13px;
+  color: #6a6;
+  display: block;
+  margin-bottom: 10px;
+}
+.set_item i { font-size: 22px; margin-right: 8px; }
+.rBut {
+    width: 12px;
+    height: 160px;
+    position: fixed;
+    top: calc(100vh / 2 - 80px);
+    background-color: var(--ln);
+    border-radius: 12px 0 0 12px;
+    right: 0px;
+    z-index: 101;
+}
+.lBut {
+    width: 12px;
+    height: 160px;
+    position: fixed;
+    top: calc(100vh / 2 - 80px);
+    background-color: var(--ln);
+    border-radius: 0 12px 12px 0;
+    left: 0px;
+    z-index: 101;
+}
     </style>
   </head>
   <body>
-    <div contenteditable="true">
-      <span>Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...</span>
+
+<div class="setting_panel">
+<div class="set_item">
+  <span>Sort the list:</span>
+  <div name="sort"><i class="fa fa-sort-alpha-asc"></i>Asc</div>
+  <div name="sort"><i class="fa fa-sort-alpha-desc"></i>Desc</div>
+  <div name="sort" selected><i class="fa fa-times-circle"></i>None</div>
+</div>
+<div class="set_item">
+  <span>Show matches:</span>
+  <div name="show"><i class="fa fa-info-circle"></i>Show matches</div>
+  <div name="show" selected><i class="fa fa-times-circle"></i>Ignore</div>
+</div>
+<div class="set_item">
+  <span>Show unique items:</span>
+  <div name="unique"><i class="fa fa-flag-checkered"></i>Unique only</div>
+  <div name="unique" selected><i class="fa fa-times-circle"></i>Incl. repeated</div>
+</div>
+<div class="set_item">
+  <span>Sample data in:</span>
+  <div name="data"><i class="fa fa-download"></i>Short</div>
+  <div name="data"><i class="fa fa-upload"></i>Full<small><sup>1</sup></small></div>
+  <div name="data"><i class="fa fa-cloud-upload"></i>Full<small><sup>2</sup></small></div>
+</div>
+</div>
+
+<div class="lBut" onclick="inScene(0)"></div>
+<div class="rBut" onclick="inScene(1)"></div>
+
+    <div contenteditable="true" class="main">
+      <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...</span>
       <table></table>
     </div>
 
@@ -97,7 +186,7 @@ var rmvSpan = true;
 function makeTable(rs) {
   if(rmvSpan) {
     //document.querySelector('div').removeChild(document.querySelector('span'));
-    document.querySelector('span').remove();
+    document.querySelector('.hint').remove();
     rmvSpan = false;
   }
   let T = document.querySelector('table'), Cnt = 1;
@@ -116,7 +205,7 @@ function makeTable(rs) {
   });
 }
 
-document.querySelector('div').addEventListener('paste', (event) => {
+document.querySelector('.main').addEventListener('paste', (event) => {
   let pst = (event.clipboardData || window.clipboardData).getData('text').trim();
   event.preventDefault();
   if(pst == '') return;
@@ -149,6 +238,44 @@ function process(cyr, lat) {
     lat = lat.filter(el => el.charAt(0)!='>');
     lat = lat.map(el => '>   '+el);
     makeTable(cyr.concat(lat));
+}
+
+const Setts = {
+	sort: 2,
+  unique: 1,
+  show: 1,
+  data: -1
+}
+
+document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("click", function(e) {
+	let attr = 'selected', el = e.target, nm = el.getAttribute('name');
+    document.getElementsByName(nm).forEach((e,i)=>{
+    	if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
+        else if(e.hasAttribute(attr)) e.removeAttribute(attr);
+    });
+    proceed();
+}, false));
+
+
+function proceed() {
+	document.getElementById('out').innerText = JSON.stringify(Setts);
+}
+
+function inScene(lr) {
+  let p = document.querySelector(".setting_panel");
+  if(p.style.top && p.style.top == '0px') {
+    p.style.top = `-${p.getBoundingClientRect().height}px`;
+    return;
+  }
+  if(lr) {
+    if(p.style.left) p.style.left = null;
+    p.style.right = '0px';
+  }
+  else {
+    if(p.style.right) p.style.right = null;
+    p.style.left = '0px';
+  }
+  p.style.top = '0px';
 }
   </script>
   </body>

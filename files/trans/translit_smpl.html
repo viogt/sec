@@ -23,6 +23,7 @@
       table {
         border-collapse: collapse;
         font: normal 14px monospace;
+        transition: background-color .3s ease;
       }
       tr[cmp] {
         background-color: #fc9;
@@ -58,6 +59,7 @@
   width: 300px;
   border: 1px solid var(--ln);
   background-color: #fff;
+  box-shadow: 0px 3px 10px #000;
   transition: top .3s ease;
 }
 
@@ -129,7 +131,7 @@
   <div name="unique"><i class="fa fa-flag-checkered"></i>Unique only</div>
   <div name="unique" selected><i class="fa fa-times-circle"></i>Incl. repeated</div>
 </div>
-<div class="set_item">
+<div class="set_item" style="border:none">
   <span>Sample data in:</span>
   <div name="data"><i class="fa fa-download"></i>Short</div>
   <div name="data"><i class="fa fa-upload"></i>Full<small><sup>1</sup></small></div>
@@ -368,14 +370,13 @@ function sampleData(tip) {
   }).join('\n');
 }
 
-function proceed() {
-	document.getElementById('out').innerText = JSON.stringify(Setts);
-}
-
 function inScene(lr) {
-  let p = document.querySelector(".setting_panel");
+  let p = document.querySelector(".setting_panel"),
+    fonSt = document.querySelector("table").style;
   if(p.style.top && p.style.top == '0px') {
-    p.style.top = `-${p.getBoundingClientRect().height}px`;
+    p.style.top = `-${p.getBoundingClientRect().height + 10}px`;
+    fonSt.backgroundColor = null;
+    fonSt.filter = null;
     return;
   }
   if(lr) {
@@ -387,6 +388,8 @@ function inScene(lr) {
     p.style.left = '0px';
   }
   p.style.top = '0px';
+  fonSt.backgroundColor = '#e0e0e0';
+  fonSt.filter = 'blur(1.4px)';
 }
   </script>
   </body>

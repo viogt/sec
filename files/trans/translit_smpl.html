@@ -121,8 +121,8 @@
 </div>
 <div class="set_item">
   <span>Show matches:</span>
-  <div name="show"><i class="fa fa-info-circle"></i>Show matches</div>
-  <div name="show" selected><i class="fa fa-times-circle"></i>Ignore</div>
+  <div name="show" selected><i class="fa fa-info-circle"></i>Show matches</div>
+  <div name="show"><i class="fa fa-times-circle"></i>Ignore</div>
 </div>
 <div class="set_item">
   <span>Show unique items:</span>
@@ -144,6 +144,98 @@
       <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...</span>
       <table></table>
     </div>
+
+<pre id="pre_cyr" style="display:none">
+Александр Васильевич Александров
+Данила Илларионович Татаров
+Елена Ивановна Николаева
+Алексей Ильич Васнецов
+Евгений Петрович Крылов
+Кирилл Алексеевич Татаров
+Анна Ивановна Селезнёва
+Ксения Владимировна Иванова
+Мариянна Петровна Ким
+Изя Марковна Гинзбург
+Сергей Ильич Васнецов
+Никита Илларионович Крылов
+Наталья Ивановна Николаева
+Мария Владимировна Иванова
+Андрей Алексеевич Татаров
+Артём Петрович Крылов
+Ольга Ивановна Селезнёва
+Александра Петровна Иванова
+Дмитрий Васильевич Александров
+Иван Илларионович Серов
+Светлана Петровна Николаева
+Софья Владимировна Ким
+Михаил Петрович Крылов
+Пётр Ильич Васнецов
+Юлия Ивановна Селезнёва
+Дарья Владимировна Серова
+Павел Васильевич Татаров
+Магомед Каримович Дудаев
+Егор Илларионович Александров
+Мария Петровна Иванова
+Анастассия Владимировна Николаева
+Полина Владимировна Серова
+Илья Алексеевич Крылов
+Матвей Ильич Васнецов
+Ирина Петровна Николаева
+Елизавета Ивановна Иванова
+Константин Илларионович Татаров
+Максим Петрович Васнецов
+Екатерина Петровна Иванова
+Валерия Владимировна Николаева
+Виктор Васильевич Крылов
+Григорий Ильич Васнецов
+Татьяна Ивановна Селезнёва
+Екатерина Владимировна Ким
+</pre>
+<pre id="pre_lat" style="display:none">
+Sofia Vladimirovna Kim
+Mikhail Petrovich Krylov
+Petr Ilyich Vasnetsov
+Yulia Ivanovna Selezneva
+Daria Vladimirovna Serova
+Pavel Vasilievich Tatarov
+Egor Illarionovich Aleksandrov
+Maria Petrovna Ivanova
+Polina Vladimirovna Serova
+Ilya Alekseevich Krylov
+Matvey Ilyich Vasnetsov
+Aleksandr Vasilievich Aleksandrov
+Danila Illarionovich Tatarov
+Elena Ivanovna Nikolaeva
+Anastasia Vladimirovna Nikolaeva
+Aleksey Ilyich Vasnetsov
+Yevgeniy Petrovich Krylov
+Kirill Alekseevich Tatarov
+Anna Ivanovna Selezneva
+Ksenia Vladimirovna Ivanova
+Maryanna Petrovna Kim
+Sergei Ilyich Vasnetsov
+Nikita Illarionovich Krylov
+Ibrahim Ahmatovich Karamazin
+Natalya Ivanovna Nikolaeva
+Maria Vladimirovna Ivanova
+Andrey Alekseevich Tatarov
+Artem Petrovich Krylov
+Irina Petrovna Nikolaeva
+Elizaveta Ivanovna Ivanova
+Konstantin Illarionovich Tatarov
+Maksim Petrovich Vasnetsov
+Ekaterina Petrovna Ivanova
+Valeria Vladimirovna Nikolaeva
+Viktor Vasilievich Krylov
+Grigorii Ilyich Vasnetsov
+Tatiana Ivanovna Selezneva
+Ekaterina Vladimirovna Kim
+Olga Ivanovna Selezneva
+Aleksandra Petrovna Ivanova
+Dmitriy Vasilievich Aleksandrov
+Ivan Illarionovich Serov
+Svetlana Petrovna Nikolaeva
+</pre>
 
   <script>
 
@@ -216,6 +308,12 @@ document.querySelector('.main').addEventListener('paste', (event) => {
 
 function process(cyr, lat) {
     lat = lat.map(el => el.trim());
+
+if(Setts.unique == 0) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
+if(Setts.sort < 2) {
+  cyr.sort(); lat.sort();
+  if(Setts.sort == 1) { cyr.reverse(); lat.reverse(); }
+}
     for(let i in cyr) {
       
       let w = cyr[i].trim().toLowerCase(); if(w == '') continue;
@@ -243,7 +341,7 @@ function process(cyr, lat) {
 const Setts = {
 	sort: 2,
   unique: 1,
-  show: 1,
+  show: 0,
   data: -1
 }
 
@@ -253,9 +351,22 @@ document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("clic
     	if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
         else if(e.hasAttribute(attr)) e.removeAttribute(attr);
     });
-    proceed();
+    if(nm == 'data') sampleData(Setts.data);
+    dispatch();
 }, false));
 
+function sampleData(tip) {
+  Cmp.cyr = document.getElementById("pre_cyr").innerText.trim().split('\n').map(e => {
+      if(tip==0) return e.split(' ')[0];
+      if(tip==1) return e;
+      return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
+  }).join('\n');
+  Cmp.lat = document.getElementById("pre_lat").innerText.trim().split('\n').map(e => {
+      if(tip==0) return e.split(' ')[0];
+      if(tip==1) return e;
+      return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
+  }).join('\n');
+}
 
 function proceed() {
 	document.getElementById('out').innerText = JSON.stringify(Setts);

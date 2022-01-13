@@ -23,7 +23,7 @@
       table {
         border-collapse: collapse;
         font: normal 14px monospace;
-        transition: background-color .3s ease;
+        transition: background-color, filter .4s ease;
       }
       tr[cmp] {
         background-color: #fc9;
@@ -54,13 +54,15 @@
   box-sizing: border-box;
   position: absolute;
   z-index: 100;
-  top: -400px;
+  top: -500px;
   right: 0px;
   width: 300px;
   border: 1px solid var(--ln);
   background-color: #fff;
   box-shadow: 0px 3px 10px #000;
-  transition: top .3s ease;
+  max-height: 100vh;
+  overflow-y: auto;
+  transition: top .4s ease;
 }
 
 .set_item {
@@ -131,11 +133,16 @@
   <div name="unique"><i class="fa fa-flag-checkered"></i>Unique only</div>
   <div name="unique" selected><i class="fa fa-times-circle"></i>Incl. repeated</div>
 </div>
-<div class="set_item" style="border:none">
+<div class="set_item">
   <span>Sample data in:</span>
-  <div name="data"><i class="fa fa-download"></i>Short</div>
+  <div name="data"><i class="fa fa-list-ol"></i>Short</div>
   <div name="data"><i class="fa fa-upload"></i>Full<small><sup>1</sup></small></div>
   <div name="data"><i class="fa fa-cloud-upload"></i>Full<small><sup>2</sup></small></div>
+</div>
+<div class="set_item" style="border:none">
+  <span>Download the lists:</span>
+  <div name="down"><i class="fa fa-download"></i>Download</div>
+  <div name="down" selected><i class="fa fa-times-circle"></i>Ignore</div>
 </div>
 </div>
 
@@ -344,7 +351,8 @@ const Setts = {
 	sort: 2,
   unique: 1,
   show: 0,
-  data: -1
+  data: -1,
+  down: 1
 }
 
 document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("click", function(e) {
@@ -353,8 +361,9 @@ document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("clic
     	if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
         else if(e.hasAttribute(attr)) e.removeAttribute(attr);
     });
-    if(nm == 'data') sampleData(Setts.data);
-    dispatch();
+    if(nm == 'data') { sampleData(Setts.data); dispatch(); }
+    else if(nm == 'down' && Setts.down == 0) fetchAll();
+    else dispatch();
 }, false));
 
 function sampleData(tip) {
@@ -374,7 +383,7 @@ function inScene(lr) {
   let p = document.querySelector(".setting_panel"),
     fonSt = document.querySelector("table").style;
   if(p.style.top && p.style.top == '0px') {
-    p.style.top = `-${p.getBoundingClientRect().height + 10}px`;
+    p.style.top = `-${p.getBoundingClientRect().height + 13}px`;
     fonSt.backgroundColor = null;
     fonSt.filter = null;
     return;
@@ -390,6 +399,15 @@ function inScene(lr) {
   p.style.top = '0px';
   fonSt.backgroundColor = '#e0e0e0';
   fonSt.filter = 'blur(1.4px)';
+}
+
+function fetchAll() {
+  Promise.all([
+    fetch('cyr.txt').then(res => { return res.text().then(txt => Cmp.cyr = txt )}),
+    fetch('lat.txt').then(res => { return res.text().then(txt => Cmp.lat = txt )})
+  ])
+  .then(() => dispatch())
+  .catch(err => alert(err));
 }
   </script>
   </body>

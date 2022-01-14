@@ -26,7 +26,7 @@
         transition: background-color, filter .4s ease;
       }
       tr[cmp] {
-        background-color: #fc9;
+        background-color: rgba(250,100,0,.3);
       }
       td {
         padding: 4px 6px;
@@ -42,19 +42,19 @@
         border-left: 1px solid var(--ln);
         padding-left: 12px;
       }
-      .hint {
-        font: italic 18px sans-serif;
-        color: var(--fn);
-        text-aling: center;
-        margin: calc(100vh / 2 - 36px) 20% 0 20%;
-        display: block;
-      }
+  .hint {
+    font: italic 18px sans-serif;
+    color: var(--fn);
+    text-align: center;
+    margin: calc(100vh / 2 - 42px) 20% 0 20%;
+    display: block;
+  }
 
 .setting_panel {
   box-sizing: border-box;
   position: absolute;
   z-index: 100;
-  top: -500px;
+  top: calc(-100vh - 13px);
   right: 0px;
   width: 300px;
   border: 1px solid var(--ln);
@@ -62,8 +62,10 @@
   box-shadow: 0px 3px 10px #000;
   max-height: 100vh;
   overflow-y: auto;
+  scrollbar-width: none;
   transition: top .4s ease;
 }
+.setting_panel::-webkit-scrollbar {  display: none; }
 
 .set_item {
   box-sizing: border-box;
@@ -112,9 +114,21 @@
     left: 0px;
     z-index: 101;
 }
+.score {
+  position: absolute;
+  right: 10px; bottom: 28px;
+  color: var(--ln);
+  font: bold 24vw Arial, sans-serif;
+  text-align: right;
+  display: inline-block;
+  transform: rotate(-30deg);
+  z-index: -1;
+}
     </style>
   </head>
   <body>
+
+<div class="score"></div>
 
 <div class="setting_panel">
 <div class="set_item">
@@ -150,7 +164,8 @@
 <div class="rBut" onclick="inScene(1)"></div>
 
     <div contenteditable="true" class="main">
-      <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...</span>
+      <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br>
+      <i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
       <table></table>
     </div>
 
@@ -167,6 +182,7 @@
 Изя Марковна Гинзбург
 Сергей Ильич Васнецов
 Никита Илларионович Крылов
+Алексей Ильич Васнецов
 Наталья Ивановна Николаева
 Мария Владимировна Иванова
 Андрей Алексеевич Татаров
@@ -175,6 +191,7 @@
 Александра Петровна Иванова
 Дмитрий Васильевич Александров
 Иван Илларионович Серов
+Алексей Ильич Васнецов
 Светлана Петровна Николаева
 Софья Владимировна Ким
 Михаил Петрович Крылов
@@ -224,9 +241,11 @@ Ksenia Vladimirovna Ivanova
 Maryanna Petrovna Kim
 Sergei Ilyich Vasnetsov
 Nikita Illarionovich Krylov
+Anastasia Vladimirovna Nikolaeva
 Ibrahim Ahmatovich Karamazin
 Natalya Ivanovna Nikolaeva
 Maria Vladimirovna Ivanova
+Aleksey Ilyich Vasnetsov
 Andrey Alekseevich Tatarov
 Artem Petrovich Krylov
 Irina Petrovna Nikolaeva
@@ -236,6 +255,7 @@ Maksim Petrovich Vasnetsov
 Ekaterina Petrovna Ivanova
 Valeria Vladimirovna Nikolaeva
 Viktor Vasilievich Krylov
+Aleksey Ilyich Vasnetsov
 Grigorii Ilyich Vasnetsov
 Tatiana Ivanovna Selezneva
 Ekaterina Vladimirovna Kim
@@ -316,7 +336,10 @@ document.querySelector('.main').addEventListener('paste', (event) => {
 });
 
 function process(cyr, lat) {
-    lat = lat.map(el => el.trim());
+    let cnt = 0;
+    cyr = cyr.map(el => el.trim()); lat = lat.map(el => el.trim());
+    if(cyr.findIndex(el => el == '') > -1) cyr = cyr.filter(el => el != '');
+    if(lat.findIndex(el => el == '') > -1) lat = lat.filter(el => el != '');
 
 if(Setts.unique == 0) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
 if(Setts.sort < 2) {
@@ -335,16 +358,17 @@ if(Setts.sort < 2) {
       Rx = new RegExp('^'+ w + '$','i');
 
       let ix = lat.findIndex(val => Rx.test(val));
-      if(ix < 0) cyr[i] = '>' + cyr[i] + '   ';
+      if(ix < 0) { cyr[i] = '>' + cyr[i] + '   '; cnt++; }
       else {
         cyr[i] += ' ' + lat[ix];
         lat[ix] = '>' + lat[ix];
       }
     }
-
-    lat = lat.filter(el => el.charAt(0)!='>');
-    lat = lat.map(el => '>   '+el);
-    makeTable(cyr.concat(lat));
+  lat = lat.filter(el => el.charAt(0)!='>');
+  cnt += lat.length;
+  lat = lat.map(el => '>   '+el);
+  makeTable(cyr.concat(lat));
+  document.querySelector(".score").innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
 }
 
 const Setts = {
@@ -361,8 +385,8 @@ document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("clic
     	if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
         else if(e.hasAttribute(attr)) e.removeAttribute(attr);
     });
-    if(nm == 'data') { sampleData(Setts.data); dispatch(); }
-    else if(nm == 'down' && Setts.down == 0) fetchAll();
+    if(nm == 'data') { sampleData(Setts.data); inScene(0); dispatch(); }
+    else if(nm == 'down' && Setts.down == 0) { inScene(0); fetchAll(); }
     else dispatch();
 }, false));
 

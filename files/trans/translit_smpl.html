@@ -23,6 +23,7 @@
       table {
         border-collapse: collapse;
         font: normal 14px monospace;
+        -webkit-transition: background-color, filter .4s ease;
         transition: background-color, filter .4s ease;
       }
       tr[cmp] {
@@ -63,6 +64,7 @@
   max-height: 100vh;
   overflow-y: auto;
   scrollbar-width: none;
+  -webkit-transition: top .4s ease;
   transition: top .4s ease;
 }
 .setting_panel::-webkit-scrollbar {  display: none; }

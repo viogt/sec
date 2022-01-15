@@ -117,9 +117,20 @@
 .score {
   position: absolute;
   right: 0;
-  /*bottom: 0px;*/
+  top: 0;
+  color: #dde;
+  font: bold 120px Arial, sans-serif;
+  display: inline-block;
+  -webkit-transform-origin: right bottom;
+  transform-origin: left top;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg);
+  z-index: -1;
+}
+.___score {
+  position: absolute;
+  right: 0;
   top: -100px;
-  /*left: calc(100vw - 0px);*/
   color: #dde;
   font: bold 100px Arial, sans-serif;
   display: inline-block;

@@ -156,9 +156,9 @@
   <div name="sort" selected><i class="fa fa-times-circle"></i>None</div>
 </div>
 <div class="set_item">
-  <span>Show matches:</span>
-  <div name="show" selected><i class="fa fa-info-circle"></i>Show matches</div>
-  <div name="show"><i class="fa fa-times-circle"></i>Ignore</div>
+  <span>Show first:</span>
+  <div name="show" selected><i class="fa fa-info-circle"></i>Cyrillic</div>
+  <div name="show"><i class="fa fa-times-circle"></i>Latin/English</div>
 </div>
 <div class="set_item">
   <span>Show unique items:</span>
@@ -330,17 +330,33 @@ function makeTable(rs) {
   }
   let T = document.querySelector('table'), Cnt = 1;
   while(T.rows.length > 0) T.deleteRow(0);
+
   rs.forEach(r => {
-    let R = T.insertRow(); if(r.charAt(0) == '>') {
+    let R = T.insertRow();
+    if(r.charAt(0) == '>') {
       R.setAttribute('cmp','');
       r = r.substr(1);
     }
+
     let cs = r.split(' ');
     R.insertCell().innerText = Cnt++;
-    cs.forEach(c => {
-      let C = R.insertCell();
-      C.innerText = c;
-    });
+    if(Setts.show == 0) {
+      if(cs.length > 5) cs.forEach(c => R.insertCell().innerText = c);
+      else {
+        R.insertCell().innerText = cs[0];
+        R.insertCell().innerText = cs[3] || cs[1];
+      }
+    }
+    else {
+      if(cs.length > 5) {
+        for(let i=3; i<6; i++) R.insertCell().innerText = cs[i];
+        for(let i=0; i<3; i++) R.insertCell().innerText = cs[i];
+      }
+      else {
+        R.insertCell().innerText = cs[3] || cs[1];
+        R.insertCell().innerText = cs[0];
+      }
+    }
   });
 }
 

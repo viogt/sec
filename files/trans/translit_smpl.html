@@ -44,11 +44,14 @@
         padding-left: 12px;
       }
   .hint {
+    position: absolute;
+    top: calc(100vh / 2 - 42px); left: 20%; width: 60%;
     font: italic 18px sans-serif;
     color: var(--fn);
     text-align: center;
-    margin: calc(100vh / 2 - 42px) 20% 0 20%;
+    /*margin: calc(100vh / 2 - 42px) 20% 0 20%;*/
     display: block;
+    z-index: -2;
   }
 
 .setting_panel {
@@ -71,17 +74,20 @@
 
 .set_item {
   box-sizing: border-box;
-	font: normal 15px Arial,sans-serif;
   border-bottom: 1px solid var(--ln);
   width: 100%;
   white-space: nowrap;
   padding: 12px 4px;
   text-align: center;
+  font-family: Arial,sans-serif;
 }
 .set_item div {
-  padding: 6px 10px;
+	font-size: 14px;
+  padding: 4px 8px;
+  height: 20px;
   display: inline-block;
   cursor: pointer;
+  vertical-align: middle;
   border-radius: 6px;
   user-select: none;
 }
@@ -90,18 +96,19 @@
   color: #fff;
 }
 .set_item span {
-	font-size: 13px;
+	font-size: 12px;
   color: #6a6;
   display: block;
   margin-bottom: 10px;
 }
-.set_item i { font-size: 22px; margin-right: 8px; }
+.set_item i { font-size: 18px; margin-right: 8px;}
 .rBut {
     width: 12px;
     height: 160px;
     position: fixed;
     top: calc(100vh / 2 - 80px);
-    background-color: var(--ln);
+    background-color: #88a;
+    opacity: .5;
     border-radius: 12px 0 0 12px;
     right: 0px;
     z-index: 101;
@@ -111,24 +118,13 @@
     height: 160px;
     position: fixed;
     top: calc(100vh / 2 - 80px);
-    background-color: var(--ln);
+    background-color: #88a;
+    opacity: .5;
     border-radius: 0 12px 12px 0;
     left: 0px;
     z-index: 101;
 }
-.___score {
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: #dde;
-  font: bold 120px Arial, sans-serif;
-  display: inline-block;
-  -webkit-transform-origin: right bottom;
-  transform-origin: left top;
-  -webkit-transform: rotate(30deg);
-  transform: rotate(30deg) translate(30px, -20px);
-  z-index: -1;
-}
+
 .score {
   position: absolute;
   right: 0px;
@@ -157,13 +153,13 @@
 </div>
 <div class="set_item">
   <span>Show first:</span>
-  <div name="show" selected><i class="fa fa-info-circle"></i>Cyrillic</div>
-  <div name="show"><i class="fa fa-times-circle"></i>Latin/English</div>
+  <div name="show" selected><i class="fa fa-pencil"></i>Cyrillic</div>
+  <div name="show"><i class="fa fa-pencil-square-o"></i>Latin/English</div>
 </div>
 <div class="set_item">
   <span>Show unique items:</span>
   <div name="unique"><i class="fa fa-flag-checkered"></i>Unique only</div>
-  <div name="unique" selected><i class="fa fa-times-circle"></i>Incl. repeated</div>
+  <div name="unique" selected><i class="fa fa-repeat"></i>Incl. repeated</div>
 </div>
 <div class="set_item">
   <span>Sample data in:</span>
@@ -174,18 +170,16 @@
 <div class="set_item" style="border:none">
   <span>Download the lists:</span>
   <div name="down"><i class="fa fa-download"></i>Download</div>
-  <div name="down" selected><i class="fa fa-times-circle"></i>Ignore</div>
+  <div name="down" selected><i class="fa fa-trash"></i>Clear</div>
 </div>
 </div>
 
 <div class="lBut" onclick="inScene(0)"></div>
 <div class="rBut" onclick="inScene(1)"></div>
 
-    <div contenteditable="true" class="main">
-      <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br>
-      <i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
-      <table></table>
-    </div>
+<div contenteditable="true" class="main"><table></table></div>
+
+<span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br><i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
 
 <pre id="pre_cyr" style="display:none">
 Александр Васильевич Александров
@@ -324,8 +318,7 @@ var rmvSpan = true;
 
 function makeTable(rs) {
   if(rmvSpan) {
-    //document.querySelector('div').removeChild(document.querySelector('span'));
-    document.querySelector('.hint').remove();
+    document.querySelector('.hint').style.display = 'none';
     rmvSpan = false;
   }
   let T = document.querySelector('table'), Cnt = 1;
@@ -337,26 +330,9 @@ function makeTable(rs) {
       R.setAttribute('cmp','');
       r = r.substr(1);
     }
-
     let cs = r.split(' ');
     R.insertCell().innerText = Cnt++;
-    if(Setts.show == 0) {
-      if(cs.length > 5) cs.forEach(c => R.insertCell().innerText = c);
-      else {
-        R.insertCell().innerText = cs[0];
-        R.insertCell().innerText = cs[3] || cs[1];
-      }
-    }
-    else {
-      if(cs.length > 5) {
-        for(let i=3; i<6; i++) R.insertCell().innerText = cs[i];
-        for(let i=0; i<3; i++) R.insertCell().innerText = cs[i];
-      }
-      else {
-        R.insertCell().innerText = cs[3] || cs[1];
-        R.insertCell().innerText = cs[0];
-      }
-    }
+    cs.forEach(c => R.insertCell().innerText = c);
   });
 }
 
@@ -375,34 +351,44 @@ function process(cyr, lat) {
     if(cyr.findIndex(el => el == '') > -1) cyr = cyr.filter(el => el != '');
     if(lat.findIndex(el => el == '') > -1) lat = lat.filter(el => el != '');
 
-if(Setts.unique == 0) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
-if(Setts.sort < 2) {
-  cyr.sort(); lat.sort();
-  if(Setts.sort == 1) { cyr.reverse(); lat.reverse(); }
-}
+    if(Setts.unique == 0) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
+
+    let prts = ' '.repeat(cyr[0].split(' ').length);
+
     for(let i in cyr) {
       
-      let w = cyr[i].trim().toLowerCase(); if(w == '') continue;
+      let w = cyr[i].toLowerCase();
       if(w.charAt(0) == 'е' || w.charAt(0) == 'ё') w = "(ye|e)" + w.slice(1);
       let Rx = / (е|ё)/ig;
       if(Rx.test(w)) w = w.replace(Rx," (ye|e)");
       
-      Trans.forEach(lit => { w = w.replaceAll(lit[0],lit[1]); });
-      
-      Rx = new RegExp('^'+ w + '$','i');
+      Trans.forEach(lit => { w = w.replaceAll(lit[0],lit[1]); });      
 
+      Rx = new RegExp('^'+ w + '$','i');
       let ix = lat.findIndex(val => Rx.test(val));
-      if(ix < 0) { cyr[i] = '>' + cyr[i] + '   '; cnt++; }
+      if(ix < 0) {
+        cyr[i] = Setts.show == 0 ? '>' + cyr[i] + prts : '>' + prts + cyr[i];
+        cnt++;
+      }
       else {
-        cyr[i] += ' ' + lat[ix];
+        cyr[i] = Setts.show == 0 ? cyr[i] + ' ' + lat[ix] : lat[ix] + ' ' + cyr[i];
         lat[ix] = '>' + lat[ix];
       }
     }
-  lat = lat.filter(el => el.charAt(0)!='>');
-  cnt += lat.length;
-  lat = lat.map(el => '>   '+el);
-  makeTable(cyr.concat(lat));
+  lat = lat.filter(el => el.charAt(0)!='>'); cnt += lat.length;
+  cyr = cyr.concat(lat.map(el => Setts.show == 0 ? '>' + prts + el : '>' + el + prts));
+
+  if(Setts.sort < 2) { cyr.sort(); if(Setts.sort == 1) cyr.reverse(); }
+  makeTable(cyr);
   document.querySelector(".score").innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
+}
+
+function clearAll() {
+  let T = document.querySelector('table');
+  while(T.rows.length > 0) T.deleteRow(0);
+  document.querySelector('.hint').style.display = 'block';
+  document.querySelector(".score").innerText = '';
+  rmvSpan = true;
 }
 
 const Setts = {
@@ -419,8 +405,12 @@ document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("clic
     	if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
         else if(e.hasAttribute(attr)) e.removeAttribute(attr);
     });
-    if(nm == 'data') { sampleData(Setts.data); inScene(0); dispatch(); }
-    else if(nm == 'down' && Setts.down == 0) { inScene(0); fetchAll(); }
+    inScene(0);
+    if(nm == 'data') { sampleData(Setts.data); dispatch(); }
+    else if(nm == 'down') {
+      if(Setts.down == 0) fetchAll();
+      else clearAll();
+    }
     else dispatch();
 }, false));
 

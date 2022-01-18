@@ -43,6 +43,19 @@
         border-left: 1px solid var(--ln);
         padding-left: 12px;
       }
+  .catHead {
+    font-weight: bold;
+    font-size: 24px;
+    background-color: var(--ln);
+    cursor: pointer;
+    user-select: none;
+  }
+  .preCatHead {
+    font-weight: bold;
+    font-size: 24px;
+    background-color: var(--ln);
+    text-align: center;
+  }
   .hint {
     position: absolute;
     top: calc(100vh / 2 - 42px); left: 20%; width: 60%;
@@ -60,7 +73,7 @@
   z-index: 100;
   top: calc(-100vh - 13px);
   right: 0px;
-  width: 300px;
+  max-width: 270px;
   border: 1px solid var(--ln);
   background-color: #fff;
   box-shadow: 0px 3px 10px #000;
@@ -103,24 +116,31 @@
 }
 .set_item i { font-size: 18px; margin-right: 8px;}
 .rBut {
-    width: 12px;
-    height: 160px;
+    box-sizing: border-box;
+    width: 14px;
+    padding-top: 10px;
+    height: 40px;
     position: fixed;
-    top: calc(100vh / 2 - 80px);
+    top: calc(100vh / 2 - 30px);
     background-color: #88a;
     opacity: .5;
-    border-radius: 12px 0 0 12px;
+    border-radius: 30px 0 0 30px;
+    font-size: 20px; color: #fff;
+    text-align: right;
     right: 0px;
     z-index: 101;
 }
 .lBut {
-    width: 12px;
-    height: 160px;
+    box-sizing: border-box;
+    width: 14px;
+    padding-top: 10px;
+    height: 40px;
     position: fixed;
-    top: calc(100vh / 2 - 80px);
+    top: calc(100vh / 2 - 20px);
     background-color: #88a;
     opacity: .5;
-    border-radius: 0 12px 12px 0;
+    border-radius: 0 30px 30px 0;
+    font-size: 20px; color: #fff;
     left: 0px;
     z-index: 101;
 }
@@ -174,8 +194,8 @@
 </div>
 </div>
 
-<div class="lBut" onclick="inScene(0)"></div>
-<div class="rBut" onclick="inScene(1)"></div>
+<div class="lBut" onclick="inScene(0)"><i class="fa fa-caret-right"></i></div>
+<div class="rBut" onclick="inScene(1)"><i class="fa fa-caret-left"></i></div>
 
 <div contenteditable="true" class="main"><table></table></div>
 
@@ -378,9 +398,99 @@ function process(cyr, lat) {
   lat = lat.filter(el => el.charAt(0)!='>'); cnt += lat.length;
   cyr = cyr.concat(lat.map(el => Setts.show == 0 ? '>' + prts + el : '>' + el + prts));
 
-  if(Setts.sort < 2) { cyr.sort(); if(Setts.sort == 1) cyr.reverse(); }
-  makeTable(cyr);
+  if(false) makeCatalogue(cyr);
+  else {
+    if(Setts.sort < 2) { cyr.sort(); if(Setts.sort == 1) cyr.reverse(); }
+    makeTable(cyr);
+  }  
   document.querySelector(".score").innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
+}
+
+function makeCatalogue(rs) {
+  rs = rs.sort((a,b)=>{
+    if(a.charAt(0)!='>' && b.charAt(0)!='>') return a.localeCompare(b);
+    let A = a.charAt(0)!='>'?a:a.substr(1), B = b.charAt(0)!='>'?b:b.substr(1);
+    return (A.charAt(0)==' ' || B.charAt(0)==' ')?B.localeCompare(A):A.localeCompare(B);
+  });
+  if(rmvSpan) {
+    document.querySelector('.hint').style.display = 'none';
+    rmvSpan = false;
+  }
+  let T = document.querySelector('table'), Cnt = 1;
+  while(T.rows.length > 0) T.deleteRow(0);
+  
+  let cmp, lttr, fl = false, lst;
+  insCatHead(T, 'ALL', null, true);
+
+  rs.forEach((r,ix) => {
+    if(r.charAt(0) == '>') { r = r.substr(1); cmp = true; fl = true; }
+    else cmp = false;
+    if(ix == 0) {
+      lttr = r.charAt(0);
+      lst = insCatHead(T, lttr, fl?lst:null);
+      fl = false;
+    }
+    
+    let cs = r.split(' '), A = cs[0].charAt(0);
+    if(lttr != A) {
+      //alert(`${lttr}->${A} ${fl?'Col':'Nicht'}`);
+      lst = insCatHead(T, A, fl?lst:null);
+      lttr = A;
+      fl = false;
+    }  
+    let R = T.insertRow();
+    R.insertCell().innerText = Cnt++;
+    R.style.display = 'none';
+
+    cs.forEach(c => {
+      R.insertCell().innerText = c;
+      if(cmp) R.setAttribute('cmp','');
+    });
+  });
+  if(fl) lst.style.backgroundColor = '#fb6';
+}
+
+function insCatHead(T, A, lst, ifAll = false) {
+  if(lst) lst.style.backgroundColor = '#fb6';
+	let R = T.insertRow();
+  let c = R.insertCell(); c.innerText = '+'; c.className = 'preCatHead';
+  c = R.insertCell(); c.innerText = A;
+  if(ifAll) {
+    c.addEventListener('click', () => { ExpandAll(); });
+    c.setAttribute('clps', '0');
+  }
+  else c.addEventListener('click', (event) => { Expand(event.target); });
+  c.className = 'catHead';
+  return c;
+}
+
+function Expand(nx) {
+	let lttr = nx.innerText.charAt(0), ln = nx.parentElement, prv = nx.previousElementSibling;
+  prv.innerText = prv.innerText == '+'?'-':'+';
+    while(true) {
+    	nx = ln.nextElementSibling;
+        if(!nx || nx.cells[1].innerText.charAt(0) != lttr) break;
+        if(nx.style.display = nx.style.display != 'none'?'none':'table-row');
+        ln = nx;
+    }
+}
+
+function ExpandAll() {
+  let rs = document.querySelector('table').rows, L = rs.length, aTd = rs[0].cells[1];
+  let clps = aTd.getAttribute('clps');
+  clps = clps == '0'?'1':'0';
+  aTd.setAttribute('clps', clps);
+  aTd = aTd.previousElementSibling;
+  aTd.innerText = clps == '1'?'-':'+';
+  for(let i=1; i<L; i++) {
+    let cl = rs[i].cells[1], st = rs[i].style;
+    if(cl.classList.contains("catHead")) {
+      let prv = cl.previousElementSibling;
+      prv.innerText = clps == '1'?'-':'+';
+    }
+    if(!cl.classList.contains("catHead"))
+    st.display = clps == '1'?'table-row':'none';
+  }
 }
 
 function clearAll() {

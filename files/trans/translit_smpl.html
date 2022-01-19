@@ -58,7 +58,7 @@
   }
   .hint {
     position: absolute;
-    top: calc(100vh / 2 - 42px); left: 20%; width: 60%;
+    top: calc(100vh / 2 - 62px); left: 20%; width: 60%;
     font: italic 18px sans-serif;
     color: var(--fn);
     text-align: center;
@@ -202,7 +202,7 @@
 <div class="lBut" onclick="inScene(0)"><i class="fa fa-caret-right"></i></div>
 <div class="rBut" onclick="inScene(1)"><i class="fa fa-caret-left"></i></div>
 
-<div contenteditable="true" class="main"><table></table></div>
+<div contenteditable="true" class="main"><table contenteditable="false"></table></div>
 
 <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br><i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
 
@@ -502,6 +502,7 @@ function clearAll() {
   document.querySelector('.hint').style.display = 'block';
   document.querySelector(".score").innerText = '';
   rmvSpan = true;
+  Cmp.cyr = ''; Cmp.lat = '';
 }
 
 const Setts = {

@@ -182,6 +182,11 @@
   <div name="unique" selected><i class="fa fa-repeat"></i>Incl. repeated</div>
 </div>
 <div class="set_item">
+  <span>Show as catalogue:</span>
+  <div name="catal"><i class="fa fa-list"></i>Catalogue</div>
+  <div name="catal" selected><i class="fa fa-table"></i>Table</div>
+</div>
+<div class="set_item">
   <span>Sample data in:</span>
   <div name="data"><i class="fa fa-list-ol"></i>Short</div>
   <div name="data"><i class="fa fa-upload"></i>Full<small><sup>1</sup></small></div>
@@ -398,7 +403,7 @@ function process(cyr, lat) {
   lat = lat.filter(el => el.charAt(0)!='>'); cnt += lat.length;
   cyr = cyr.concat(lat.map(el => Setts.show == 0 ? '>' + prts + el : '>' + el + prts));
 
-  if(false) makeCatalogue(cyr);
+  if(Setts.catal == 0) makeCatalogue(cyr);
   else {
     if(Setts.sort < 2) { cyr.sort(); if(Setts.sort == 1) cyr.reverse(); }
     makeTable(cyr);
@@ -423,17 +428,15 @@ function makeCatalogue(rs) {
   insCatHead(T, 'ALL', null, true);
 
   rs.forEach((r,ix) => {
-    if(r.charAt(0) == '>') { r = r.substr(1); cmp = true; fl = true; }
+    if(r.charAt(0) == '>') { r = r.substr(1); cmp = true; }
     else cmp = false;
     if(ix == 0) {
       lttr = r.charAt(0);
       lst = insCatHead(T, lttr, fl?lst:null);
       fl = false;
-    }
-    
+    }   
     let cs = r.split(' '), A = cs[0].charAt(0);
     if(lttr != A) {
-      //alert(`${lttr}->${A} ${fl?'Col':'Nicht'}`);
       lst = insCatHead(T, A, fl?lst:null);
       lttr = A;
       fl = false;
@@ -444,7 +447,7 @@ function makeCatalogue(rs) {
 
     cs.forEach(c => {
       R.insertCell().innerText = c;
-      if(cmp) R.setAttribute('cmp','');
+      if(cmp) { R.setAttribute('cmp',''); fl = true; }
     });
   });
   if(fl) lst.style.backgroundColor = '#fb6';
@@ -506,7 +509,8 @@ const Setts = {
   unique: 1,
   show: 0,
   data: -1,
-  down: 1
+  down: 1,
+  catal: 1
 }
 
 document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("click", function(e) {

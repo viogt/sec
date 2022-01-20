@@ -144,6 +144,12 @@
     left: 0px;
     z-index: 101;
 }
+.zvic { animation: zvic-anim .6s 1; }
+@keyframes zvic-anim {
+  0% { -webkit-transform: scale(1); transform: scale(1); }
+  50% { -webkit-transform: scale(2.4); transform: scale(2.4); }
+  100% { -webkit-transform: scale(1); transform: scale(1); }
+}
 
 .score {
   position: absolute;
@@ -572,6 +578,17 @@ function fetchAll() {
   .then(() => dispatch())
   .catch(err => alert(err));
 }
+
+function zvic(e) {
+    let el = e.target;
+    while(el.tagName != 'DIV') el = el.parentElement;
+    el.classList.remove("zvic");
+    void el.offsetWidth;
+    el.classList.add("zvic");
+}
+document.querySelector('.lBut').addEventListener("click", zvic, false);
+document.querySelector('.rBut').addEventListener("click", zvic, false);
+
   </script>
   </body>
 </html>

@@ -7,12 +7,10 @@
     <title>Webpack-ed</title>
 </head>
 <body>
-    <button onclick="ListItems('users')">Get Doc List</button>
+    <button onclick="DB.listAll('users')">Get Doc List</button>
+    <button onclick="DB.getOne('users','D1')">Get One Doc</button>
     <div id='out'></div>
 
 <script type="module" src="dist/fb_obj.js"></script>
-<script type="module">
-  import { ListItems } from "./fb_obj.js"; 
-</script>
 </body>
 </html>

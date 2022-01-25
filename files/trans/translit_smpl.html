@@ -43,6 +43,7 @@
         border-left: 1px solid var(--ln);
         padding-left: 12px;
       }
+
   .catHead {
     font-weight: bold;
     font-size: 24px;
@@ -208,7 +209,7 @@
 <div class="lBut" onclick="inScene(0)"><i class="fa fa-caret-right"></i></div>
 <div class="rBut" onclick="inScene(1)"><i class="fa fa-caret-left"></i></div>
 
-<div contenteditable="true" class="main"><table contenteditable="false"></table></div>
+<div class="main"><table></table></div>
 
 <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br><i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
 
@@ -309,7 +310,7 @@ Ivan Illarionovich Serov
 Svetlana Petrovna Nikolaeva
 </pre>
 
-  <script>
+<script>
 
 const Cmp = {
   cyr: null,
@@ -367,7 +368,7 @@ function makeTable(rs) {
   });
 }
 
-document.querySelector('.main').addEventListener('paste', (event) => {
+document.addEventListener('paste', (event) => {
   let pst = (event.clipboardData || window.clipboardData).getData('text').trim();
   event.preventDefault();
   if(pst == '') return;
@@ -465,7 +466,7 @@ function insCatHead(T, A, lst, ifAll = false) {
   let c = R.insertCell(); c.innerText = '+'; c.className = 'preCatHead';
   c = R.insertCell(); c.innerText = A;
   if(ifAll) {
-    c.addEventListener('click', () => { ExpandAll(); });
+    c.addEventListener('click', () => { ExpandAll(); }, true);
     c.setAttribute('clps', '0');
   }
   else c.addEventListener('click', (event) => { Expand(event.target); });

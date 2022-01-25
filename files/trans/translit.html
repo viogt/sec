@@ -98,7 +98,7 @@ background-color: rgba(235, 241, 248, 1);
         width: 12px;
         height: 160px;
         position: fixed;
-    	top: calc(100vh / 2 - 80px);
+    	  top: calc(100vh / 2 - 80px);
         background-color: #000;
         border-radius: 12px 0 0 12px;
         right: 0px;
@@ -227,9 +227,13 @@ background-color: rgba(235, 241, 248, 1);
     <i class="fa fa-adjust"></i>
     <label>Duotone<br>or colour</label>
 </span>
-<span style="color:#444; background-color:rgba(80, 80, 80,.5)" onclick="darkTheme()">
+<span style="color:#444; background-color:rgba(80, 80, 80,.5)" onclick="darkTheme(1)">
     <i class="fa fa-moon-o"></i>
     <label>Dark<br>theme</label>
+</span>
+<span style="color:#930; background-color:rgba(204, 69, 0,.5)" onclick="darkTheme(0)">
+    <i class="fa fa-table"></i>
+    <label>Simple<br>table</label>
 </span>
 <span style="color:#909; background-color:rgba(255, 0, 255,.5)" onclick="moreInfo(true)">
     <i class="fa fa-wrench"></i>
@@ -621,8 +625,8 @@ function duotone() {
     }
 }
 
-function darkTheme() {
-    document.location.href = 'translit_drk.html';
+function darkTheme(fl) {
+    document.location.href = fl?'translit_drk.html':'translit_smpl.html';
 }
 </script>
 </body>

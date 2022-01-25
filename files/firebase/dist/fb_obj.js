@@ -19,7 +19,7 @@ const db = getFirestore(firebaseApp);
 //const Users = collection(db,'users');
 
 const email = "v0990091.bg@rest.md", password = "hello-hello";
-
+/*
 signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
@@ -39,38 +39,33 @@ signInWithEmailAndPassword(auth, email, password)
       out("USER SIGNED OUT.")
     }
   });
+*/
 
-
-const docRef = doc(db, "users", "D1");
+/*const docRef = doc(db, "users", "D1");
 
 getDoc(docRef)
   .then( docSnap => {
-    out(`Fetch successful, (${docSnap.exists()?"EXISTS":"NULL"})\nObject: ${JSON.stringify(docSnap.data())}\nID: ${docSnap.id}\nNAME: ${docSnap.get('name')}.`)
+    out(`> Fetched successfully, (${docSnap.exists()?"EXISTS":"NULL"})\nObject: ${JSON.stringify(docSnap.data())}\nID: ${docSnap.id}\nNAME: ${docSnap.get('name')}.`)
   })
   .catch( err => out("ERROR: " + err));
+*/
 
 const Out = document.getElementById('out');
 function out(x) { Out.innerText += `${x}\n`; }
 
-/*export function ListItems(collect) {
-  out(`\nTHE LIST FOR (${collect}):`);
-  const q = query(collection(db,collect));
-  getDocs(q)
-  .then(docs => {  
+export class DB {
+  static async listAll(coll) {
+    out(`\nThe list for (${coll.toUpperCase()}):`);
+    const q = query(collection(db,coll));
+    const docs = await getDocs(q);
     docs.forEach((doc) => {
-      out(`---- ${doc.id}: ${doc.data().name}`);
+        out(`---- ${doc.id}: ${JSON.stringify(doc.data())}`);
     });
-    //out(JSON.stringify(docs));
-  })
-  .catch( err => out("ERROR: " + err));
-}*/
+  }
+  static async getOne(coll, id) {
+    const dc = await getDoc(doc(db, coll, id));
+    out(`\n> Fetched successfully, (${dc.exists()?"EXISTS":"NULL"})\n> Id: ${dc.id}, Name: ${dc.get('name')}.\n> ${JSON.stringify(dc.data())}\n`)
+  }
+};
 
-export async function ListItems(collect) {
-  out(`\nTHE list FOR (${collect}):`);
-  const q = query(collection(db,collect));
-  const docs = await getDocs(q);
-  docs.forEach((doc) => {
-      out(`---- ${doc.id}: ${doc.data().name}`);
-  });
-}
-window.ListItems = ListItems;
+window.DB = DB;

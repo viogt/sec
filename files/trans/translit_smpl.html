@@ -209,7 +209,7 @@
 <div class="lBut" onclick="inScene(0)"><i class="fa fa-caret-right"></i></div>
 <div class="rBut" onclick="inScene(1)"><i class="fa fa-caret-left"></i></div>
 
-<div class="main" contenteditable="true"><table></table></div>
+<div class="main" contenteditable="true" onfocus="outMenu()"><table onfocus="outMenu()"></table></div>
 
 <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br><i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
 
@@ -591,6 +591,10 @@ function zvic(e) {
 document.querySelector('.lBut').addEventListener("click", zvic, false);
 document.querySelector('.rBut').addEventListener("click", zvic, false);
 
+function outMenu() {
+  let st = document.querySelector(".setting_panel").style;
+  if(st.top && st.top == '0px') inScene(0);
+}
   </script>
   </body>
 </html>

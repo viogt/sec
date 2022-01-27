@@ -39,10 +39,19 @@
         text-align: right;
         border-right: 1px solid var(--ln);
       }
-      td:nth-child(5) {
+      td:last-child { border-right: 1px solid var(--ln); }
+.cln1 td:nth-child(3) {
         border-left: 1px solid var(--ln);
         padding-left: 12px;
-      }
+}
+.cln2 td:nth-child(4) {
+        border-left: 1px solid var(--ln);
+        padding-left: 12px;
+}
+.cln3 td:nth-child(5) {
+        border-left: 1px solid var(--ln);
+        padding-left: 12px;
+}
 
   .catHead {
     font-weight: bold;
@@ -74,7 +83,7 @@
   z-index: 100;
   top: calc(-100vh - 13px);
   right: 0px;
-  max-width: 270px;
+  max-width: 280px;
   border: 1px solid var(--ln);
   background-color: #fff;
   box-shadow: 0px 3px 10px #000;
@@ -165,6 +174,21 @@
   transform: rotate(-90deg);
   z-index: -1;
 }
+.toast {
+  font: normal 24px Arial, sans-serif;
+  padding: 18px 28px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: -100vh;
+  text-align: center;
+  background-color: rgb(0,0,0,.5);
+  color: #fff;
+  border-radius: 12px;
+  white-space: nowrap;
+  z-index: 33;
+  transition: top .3s ease;
+}
     </style>
   </head>
   <body>
@@ -195,9 +219,9 @@
 </div>
 <div class="set_item">
   <span>Sample data in:</span>
-  <div name="data"><i class="fa fa-list-ol"></i>Short</div>
-  <div name="data"><i class="fa fa-upload"></i>Full<small><sup>1</sup></small></div>
-  <div name="data"><i class="fa fa-cloud-upload"></i>Full<small><sup>2</sup></small></div>
+  <div name="data"><i class="fa fa-list-ol"></i>1 item</div>
+  <div name="data"><i class="fa fa-columns"></i>2 items</div>
+  <div name="data"><i class="fa fa-table"></i>3 items</div>
 </div>
 <div class="set_item" style="border:none">
   <span>Download the lists:</span>
@@ -212,6 +236,8 @@
 <div class="main" contenteditable="true" onfocus="outMenu()"><table onfocus="outMenu()"></table></div>
 
 <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br><i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
+
+<div class='toast'><i class="fa fa-exclamation-triangle" style="color:#ff0;"></i> <span></span></div>
 
 <pre id="pre_cyr" style="display:none">
 Александр Васильевич Александров
@@ -314,7 +340,8 @@ Svetlana Petrovna Nikolaeva
 
 const Cmp = {
   cyr: null,
-  lat: null
+  lat: null,
+  len: 0
 }
 
 const Trans = [
@@ -341,9 +368,9 @@ const Trans = [
 ];
 
 function dispatch() {
-  if(!Cmp.cyr) makeTable(Cmp.lat.split('\n'));
-  else if(!Cmp.lat) makeTable(Cmp.cyr.split('\n'));
-  else process(Cmp.cyr.split('\n'), Cmp.lat.split('\n'));
+  if(!Cmp.cyr) makeTable(Cmp.lat);
+  else if(!Cmp.lat) makeTable(Cmp.cyr);
+  else process(Cmp.cyr, Cmp.lat);
 }
 
 var rmvSpan = true;
@@ -355,6 +382,7 @@ function makeTable(rs) {
   }
   let T = document.querySelector('table'), Cnt = 1;
   while(T.rows.length > 0) T.deleteRow(0);
+  T.className = `cln${Cmp.len}`;
 
   rs.forEach(r => {
     let R = T.insertRow();
@@ -372,20 +400,43 @@ document.addEventListener('paste', (event) => {
   let pst = (event.clipboardData || window.clipboardData).getData('text').trim();
   event.preventDefault();
   if(pst == '') return;
-  if(/[а-я]/mgi.test(pst)) Cmp.cyr = pst; // is Cyrillic
-  else Cmp.lat = pst;
-  dispatch();
+  if(chNorm(pst)) dispatch();
 });
+
+function chNorm(txt) {
+  let arr = [], arrS = txt.split('\n'), frst = true, tip = 'U', clmns = -1;
+  let testCyr = new RegExp('[А-ЯЁа-яё]'), testLat = new RegExp('[A-Za-z]'), splitChar = new RegExp('( |\t|\,)+');
+    for(let i in arrS) {
+    	let e = arrS[i].trim(); if(e =='') continue;
+        if(frst) {
+           tip = (testCyr.test(e))?'C':'L';
+           clmns = e.split(splitChar).length;
+           frst = false;
+        }
+        let w = e.split(splitChar);
+        //let w = tip == 'C'?e.match(/[а-яё-]+/gim):e.match(/\b\w+\b/gm);
+        if(w.length != clmns) { toast('Wrong columns'); return false; }
+        if((testCyr.test(e) && tip != 'C')||(testLat.test(e) && tip != 'L'))
+        { toast('Cyrillic mixed with Latin chars'); return false; }
+        arr.push(w.join(' '));
+    }
+    //alert('RET: ' + tip + ' ' + clmns + '\n' + arr.length + '\n' + arr.join('\n').substr(0,100));
+    if(tip == 'C') Cmp.cyr = arr; else Cmp.lat = arr;
+    return true;
+}
 
 function process(cyr, lat) {
     let cnt = 0;
-    cyr = cyr.map(el => el.trim()); lat = lat.map(el => el.trim());
+    /*cyr = cyr.map(el => el.trim()); lat = lat.map(el => el.trim());
     if(cyr.findIndex(el => el == '') > -1) cyr = cyr.filter(el => el != '');
-    if(lat.findIndex(el => el == '') > -1) lat = lat.filter(el => el != '');
+    if(lat.findIndex(el => el == '') > -1) lat = lat.filter(el => el != '');*/
+
+    cyr = [...cyr]; lat = [...lat];
 
     if(Setts.unique == 0) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
 
-    let prts = ' '.repeat(cyr[0].split(' ').length);
+    Cmp.len = cyr[0].split(' ').length;
+    let prts = ' '.repeat(Cmp.len);
 
     for(let i in cyr) {
       
@@ -430,6 +481,7 @@ function makeCatalogue(rs) {
   }
   let T = document.querySelector('table'), Cnt = 1;
   while(T.rows.length > 0) T.deleteRow(0);
+  T.className = `cln${Cmp.len}`;
   
   let cmp, lttr, fl = false, lst;
   insCatHead(T, 'ALL', null, true);
@@ -540,14 +592,16 @@ document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("clic
 function sampleData(tip) {
   Cmp.cyr = document.getElementById("pre_cyr").innerText.trim().split('\n').map(e => {
       if(tip==0) return e.split(' ')[0];
-      if(tip==1) return e;
+      if(tip==1) return `${(e=e.split(' '))[0]} ${e[2]}`;
+      if(tip==2) return e;
       return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
-  }).join('\n');
+  });
   Cmp.lat = document.getElementById("pre_lat").innerText.trim().split('\n').map(e => {
       if(tip==0) return e.split(' ')[0];
-      if(tip==1) return e;
+      if(tip==1) return `${(e=e.split(' '))[0]} ${e[2]}`;
+      if(tip==2) return e;
       return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
-  }).join('\n');
+  });
 }
 
 function inScene(lr) {
@@ -574,11 +628,11 @@ function inScene(lr) {
 
 function fetchAll() {
   Promise.all([
-    fetch('cyr.txt').then(res => { return res.text().then(txt => Cmp.cyr = txt )}),
-    fetch('lat.txt').then(res => { return res.text().then(txt => Cmp.lat = txt )})
+    fetch('cyr.txt').then(res => { return res.text().then(txt => Cmp.cyr = txt.split('\n') )}),
+    fetch('lat.txt').then(res => { return res.text().then(txt => Cmp.lat = txt.split('\n') )})
   ])
   .then(() => dispatch())
-  .catch(err => alert(err));
+  .catch(err => toast(err));
 }
 
 function zvic(e) {
@@ -594,6 +648,15 @@ document.querySelector('.rBut').addEventListener("click", zvic, false);
 function outMenu() {
   let st = document.querySelector(".setting_panel").style;
   if(st.top && st.top == '0px') inScene(0);
+}
+function toast(txt, opn = true) {
+	let T = document.querySelector('.toast');
+	if(opn) {
+	    T.querySelector('span').innerText = txt;
+	    T.style.top = '60px';
+	}
+	else T.style.top = `-${T.getBoundingClientRect().height}px`;
+	if(opn) setTimeout( function() { toast(null, false); }, 1200);
 }
   </script>
   </body>

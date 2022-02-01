@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-  <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Table Translit</title>
-    <style>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Table Translit</title>
+  <style>
       :root {
         --ln: #ccd;
         --fn: #aab;
@@ -189,9 +189,9 @@
   z-index: 33;
   transition: top .3s ease;
 }
-    </style>
-  </head>
-  <body>
+  </style>
+</head>
+<body>
 
 <div class="score"></div>
 
@@ -220,8 +220,8 @@
 <div class="set_item">
   <span>Sample (Name, Middle, Surname):</span>
   <div name="data"><i class="fa fa-list-ol"></i>Name</div>
-  <div name="data"><i class="fa fa-columns"></i>N + S</div>
-  <div name="data"><i class="fa fa-table"></i>N M S</div>
+  <div name="data"><i class="fa fa-columns"></i>Nm SrNm</div>
+  <div name="data"><i class="fa fa-table"></i>Full</div>
 </div>
 <div class="set_item" style="border:none">
   <span>Download the lists:</span>
@@ -401,28 +401,26 @@ document.addEventListener('paste', (event) => {
   event.preventDefault();
   if(pst == '') return;
   if(chNorm(pst)) dispatch();
+  document.querySelector('.main').blur();
+  document.querySelector('table').blur();
 });
 
 function chNorm(txt) {
-  let arr = [], arrS = txt.split('\n'), frst = true, tip = 'U', clmns = -1;
-  let testCyr = new RegExp('[А-ЯЁа-яё]'), testLat = new RegExp('[A-Za-z]'), splitChar = new RegExp('( |\t|\,)+');
-    for(let i in arrS) {
-    	let e = arrS[i].trim(); if(e =='') continue;
-        if(frst) {
-           tip = (testCyr.test(e))?'C':'L';
-           clmns = e.split(splitChar).length;
-           frst = false;
-        }
-        let w = e.split(splitChar);
-        //let w = tip == 'C'?e.match(/[а-яё-]+/gim):e.match(/\b\w+\b/gm);
-        if(w.length != clmns) { toast('Wrong columns'); return false; }
-        if((testCyr.test(e) && tip != 'C')||(testLat.test(e) && tip != 'L'))
-        { toast('Cyrillic mixed with Latin chars'); return false; }
-        arr.push(w.join(' '));
-    }
-    //alert('RET: ' + tip + ' ' + clmns + '\n' + arr.length + '\n' + arr.join('\n').substr(0,100));
-    if(tip == 'C') Cmp.cyr = arr; else Cmp.lat = arr;
-    return true;
+  let tip;
+  if(/^[А-ЯЁа-яё\s\-]+$/.test(txt)) tip = 'C';
+  else if(/^[A-Za-z\s\-]+$/.test(txt)) tip = 'L';
+  else { toast('Wrong format'); return false; }
+
+  let splitChar = /\s+/, arr = [], clmns = -1;
+  txt.split('\n').forEach(el => {
+    if((el = el.trim()) =='') return;
+    let w = el.split(splitChar);
+    if(clmns < 0) clmns = w.length;
+    if(w.length != clmns) { toast('Wrong columns'); return false; }
+    arr.push(w.join(' '));
+  });
+  if(tip == 'C') Cmp.cyr = arr; else Cmp.lat = arr;
+  return true;
 }
 
 function process(cyr, lat) {
@@ -436,16 +434,13 @@ function process(cyr, lat) {
     if(Setts.unique == 0) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
 
     Cmp.len = cyr[0].split(' ').length;
-    let prts = ' '.repeat(Cmp.len);
+    const prts = ' '.repeat(Cmp.len), lookE = /^e| e/g;
 
     for(let i in cyr) {
-      
       let w = cyr[i].toLowerCase();
-      if(w.charAt(0) == 'е' || w.charAt(0) == 'ё') w = "(ye|e)" + w.slice(1);
-      let Rx = / (е|ё)/ig;
-      if(Rx.test(w)) w = w.replace(Rx," (ye|e)");
-      
-      Trans.forEach(lit => { w = w.replaceAll(lit[0],lit[1]); });      
+      Trans.forEach(lit => w = w.replaceAll(lit[0],lit[1]));
+
+      if(lookE.test(w)) if((w = w.replace(lookE, ' (ye|e)')).charAt(0)==' ') w = w.slice(1);
 
       Rx = new RegExp('^'+ w + '$','i');
       let ix = lat.findIndex(val => Rx.test(val));

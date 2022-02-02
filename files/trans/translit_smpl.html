@@ -134,7 +134,7 @@
     top: calc(100vh / 2 - 30px);
     background-color: #88a;
     opacity: .5;
-    border-radius: 30px 0 0 30px;
+    border-radius: 14px 0 0 14px;
     font-size: 20px; color: #fff;
     text-align: right;
     right: 0px;
@@ -149,7 +149,7 @@
     top: calc(100vh / 2 - 30px);
     background-color: #88a;
     opacity: .5;
-    border-radius: 0 30px 30px 0;
+    border-radius: 0 14px 14px 0;
     font-size: 20px; color: #fff;
     left: 0px;
     z-index: 101;
@@ -213,15 +213,20 @@
   <div name="unique" selected><i class="fa fa-repeat"></i>Incl. repeated</div>
 </div>
 <div class="set_item">
-  <span>Show as catalogue:</span>
-  <div name="catal"><i class="fa fa-list"></i>Catalogue</div>
-  <div name="catal" selected><i class="fa fa-table"></i>Table</div>
+  <span>Show first:</span>
+  <div name="fName" selected><i class="fa fa-list"></i>Name</div>
+  <div name="fName"><i class="fa fa-table"></i>Surname (family)</div>
 </div>
 <div class="set_item">
   <span>Sample (Name, Middle, Surname):</span>
   <div name="data"><i class="fa fa-list-ol"></i>Name</div>
-  <div name="data"><i class="fa fa-columns"></i>Nm SrNm</div>
+  <div name="data"><i class="fa fa-columns"></i>Nm+SrNm</div>
   <div name="data"><i class="fa fa-table"></i>Full</div>
+</div>
+<div class="set_item">
+  <span>Show as catalogue:</span>
+  <div name="catal"><i class="fa fa-list"></i>Catalogue</div>
+  <div name="catal" selected><i class="fa fa-table"></i>Table</div>
 </div>
 <div class="set_item" style="border:none">
   <span>Download the lists:</span>
@@ -368,6 +373,7 @@ const Trans = [
 ];
 
 function dispatch() {
+  if(!Cmp.cyr && !Cmp.lat) return;
   if(!Cmp.cyr) makeTable(Cmp.lat);
   else if(!Cmp.lat) makeTable(Cmp.cyr);
   else process(Cmp.cyr, Cmp.lat);
@@ -438,7 +444,7 @@ function process(cyr, lat) {
 
     for(let i in cyr) {
       let w = cyr[i].toLowerCase();
-      Trans.forEach(lit => w = w.replaceAll(lit[0],lit[1]));
+      Trans.forEach(lit => {if(w.includes(lit[0])) w = w.replaceAll(lit[0],lit[1]);});
 
       if(lookE.test(w)) if((w = w.replace(lookE, ' (ye|e)')).charAt(0)==' ') w = w.slice(1);
 
@@ -564,6 +570,7 @@ const Setts = {
 	sort: 2,
   unique: 1,
   show: 0,
+  fName: 0,
   data: -1,
   down: 1,
   catal: 1
@@ -571,39 +578,38 @@ const Setts = {
 
 document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("click", function(e) {
 	let attr = 'selected', el = e.target, nm = el.getAttribute('name');
-    document.getElementsByName(nm).forEach((e,i)=>{
-    	if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
-        else if(e.hasAttribute(attr)) e.removeAttribute(attr);
-    });
-    inScene(0);
-    if(nm == 'data') { sampleData(Setts.data); dispatch(); }
-    else if(nm == 'down') {
-      if(Setts.down == 0) fetchAll();
-      else clearAll();
-    }
-    else dispatch();
+  document.getElementsByName(nm).forEach((e,i)=>{
+    if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
+    else if(e.hasAttribute(attr)) e.removeAttribute(attr);
+  });
+  inScene(0);
+  if(nm == 'data' || nm == 'fName') { sampleData(); dispatch(); }
+  else if(nm == 'down') {
+    if(Setts.down == 0) fetchAll();
+    else clearAll();
+  }
+  else dispatch();
 }, false));
 
-function sampleData(tip) {
-  Cmp.cyr = document.getElementById("pre_cyr").innerText.trim().split('\n').map(e => {
-      if(tip==0) return e.split(' ')[0];
-      if(tip==1) return `${(e=e.split(' '))[0]} ${e[2]}`;
-      if(tip==2) return e;
-      return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
-  });
-  Cmp.lat = document.getElementById("pre_lat").innerText.trim().split('\n').map(e => {
-      if(tip==0) return e.split(' ')[0];
-      if(tip==1) return `${(e=e.split(' '))[0]} ${e[2]}`;
-      if(tip==2) return e;
-      return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
-  });
+function confLine(e) {
+  let tip = Setts.data, fn = Setts.fName;
+  if(tip==0) return e.split(' ')[fn?2:0];
+  if(tip==1) return fn? `${(e=e.split(' '))[2]} ${e[0]}`: `${(e=e.split(' '))[0]} ${e[2]}`;
+  if(tip==2) return fn?`${(e=e.split(' '))[2]} ${e[0]} ${e[1]}`:e;
+  return `${(e=e.split(' '))[2].toUpperCase()} ${e[0]} ${e[1]}`;
+}
+
+function sampleData() {
+  if(Setts.data < 0) return;
+  Cmp.cyr = document.getElementById("pre_cyr").innerText.trim().split('\n').map(confLine);
+  Cmp.lat = document.getElementById("pre_lat").innerText.trim().split('\n').map(confLine);
 }
 
 function inScene(lr) {
   let p = document.querySelector(".setting_panel"),
     fonSt = document.querySelector("table").style;
   if(p.style.top && p.style.top == '0px') {
-    p.style.top = `-${p.getBoundingClientRect().height + 13}px`;
+    p.style.top = `-${stPnlSt.scrollHeight + 13}px`;
     fonSt.backgroundColor = null;
     fonSt.filter = null;
     return;
@@ -654,6 +660,9 @@ function toast(txt, opn = true) {
 	else T.style.top = `-${T.getBoundingClientRect().height}px`;
 	if(opn) setTimeout( function() { toast(null, false); }, 1200);
 }
+
+const stPnlSt = document.querySelector(".setting_panel");
+stPnlSt.style.top = `-${stPnlSt.scrollHeight + 13}px`; stPnlSt.style.display = 'block'; 
   </script>
   </body>
 </html>

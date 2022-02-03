@@ -156,9 +156,9 @@
 }
 .zvic { animation: zvic-anim .6s 1; }
 @keyframes zvic-anim {
-  0% { -webkit-transform: scale(1); transform: scale(1); }
-  50% { -webkit-transform: scale(2.4); transform: scale(2.4); }
-  100% { -webkit-transform: scale(1); transform: scale(1); }
+  /*0% { -webkit-transform: scale(1); transform: scale(1); }*/
+  50% { -webkit-transform: scale(2.4); transform: scale(2.4); background-color: red; }
+  /*100% { -webkit-transform: scale(1); transform: scale(1); }*/
 }
 
 .score {
@@ -235,10 +235,10 @@
 </div>
 </div>
 
-<div class="lBut" onclick="inScene(0)"><i class="fa fa-caret-right"></i></div>
-<div class="rBut" onclick="inScene(1)"><i class="fa fa-caret-left"></i></div>
+<div class="lBut"><i class="fa fa-caret-right"></i></div>
+<div class="rBut"><i class="fa fa-caret-left"></i></div>
 
-<div class="main" contenteditable="true" onclick="outMenu(this)"><table onclick="outMenu(this)"></table></div>
+<div class="main"><table></table></div>
 
 <span class="hint">Paste here the lists in Cyrillic and Latin/English transcription, in whatever order...<br><br><i class="fa fa-arrow-left"></i> or use the buttons <i class="fa fa-arrow-right"></i></span>
 
@@ -402,15 +402,6 @@ function makeTable(rs) {
   });
 }
 
-document.addEventListener('paste', (event) => {
-  let pst = (event.clipboardData || window.clipboardData).getData('text').trim();
-  event.preventDefault();
-  if(pst == '') return;
-  if(chNorm(pst)) dispatch();
-  document.querySelector('.main').blur();
-  document.querySelector('table').blur();
-});
-
 function chNorm(txt) {
   let tip;
   if(/^[А-ЯЁа-яё\s\-]+$/.test(txt)) tip = 'C';
@@ -467,7 +458,10 @@ function process(cyr, lat) {
     if(Setts.sort < 2) cyr.sort(compare);
     makeTable(cyr);
   }  
-  document.querySelector(".score").innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
+  let p = document.querySelector(".score");
+  p.innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
+  p.style.color = '#faa';
+  setTimeout(()=>{ p.style.color = ''; },200);
 }
 
 function compare(a,b) {
@@ -522,7 +516,6 @@ function insCatHead(T, A, lst, ifAll = false) {
   }
   else c.addEventListener('click', (event) => { Expand(event.target); });
   c.className = 'catHead';
-  //c.setAttribute('contenteditable','false');
   return c;
 }
 
@@ -574,21 +567,6 @@ const Setts = {
   catal: 1
 }
 
-document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("click", function(e) {
-	let attr = 'selected', el = e.target, nm = el.getAttribute('name');
-  document.getElementsByName(nm).forEach((e,i)=>{
-    if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
-    else if(e.hasAttribute(attr)) e.removeAttribute(attr);
-  });
-  inScene(0);
-  if(nm == 'data' || nm == 'fName') { sampleData(); dispatch(); }
-  else if(nm == 'down') {
-    if(Setts.down == 0) fetchAll();
-    else clearAll();
-  }
-  else dispatch();
-}, false));
-
 function confLine(e) {
   let tip = Setts.data, fn = Setts.fName;
   if(tip==0) return e.split(' ')[fn?2:0];
@@ -607,7 +585,7 @@ function inScene(lr) {
   let p = document.querySelector(".setting_panel"),
     fonSt = document.querySelector("table").style;
   if(p.style.top && p.style.top == '0px') {
-    p.style.top = `-${stPnlSt.scrollHeight + 13}px`;
+    p.style.top = `-${p.scrollHeight + 13}px`;
     fonSt.backgroundColor = null;
     fonSt.filter = null;
     return;
@@ -640,15 +618,15 @@ function zvic(e) {
     el.classList.remove("zvic");
     void el.offsetWidth;
     el.classList.add("zvic");
+    inScene(el.classList.contains('lBut')?0:1)
 }
-document.querySelector('.lBut').addEventListener("click", zvic, false);
-document.querySelector('.rBut').addEventListener("click", zvic, false);
 
-function outMenu(obj) {
+function outMenu() {
   let st = document.querySelector(".setting_panel").style;
   if(st.top && st.top == '0px') inScene(0);
-  obj.blur();
+  event.target.blur();
 }
+
 function toast(txt, opn = true) {
 	let T = document.querySelector('.toast');
 	if(opn) {
@@ -659,8 +637,47 @@ function toast(txt, opn = true) {
 	if(opn) setTimeout( function() { toast(null, false); }, 1200);
 }
 
-const stPnlSt = document.querySelector(".setting_panel");
-stPnlSt.style.top = `-${stPnlSt.scrollHeight + 13}px`; stPnlSt.style.display = 'block'; 
+(function() {
+
+  document.addEventListener('paste', event => {
+    let pst = (event.clipboardData || window.clipboardData).getData('text').trim();
+    event.preventDefault();
+    if(pst == '') return;
+    if(chNorm(pst)) dispatch();
+    document.querySelector('.main').blur();
+    document.querySelector('table').blur();
+  });
+
+  document.querySelectorAll('.set_item div').forEach(e => e.addEventListener("click", e => {
+    let attr = 'selected', el = e.target;
+    while(el.tagName != 'DIV') el = el.parentElement;
+    let nm = el.getAttribute('name');
+    document.getElementsByName(nm).forEach((e,i)=>{
+      if(e == el) { e.setAttribute(attr,''); Setts[nm] = i; }
+      else if(e.hasAttribute(attr)) e.removeAttribute(attr);
+    });
+    inScene(0);
+    if(nm == 'data' || nm == 'fName') { sampleData(); dispatch(); }
+    else if(nm == 'down') {
+      if(Setts.down == 0) fetchAll();
+      else clearAll();
+    }
+    else dispatch();
+  }, false));
+
+  document.querySelector('.lBut').addEventListener("click", zvic, false);
+  document.querySelector('.rBut').addEventListener("click", zvic, false);
+
+  document.querySelector('table').addEventListener("click", outMenu, false);
+  let p = document.querySelector('.main');
+  p.addEventListener("click", outMenu, false);
+  p.setAttribute('contenteditable', true);
+
+  p = document.querySelector(".setting_panel");
+  p.style.top = `-${stPnlSt.scrollHeight + 13}px`;
+  p.style.display = 'block';
+
+})();
   </script>
   </body>
 </html>

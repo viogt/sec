@@ -440,13 +440,13 @@ function process(cyr, lat) {
     if(Setts.unique == 0) { cyr = [...new Set(cyr)]; lat = [...new Set(lat)]; }
 
     Cmp.len = cyr[0].split(' ').length;
-    const prts = ' '.repeat(Cmp.len), lookE = /^e| e/g;
+    const prts = ' '.repeat(Cmp.len), lookE = /(?<=^| )e/g;
 
     for(let i in cyr) {
       let w = cyr[i].toLowerCase();
       Trans.forEach(lit => {if(w.includes(lit[0])) w = w.replaceAll(lit[0],lit[1]);});
 
-      if(lookE.test(w)) if((w = w.replace(lookE, ' (ye|e)')).charAt(0)==' ') w = w.slice(1);
+      if(lookE.test(w)) w = w.replace(lookE, '(ye|e)');
 
       Rx = new RegExp('^'+ w + '$','i');
       let ix = lat.findIndex(val => Rx.test(val));
@@ -464,18 +464,21 @@ function process(cyr, lat) {
 
   if(Setts.catal == 0) makeCatalogue(cyr);
   else {
-    if(Setts.sort < 2) { cyr.sort(); if(Setts.sort == 1) cyr.reverse(); }
+    if(Setts.sort < 2) cyr.sort(compare);
     makeTable(cyr);
   }  
   document.querySelector(".score").innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
 }
 
+function compare(a,b) {
+  let q = Setts.sort == 1?-1:1;
+  if(a.charAt(0)!='>' && b.charAt(0)!='>') return a.localeCompare(b)*q;
+  let A = a.charAt(0)!='>'?a:a.substr(1), B = b.charAt(0)!='>'?b:b.substr(1);
+  return (A.charAt(0)==' ' || B.charAt(0)==' ')?B.localeCompare(A)*q:A.localeCompare(B)*q; 
+}
+
 function makeCatalogue(rs) {
-  rs = rs.sort((a,b)=>{
-    if(a.charAt(0)!='>' && b.charAt(0)!='>') return a.localeCompare(b);
-    let A = a.charAt(0)!='>'?a:a.substr(1), B = b.charAt(0)!='>'?b:b.substr(1);
-    return (A.charAt(0)==' ' || B.charAt(0)==' ')?B.localeCompare(A):A.localeCompare(B);
-  });
+  rs = rs.sort(compare);
   if(rmvSpan) {
     document.querySelector('.hint').style.display = 'none';
     rmvSpan = false;
@@ -484,17 +487,12 @@ function makeCatalogue(rs) {
   while(T.rows.length > 0) T.deleteRow(0);
   T.className = `cln${Cmp.len}`;
   
-  let cmp, lttr, fl = false, lst;
+  let cmp, lttr = '.', fl = false, lst;
   insCatHead(T, 'ALL', null, true);
 
   rs.forEach((r,ix) => {
-    if(r.charAt(0) == '>') { r = r.substr(1); cmp = true; }
-    else cmp = false;
-    if(ix == 0) {
-      lttr = r.charAt(0);
-      lst = insCatHead(T, lttr, fl?lst:null);
-      fl = false;
-    }   
+    if(r.charAt(0) == '>') { r = r.substr(1); cmp = true; } else cmp = false;
+
     let cs = r.split(' '), A = cs[0].charAt(0);
     if(lttr != A) {
       lst = insCatHead(T, A, fl?lst:null);

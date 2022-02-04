@@ -116,6 +116,7 @@
 }
 .set_item div[selected] {
 	background-color: #6a6;
+  background: linear-gradient(160deg, #161 0%, #4d9 100%);
   color: #fff;
 }
 .set_item span {
@@ -620,9 +621,10 @@ function zvic(e) {
 }
 
 function outMenu() {
+  document.querySelector('table').blur();
+  document.querySelector('.main').blur();
   let st = document.querySelector(".setting_panel").style;
   if(st.top && st.top == '0px') inScene(0);
-  event.target.blur();
 }
 
 function toast(txt, opn = true) {
@@ -674,6 +676,6 @@ function toast(txt, opn = true) {
   p.style.top = `-${stPnlSt.scrollHeight + 13}px`;
   p.style.display = 'block';
 })();
-  </script>
-  </body>
+</script>
+</body>
 </html>

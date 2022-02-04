@@ -91,7 +91,7 @@
   overflow-y: auto;
   scrollbar-width: none;
   -webkit-transition: top .4s ease;
-  transition: top .4s ease;
+  transition: top .5s ease;
 }
 .setting_panel::-webkit-scrollbar {  display: none; }
 
@@ -458,10 +458,8 @@ function process(cyr, lat) {
     if(Setts.sort < 2) cyr.sort(compare);
     makeTable(cyr);
   }  
-  let p = document.querySelector(".score");
-  p.innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
-  p.style.color = '#faa';
-  setTimeout(()=>{ p.style.color = ''; },200);
+  
+  document.querySelector(".score").innerText = 100 - Math.floor(cnt/cyr.length*100) + '%';
 }
 
 function compare(a,b) {
@@ -630,15 +628,14 @@ function outMenu() {
 function toast(txt, opn = true) {
 	let T = document.querySelector('.toast');
 	if(opn) {
-	    T.querySelector('span').innerText = txt;
-	    T.style.top = '60px';
+	  T.querySelector('span').innerText = txt;
+	  T.style.top = '60px';
 	}
 	else T.style.top = `-${T.getBoundingClientRect().height}px`;
 	if(opn) setTimeout( function() { toast(null, false); }, 1200);
 }
 
 (function() {
-
   document.addEventListener('paste', event => {
     let pst = (event.clipboardData || window.clipboardData).getData('text').trim();
     event.preventDefault();
@@ -676,7 +673,6 @@ function toast(txt, opn = true) {
   p = document.querySelector(".setting_panel");
   p.style.top = `-${stPnlSt.scrollHeight + 13}px`;
   p.style.display = 'block';
-
 })();
   </script>
   </body>

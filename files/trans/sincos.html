@@ -14,7 +14,7 @@
       color: #00b;
       padding: 8px 0;
       font-weight: bold;
-      background-color: rgba(255,255,255,.5);
+      background-color: rgba(255,255,255,.4);
     }
     table {
       font: normal 16px Arial, sans-serif;
@@ -23,10 +23,10 @@
       border-collapse:collapse;
       table-layout: fixed;
     }
-    tr { height: 34px; }
+    tr { height: 42px; }
     .mainPanel {
       margin: auto;
-      width: 90%;
+      width: 600px;
       border: 1px solid #9af;
       border-radius: 8px;
       padding: 14px;
@@ -43,10 +43,18 @@ background-size: cover;
       border-radius: 8px;
       color: #000;
       text-align: center;
-      padding: 8px 0;
-      height: 72px;
-      background-color: rgba(255,255,255,.5);
+      padding: 12px 8px;
+      height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      background-color: rgba(255,255,255,.4);
+      white-space: nowrap;
+      overflow-x: auto;
     }
+@media screen and (max-width: 800px) {
+  .mainPanel { width: 90%; }
+}
   </style>
 </head>
 <body>
@@ -87,8 +95,8 @@ background-size: cover;
       </td>
     </tr>
     <tr><td colspan="3" align="center">Result:</td></tr>
-    <tr>
-      <td colspan="3"><div class="res" id="out"></div></td>
+    <tr style="height:auto">
+      <td colspan="3"><div class="res"><div id="out"></div></div></td>
     </tr>
   </table>
 

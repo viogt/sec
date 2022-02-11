@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sin-Cos</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto Condensed' rel='stylesheet'>
   <style>
     * { box-sizing: border-box; --cul: #bbc; }
     .rng { width: 100%; outline: none; }
@@ -18,7 +19,7 @@
       background-color: rgba(255,255,255,.4);
     }
     table {
-      font: normal 16px Arial, sans-serif;
+      font: normal 16px 'Roboto Condensed',Arial, sans-serif;
       color: #448;
       width: 100%;
       border-collapse:collapse;
@@ -31,7 +32,7 @@
       border-radius: 8px;
       padding: 5vw;
       text-align: center;
-background-image: url("data:image/svg+xml,%3Csvg width='600' height='800' version='1.1' viewBox='0 0 158 211' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h159v58h-159z' fill='%23d7f4ee'/%3E%3Cpath d='m0 48s38-24 58-21c15 2.1 22 27 37 26 16-0.72 21-31 37-32 11-0.19 26 22 26 22v41l-159-1e-6z' fill='%23dbe3e2'/%3E%3Cpath d='m0 59s16 16 26 18c16 3.9 32-6.8 48-6 9 0.45 18 8 26 6 6.2-1.4 9.5-13 16-12 5 0.56 5.6 12 11 12 8.8-0.71 7.1-23 16-24 7.5-0.61 16 18 16 18v24h-159z' fill='%23afe9c6'/%3E%3Cpath d='m0 85s5.7-9.8 11-11c12-1.9 21 20 32 16 7.5-2.5 2.9-19 11-21 11-2.4 15 18 26 21 17 4.3 35-12 53-11 9.5 0.87 26 11 26 11v37h-159z' fill='%23d7f4e3'/%3E%3Cpath d='m0 122s13-14 21-16c21-4.3 42 22 64 16 12-3.3 14-25 26-26 18-2.5 48 26 48 26v42h-159z' fill='%23cfa'/%3E%3Cpath d='m0 164s1.6-23 11-26c13-4.7 37 21 37 21s12-34 26-37c20-4.2 32 30 53 32 11 1.2 32-11 32-11v58h-159z' fill='%23c6e9af'/%3E%3Cpath d='m0 196s21-32 37-32c10 0.38 11 20 21 21 18 2.5 29-26 48-26 20-0.43 53 26 53 26v26h-159z' fill='%23aade87'/%3E%3C/svg%3E");
+background-image: url("data:image/svg+xml,%3Csvg id='svgObj' width='600' height='800' version='1.1' viewBox='0 0 158 211' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h159v58h-159z' fill='%23d7f4ee'/%3E%3Cpath d='m0 48s38-24 58-21c15 2.1 22 27 37 26 16-0.72 21-31 37-32 11-0.19 26 22 26 22v41l-159-1e-6z' fill='%23dbe3e2'/%3E%3Cpath d='m0 59s16 16 26 18c16 3.9 32-6.8 48-6 9 0.45 18 8 26 6 6.2-1.4 9.5-13 16-12 5 0.56 5.6 12 11 12 8.8-0.71 7.1-23 16-24 7.5-0.61 16 18 16 18v24h-159z' fill='%23afe9c6'/%3E%3Cpath d='m0 85s5.7-9.8 11-11c12-1.9 21 20 32 16 7.5-2.5 2.9-19 11-21 11-2.4 15 18 26 21 17 4.3 35-12 53-11 9.5 0.87 26 11 26 11v37h-159z' fill='%23d7f4e3'/%3E%3Cpath d='m0 122s13-14 21-16c21-4.3 42 22 64 16 12-3.3 14-25 26-26 18-2.5 48 26 48 26v42h-159z' fill='%23cfa'/%3E%3Cpath d='m0 164s1.6-23 11-26c13-4.7 37 21 37 21s12-34 26-37c20-4.2 32 30 53 32 11 1.2 32-11 32-11v58h-159z' fill='%23c6e9af'/%3E%3Cpath d='m0 196s21-32 37-32c10 0.38 11 20 21 21 18 2.5 29-26 48-26 20-0.43 53 26 53 26v26h-159z' fill='%23aade87'/%3E%3C/svg%3E");
 background-size: cover;
     }
     b { color: #00b; }
@@ -63,7 +64,7 @@ background-size: cover;
       <td colspan="3" align="center">
         <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Radians&nbsp;
         <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Degrees&nbsp;
-        <input type="checkbox" id="chStepFive" onchange="chStep()" /> Step 5
+        <input type="checkbox" id="chStepFive" onchange="chStep()" /> Step by 5
       </td>
     </tr>
     <tr>
@@ -110,6 +111,8 @@ background-size: cover;
     
     var maxDecimals = 4, inRad = true, radiusLen = 1, chStep5 = 1;
 
+const isZero = /\.?0+$/;
+
     function reCalc() {
       let n = inp.value, ang = getAngle(n);
       angle.innerHTML = `&Theta; = <b>${ang}</b>`;
@@ -117,6 +120,9 @@ background-size: cover;
       let rad = inRad? n/12*Math.PI : n*Math.PI/180,
           sin = (Math.sin(rad)*radiusLen).toFixed(maxDecimals),
           cos = (Math.cos(rad)*radiusLen).toFixed(maxDecimals);
+      
+      if(isZero.test(sin)) sin = sin.replace(isZero,'');
+      if(isZero.test(cos)) cos = cos.replace(isZero,'');
 
       out.innerHTML = `Sin(<b>${ang}</b>) * ${radiusLen} = <b>${sin}</b><br>Cos(<b>${ang}</b>) * ${radiusLen} = <b>${cos}</b>`;
     }
@@ -171,7 +177,7 @@ background-size: cover;
       inp.value = 0;
       reCalc();
     }
-    
+
     reCalc();
   </script>
 </body>

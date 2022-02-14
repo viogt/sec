@@ -11,7 +11,6 @@
       color: #448;
       width: 100%;
       border-collapse:collapse;
-      table-layout: fixed;
     }
     .angleRes {
       margin: 4px 0;
@@ -40,15 +39,15 @@
   <table>
     <tr>
       <td colspan="3" align="center">
-        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Radians&nbsp;
-        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Degrees&nbsp;
-        <input type="checkbox" id="chStepFive" onchange="chStep()" /> Larger step
+        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad&nbsp;
+        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg&nbsp;
+        <input type="checkbox" id="chStepFive" onchange="chStep()" />Step
       </td>
     </tr>
     <tr>
-      <td id='leftPad' align='left'>-2π</td>
-      <td align='center'><span id='angle' class='angleRes'></span></td>
-      <td id='rightPad' align='right'>2π</td>
+      <td id='leftPad' align='left' width='20%'>-2π</td>
+      <td align='center'><span id='angle' class='angleRes' width='60%'></span></td>
+      <td id='rightPad' align='right' width='20%'>2π</td>
     </tr>
     <tr>
       <td colspan="3" align="center">
@@ -60,15 +59,14 @@
 <svg width="auto" height="100%" viewBox="0 0 500 500">
 <g stroke="grey" stroke-width="1" fill="none">
 
-	<line x1="250" y1="0" x2="250" y2="500" />
+	<circle cx="250" cy="250" r="230" fill="#fff" />
+    <line x1="250" y1="0" x2="250" y2="500" />
   <polyline points="245,5 250,0 255,5" />
   <text x="262" y="12">Y</text>
     
   <line x1="0" y1="250" x2="500" y2="250" />
   <polyline points="495,245 500,250 495,255" />
   <text x="486" y="242">X</text>
-    
-  <circle cx="250" cy="250" r="230" fill="none" />
 
   <line id="lnRed" stroke="red" />
   <circle id='smRed' stroke="red" />
@@ -99,20 +97,21 @@ const inp = document.querySelector("#inpAngle"),
     var maxDecimals = 4, inRad = true, chStep5 = 1;
     
     function chngRadDeg() {
-      let radioBut = document.getElementsByName('radOrDeg');
+      let radioBut = document.getElementsByName('radOrDeg'), v = inp.value;
       if(radioBut[0].checked) {
         leftPad.innerText = '-2π';
         rightPad.innerText = '2π';
         inRad = true;
         inp.min = -24; inp.max = 24; inp.step = chStepFive.checked ? 2 : 1;
+        inp.value = Math.round(24*v/360);
       }
       else {
         leftPad.innerText = '-360°';
         rightPad.innerText = '360°';
         inRad = false;
         inp.min = -360; inp.max = 360; inp.step = chStepFive.checked ? 5 : 1;
+        inp.value = Math.round(360*v/24);
       }
-      inp.value = 0;
       drawGraph(inp);
     }
     
@@ -120,7 +119,6 @@ const inp = document.querySelector("#inpAngle"),
     	if(inRad) chStep5 = chStepFive.checked ? 2 : 1;
         else chStep5 = chStepFive.checked ? 5 : 1;
       inp.step = chStep5;
-      inp.value = 0;
       drawGraph(inp);
     }
 

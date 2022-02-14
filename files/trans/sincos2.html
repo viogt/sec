@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph:Sin:Cos</title>
+  <style>
+    * { box-sizing: border-box; --cul: #bbc; font: normal 16px Arial, sans-serif; }
+    .rng { width: 100%; outline: none; }
+    table {
+      color: #448;
+      width: 100%;
+      border-collapse:collapse;
+      table-layout: fixed;
+    }
+    .angleRes {
+      margin: 4px 0;
+      border: 1px solid var(--cul);
+      padding: 4px 10px;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    tr { height: 38px; }
+    .mainPanel {
+      width: 100%;
+      border: 1px solid var(--cul);
+      border-radius: 8px;
+      padding: 5vw;
+      text-align: center;
+      background-color: #f4f4ff;
+    }
+@media screen and (min-width: 600px) {
+  .mainPanel { width: 600px; margin: auto; }
+}
+  </style>
+</head>
+<body>
+
+<div class='mainPanel'>
+  <table>
+    <tr>
+      <td colspan="3" align="center">
+        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Radians&nbsp;
+        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Degrees&nbsp;
+        <input type="checkbox" id="chStepFive" onchange="chStep()" /> Larger step
+      </td>
+    </tr>
+    <tr>
+      <td id='leftPad' align='left'>-2π</td>
+      <td align='center'><span id='angle' class='angleRes'></span></td>
+      <td id='rightPad' align='right'>2π</td>
+    </tr>
+    <tr>
+      <td colspan="3" align="center">
+        <input id="inpAngle" class="rng" type="range" min="-24" max="24" step="1" value="0" oninput="drawGraph(this)"/>
+      </td>
+    </tr>
+    <tr><td align="center">
+
+<svg width="500" height="500">
+<g stroke="grey" stroke-width="1" fill="none">
+
+	<line x1="250" y1="0" x2="250" y2="500" />
+  <polyline points="245,5 250,0 255,5" />
+  <text x="262" y="12">Y</text>
+    
+  <line x1="0" y1="250" x2="500" y2="250" />
+  <polyline points="495,245 500,250 495,255" />
+  <text x="486" y="242">X</text>
+    
+  <circle cx="250" cy="250" r="230" fill="none" />
+
+  <line id="lnRed" stroke="red" />
+  <circle id='smRed' stroke="red" />
+ 
+  <line id='dshGr' stroke="darkgreen" stroke-dasharray="4,2" />
+  <text id='txtGr' x="280" y="270" fill="darkgreen" stroke="none"></text>
+  <line id='slGr' stroke="darkgreen" stroke-width="3" />
+    
+  <line id='dshBl' stroke="blue" stroke-dasharray="4,2" />
+  <text id='txtBl' x="240" y="220" fill="blue" stroke="none" transform="rotate(-90 240,220)"></text>
+  <line id='slBl' stroke="blue" stroke-width="3" />
+    
+  <path id='smArc' stroke="red" />
+</g>
+</svg>
+
+	</td></tr>
+  </table>
+</div>
+
+<script>
+const inp = document.querySelector("#inpAngle"),
+      leftPad = document.querySelector("#leftPad"),
+      rightPad = document.querySelector("#rightPad"),
+      angle = document.querySelector("#angle"),
+      chStepFive = document.querySelector("#chStepFive");
+    
+    var maxDecimals = 4, inRad = true, chStep5 = 1;
+    
+    function chngRadDeg() {
+      let radioBut = document.getElementsByName('radOrDeg');
+      if(radioBut[0].checked) {
+        leftPad.innerText = '-2π';
+        rightPad.innerText = '2π';
+        inRad = true;
+        inp.min = -24; inp.max = 24; inp.step = chStepFive.checked ? 2 : 1;
+      }
+      else {
+        leftPad.innerText = '-360°';
+        rightPad.innerText = '360°';
+        inRad = false;
+        inp.min = -360; inp.max = 360; inp.step = chStepFive.checked ? 5 : 1;
+      }
+      inp.value = 0;
+      drawGraph(inp);
+    }
+    
+    function chStep() {
+    	if(inRad) chStep5 = chStepFive.checked ? 2 : 1;
+        else chStep5 = chStepFive.checked ? 5 : 1;
+      inp.step = chStep5;
+      inp.value = 0;
+      drawGraph(inp);
+    }
+
+function getArc(x0, y0, radius, angleRad) {
+	let x = x0 + Math.round(radius * Math.cos(angleRad)),
+    	y = y0 - Math.round(radius * Math.sin(angleRad)),
+        lrgAng = Math.abs(angleRad%(Math.PI*2)) < Math.PI?0:1;
+    if(angleRad > 0) return `M ${x0+radius} ${y0} A ${radius} ${radius} 0 ${lrgAng} 0 ${x} ${y}`;
+    else  return `M ${x} ${y} A ${radius} ${radius} 0 ${lrgAng} 0 ${x0+radius} ${y0}`;
+}
+
+const lnRed = document.querySelector("#lnRed"),
+	dshGr = document.querySelector("#dshGr"),
+    dshBl = document.querySelector("#dshBl"),
+    slGr = document.querySelector("#slGr"),
+    slBl = document.querySelector("#slBl"),
+    txtGr = document.querySelector("#txtGr"),
+    txtBl = document.querySelector("#txtBl"),
+    smRed = document.querySelector("#smRed"),
+	smArc = document.querySelector("#smArc");
+	
+function drawLine(ln, x1,y1,x2,y2) {
+	ln.setAttribute('x1',x1);
+    ln.setAttribute('x2',x2);
+    ln.setAttribute('y1',y1);
+    ln.setAttribute('y2',y2);
+}
+
+function getAngle(n) {
+  if(!inRad) return n + '°';
+  let m = 12;
+  while(n%2==0 && m%2==0) { n /= 2; m /=2; }
+  while(n%3==0 && m%3==0) { n /= 3; m /=3; }
+  if(n == 0) return '0';
+  if(n == 1) n = 'π';
+  else if(n == -1) n = '-π';
+  else n += 'π';
+  if(m > 1) return `${n}/${m}`;
+  return n;
+}
+
+function drawGraph(obj) {
+try {
+	
+    let txtAng = obj.value, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180;
+    
+    let R = 230, x0 = 250, y0 = 250,
+    	xCos = Math.cos(Ang), ySin = Math.sin(Ang),
+    	X = 250 + Math.round(R * xCos),
+    	Y = 250 - Math.round(R * ySin);
+
+    drawLine(lnRed, x0,y0,X,Y);
+    drawLine(dshGr, x0,Y,X,Y);
+    drawLine(dshBl, X,Y,X,y0);
+    drawLine(slGr, x0,y0,X,y0);
+    drawLine(slBl, x0,y0,x0,Y);
+    
+    smArc.setAttribute('d', getArc(x0, y0, Math.round(R/3), Ang));
+    smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y); smRed.setAttribute('r',4);
+    
+    txtAng = getAngle(txtAng);
+    angle.innerText = 'Θ = ' + txtAng;
+    
+    txtGr.textContent = `cos(${txtAng}) = ${xCos.toFixed(4)}`;
+    txtGr.setAttribute('x', xCos>0 ? x0+20 : x0-R+20 );
+    
+    txtBl.textContent = `sin(${txtAng}) = ${ySin.toFixed(4)}`;
+    txtBl.setAttribute('y', ySin>0 ? y0-20 : y0+R-10 );
+    txtBl.setAttribute('x', x0-10 );
+    txtBl.setAttribute('transform', `rotate(-90 ${x0-10},${ySin>0?y0-20:y0+R-10})`);
+    
+} catch(err) { alert(err.message); }
+}
+
+drawGraph(inp);
+</script>
+</body>
+</html>

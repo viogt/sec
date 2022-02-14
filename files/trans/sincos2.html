@@ -161,14 +161,9 @@ function getAngle(n) {
 }
 
 function drawGraph(obj) {
-try {
-	
-    let txtAng = obj.value, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180;
-    
-    let R = 230, x0 = 250, y0 = 250,
-    	xCos = Math.cos(Ang), ySin = Math.sin(Ang),
-    	X = 250 + Math.round(R * xCos),
-    	Y = 250 - Math.round(R * ySin);
+    let txtAng = obj.value, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
+    	xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
+      X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
 
     drawLine(lnRed, x0,y0,X,Y);
     drawLine(dshGr, x0,Y,X,Y);
@@ -189,8 +184,6 @@ try {
     txtBl.setAttribute('y', ySin>0 ? y0-20 : y0+R-10 );
     txtBl.setAttribute('x', x0-10 );
     txtBl.setAttribute('transform', `rotate(-90 ${x0-10},${ySin>0?y0-20:y0+R-10})`);
-    
-} catch(err) { alert(err.message); }
 }
 
 drawGraph(inp);

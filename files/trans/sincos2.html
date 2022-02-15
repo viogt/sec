@@ -210,11 +210,12 @@ function drawGraph(obj) {
     
     txtGr.textContent = `cos(${txtAng}) = ${trigMime(angMime,xCos,false)}`;
     txtGr.setAttribute('x', xCos>0 ? x0+20 : x0-R+20 );
+    txtGr.setAttribute('y', ySin>0 ? y0+24 : y0-14 );
     
     txtBl.textContent = `sin(${txtAng}) = ${trigMime(angMime,ySin,true)}`;
-    txtBl.setAttribute('y', ySin>0 ? y0-20 : y0+R-10 );
-    txtBl.setAttribute('x', x0-10 );
-    txtBl.setAttribute('transform', `rotate(-90 ${x0-10},${ySin>0?y0-20:y0+R-10})`);
+    txtBl.setAttribute('y', ySin>0 ? y0-10 : y0+R-10 );
+    txtBl.setAttribute('x', xCos>0 ? x0-14 : x0+24 );
+    txtBl.setAttribute('transform', `rotate(-90 ${xCos>0 ? x0-14 : x0+24},${ySin>0?y0-10:y0+R-10})`);
 }
 
 drawGraph(inp);

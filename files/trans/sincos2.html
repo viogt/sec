@@ -173,8 +173,24 @@ function trigVal(x) {
   if(isZero.test(v)) v = v.replace(isZero,'');
   return v;
 }
+
+function trigMime(a, sg, isSin) {
+  let absA = Math.abs(a), v = sg.toFixed(4); if(!inRad) absA /=15;
+  if(isZero.test(v)) v = v.replace(isZero,'');
+    if(absA == 3 || absA == 9 || absA == 15 || absA == 21) return `${v} (${Math.sign(sg)<0?'-':''}√2/2)`;
+    if(isSin) {
+      if(absA == 2 || absA == 10 || absA == 12 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;
+      if(absA == 4 || absA == 8 || absA == 16 || absA == 20) return `${v} (${Math.sign(sg)<0?'-':''}√3/2)`;
+    }
+    else {
+      if(absA == 4 || absA == 8 || absA == 16 || absA == 20) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;
+      if(absA == 2 || absA == 10 || absA == 12 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}√3/2)`;
+    }
+  return v;
+}
+
 function drawGraph(obj) {
-    let txtAng = obj.value, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
+    let txtAng = obj.value, angMime = txtAng, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
     	xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
       X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
 
@@ -192,10 +208,10 @@ function drawGraph(obj) {
     shAng.setAttribute('x', X - 10); shAng.setAttribute('y', ySin<0?Y+20:Y-10);
     angle.innerText = 'Θ = ' + txtAng;
     
-    txtGr.textContent = `cos(${txtAng}) = ${trigVal(xCos)}`;
+    txtGr.textContent = `cos(${txtAng}) = ${trigMime(angMime,xCos,false)}`;
     txtGr.setAttribute('x', xCos>0 ? x0+20 : x0-R+20 );
     
-    txtBl.textContent = `sin(${txtAng}) = ${trigVal(ySin)}`;
+    txtBl.textContent = `sin(${txtAng}) = ${trigMime(angMime,ySin,true)}`;
     txtBl.setAttribute('y', ySin>0 ? y0-20 : y0+R-10 );
     txtBl.setAttribute('x', x0-10 );
     txtBl.setAttribute('transform', `rotate(-90 ${x0-10},${ySin>0?y0-20:y0+R-10})`);

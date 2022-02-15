@@ -56,7 +56,7 @@
     </tr>
     <tr>
       <td colspan="3" align="center">
-        <input id="inpAngle" class="rng" type="range" min="-24" max="24" step="1" value="0" oninput="drawGraph(this)"/>
+        <input id="inpAngle" class="rng" type="range" min="-24" max="24" step="1" value="3" oninput="drawGraph(this)"/>
       </td>
     </tr>
     <tr><td colspan="3" align="center">
@@ -75,6 +75,7 @@
 
   <line id="lnRed" stroke="red" />
   <circle id='smRed' stroke="red" />
+  <text id='shAng' fill='red' stroke='none'></text>
  
   <line id='dshGr' stroke="darkgreen" stroke-dasharray="4,2" />
   <text id='txtGr' x="280" y="270" fill="darkgreen" stroke="none"></text>
@@ -137,19 +138,21 @@ function getArc(x0, y0, radius, angleRad) {
 
 const lnRed = document.querySelector("#lnRed"),
 	dshGr = document.querySelector("#dshGr"),
-    dshBl = document.querySelector("#dshBl"),
-    slGr = document.querySelector("#slGr"),
-    slBl = document.querySelector("#slBl"),
-    txtGr = document.querySelector("#txtGr"),
-    txtBl = document.querySelector("#txtBl"),
-    smRed = document.querySelector("#smRed"),
-	smArc = document.querySelector("#smArc");
+  dshBl = document.querySelector("#dshBl"),
+  slGr = document.querySelector("#slGr"),
+  slBl = document.querySelector("#slBl"),
+  txtGr = document.querySelector("#txtGr"),
+  txtBl = document.querySelector("#txtBl"),
+  smRed = document.querySelector("#smRed"),
+	smArc = document.querySelector("#smArc"),
+  shAng = document.querySelector("#shAng"),
+  isZero = /\.?0+$/;
 	
 function drawLine(ln, x1,y1,x2,y2) {
 	ln.setAttribute('x1',x1);
-    ln.setAttribute('x2',x2);
-    ln.setAttribute('y1',y1);
-    ln.setAttribute('y2',y2);
+  ln.setAttribute('x2',x2);
+  ln.setAttribute('y1',y1);
+  ln.setAttribute('y2',y2);
 }
 
 function getAngle(n) {
@@ -165,6 +168,11 @@ function getAngle(n) {
   return n;
 }
 
+function trigVal(x) {
+  let v = x.toFixed(4);
+  if(isZero.test(v)) v = v.replace(isZero,'');
+  return v;
+}
 function drawGraph(obj) {
     let txtAng = obj.value, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
     	xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
@@ -180,12 +188,14 @@ function drawGraph(obj) {
     smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y); smRed.setAttribute('r',4);
     
     txtAng = getAngle(txtAng);
+    shAng.textContent = txtAng;
+    shAng.setAttribute('x', X - 10); shAng.setAttribute('y', ySin<0?Y+20:Y-10);
     angle.innerText = 'Θ = ' + txtAng;
     
-    txtGr.textContent = `cos(${txtAng}) = ${xCos.toFixed(4)}`;
+    txtGr.textContent = `cos(${txtAng}) = ${trigVal(xCos)}`;
     txtGr.setAttribute('x', xCos>0 ? x0+20 : x0-R+20 );
     
-    txtBl.textContent = `sin(${txtAng}) = ${ySin.toFixed(4)}`;
+    txtBl.textContent = `sin(${txtAng}) = ${trigVal(ySin)}`;
     txtBl.setAttribute('y', ySin>0 ? y0-20 : y0+R-10 );
     txtBl.setAttribute('x', x0-10 );
     txtBl.setAttribute('transform', `rotate(-90 ${x0-10},${ySin>0?y0-20:y0+R-10})`);

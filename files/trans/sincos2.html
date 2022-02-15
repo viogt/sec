@@ -179,12 +179,12 @@ function trigMime(a, sg, isSin) {
   if(isZero.test(v)) v = v.replace(isZero,'');
     if(absA == 3 || absA == 9 || absA == 15 || absA == 21) return `${v} (${Math.sign(sg)<0?'-':''}√2/2)`;
     if(isSin) {
-      if(absA == 2 || absA == 10 || absA == 12 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;
+      if(absA == 2 || absA == 10 || absA == 14 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;
       if(absA == 4 || absA == 8 || absA == 16 || absA == 20) return `${v} (${Math.sign(sg)<0?'-':''}√3/2)`;
     }
     else {
       if(absA == 4 || absA == 8 || absA == 16 || absA == 20) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;
-      if(absA == 2 || absA == 10 || absA == 12 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}√3/2)`;
+      if(absA == 2 || absA == 10 || absA == 14 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}√3/2)`;
     }
   return v;
 }
@@ -205,7 +205,7 @@ function drawGraph(obj) {
     
     txtAng = getAngle(txtAng);
     shAng.textContent = txtAng;
-    shAng.setAttribute('x', X - 10); shAng.setAttribute('y', ySin<0?Y+20:Y-10);
+    shAng.setAttribute('x', X - 10); shAng.setAttribute('y', ySin<0?Y+20:Y-8);
     angle.innerText = 'Θ = ' + txtAng;
     
     txtGr.textContent = `cos(${txtAng}) = ${trigMime(angMime,xCos,false)}`;

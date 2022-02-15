@@ -146,20 +146,21 @@ const isZero = /\.?0+$/;
     }
 
     function chngRadDeg() {
-      let radioBut = document.getElementsByName('radOrDeg');
-      if(radioBut[0].checked) { //---- radians -----
+      let radioBut = document.getElementsByName('radOrDeg'), v = inp.value;;
+      if(radioBut[0].checked) {
         leftPad.innerText = '-2π';
         rightPad.innerText = '2π';
         inRad = true;
-        inp.min = -24; inp.max = 24; inp.step = 1;
+        inp.min = -24; inp.max = 24; inp.step = chStepFive.checked ? 2 : 1;
+        inp.value = Math.round(24*v/360);
       }
-      else { //------- degrees ------------
+      else {
         leftPad.innerText = '-360°';
         rightPad.innerText = '360°';
         inRad = false;
         inp.min = -360; inp.max = 360; inp.step = chStepFive.checked ? 5 : 1;
+        inp.value = Math.round(360*v/24);
       }
-      inp.value = 0;
       reCalc();
     }
 
@@ -176,11 +177,10 @@ const isZero = /\.?0+$/;
     }
 
     function chStep() {
-      chStep5 = chStepFive.checked ? 5 : 1;
-      if(inRad) return;
+    	if(inRad) chStep5 = chStepFive.checked ? 2 : 1;
+      else chStep5 = chStepFive.checked ? 5 : 1;
       inp.step = chStep5;
-      inp.value = 0;
-      reCalc();
+      drawGraph(inp);
     }
 
     reCalc();

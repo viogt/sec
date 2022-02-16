@@ -29,8 +29,8 @@
       padding: 5vw;
       text-align: center;
       background-color: #f4f4ff;
-      /*background: linear-gradient(145deg, rgba(219,236,255,1) 0%, rgba(243,222,255,1) 100%);*/
-      background-image: url("data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E");
+      background: linear-gradient(145deg, rgba(219,236,255,1) 0%, rgba(243,222,255,1) 100%);
+      background-image:/*url("data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E")*/;
       background-size: cover;
     }
 @media screen and (min-width: 600px) {
@@ -47,7 +47,8 @@
         <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad&nbsp;
         <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg&nbsp;
         <input type="checkbox" id="chStepFive" onchange="chStep()" />Step&nbsp;
-        <a href="sincos.html">Main</a>
+        <a href="sincos.html">Main</a>&nbsp;
+        <a onclick="changeCSS('.mainPanel', 'backgroundImage')" href="javascript:void(0);">BkGround</a>
       </td>
     </tr>
     <tr>
@@ -209,10 +210,20 @@ function drawGraph(obj) {
     txtGr.setAttribute('y', ySin>0 ? y0+24 : y0-14 );
     
     txtBl.textContent = `sin(${txtAng}) = ${trigMime(angMime,ySin,true)}`;
-    let yc = ySin>0 ? y0-10 : y0 + txtBl.getBBox().width + 10; 
+    let yc = ySin>0 ? y0-10 : y0 + txtBl.getBBox().width + 10;
     txtBl.setAttribute('y', yc);
     txtBl.setAttribute('x', xCos>0 ? x0-14 : x0+24 );
     txtBl.setAttribute('transform', `rotate(-90 ${xCos>0 ? x0-14 : x0+24},${yc})`);
+}
+
+function changeCSS(rule, slctr) {
+  const sh = document.styleSheets[0],
+        r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
+  if(!r) return;
+  let s = r.style[slctr];
+  if(s.charAt(0) == 'l') s = "url(\"data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E\")";
+  else s = 'linear-gradient(145deg, rgba(219,236,255,1) 0%, rgba(243,222,255,1) 100%)';
+  r.style[slctr] = s;
 }
 
 drawGraph(inp);

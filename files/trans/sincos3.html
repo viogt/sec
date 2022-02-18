@@ -63,7 +63,7 @@
     </tr>
     <tr><td colspan="3" align="center">
 
-<svg width="auto" height="100%" viewBox="0 0 500 500" onload='makeDraggable(evt)'>
+<svg width="auto" height="100%" viewBox="0 0 500 500">
 <g stroke="#bbc" stroke-width="1" fill="none">
 
 	<circle cx="250" cy="250" r="230" fill="#fff" />
@@ -94,7 +94,6 @@
 
 	</td></tr>
   </table>
-  <div id='out'></div>
 </div>
 
 <script>
@@ -189,8 +188,8 @@ function trigMime(a, sg, isSin) {
 
 function drawGraph(obj, ifSmRed = true) {
     let txtAng = obj.value, angMime = txtAng, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
-    	xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
-      X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
+    xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
+    X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
 
     drawLine(lnRed, x0,y0,X,Y);
     drawLine(dshGr, x0,Y,X,Y);
@@ -199,7 +198,7 @@ function drawGraph(obj, ifSmRed = true) {
     drawLine(slBl, x0,y0,x0,Y);
     
     smArc.setAttribute('d', getArc(x0, y0, Math.round(R/3), Ang));
-    if(ifSmRed) smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y);
+    if(ifSmRed) { smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y); /*alert('smRed');*/ }
     
     txtAng = getAngle(txtAng);
     shAng.textContent = txtAng;
@@ -228,81 +227,89 @@ function changeCSS(rule, slctr) {
 }
 
 /*-------------------------- Drag ------------------------------*/
-  var Drag = null, offset;
+  var offset, isTouch;
 
   function getMousePosition(evt) {
-    const CTM = Drag.getScreenCTM();
+  //try {
+    const CTM = smRed.getScreenCTM();
     if(evt.touches) evt = evt.touches[0];
     return {
       x:  (evt.clientX - CTM.e) / CTM.a,
       y:  (evt.clientY - CTM.f) / CTM.d
     };
+  //} catch(err) { alert(err.message); }
   }
 
-function makeDraggable(evt) {
-  if(('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0)) {
-    smRed.addEventListener('touchstart', startDrag);
+function startDrag(evt) {
+//try {
+  if(isTouch) {
     smRed.addEventListener('touchmove', drag);
     smRed.addEventListener('touchend', endDrag);
     smRed.addEventListener('touchleave', endDrag);
     smRed.addEventListener('touchcancel', endDrag);
   }
   else {
-    smRed.addEventListener('mousedown', startDrag);
     smRed.addEventListener('mousemove', drag);
     smRed.addEventListener('mouseup', endDrag);
     smRed.addEventListener('mouseleave', endDrag);
   }
-  
-  function startDrag(evt) {
-  try {
-    if(evt.target.id != 'smRed') return;
-  	Drag = smRed;
-    Drag.setAttribute('r', 12);
-    offset = getMousePosition(evt);
-    
-    /*offset.x -= parseFloat(Drag.getAttributeNS(null, "cx"));
-    offset.y -= parseFloat(Drag.getAttributeNS(null, "cy"));*/
-    offset.x -= Drag.getAttribute("cx");
-    offset.y -= Drag.getAttribute("cy");
-    //say(offset.x + ', ' + offset.y);
-  } catch(err) { say(err.message); }
-  }
-  
-  function drag(evt) {
-  	if(!Drag) return;
-    evt.preventDefault();
-    var coord = getMousePosition(evt);
-    /*Drag.setAttributeNS(null, "cx", coord.x - offset.x);
-    Drag.setAttributeNS(null, "cy", coord.y - offset.y);*/
-    
-    let dx = coord.x - offset.x, dy = coord.y - offset.y, x0 = 250, y0 = 250;
-    Drag.setAttribute("cx", dx);
-    Drag.setAttribute("cy", dy);
-
-    let ang = Math.atan((y0-dy)/(dx-x0)),
-    angInp = Math.round(ang/Math.PI*12);
-
-    if(dx<x0 && dy<y0) angInp += 12;
-    else if(dx<x0 && dy>y0) angInp += 12;
-    else if(dx>x0 && dy>y0) angInp += 24;
-
-    say(angInp + ', dx: ' + dx.toFixed(1) + ', dy: ' + dy.toFixed(1));
-
-    inp.value = angInp;
-    angle.innerText = 'Θ = ' + getAngle(angInp);
-    //setTimeout(()=>{ drawGraph(inp, false); }, 1);
-  }
-  
-  function endDrag(evt) {
-    Drag.setAttribute('r', 4);
-    Drag = null;
-    drawGraph(inp);
-  }
+  smRed.setAttribute('r', 12);
+  offset = getMousePosition(evt);
+  offset.x -= smRed.getAttribute("cx");
+  offset.y -= smRed.getAttribute("cy");
+//} catch(err) { alert(err.message); }
 }
 
-function say(x) { document.getElementById('out').innerText = x; }
+function drag(evt) {
+//try {
+  evt.preventDefault();
+  const coord = getMousePosition(evt);
+  let dx = coord.x - offset.x, dy = coord.y - offset.y, x0 = 250, y0 = 250;
+  
+  smRed.setAttribute("cx", dx);
+  smRed.setAttribute("cy", dy);
+
+  let ang = Math.atan((y0-dy)/(dx-x0)), div = inRad?12:180,
+  angInp = Math.round(ang/Math.PI*div);
+
+  if(dx<x0 && dy<y0) angInp += div;
+  else if(dx<x0 && dy>y0) angInp += div;
+  else if(dx>x0 && dy>y0) angInp += div*2;
+
+  inp.value = angInp;
+  angle.innerText = 'Θ = ' + getAngle(angInp);
+  drawGraph(inp, false);
+//} catch(err) { alert(err.message); }
+}
+
+function endDrag(evt) {
+//try {
+  smRed.setAttribute('r', 4);
+  if(isTouch) {
+    smRed.removeEventListener('touchmove', drag);
+    smRed.removeEventListener('touchend', endDrag);
+    smRed.removeEventListener('touchleave', endDrag);
+    smRed.removeEventListener('touchcancel', endDrag);
+  }
+  else {
+    smRed.removeEventListener('mousemove', drag);
+    smRed.removeEventListener('mouseup', endDrag);
+    smRed.removeEventListener('mouseleave', endDrag);
+  }
+  drawGraph(inp);
+//} catch(err) { alert(err.message); }
+}
+
+function makeDraggable() {
+//try {
+  isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
+  if(isTouch) smRed.addEventListener('touchstart', startDrag);
+  else smRed.addEventListener('mousedown', startDrag);
+//} catch(err) { alert(err.message); }
+}
+
 drawGraph(inp);
+makeDraggable();
 </script>
 </body>
 </html>

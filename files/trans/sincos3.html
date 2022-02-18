@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph:Sin:Cos</title>
+  <style>
+    * { box-sizing: border-box; --cul: #bbc; font: normal 16px Arial, sans-serif; }
+    .rng { width: 100%; outline: none; }
+    table {
+      color: #448;
+      width: 100%;
+      border-collapse:collapse;
+    }
+    .angleRes {
+      margin: 4px 0;
+      border: 1px solid var(--cul);
+      padding: 4px 10px;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    tr { height: 38px; }
+    a:link { color: inherit; }
+    a:visited { color: inherit; }
+    .mainPanel {
+      width: 100%;
+      border: 1px solid var(--cul);
+      border-radius: 8px;
+      padding: 5vw;
+      text-align: center;
+      background-color: #f4f4ff;
+      background: linear-gradient(145deg, rgba(219,236,255,1) 0%, rgba(243,222,255,1) 100%);
+      background-image:/*url("data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E")*/;
+      background-size: cover;
+    }
+@media screen and (min-width: 600px) {
+  .mainPanel { width: 600px; margin: auto; }
+}
+  </style>
+</head>
+<body>
+
+<div class='mainPanel'>
+  <table>
+    <tr>
+      <td colspan="3" align="center">
+        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad&nbsp;
+        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg&nbsp;
+        <input type="checkbox" id="chStepFive" onchange="chStep()" />Step&nbsp;
+        <a href="sincos.html">Main</a>&nbsp;
+        <a onclick="changeCSS('.mainPanel', 'backgroundImage')" href="javascript:void(0);">BkGround</a>
+      </td>
+    </tr>
+    <tr>
+      <td id='leftPad' align='left' width='20%'>-2π</td>
+      <td align='center'><span id='angle' class='angleRes' width='60%'></span></td>
+      <td id='rightPad' align='right' width='20%'>2π</td>
+    </tr>
+    <tr>
+      <td colspan="3" align="center">
+        <input id="inpAngle" class="rng" type="range" min="-24" max="24" step="1" value="3" oninput="drawGraph(this)"/>
+      </td>
+    </tr>
+    <tr><td colspan="3" align="center">
+
+<svg width="auto" height="100%" viewBox="0 0 500 500" onload='makeDraggable(evt)'>
+<g stroke="#bbc" stroke-width="1" fill="none">
+
+	<circle cx="250" cy="250" r="230" fill="#fff" />
+  <line x1="250" y1="0" x2="250" y2="500" />
+  <polyline points="245,5 250,0 255,5" />
+  <text x="262" y="12" fill='#bbc'>Y</text>
+
+  <line x1="0" y1="250" x2="500" y2="250" />
+  <polyline points="495,245 500,250 495,255" />
+  <text x="486" y="242" fill='#bbc'>X</text>
+
+  <line id="lnRed" stroke="red" />
+  <text id='shAng' fill='red' stroke='none'></text>
+ 
+  <line id='dshGr' stroke="darkgreen" stroke-width=".6" stroke-dasharray="4,2" />
+  <text id='txtGr' x="280" y="270" fill="darkgreen" stroke="none"></text>
+  <line id='slGr' stroke="darkgreen" stroke-width="3" />
+    
+  <line id='dshBl' stroke="blue" stroke-width=".6" stroke-dasharray="4,2" />
+  <text id='txtBl' x="240" y="220" fill="blue" stroke="none" transform="rotate(-90 240,220)"></text>
+  <line id='slBl' stroke="blue" stroke-width="3" />
+
+  <circle cx="250" cy="250" r="3" fill="red" stroke="none" />
+  <path id='smArc' stroke="red" />
+  <circle id='smRed' fill='red' r='4' stroke="red" />
+</g>
+</svg>
+
+	</td></tr>
+  </table>
+  <div id='out'></div>
+</div>
+
+<script>
+const inp = document.querySelector("#inpAngle"),
+      leftPad = document.querySelector("#leftPad"),
+      rightPad = document.querySelector("#rightPad"),
+      angle = document.querySelector("#angle"),
+      chStepFive = document.querySelector("#chStepFive");
+    
+    var maxDecimals = 4, inRad = true, chStep5 = 1;
+    
+    function chngRadDeg() {
+      let radioBut = document.getElementsByName('radOrDeg'), v = inp.value;
+      if(radioBut[0].checked) {
+        leftPad.innerText = '-2π';
+        rightPad.innerText = '2π';
+        inRad = true;
+        inp.min = -24; inp.max = 24; inp.step = chStepFive.checked ? 2 : 1;
+        inp.value = Math.round(24*v/360);
+      }
+      else {
+        leftPad.innerText = '-360°';
+        rightPad.innerText = '360°';
+        inRad = false;
+        inp.min = -360; inp.max = 360; inp.step = chStepFive.checked ? 5 : 1;
+        inp.value = Math.round(360*v/24);
+      }
+      drawGraph(inp);
+    }
+    
+    function chStep() {
+    	if(inRad) chStep5 = chStepFive.checked ? 2 : 1;
+        else chStep5 = chStepFive.checked ? 5 : 1;
+      inp.step = chStep5;
+      drawGraph(inp);
+    }
+
+function getArc(x0, y0, radius, angleRad) {
+	let x = x0 + Math.round(radius * Math.cos(angleRad)),
+    	y = y0 - Math.round(radius * Math.sin(angleRad)),
+      lrgAng = Math.abs(angleRad%(Math.PI*2)) < Math.PI?0:1;
+    if(angleRad > 0) return `M ${x0+radius} ${y0} A ${radius} ${radius} 0 ${lrgAng} 0 ${x} ${y}`;
+    else  return `M ${x} ${y} A ${radius} ${radius} 0 ${lrgAng} 0 ${x0+radius} ${y0}`;
+}
+
+const lnRed = document.querySelector("#lnRed"),
+	dshGr = document.querySelector("#dshGr"),
+  dshBl = document.querySelector("#dshBl"),
+  slGr = document.querySelector("#slGr"),
+  slBl = document.querySelector("#slBl"),
+  txtGr = document.querySelector("#txtGr"),
+  txtBl = document.querySelector("#txtBl"),
+  smRed = document.querySelector("#smRed"),
+	smArc = document.querySelector("#smArc"),
+  shAng = document.querySelector("#shAng"),
+  isZero = /\.?0+$/;
+	
+function drawLine(ln, x1,y1,x2,y2) {
+	ln.setAttribute('x1',x1);
+  ln.setAttribute('x2',x2);
+  ln.setAttribute('y1',y1);
+  ln.setAttribute('y2',y2);
+}
+
+function getAngle(n) {
+  if(!inRad) return n + '°';
+  let m = 12;
+  while(n%2==0 && m%2==0) { n /= 2; m /=2; }
+  while(n%3==0 && m%3==0) { n /= 3; m /=3; }
+  if(n == 0) return '0';
+  if(n == 1) n = 'π';
+  else if(n == -1) n = '-π';
+  else n += 'π';
+  if(m > 1) return `${n}/${m}`;
+  return n;
+}
+
+function trigMime(a, sg, isSin) {
+  let absA = Math.abs(a), v = sg.toFixed(4); if(!inRad) absA /=15;
+  if(isZero.test(v)) v = v.replace(isZero,'');
+    if(absA == 3 || absA == 9 || absA == 15 || absA == 21) return `${v} (${Math.sign(sg)<0?'-':''}√2/2)`;
+    if(isSin) {
+      if(absA == 2 || absA == 10 || absA == 14 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;
+      if(absA == 4 || absA == 8 || absA == 16 || absA == 20) return `${v} (${Math.sign(sg)<0?'-':''}√3/2)`;
+    }
+    else {
+      if(absA == 4 || absA == 8 || absA == 16 || absA == 20) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;
+      if(absA == 2 || absA == 10 || absA == 14 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}√3/2)`;
+    }
+  return v;
+}
+
+function drawGraph(obj, ifSmRed = true) {
+    let txtAng = obj.value, angMime = txtAng, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
+    	xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
+      X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
+
+    drawLine(lnRed, x0,y0,X,Y);
+    drawLine(dshGr, x0,Y,X,Y);
+    drawLine(dshBl, X,Y,X,y0);
+    drawLine(slGr, x0,y0,X,y0);
+    drawLine(slBl, x0,y0,x0,Y);
+    
+    smArc.setAttribute('d', getArc(x0, y0, Math.round(R/3), Ang));
+    if(ifSmRed) smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y);
+    
+    txtAng = getAngle(txtAng);
+    shAng.textContent = txtAng;
+    shAng.setAttribute('x', X - 10); shAng.setAttribute('y', ySin<0?Y+20:Y-8);
+    angle.innerText = 'Θ = ' + txtAng;
+    
+    txtGr.textContent = `cos(${txtAng}) = ${trigMime(angMime,xCos,false)}`;
+    txtGr.setAttribute('x', xCos>0 ? x0+20 : x0-txtGr.getBBox().width-20 );
+    txtGr.setAttribute('y', ySin>0 ? y0+24 : y0-14 );
+    
+    txtBl.textContent = `sin(${txtAng}) = ${trigMime(angMime,ySin,true)}`;
+    let yc = ySin>0 ? y0-10 : y0 + txtBl.getBBox().width + 10;
+    txtBl.setAttribute('y', yc);
+    txtBl.setAttribute('x', xCos>0 ? x0-14 : x0+24 );
+    txtBl.setAttribute('transform', `rotate(-90 ${xCos>0 ? x0-14 : x0+24},${yc})`);
+}
+
+function changeCSS(rule, slctr) {
+  const sh = document.styleSheets[0],
+        r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
+  if(!r) return;
+  let s = r.style[slctr];
+  if(s.charAt(0) == 'l') s = "url(\"data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E\")";
+  else s = 'linear-gradient(145deg, rgba(219,236,255,1) 0%, rgba(243,222,255,1) 100%)';
+  r.style[slctr] = s;
+}
+
+/*-------------------------- Drag ------------------------------*/
+  var Drag = null, offset;
+
+  function getMousePosition(evt) {
+    const CTM = Drag.getScreenCTM();
+    if(evt.touches) evt = evt.touches[0];
+    return {
+      x:  (evt.clientX - CTM.e) / CTM.a,
+      y:  (evt.clientY - CTM.f) / CTM.d
+    };
+  }
+
+function makeDraggable(evt) {
+  if(('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0)) {
+    smRed.addEventListener('touchstart', startDrag);
+    smRed.addEventListener('touchmove', drag);
+    smRed.addEventListener('touchend', endDrag);
+    smRed.addEventListener('touchleave', endDrag);
+    smRed.addEventListener('touchcancel', endDrag);
+  }
+  else {
+    smRed.addEventListener('mousedown', startDrag);
+    smRed.addEventListener('mousemove', drag);
+    smRed.addEventListener('mouseup', endDrag);
+    smRed.addEventListener('mouseleave', endDrag);
+  }
+  
+  function startDrag(evt) {
+  try {
+    if(evt.target.id != 'smRed') return;
+  	Drag = smRed;
+    Drag.setAttribute('r', 12);
+    offset = getMousePosition(evt);
+    
+    /*offset.x -= parseFloat(Drag.getAttributeNS(null, "cx"));
+    offset.y -= parseFloat(Drag.getAttributeNS(null, "cy"));*/
+    offset.x -= Drag.getAttribute("cx");
+    offset.y -= Drag.getAttribute("cy");
+    //say(offset.x + ', ' + offset.y);
+  } catch(err) { say(err.message); }
+  }
+  
+  function drag(evt) {
+  	if(!Drag) return;
+    evt.preventDefault();
+    var coord = getMousePosition(evt);
+    /*Drag.setAttributeNS(null, "cx", coord.x - offset.x);
+    Drag.setAttributeNS(null, "cy", coord.y - offset.y);*/
+    
+    let dx = coord.x - offset.x, dy = coord.y - offset.y, x0 = 250, y0 = 250;
+    Drag.setAttribute("cx", dx);
+    Drag.setAttribute("cy", dy);
+
+    let ang = Math.atan((y0-dy)/(dx-x0)),
+    angInp = Math.round(ang/Math.PI*12);
+
+    if(dx<x0 && dy<y0) angInp += 12;
+    else if(dx<x0 && dy>y0) angInp += 12;
+    else if(dx>x0 && dy>y0) angInp += 24;
+
+    say(angInp + ', dx: ' + dx.toFixed(1) + ', dy: ' + dy.toFixed(1));
+
+    inp.value = angInp;
+    angle.innerText = 'Θ = ' + getAngle(angInp);
+    //setTimeout(()=>{ drawGraph(inp, false); }, 1);
+  }
+  
+  function endDrag(evt) {
+    Drag.setAttribute('r', 4);
+    Drag = null;
+    drawGraph(inp);
+  }
+}
+
+function say(x) { document.getElementById('out').innerText = x; }
+drawGraph(inp);
+</script>
+</body>
+</html>

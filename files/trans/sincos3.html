@@ -33,6 +33,39 @@
       background-image:/*url("data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E")*/;
       background-size: cover;
     }
+#graph {
+  /*position: absolute;
+  top: 200px; left: 10px;*/
+  width: 90vw;
+  border: 1px solid grey;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.circle {
+  position: absolute;
+  border: 1px solid red;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.line {
+  position: absolute;
+  border-top: thin dashed grey;
+  border-left: thin dashed grey;
+}
+#radius { border-top: 2px solid red; transform-origin: top left; }
+#xyCirc { background-color: rgba(200,0,0,.5); }
+.bgLine {
+  position: absolute;
+  border-top: 2px solid purple;
+  border-left: 2px solid purple;
+}
+.txt {
+  position: absolute; padding: 8px; font-size: 15px;
+}
+#yTxt { transform-origin: top left; transform: rotate(-90deg); }
+#angTxt { color: red; }
+
 @media screen and (min-width: 600px) {
   .mainPanel { width: 600px; margin: auto; }
 }
@@ -61,40 +94,24 @@
         <input id="inpAngle" class="rng" type="range" min="-24" max="24" step="1" value="3" oninput="drawGraph(this)"/>
       </td>
     </tr>
-    <tr><td colspan="3" align="center">
-
-<svg width="auto" height="100%" viewBox="0 0 500 500">
-<g stroke="#bbc" stroke-width="1" fill="none">
-
-	<circle cx="250" cy="250" r="230" fill="#fff" />
-  <line x1="250" y1="0" x2="250" y2="500" />
-  <polyline points="245,5 250,0 255,5" />
-  <text x="262" y="12" fill='#bbc'>Y</text>
-
-  <line x1="0" y1="250" x2="500" y2="250" />
-  <polyline points="495,245 500,250 495,255" />
-  <text x="486" y="242" fill='#bbc'>X</text>
-
-  <line id="lnRed" stroke="red" />
-  <text id='shAng' fill='red' stroke='none'></text>
- 
-  <line id='dshGr' stroke="darkgreen" stroke-width=".6" stroke-dasharray="4,2" />
-  <text id='txtGr' x="280" y="270" fill="darkgreen" stroke="none"></text>
-  <line id='slGr' stroke="darkgreen" stroke-width="3" />
-    
-  <line id='dshBl' stroke="blue" stroke-width=".6" stroke-dasharray="4,2" />
-  <text id='txtBl' x="240" y="220" fill="blue" stroke="none" transform="rotate(-90 240,220)"></text>
-  <line id='slBl' stroke="blue" stroke-width="3" />
-
-  <circle cx="250" cy="250" r="3" fill="red" stroke="none" />
-  <path id='smArc' stroke="red" />
-  <circle id='smRed' fill='red' r='4' stroke="red" />
-</g>
-</svg>
-
-	</td></tr>
   </table>
+
 </div>
+
+<div id='graph'></div>
+<div id='bgCirc' class='circle'></div>
+<div id='xAxis' class='line'></div>
+<div id='yAxis' class='line'></div>
+<div id='xcos' class='line'></div>
+<div id='ysin' class='line'></div>
+<div id='xCos' class='bgLine'></div>
+<div id='ySin' class='bgLine'></div>
+<div id='radius' class='line'></div>
+<div id='orig' class='circle'></div>
+<div id='xyCirc' class='circle' draggable="true"></div>
+<div id='xTxt' class='txt'></div>
+<div id='yTxt' class='txt'></div>
+<div id='angTxt' class='txt'></div>
 
 <script>
 const inp = document.querySelector("#inpAngle"),
@@ -139,23 +156,29 @@ function getArc(x0, y0, radius, angleRad) {
     else  return `M ${x} ${y} A ${radius} ${radius} 0 ${lrgAng} 0 ${x0+radius} ${y0}`;
 }
 
-const lnRed = document.querySelector("#lnRed"),
-	dshGr = document.querySelector("#dshGr"),
-  dshBl = document.querySelector("#dshBl"),
-  slGr = document.querySelector("#slGr"),
-  slBl = document.querySelector("#slBl"),
-  txtGr = document.querySelector("#txtGr"),
-  txtBl = document.querySelector("#txtBl"),
-  smRed = document.querySelector("#smRed"),
-	smArc = document.querySelector("#smArc"),
-  shAng = document.querySelector("#shAng"),
+const graph = document.querySelector("#graph"),
+	bgCirc = document.querySelector("#bgCirc"),
+  xAxis = document.querySelector("#xAxis"),
+  yAxis = document.querySelector("#yAxis"),
+  y_sin = document.querySelector("#ysin"),
+  x_cos = document.querySelector("#xcos"),
+  y_Sin = document.querySelector("#ySin"),
+  x_Cos = document.querySelector("#xCos"),
+  orig = document.querySelector("#orig"),
+  radius = document.querySelector("#radius"),
+  smRed = document.querySelector("#xyCirc"),
+  xTxt = document.querySelector("#xTxt"),
+  yTxt = document.querySelector("#yTxt"),
+  angTxt = document.querySelector("#angTxt"),
   isZero = /\.?0+$/;
 	
-function drawLine(ln, x1,y1,x2,y2) {
-	ln.setAttribute('x1',x1);
-  ln.setAttribute('x2',x2);
-  ln.setAttribute('y1',y1);
-  ln.setAttribute('y2',y2);
+function drawLine(obj, x1,y1,x2,y2) {
+	let s = obj.style;
+  s.left = `${x1}px`;
+  s.top = `${y1}px`;
+  s.width = `${x2-x1+10}px`;
+  s.height = `${y2-y1+10}px`;
+  alert('Line!');
 }
 
 function getAngle(n) {
@@ -186,34 +209,74 @@ function trigMime(a, sg, isSin) {
   return v;
 }
 
-function drawGraph(obj, ifSmRed = true) {
-    let txtAng = obj.value, angMime = txtAng, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
-    xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
+function drawCircle(obj, cx,cy,r=false) {
+  let s = obj.style;
+  s.left = `${cx-r}px`;
+  s.top = `${cy-r}px`;
+  if(!r) return;
+  s.width = `${r*2}px`;
+  s.height = `${r*2}px`;
+}
+function drawLine(obj, x1,y1,x2,y2, ang=null) {
+	let s = obj.style;
+  if(x1 > x2) [x1,x2] = [x2,x1];
+  if(y1 > y2) [y1,y2] = [y2,y1];
+  s.left = `${x1}px`;
+  s.top = `${y1}px`;
+  s.width = `${x2-x1}px`;
+  s.height = `${y2-y1}px`;
+  if(ang) s.transform = `rotate(${ang}deg)`;
+}
+
+function drawText(obj, x, y, txt, Algn) {
+  let s = obj.style;
+  obj.innerText = txt;
+  s.left = `${x}px`;
+  s.top = `${y}px`;
+  s.textAlign = Algn?'right':'left';
+}
+
+var x0, y0, R;
+
+function drawGraph(obj) {
+try {
+    let box = graph.getBoundingClientRect();
+    if(box.width != box.height) graph.style.height = `${box.width}px`;
+    x0 = box.x + box.width/2, y0 = box.y + box.width/2, R = box.width/2-30;
+    
+    let txtAng = obj.value, angMime = txtAng, Ang = inRad ?txtAng/12*Math.PI : txtAng*Math.PI/180,
+    xCos = Math.cos(Ang), ySin = Math.sin(Ang),
     X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
 
-    drawLine(lnRed, x0,y0,X,Y);
-    drawLine(dshGr, x0,Y,X,Y);
-    drawLine(dshBl, X,Y,X,y0);
-    drawLine(slGr, x0,y0,X,y0);
-    drawLine(slBl, x0,y0,x0,Y);
+    //alert(`id=${graph.id}\nx=${box.x} y=${box.y}\nw=${box.width} h=${box.height}\nx0=${x0} y0=${y0} R=${R}`);
     
-    smArc.setAttribute('d', getArc(x0, y0, Math.round(R/3), Ang));
-    if(ifSmRed) { smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y); /*alert('smRed');*/ }
-    
+    drawCircle(bgCirc, x0, y0, R);
+    drawCircle(orig, x0, y0, 10);
+    drawLine(xAxis, box.x, y0, box.right, y0);
+    drawLine(yAxis, x0, box.y, x0, box.y + box.width);
+
+    drawLine(x_cos, x0, Y, X, Y);
+    drawLine(y_sin, X, Y, X, y0);
+    drawLine(x_Cos, x0, y0, X, y0);
+    drawLine(y_Sin, x0, y0, x0, Y);
+
+    drawCircle(smRed, X, Y, 20);
+
+    let tAng = inRad ? txtAng*(-15) : txtAng*(-1);
+    drawLine(radius, x0, y0, x0+R, y0, tAng.toString());
+
+    xTxt.style.width = `${R}px`; yTxt.style.width = `${R}px`;
+
     txtAng = getAngle(txtAng);
-    shAng.textContent = txtAng;
-    shAng.setAttribute('x', X - 10); shAng.setAttribute('y', ySin<0?Y+20:Y-8);
+    drawText(xTxt, xCos>0? x0:x0-R, ySin>0? y0:y0-30,
+      `cos(${txtAng}) = ${trigMime(angMime, xCos, false)}`, xCos<0);
+    drawText(yTxt, xCos>0? x0-30:x0, ySin>0? y0:y0+R,
+      `sin(${txtAng}) = ${trigMime(angMime, ySin, true)}`, ySin<0);
+
     angle.innerText = 'Θ = ' + txtAng;
-    
-    txtGr.textContent = `cos(${txtAng}) = ${trigMime(angMime,xCos,false)}`;
-    txtGr.setAttribute('x', xCos>0 ? x0+20 : x0-txtGr.getBBox().width-20 );
-    txtGr.setAttribute('y', ySin>0 ? y0+24 : y0-14 );
-    
-    txtBl.textContent = `sin(${txtAng}) = ${trigMime(angMime,ySin,true)}`;
-    let yc = ySin>0 ? y0-10 : y0 + txtBl.getBBox().width + 10;
-    txtBl.setAttribute('y', yc);
-    txtBl.setAttribute('x', xCos>0 ? x0-14 : x0+24 );
-    txtBl.setAttribute('transform', `rotate(-90 ${xCos>0 ? x0-14 : x0+24},${yc})`);
+    drawText(angTxt, x0-R, y0-R, 'Θ = ' + txtAng, false);
+
+} catch(err) { alert(err.message); }
 }
 
 function changeCSS(rule, slctr) {
@@ -227,50 +290,30 @@ function changeCSS(rule, slctr) {
 }
 
 /*-------------------------- Drag ------------------------------*/
-  var offset, isTouch;
+var offset = [0,0], isDown = false, isTouch;
 
-  function getMousePosition(evt) {
-  //try {
-    const CTM = smRed.getScreenCTM();
-    if(evt.touches) evt = evt.touches[0];
-    return {
-      x:  (evt.clientX - CTM.e) / CTM.a,
-      y:  (evt.clientY - CTM.f) / CTM.d
-    };
-  //} catch(err) { alert(err.message); }
-  }
-
-function startDrag(evt) {
-//try {
-  if(isTouch) {
-    smRed.addEventListener('touchmove', drag);
-    smRed.addEventListener('touchend', endDrag);
-    smRed.addEventListener('touchleave', endDrag);
-    smRed.addEventListener('touchcancel', endDrag);
-  }
-  else {
-    smRed.addEventListener('mousemove', drag);
-    smRed.addEventListener('mouseup', endDrag);
-    smRed.addEventListener('mouseleave', endDrag);
-  }
-  smRed.setAttribute('r', 12);
-  offset = getMousePosition(evt);
-  offset.x -= smRed.getAttribute("cx");
-  offset.y -= smRed.getAttribute("cy");
-//} catch(err) { alert(err.message); }
+function startDrag(e) {
+  isDown = true;
+  smRed.style.backgroundColor = '#f00';
+  offset = [
+    smRed.offsetLeft - e.clientX,
+    smRed.offsetTop - e.clientY
+  ];
 }
-
-function drag(evt) {
-//try {
-  evt.preventDefault();
-  const coord = getMousePosition(evt);
-  let dx = coord.x - offset.x, dy = coord.y - offset.y, x0 = 250, y0 = 250;
+function endDrag() {
+  isDown = false;
+  smRed.style.backgroundColor = '';
+}
+function drag(e) {
+  event.preventDefault();
+  if(!isDown) return;
   
-  smRed.setAttribute("cx", dx);
-  smRed.setAttribute("cy", dy);
-
+  let dx = e.clientX; dy = e.clientY;
+  smRed.style.left = `${dx + offset[0]}px`;
+  smRed.style.top  = `${dy + offset[1]}px`;
+  
   let ang = Math.atan((y0-dy)/(dx-x0)), div = inRad?12:180,
-  angInp = Math.round(ang/Math.PI*div);
+    angInp = Math.round(ang/Math.PI*div);
 
   if(dx<x0 && dy<y0) angInp += div;
   else if(dx<x0 && dy>y0) angInp += div;
@@ -278,34 +321,24 @@ function drag(evt) {
 
   inp.value = angInp;
   angle.innerText = 'Θ = ' + getAngle(angInp);
-  drawGraph(inp, false);
-//} catch(err) { alert(err.message); }
-}
-
-function endDrag(evt) {
-//try {
-  smRed.setAttribute('r', 4);
-  if(isTouch) {
-    smRed.removeEventListener('touchmove', drag);
-    smRed.removeEventListener('touchend', endDrag);
-    smRed.removeEventListener('touchleave', endDrag);
-    smRed.removeEventListener('touchcancel', endDrag);
-  }
-  else {
-    smRed.removeEventListener('mousemove', drag);
-    smRed.removeEventListener('mouseup', endDrag);
-    smRed.removeEventListener('mouseleave', endDrag);
-  }
   drawGraph(inp);
-//} catch(err) { alert(err.message); }
 }
 
 function makeDraggable() {
-//try {
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
-  if(isTouch) smRed.addEventListener('touchstart', startDrag);
-  else smRed.addEventListener('mousedown', startDrag);
-//} catch(err) { alert(err.message); }
+  if(isTouch) {
+    smRed.addEventListener('touchstart', startDrag, true);
+    smRed.addEventListener('touchmove', drag, true);
+    smRed.addEventListener('touchend', endDrag, true);
+    smRed.addEventListener('touchleave', endDrag, true);
+    smRed.addEventListener('touchcancel', endDrag, true);
+  }
+  else {
+    smRed.addEventListener('mousedown', startDrag, true);
+    document.addEventListener('mouseup', endDrag, true);
+    document.addEventListener('mousemove', drag, true);
+    document.addEventListener('mouseleave', endDrag, true);
+  }
 }
 
 drawGraph(inp);

@@ -324,15 +324,16 @@ function drag(e) {
   drawGraph(inp);
 }
 
-function makeDraggable() {
+function init() {
+  drawGraph(inp);
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
+  try {
   if(isTouch) {
     smRed.addEventListener('touchstart', startDrag, true);
     document.addEventListener('touchmove', drag, true);
     document.addEventListener('touchend', endDrag, true);
     //document.addEventListener('touchleave', endDrag, true);
-    //document.addEventListener('touchcancel', endDrag, true);
-    alert('Touch!');
+    document.addEventListener('touchcancel', endDrag, true);
   }
   else {
     smRed.addEventListener('mousedown', startDrag, true);
@@ -340,10 +341,11 @@ function makeDraggable() {
     document.addEventListener('mousemove', drag, true);
     //document.addEventListener('mouseleave', endDrag, true);
   }
+  } catch(err) { alert(err.message); }
 }
 
-drawGraph(inp);
-makeDraggable();
+document.addEventListener("DOMContentLoaded", init);
+//makeDraggable();
 </script>
 </body>
 </html>

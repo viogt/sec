@@ -305,8 +305,8 @@ function endDrag() {
   smRed.style.backgroundColor = '';
 }
 function drag(e) {
-  event.preventDefault();
   if(!isDown) return;
+  e.preventDefault();
   
   let dx = e.clientX; dy = e.clientY;
   smRed.style.left = `${dx + offset[0]}px`;
@@ -330,14 +330,15 @@ function makeDraggable() {
     smRed.addEventListener('touchstart', startDrag, true);
     document.addEventListener('touchmove', drag, true);
     document.addEventListener('touchend', endDrag, true);
-    document.addEventListener('touchleave', endDrag, true);
-    document.addEventListener('touchcancel', endDrag, true);
+    //document.addEventListener('touchleave', endDrag, true);
+    //document.addEventListener('touchcancel', endDrag, true);
+    alert('Touch!');
   }
   else {
     smRed.addEventListener('mousedown', startDrag, true);
     document.addEventListener('mouseup', endDrag, true);
     document.addEventListener('mousemove', drag, true);
-    document.addEventListener('mouseleave', endDrag, true);
+    //document.addEventListener('mouseleave', endDrag, true);
   }
 }
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Graph:Sin:Cos</title>
 <style>
-* { box-sizing: border-box; --cul: #bbc; font: normal 2.8vw Arial, sans-serif; }
+* { box-sizing: border-box; font: normal 2.8vw Arial, sans-serif; }
 .panou {
   position:absolute;
   top: 20px;
@@ -220,6 +220,7 @@ function startDrag(e) {
   smRed.style.backgroundColor = '#f00';
   if(e.touches) e = e.touches[0];
   offset = [ smRed.offsetLeft - e.clientX, smRed.offsetTop - e.clientY ];
+  if(isTouch) navigator.vibrate(60);
 }
 
 function endDrag() {

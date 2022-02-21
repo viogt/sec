@@ -292,23 +292,34 @@ function changeCSS(rule, slctr) {
 /*-------------------------- Drag ------------------------------*/
 var offset = [0,0], isDown = false, isTouch;
 
+function getOff(e) {
+  if(e.touches) e = e.touches[0];
+  return [ e.clientX, e.clientY ];
+}
+
 function startDrag(e) {
   isDown = true;
   smRed.style.backgroundColor = '#f00';
+  let coord = getOff(e);
+  //if(e.touches) e = e.touches[0];
   offset = [
-    smRed.offsetLeft - e.clientX,
-    smRed.offsetTop - e.clientY
+    smRed.offsetLeft - coord[0], //e.clientX,
+    smRed.offsetTop - coord[1] //e.clientY
   ];
+
 }
 function endDrag() {
   isDown = false;
   smRed.style.backgroundColor = '';
 }
 function drag(e) {
+try {
   if(!isDown) return;
   e.preventDefault();
   
-  let dx = e.clientX; dy = e.clientY;
+  let coord = getOff(e);
+  let dx = coord[0]; dy = coord[1];
+  
   smRed.style.left = `${dx + offset[0]}px`;
   smRed.style.top  = `${dy + offset[1]}px`;
   
@@ -322,6 +333,7 @@ function drag(e) {
   inp.value = angInp;
   angle.innerText = 'Θ = ' + getAngle(angInp);
   drawGraph(inp);
+} catch(err) { alert(err.message); }
 }
 
 function init() {
@@ -329,11 +341,11 @@ function init() {
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
   try {
   if(isTouch) {
-    smRed.addEventListener('touchstart', startDrag);
-    document.addEventListener('touchmove', drag);
-    document.addEventListener('touchend', endDrag);
-    //document.addEventListener('touchleave', endDrag);
-    document.addEventListener('touchcancel', endDrag);
+    smRed.addEventListener('touchstart', startDrag, true);
+    document.addEventListener('touchmove', drag, true);
+    document.addEventListener('touchend', endDrag, true);
+    //document.addEventListener('touchleave', endDrag, true);
+    document.addEventListener('touchcancel', endDrag, true);
   }
   else {
     smRed.addEventListener('mousedown', startDrag, true);

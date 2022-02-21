@@ -76,7 +76,6 @@
   <text x="486" y="242" fill='#bbc'>X</text>
 
   <line id="lnRed" stroke="red" />
-  <circle id='smRed' stroke="red" />
   <text id='shAng' fill='red' stroke='none'></text>
  
   <line id='dshGr' stroke="darkgreen" stroke-width=".6" stroke-dasharray="4,2" />
@@ -89,6 +88,7 @@
 
   <circle cx="250" cy="250" r="3" fill="red" stroke="none" />
   <path id='smArc' stroke="red" />
+  <circle id='smRed' fill='red' r='4' stroke="red" />
 </g>
 </svg>
 
@@ -134,7 +134,7 @@ const inp = document.querySelector("#inpAngle"),
 function getArc(x0, y0, radius, angleRad) {
 	let x = x0 + Math.round(radius * Math.cos(angleRad)),
     	y = y0 - Math.round(radius * Math.sin(angleRad)),
-        lrgAng = Math.abs(angleRad%(Math.PI*2)) < Math.PI?0:1;
+      lrgAng = Math.abs(angleRad%(Math.PI*2)) < Math.PI?0:1;
     if(angleRad > 0) return `M ${x0+radius} ${y0} A ${radius} ${radius} 0 ${lrgAng} 0 ${x} ${y}`;
     else  return `M ${x} ${y} A ${radius} ${radius} 0 ${lrgAng} 0 ${x0+radius} ${y0}`;
 }
@@ -186,10 +186,10 @@ function trigMime(a, sg, isSin) {
   return v;
 }
 
-function drawGraph(obj) {
+function drawGraph(obj, ifSmRed = true) {
     let txtAng = obj.value, angMime = txtAng, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
-    	xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
-      X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
+    xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
+    X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
 
     drawLine(lnRed, x0,y0,X,Y);
     drawLine(dshGr, x0,Y,X,Y);
@@ -198,7 +198,7 @@ function drawGraph(obj) {
     drawLine(slBl, x0,y0,x0,Y);
     
     smArc.setAttribute('d', getArc(x0, y0, Math.round(R/3), Ang));
-    smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y); smRed.setAttribute('r',4);
+    if(ifSmRed) { smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y); }
     
     txtAng = getAngle(txtAng);
     shAng.textContent = txtAng;
@@ -226,7 +226,77 @@ function changeCSS(rule, slctr) {
   r.style[slctr] = s;
 }
 
+/*-------------------------- Drag ------------------------------*/
+  var offset, isTouch, isDown = false;
+
+  function getMousePosition(evt) {
+  //try {
+    const CTM = smRed.getScreenCTM();
+    if(evt.touches) evt = evt.touches[0];
+    return {
+      x:  (evt.clientX - CTM.e) / CTM.a,
+      y:  (evt.clientY - CTM.f) / CTM.d
+    };
+  //} catch(err) { alert(err.message); }
+  }
+
+function startDrag(evt) {
+  isDown = true;
+  smRed.setAttribute('r', 12);
+  offset = getMousePosition(evt);
+  offset.x -= smRed.getAttribute("cx");
+  offset.y -= smRed.getAttribute("cy");
+  if(isTouch) navigator.vibrate(60);
+}
+
+function drag(evt) {
+//try {
+  if(!isDown) return;
+  evt.preventDefault();
+  const coord = getMousePosition(evt);
+  let dx = coord.x - offset.x, dy = coord.y - offset.y, x0 = 250, y0 = 250;
+  
+  smRed.setAttribute("cx", dx);
+  smRed.setAttribute("cy", dy);
+
+  let ang = Math.atan((y0-dy)/(dx-x0)), div = inRad?12:180,
+  angInp = Math.round(ang/Math.PI*div);
+
+  if(dx<x0 && dy<y0) angInp += div;
+  else if(dx<x0 && dy>y0) angInp += div;
+  else if(dx>x0 && dy>y0) angInp += div*2;
+
+  inp.value = angInp;
+  angle.innerText = 'Θ = ' + getAngle(angInp);
+  drawGraph(inp);
+//} catch(err) { alert(err.message); }
+}
+
+function endDrag(evt) {
+  isDown = false;
+  smRed.setAttribute('r', 4);
+  drawGraph(inp);
+}
+
+function makeDraggable() {
+  isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
+  if(isTouch) {
+    smRed.addEventListener('touchstart', startDrag);
+    document.addEventListener('touchmove', drag, true);
+    document.addEventListener('touchend', endDrag, true);
+    //document.addEventListener('touchleave', endDrag, true);
+    document.addEventListener('touchcancel', endDrag, true);
+  }
+  else {
+    smRed.addEventListener('mousedown', startDrag);
+    document.addEventListener('mouseup', endDrag, true);
+    document.addEventListener('mousemove', drag, true);
+    //document.addEventListener('mouseleave', endDrag, true);
+  }
+}
+
 drawGraph(inp);
+makeDraggable();
 </script>
 </body>
 </html>

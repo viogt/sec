@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Graph:Sin:Cos</title>
 <style>
-* { box-sizing: border-box; --cul: #bbc; font: normal 15px Arial, sans-serif; }
+* { box-sizing: border-box; --cul: #bbc; font: normal 2.8vw Arial, sans-serif; }
+.panou {
+  position:absolute;
+  top: 20px;
+  left: 50vw;
+  width: 45vw;
+  text-align: right;
+}
 #graph {
   position: absolute;
-  top: 100px; left: 10px;
-  width: 90vw;
+  top: 10px; left: 10px;
+  width: calc(100% - 20px);
   border: 1px solid grey;
   box-sizing: border-box;
   border-radius: 8px;
@@ -26,17 +33,17 @@
   border-left: thin dashed grey;
 }
 #radius { border-top: 2px solid red; transform-origin: top left; }
-#xyCirc { background-color: rgba(200,0,0,.5); }
+#xyCirc { background-color: rgba(200,0,0,.4); }
 .bgLine {
   position: absolute;
-  border-top: 2px solid purple;
-  border-left: 2px solid purple;
+  border-top: 2px solid #00c;
+  border-left: 2px solid #080;
 }
 .txt {
-  position: absolute; padding: 8px;
+  position: absolute; padding: 8px; color: #00c;
 }
-#yTxt { transform-origin: top left; transform: rotate(-90deg); }
-#angTxt { color: red; }
+#yTxt { transform-origin: top left; transform: rotate(-90deg); color: #080; }
+#angTxt { color: #a00; font-size: 4.2vw; }
 </style>
 </head>
 <body>
@@ -51,20 +58,19 @@
 <div id='ySin' class='bgLine'></div>
 <div id='radius' class='line'></div>
 <div id='orig' class='circle'></div>
-<div id='xyCirc' class='circle' draggable="true"></div>
 <div id='xTxt' class='txt'></div>
 <div id='yTxt' class='txt'></div>
 <div id='angTxt' class='txt'></div>
+<div id='xyCirc' class='circle' draggable="true"></div>
 
-<div style='position:absolute; top: 100px; left: 60vw;'>
-  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad&nbsp;
-  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg&nbsp;
+<div class='panou'>
+  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad
+  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg
   <input type="checkbox" id="chStepFive" onchange="chStep()" />Step
 </div>
 
 <script>
-  const chStepFive = document.querySelector("#chStepFive");
-  var maxDecimals = 4, inRad = true, Step = 1;
+  var inRad = true, Step = 1, x0, y0, R, quoAng;
     
   function chngRadDeg() {
     let radioBut = document.getElementsByName('radOrDeg'), v = quoAng;
@@ -86,7 +92,8 @@
     drawGraph(quoAng);
   }
 
-const graph = document.querySelector("#graph"),
+const chStepFive = document.querySelector("#chStepFive");
+  graph = document.querySelector("#graph"),
 	bgCirc = document.querySelector("#bgCirc"),
   xAxis = document.querySelector("#xAxis"),
   yAxis = document.querySelector("#yAxis"),
@@ -100,7 +107,7 @@ const graph = document.querySelector("#graph"),
   xTxt = document.querySelector("#xTxt"),
   yTxt = document.querySelector("#yTxt"),
   angTxt = document.querySelector("#angTxt"),
-  isZero = /\.?0+$/;
+  isZero = /\.?0+$/, maxDecimals = 4;
 
 function getAngle(n) {
   if(!inRad) return n + '°';
@@ -157,8 +164,6 @@ function drawText(obj, x, y, txt, Algn) {
   s.textAlign = Algn?'right':'left';
 }
 
-var x0, y0, R, quoAng;
-
 function drawGraph(quo) {
 //try {
     let box = graph.getBoundingClientRect();
@@ -197,7 +202,7 @@ function drawGraph(quo) {
     drawText(yTxt, xCos>0? x0-30:x0, ySin>0? y0:y0+R,
       `sin(${txtAng}) = ${trigMime(angMime, ySin, true)}`, ySin<0);
 
-    drawText(angTxt, x0-R, y0-R, `Θ = ${txtAng} (${invAng})`, false);
+    drawText(angTxt, box.x+5, box.y, `Θ = ${txtAng} (${invAng})`, false);
 
 //} catch(err) { alert(err.message); }
 }
@@ -213,12 +218,8 @@ function getOff(e) {
 function startDrag(e) {
   isDown = true;
   smRed.style.backgroundColor = '#f00';
-  let coord = getOff(e);
-  //if(e.touches) e = e.touches[0];
-  offset = [
-    smRed.offsetLeft - coord[0], //e.clientX,
-    smRed.offsetTop - coord[1] //e.clientY
-  ];
+  if(e.touches) e = e.touches[0];
+  offset = [ smRed.offsetLeft - e.clientX, smRed.offsetTop - e.clientY ];
 }
 
 function endDrag() {
@@ -231,8 +232,8 @@ function drag(e) {
   if(!isDown) return;
   e.preventDefault();
   
-  let coord = getOff(e);
-  let dx = coord[0]; dy = coord[1];
+  if(e.touches) e = e.touches[0];
+  let dx = e.clientX, dy = e.clientY;
   
   smRed.style.left = `${dx + offset[0]}px`;
   smRed.style.top  = `${dy + offset[1]}px`;
@@ -251,7 +252,8 @@ function drag(e) {
 function init() {
   drawGraph(3);
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
-  try {
+  window.addEventListener('resize', ()=>{ drawGraph(quoAng); });
+//try {
   if(isTouch) {
     smRed.addEventListener('touchstart', startDrag, true);
     document.addEventListener('touchmove', drag, true);
@@ -265,7 +267,7 @@ function init() {
     document.addEventListener('mousemove', drag, true);
     //document.addEventListener('mouseleave', endDrag, true);
   }
-  } catch(err) { alert(err.message); }
+//} catch(err) { alert(err.message); }
 }
 
 document.addEventListener("DOMContentLoaded", init);

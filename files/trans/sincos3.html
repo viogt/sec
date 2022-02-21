@@ -4,44 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Graph:Sin:Cos</title>
-  <style>
-    * { box-sizing: border-box; --cul: #bbc; font: normal 16px Arial, sans-serif; }
-    .rng { width: 100%; outline: none; }
-    table {
-      color: #448;
-      width: 100%;
-      border-collapse:collapse;
-    }
-    .angleRes {
-      margin: 4px 0;
-      border: 1px solid var(--cul);
-      padding: 4px 10px;
-      border-radius: 6px;
-      background-color: #fff;
-    }
-    tr { height: 38px; }
-    a:link { color: inherit; }
-    a:visited { color: inherit; }
-    .mainPanel {
-      width: 100%;
-      border: 1px solid var(--cul);
-      border-radius: 8px;
-      padding: 5vw;
-      text-align: center;
-      background-color: #f4f4ff;
-      background: linear-gradient(145deg, rgba(219,236,255,1) 0%, rgba(243,222,255,1) 100%);
-      background-image:/*url("data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E")*/;
-      background-size: cover;
-    }
+<style>
+* { box-sizing: border-box; --cul: #bbc; font: normal 15px Arial, sans-serif; }
 #graph {
-  /*position: absolute;
-  top: 200px; left: 10px;*/
+  position: absolute;
+  top: 100px; left: 10px;
   width: 90vw;
   border: 1px solid grey;
   box-sizing: border-box;
   border-radius: 8px;
 }
-
 .circle {
   position: absolute;
   border: 1px solid red;
@@ -61,42 +33,13 @@
   border-left: 2px solid purple;
 }
 .txt {
-  position: absolute; padding: 8px; font-size: 15px;
+  position: absolute; padding: 8px;
 }
 #yTxt { transform-origin: top left; transform: rotate(-90deg); }
 #angTxt { color: red; }
-
-@media screen and (min-width: 600px) {
-  .mainPanel { width: 600px; margin: auto; }
-}
-  </style>
+</style>
 </head>
 <body>
-
-<div class='mainPanel'>
-  <table>
-    <tr>
-      <td colspan="3" align="center">
-        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad&nbsp;
-        <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg&nbsp;
-        <input type="checkbox" id="chStepFive" onchange="chStep()" />Step&nbsp;
-        <a href="sincos.html">Main</a>&nbsp;
-        <a onclick="changeCSS('.mainPanel', 'backgroundImage')" href="javascript:void(0);">BkGround</a>
-      </td>
-    </tr>
-    <tr>
-      <td id='leftPad' align='left' width='20%'>-2π</td>
-      <td align='center'><span id='angle' class='angleRes' width='60%'></span></td>
-      <td id='rightPad' align='right' width='20%'>2π</td>
-    </tr>
-    <tr>
-      <td colspan="3" align="center">
-        <input id="inpAngle" class="rng" type="range" min="-24" max="24" step="1" value="3" oninput="drawGraph(this)"/>
-      </td>
-    </tr>
-  </table>
-
-</div>
 
 <div id='graph'></div>
 <div id='bgCirc' class='circle'></div>
@@ -113,48 +56,35 @@
 <div id='yTxt' class='txt'></div>
 <div id='angTxt' class='txt'></div>
 
-<script>
-const inp = document.querySelector("#inpAngle"),
-      leftPad = document.querySelector("#leftPad"),
-      rightPad = document.querySelector("#rightPad"),
-      angle = document.querySelector("#angle"),
-      chStepFive = document.querySelector("#chStepFive");
-    
-    var maxDecimals = 4, inRad = true, chStep5 = 1;
-    
-    function chngRadDeg() {
-      let radioBut = document.getElementsByName('radOrDeg'), v = inp.value;
-      if(radioBut[0].checked) {
-        leftPad.innerText = '-2π';
-        rightPad.innerText = '2π';
-        inRad = true;
-        inp.min = -24; inp.max = 24; inp.step = chStepFive.checked ? 2 : 1;
-        inp.value = Math.round(24*v/360);
-      }
-      else {
-        leftPad.innerText = '-360°';
-        rightPad.innerText = '360°';
-        inRad = false;
-        inp.min = -360; inp.max = 360; inp.step = chStepFive.checked ? 5 : 1;
-        inp.value = Math.round(360*v/24);
-      }
-      drawGraph(inp);
-    }
-    
-    function chStep() {
-    	if(inRad) chStep5 = chStepFive.checked ? 2 : 1;
-        else chStep5 = chStepFive.checked ? 5 : 1;
-      inp.step = chStep5;
-      drawGraph(inp);
-    }
+<div style='position:absolute; top: 100px; left: 60vw;'>
+  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad&nbsp;
+  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg&nbsp;
+  <input type="checkbox" id="chStepFive" onchange="chStep()" />Step
+</div>
 
-function getArc(x0, y0, radius, angleRad) {
-	let x = x0 + Math.round(radius * Math.cos(angleRad)),
-    	y = y0 - Math.round(radius * Math.sin(angleRad)),
-      lrgAng = Math.abs(angleRad%(Math.PI*2)) < Math.PI?0:1;
-    if(angleRad > 0) return `M ${x0+radius} ${y0} A ${radius} ${radius} 0 ${lrgAng} 0 ${x} ${y}`;
-    else  return `M ${x} ${y} A ${radius} ${radius} 0 ${lrgAng} 0 ${x0+radius} ${y0}`;
-}
+<script>
+  const chStepFive = document.querySelector("#chStepFive");
+  var maxDecimals = 4, inRad = true, Step = 1;
+    
+  function chngRadDeg() {
+    let radioBut = document.getElementsByName('radOrDeg'), v = quoAng;
+    if(radioBut[0].checked) {
+      inRad = true;
+      Step = chStepFive.checked ? 2 : 1;
+      drawGraph(24*quoAng/360);
+    }
+    else {
+      inRad = false;
+      Step = chStepFive.checked ? 5 : 1;
+      drawGraph(360*quoAng/24);
+    }
+  }
+    
+  function chStep() {
+    if(inRad) Step = chStepFive.checked ? 2 : 1;
+    else Step = chStepFive.checked ? 5 : 1;
+    drawGraph(quoAng);
+  }
 
 const graph = document.querySelector("#graph"),
 	bgCirc = document.querySelector("#bgCirc"),
@@ -171,15 +101,6 @@ const graph = document.querySelector("#graph"),
   yTxt = document.querySelector("#yTxt"),
   angTxt = document.querySelector("#angTxt"),
   isZero = /\.?0+$/;
-	
-function drawLine(obj, x1,y1,x2,y2) {
-	let s = obj.style;
-  s.left = `${x1}px`;
-  s.top = `${y1}px`;
-  s.width = `${x2-x1+10}px`;
-  s.height = `${y2-y1+10}px`;
-  alert('Line!');
-}
 
 function getAngle(n) {
   if(!inRad) return n + '°';
@@ -225,7 +146,7 @@ function drawLine(obj, x1,y1,x2,y2, ang=null) {
   s.top = `${y1}px`;
   s.width = `${x2-x1}px`;
   s.height = `${y2-y1}px`;
-  if(ang) s.transform = `rotate(${ang}deg)`;
+  if(ang) s.transform = `rotate(${ang}rad)`;
 }
 
 function drawText(obj, x, y, txt, Algn) {
@@ -236,15 +157,18 @@ function drawText(obj, x, y, txt, Algn) {
   s.textAlign = Algn?'right':'left';
 }
 
-var x0, y0, R;
+var x0, y0, R, quoAng;
 
-function drawGraph(obj) {
-try {
+function drawGraph(quo) {
+//try {
     let box = graph.getBoundingClientRect();
     if(box.width != box.height) graph.style.height = `${box.width}px`;
     x0 = box.x + box.width/2, y0 = box.y + box.width/2, R = box.width/2-30;
     
-    let txtAng = obj.value, angMime = txtAng, Ang = inRad ?txtAng/12*Math.PI : txtAng*Math.PI/180,
+    quoAng = Math.round(quo/Step)*Step;
+    
+    let txtAng = quoAng, angMime = txtAng,
+    Ang = inRad ?txtAng/12*Math.PI : txtAng*Math.PI/180,
     xCos = Math.cos(Ang), ySin = Math.sin(Ang),
     X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
 
@@ -261,32 +185,21 @@ try {
     drawLine(y_Sin, x0, y0, x0, Y);
 
     drawCircle(smRed, X, Y, 20);
-
-    let tAng = inRad ? txtAng*(-15) : txtAng*(-1);
-    drawLine(radius, x0, y0, x0+R, y0, tAng.toString());
+    drawLine(radius, x0, y0, x0+R, y0, (-Ang).toString());
 
     xTxt.style.width = `${R}px`; yTxt.style.width = `${R}px`;
 
     txtAng = getAngle(txtAng);
+    let invAng = getAngle(quoAng - (inRad?24:360));
+
     drawText(xTxt, xCos>0? x0:x0-R, ySin>0? y0:y0-30,
       `cos(${txtAng}) = ${trigMime(angMime, xCos, false)}`, xCos<0);
     drawText(yTxt, xCos>0? x0-30:x0, ySin>0? y0:y0+R,
       `sin(${txtAng}) = ${trigMime(angMime, ySin, true)}`, ySin<0);
 
-    angle.innerText = 'Θ = ' + txtAng;
-    drawText(angTxt, x0-R, y0-R, 'Θ = ' + txtAng, false);
+    drawText(angTxt, x0-R, y0-R, `Θ = ${txtAng} (${invAng})`, false);
 
-} catch(err) { alert(err.message); }
-}
-
-function changeCSS(rule, slctr) {
-  const sh = document.styleSheets[0],
-        r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
-  if(!r) return;
-  let s = r.style[slctr];
-  if(s.charAt(0) == 'l') s = "url(\"data:image/svg+xml,%3Csvg width='400' height='600' version='1.1' viewBox='0 0 106 159' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 0h106v159h-106z' fill='%23f4d6ee'/%3E%3Cpath d='m0 159v-159h106c-5.5 124-51 149-106 159z' fill='%23e5d5ff'/%3E%3Cpath d='m0 130v-130h90c-8.5 75-35 119-90 130z' fill='%23d7e3f4'/%3E%3Cpath d='m0 98v-98h69c-1.1 43-3 89-69 98z' fill='%23d7eef4'/%3E%3Cpath d='m0 69v-69h50c0.29 43-19 62-50 69z' fill='%23d5fff6'/%3E%3Cpath d='m106 101c-7.1 28-18 53-42 58h42z' fill='%23f1c8fb'/%3E%3Cpath d='m0 0h32c-3 33-15 37-32 37z' fill='%23c3fddc'/%3E%3C/svg%3E\")";
-  else s = 'linear-gradient(145deg, rgba(219,236,255,1) 0%, rgba(243,222,255,1) 100%)';
-  r.style[slctr] = s;
+//} catch(err) { alert(err.message); }
 }
 
 /*-------------------------- Drag ------------------------------*/
@@ -306,14 +219,15 @@ function startDrag(e) {
     smRed.offsetLeft - coord[0], //e.clientX,
     smRed.offsetTop - coord[1] //e.clientY
   ];
-
 }
+
 function endDrag() {
   isDown = false;
   smRed.style.backgroundColor = '';
 }
+
 function drag(e) {
-try {
+//try {
   if(!isDown) return;
   e.preventDefault();
   
@@ -330,14 +244,12 @@ try {
   else if(dx<x0 && dy>y0) angInp += div;
   else if(dx>x0 && dy>y0) angInp += div*2;
 
-  inp.value = angInp;
-  angle.innerText = 'Θ = ' + getAngle(angInp);
-  drawGraph(inp);
-} catch(err) { alert(err.message); }
+  drawGraph(angInp);
+//} catch(err) { alert(err.message); }
 }
 
 function init() {
-  drawGraph(inp);
+  drawGraph(3);
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
   try {
   if(isTouch) {
@@ -357,7 +269,6 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
-//makeDraggable();
 </script>
 </body>
 </html>

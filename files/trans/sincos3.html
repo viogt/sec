@@ -329,11 +329,11 @@ function init() {
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
   try {
   if(isTouch) {
-    smRed.addEventListener('touchstart', startDrag, true);
-    document.addEventListener('touchmove', drag, true);
-    document.addEventListener('touchend', endDrag, true);
-    //document.addEventListener('touchleave', endDrag, true);
-    document.addEventListener('touchcancel', endDrag, true);
+    smRed.addEventListener('touchstart', startDrag);
+    document.addEventListener('touchmove', drag);
+    document.addEventListener('touchend', endDrag);
+    //document.addEventListener('touchleave', endDrag);
+    document.addEventListener('touchcancel', endDrag);
   }
   else {
     smRed.addEventListener('mousedown', startDrag, true);

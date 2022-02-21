@@ -328,10 +328,10 @@ function makeDraggable() {
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
   if(isTouch) {
     smRed.addEventListener('touchstart', startDrag, true);
-    smRed.addEventListener('touchmove', drag, true);
-    smRed.addEventListener('touchend', endDrag, true);
-    smRed.addEventListener('touchleave', endDrag, true);
-    smRed.addEventListener('touchcancel', endDrag, true);
+    document.addEventListener('touchmove', drag, true);
+    document.addEventListener('touchend', endDrag, true);
+    document.addEventListener('touchleave', endDrag, true);
+    document.addEventListener('touchcancel', endDrag, true);
   }
   else {
     smRed.addEventListener('mousedown', startDrag, true);

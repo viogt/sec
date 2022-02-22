@@ -76,7 +76,7 @@
   <text x="486" y="242" fill='#bbc'>X</text>
 
   <line id="lnRed" stroke="red" />
-  <text id='shAng' fill='red' stroke='none'></text>
+  <text id='shAng' fill='#000' stroke='#000'></text>
  
   <line id='dshGr' stroke="darkgreen" stroke-width=".6" stroke-dasharray="4,2" />
   <text id='txtGr' x="280" y="270" fill="darkgreen" stroke="none"></text>
@@ -88,7 +88,7 @@
 
   <circle cx="250" cy="250" r="3" fill="red" stroke="none" />
   <path id='smArc' stroke="red" />
-  <circle id='smRed' fill='red' r='4' stroke="red" />
+  <circle id='smRed' fill='red' r='18' stroke="red" opacity=".3" />
 </g>
 </svg>
 
@@ -242,7 +242,7 @@ function changeCSS(rule, slctr) {
 
 function startDrag(evt) {
   isDown = true;
-  smRed.setAttribute('r', 12);
+  smRed.setAttribute('opacity', 1);
   offset = getMousePosition(evt);
   offset.x -= smRed.getAttribute("cx");
   offset.y -= smRed.getAttribute("cy");
@@ -274,7 +274,7 @@ function drag(evt) {
 
 function endDrag(evt) {
   isDown = false;
-  smRed.setAttribute('r', 4);
+  smRed.setAttribute('opacity', .3);
   drawGraph(inp);
 }
 

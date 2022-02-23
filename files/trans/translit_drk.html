@@ -4,11 +4,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link id='curStyle' rel="stylesheet" href="translit_1.css">
+    <style>
+      #dshRct {
+        display: none;
+        z-index: 140;
+      }
+      #dshRct div {
+        border: 1px dashed red;
+        position: absolute;
+      }
+    #drop1 {
+        top: 0; left: 0; width: 100vw; height: 80px;
+        white-space: nowrap;
+    }
+    #drop2 {
+        top: 0; left: calc(100vw - 80px); width: 80px; height: 100vh;
+        white-space: normal;
+    }
+    #drop3 {
+        top: calc(100vh - 80px); left: 0; width: 100vw; height: 80px;
+        white-space: nowrap;
+    }
+    #drop4 {
+        top: 0; left: 0; width: 80px; height: 100vh;
+        white-space: normal;
+    }
+    </style>
     <title>✎ Translit</title>
   </head>
 <body>
 
-<div class="fix_panel panel1">
+<div id='smRed' class="fix_panel panel1" draggable='true'>
 <div class="font1" onclick="sampleData(0)">
     <i class="fa fa-download"></i>
     <label>Sample<br>data</label>
@@ -41,7 +67,7 @@
     <i class="fa fa-archive"></i>
     <label>Simulate<br>big data<small><sup>3</sup></small></label>
 </div>
-<div class="font1" onclick="init(true)">
+<div class="font1" onclick="initPos(0)">
     <i id="menuSize" class="fa fa-retweet"></i>
     <label>Menu<br>position</label>
 </div>
@@ -195,6 +221,13 @@ Svetlana Petrovna Nikolaeva
   &nbsp;<i class="fa fa-times" onclick='showNumber(false)'></i>
 </div></div>
 
+<div id='dshRct'>
+  <div id="drop1"></div>
+  <div id="drop2"></div>
+  <div id="drop3"></div>
+  <div id="drop4"></div>
+</div>
+
 <i class="spin fa fa-spinner fa-pulse"></i>
 <script>
 
@@ -230,13 +263,14 @@ const Trans = [
 function notEmpty(ob) { return /\S/mg.test(ob.value); }
 
 var menuPos = 1;
-function init(fl) {
+function initPos(newPos) {
     const   pnl = document.querySelector(".fix_panel"),
             Bdy = document.querySelector('.txt_area');
     
     pnl.classList.remove(`panel${menuPos}`);
     Bdy.classList.remove(`area${menuPos}`);
-    menuPos = menuPos < 4 ? menuPos+1 : 1;
+    if(newPos) menuPos = newPos;
+    else menuPos = menuPos < 4 ? menuPos+1 : 1;
     pnl.classList.add(`panel${menuPos}`);
     Bdy.classList.add(`area${menuPos}`);
 }
@@ -482,8 +516,9 @@ function chTheme() {
 
 const scene = {
     sceneIx: 0, times: 0, intervalIx: 0,
-    scenes: ['sampleData(1)', 1, 'matchTrans(true)', 1, 'init()', 4, 'showNumber(true)', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1,'showNumber(false)', 1, 'clearData()', 1]
+    scenes: ['sampleData(1)', 1, 'matchTrans(true)', 1, 'initPos(0)', 4, 'showNumber(true)', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1,'showNumber(false)', 1, 'clearData()', 1]
 }
+
 function toScene(fl, act = false) {
     const   e = document.querySelector('.scene'),
             i = e.querySelector('i');
@@ -514,6 +549,77 @@ function toScene(fl, act = false) {
 function toSite(site) { document.location.href = site; }
 
 setTimeout(()=>{ toScene(false, true); }, 5000);
+
+/*-------------------------- Drag ------------------------------*/
+
+const smRed = document.querySelector('#smRed'),
+  dshRct = document.querySelector('#dshRct');
+
+function drop(evt) {
+  evt.preventDefault();
+  initPos(evt.target.id.slice(-1));
+}
+function allowDrop(evt) {
+  evt.preventDefault();
+}
+function startDrag(e) {
+  smRed.style.backgroundColor = '#f00';
+  if(e.touches) e = e.touches[0];
+  dshRct.style.display = 'block';
+  //if(isTouch) navigator.vibrate(60);
+}
+function endDrag() {
+  smRed.style.backgroundColor = '';
+  dshRct.style.display = 'none';
+}
+
+/*function drag(e) {
+try {
+  if(!isDown) return;
+  e.preventDefault();
+  
+  if(e.touches) e = e.touches[0];
+  let dx = e.clientX, dy = e.clientY;
+  
+  smRed.style.left = `${dx + offset[0]}px`;
+  smRed.style.top  = `${dy + offset[1]}px`;
+
+  let frm = document.body.getBoundingClientRect();
+  if(dy < frm.height/3) { showPos(1); }
+  if(dy > frm.height/3*2) { alert('Jos'); showPos(3); }
+  if(dx < frm.width/3) { alert('Left'); showPos(4); }
+  if(dx > frm.width/3*2) { alert('Right');showPos(2); }
+  
+} catch(err) { alert(err.message); }
+}*/
+
+function init() {
+  isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
+  //window.addEventListener('resize', ()=>{ drawGraph(quoAng); });
+try {
+  if(isTouch) {
+    smRed.addEventListener('touchstart', startDrag, true);
+    //document.addEventListener('touchmove', drag, true);
+    smRed.addEventListener('touchend', endDrag, true);
+    //document.addEventListener('touchleave', endDrag, true);
+    //document.addEventListener('touchcancel', endDrag, true);
+    dshRct.querySelectorAll('div').forEach(e => {
+      e.addEventListener('drop', drop);
+      e.addEventListener('dragover', allowDrop);
+    });
+  }
+  else {
+    smRed.addEventListener('dragstart', startDrag);
+    smRed.addEventListener('dragend', endDrag);
+    dshRct.querySelectorAll('div').forEach(e => {
+      e.addEventListener('drop', drop);
+      e.addEventListener('dragover', allowDrop);
+    });
+  }
+} catch(err) { alert(err.message); }
+}
+
+document.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
 </html>

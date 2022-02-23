@@ -582,7 +582,12 @@ function endDrag() {
   smRed.style.backgroundColor = '';
   dshRct.style.display = 'none';
   isDown = false;
-  alert('Hop');
+  if(e.touches) {
+    e = e.touches[0];
+    let dx = e.clientX, dy = e.clientY;
+    let el = document.elementFromPoint(dx, dy);
+    alert(el.id);
+  }
 }
 
 function dragTouch(e) {

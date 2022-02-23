@@ -186,7 +186,7 @@ function trigMime(a, sg, isSin) {
   return v;
 }
 
-function drawGraph(obj, ifSmRed = true) {
+function drawGraph(obj) {
     let txtAng = obj.value, angMime = txtAng, Ang = inRad ? txtAng/12*Math.PI : txtAng*Math.PI/180,
     xCos = Math.cos(Ang), ySin = Math.sin(Ang), R = 230, x0 = 250, y0 = 250,
     X = x0 + Math.round(R * xCos), Y = y0 - Math.round(R * ySin);
@@ -198,7 +198,7 @@ function drawGraph(obj, ifSmRed = true) {
     drawLine(slBl, x0,y0,x0,Y);
     
     smArc.setAttribute('d', getArc(x0, y0, Math.round(R/3), Ang));
-    if(ifSmRed) { smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y); }
+    smRed.setAttribute('cx',X); smRed.setAttribute('cy',Y);
     
     txtAng = getAngle(txtAng);
     shAng.textContent = txtAng;

@@ -67,7 +67,7 @@
     <i class="fa fa-archive"></i>
     <label>Simulate<br>big data<small><sup>3</sup></small></label>
 </div>
-<div class="font1" onclick="initPos(0)">
+<div class="font1" onclick="initP()">
     <i id="menuSize" class="fa fa-retweet"></i>
     <label>Menu<br>position</label>
 </div>
@@ -263,6 +263,9 @@ const Trans = [
 function notEmpty(ob) { return /\S/mg.test(ob.value); }
 
 var menuPos = 1;
+function initP() {
+  dshRct.style.display = 'block';
+}
 function initPos(newPos) {
     const   pnl = document.querySelector(".fix_panel"),
             Bdy = document.querySelector('.txt_area');
@@ -516,7 +519,7 @@ function chTheme() {
 
 const scene = {
     sceneIx: 0, times: 0, intervalIx: 0,
-    scenes: ['sampleData(1)', 1, 'matchTrans(true)', 1, 'initPos(0)', 4, 'showNumber(true)', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1,'showNumber(false)', 1, 'clearData()', 1]
+    scenes: ['sampleData(1)', 1, 'matchTrans(true)', 1, 'initP()', 4, 'showNumber(true)', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1, 'duotone()', 4, 'chTheme()', 1,'showNumber(false)', 1, 'clearData()', 1]
 }
 
 function toScene(fl, act = false) {
@@ -560,36 +563,36 @@ function drop(evt) {
   evt.preventDefault();
   initPos(evt.target.id.slice(-1));
 }
-function _over(evt) {
+function dragOver(evt) {
   evt.preventDefault();
-  evt.target.style.backgroundColor = 'rgba(200,0,0,.3)';
+  //evt.target.style.backgroundColor = 'rgba(200,0,0,.3)';
 }
-function _leave(evt) {
+/*function _leave(evt) {
   evt.preventDefault();
   evt.target.style.backgroundColor = null;
-}
+}*/
 function startDrag(e) {
   smRed.style.backgroundColor = '#f00';
   dshRct.style.display = 'block';
-  if(e.touches) {
+  /*if(e.touches) {
     isDown = true;
     e = e.touches[0];
     offset = [ smRed.offsetLeft - e.clientX, smRed.offsetTop - e.clientY ];
     navigator.vibrate(60);
-  }
+  }*/
 }
 function endDrag(e) {
 try {
   smRed.style.backgroundColor = '';
   dshRct.style.display = 'none';
-  isDown = false;
+  /*isDown = false;
   if(e.touches) {
     //e = e.touches[0];
     e = e.changedTouches[0];
     let dx = e.clientX, dy = e.clientY;
     //let el = document.elementFromPoint(dx, dy);
     alert(dx + ' ' + dy);
-  }
+  }*/
 } catch(err) { alert(err.message); }
 }
 
@@ -616,20 +619,25 @@ try {
 } catch(err) { alert(err.message); }
 }
 
+function touchClick(evt) {
+  dshRct.style.display = 'none';
+  initPos(evt.target.id.slice(-1));
+}
+
 function init() {
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
   //window.addEventListener('resize', ()=>{ drawGraph(quoAng); });
 try {
   if(isTouch) {
-    smRed.addEventListener('touchstart', startDrag, true);
-    document.addEventListener('touchmove', dragTouch, true);
-    document.addEventListener('touchend', endDrag, true);
+    //smRed.addEventListener('touchstart', startDrag, true);
+    //document.addEventListener('touchmove', dragTouch, true);
+    //document.addEventListener('touchend', endDrag, true);
     //document.addEventListener('touchleave', endDrag, true);
     //document.addEventListener('touchcancel', endDrag, true);
     dshRct.querySelectorAll('div').forEach(e => {
-      e.addEventListener('drop', drop);
-      e.addEventListener('dragover', _over);
-      e.addEventListener('dragleave', _leave);
+      e.addEventListener('touchstart', touchClick);
+      //e.addEventListener('dragover', _over);
+      //e.addEventListener('dragleave', _leave);
     });
   }
   else {
@@ -637,8 +645,9 @@ try {
     smRed.addEventListener('dragend', endDrag);
     dshRct.querySelectorAll('div').forEach(e => {
       e.addEventListener('drop', drop);
-      e.addEventListener('dragover', _over);
-      e.addEventListener('dragleave', _leave);
+      e.addEventListener('dragover', dragOver);
+      //e.addEventListener('dragleave', _leave);
+      e.addEventListener('click', touchClick);
     });
   }
 } catch(err) { alert(err.message); }

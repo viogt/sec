@@ -570,9 +570,9 @@ function _leave(evt) {
 }
 function startDrag(e) {
   smRed.style.backgroundColor = '#f00';
-  if(e.touches) e = e.touches[0];
   dshRct.style.display = 'block';
   if(e.touches) {
+    isDown = true;
     e = e.touches[0];
     offset = [ smRed.offsetLeft - e.clientX, smRed.offsetTop - e.clientY ];
     navigator.vibrate(60);
@@ -581,6 +581,7 @@ function startDrag(e) {
 function endDrag() {
   smRed.style.backgroundColor = '';
   dshRct.style.display = 'none';
+  isDown = false;
 }
 
 function dragTouch(e) {

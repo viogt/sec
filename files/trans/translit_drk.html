@@ -562,7 +562,7 @@ function drop(evt) {
 }
 function _over(evt) {
   evt.preventDefault();
-  evt.target.style.backgroundColor = 'rgba(200,0,0,.2)';
+  evt.target.style.backgroundColor = 'rgba(200,0,0,.3)';
 }
 function _leave(evt) {
   evt.preventDefault();
@@ -582,6 +582,7 @@ function endDrag() {
   smRed.style.backgroundColor = '';
   dshRct.style.display = 'none';
   isDown = false;
+  alert('Hop');
 }
 
 function dragTouch(e) {
@@ -594,6 +595,10 @@ try {
   
   smRed.style.left = `${dx + offset[0]}px`;
   smRed.style.top  = `${dy + offset[1]}px`;
+
+  let el = document.elementFromPoint(dx, dy);
+  if(['drop1', 'drop2', 'drop3', 'drop4'].includes(el.id))
+    el.style.backgroundColor = 'rgba(200,0,0,.2)';
 
 } catch(err) { alert(err.message); }
 }

@@ -578,7 +578,8 @@ function startDrag(e) {
     navigator.vibrate(60);
   }
 }
-function endDrag() {
+function endDrag(e) {
+try {
   smRed.style.backgroundColor = '';
   dshRct.style.display = 'none';
   isDown = false;
@@ -588,6 +589,7 @@ function endDrag() {
     let el = document.elementFromPoint(dx, dy);
     alert(el.id);
   }
+} catch(err) { alert(err.message); }
 }
 
 function dragTouch(e) {

@@ -604,10 +604,10 @@ try {
   smRed.style.top  = `${dy + offset[1]}px`;
 
   let el = document.elementFromPoint(dx, dy);
-  if(['drop1', 'drop2', 'drop3', 'drop4'].includes(el.id)) {
-    el.style.backgroundColor = 'rgba(200,0,0,.3)';
+  //if(['drop1', 'drop2', 'drop3', 'drop4'].includes(el.id)) {
+  //  el.style.backgroundColor = 'rgba(200,0,0,.3)';
     hoverOn = el;
-  }
+  //}
     
 
 } catch(err) { alert(err.message); }

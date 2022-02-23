@@ -554,44 +554,48 @@ setTimeout(()=>{ toScene(false, true); }, 5000);
 
 const smRed = document.querySelector('#smRed'),
   dshRct = document.querySelector('#dshRct');
+var offset = [0,0], isDown = false, isTouch;
 
 function drop(evt) {
   evt.preventDefault();
   initPos(evt.target.id.slice(-1));
 }
-function allowDrop(evt) {
+function _over(evt) {
   evt.preventDefault();
+  evt.target.style.backgroundColor = 'rgba(200,0,0,.2)';
+}
+function _leave(evt) {
+  evt.preventDefault();
+  evt.target.style.backgroundColor = null;
 }
 function startDrag(e) {
   smRed.style.backgroundColor = '#f00';
   if(e.touches) e = e.touches[0];
   dshRct.style.display = 'block';
-  //if(isTouch) navigator.vibrate(60);
+  if(e.touches) {
+    e = e.touches[0];
+    offset = [ smRed.offsetLeft - e.clientX, smRed.offsetTop - e.clientY ];
+    navigator.vibrate(60);
+  }
 }
 function endDrag() {
   smRed.style.backgroundColor = '';
   dshRct.style.display = 'none';
 }
 
-/*function drag(e) {
+function dragTouch(e) {
 try {
   if(!isDown) return;
   e.preventDefault();
   
-  if(e.touches) e = e.touches[0];
+  e = e.touches[0];
   let dx = e.clientX, dy = e.clientY;
   
   smRed.style.left = `${dx + offset[0]}px`;
   smRed.style.top  = `${dy + offset[1]}px`;
 
-  let frm = document.body.getBoundingClientRect();
-  if(dy < frm.height/3) { showPos(1); }
-  if(dy > frm.height/3*2) { alert('Jos'); showPos(3); }
-  if(dx < frm.width/3) { alert('Left'); showPos(4); }
-  if(dx > frm.width/3*2) { alert('Right');showPos(2); }
-  
 } catch(err) { alert(err.message); }
-}*/
+}
 
 function init() {
   isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
@@ -599,13 +603,14 @@ function init() {
 try {
   if(isTouch) {
     smRed.addEventListener('touchstart', startDrag, true);
-    //document.addEventListener('touchmove', drag, true);
-    smRed.addEventListener('touchend', endDrag, true);
+    document.addEventListener('touchmove', dragTouch, true);
+    document.addEventListener('touchend', endDrag, true);
     //document.addEventListener('touchleave', endDrag, true);
     //document.addEventListener('touchcancel', endDrag, true);
     dshRct.querySelectorAll('div').forEach(e => {
       e.addEventListener('drop', drop);
-      e.addEventListener('dragover', allowDrop);
+      e.addEventListener('dragover', _over);
+      e.addEventListener('dragleave', _leave);
     });
   }
   else {
@@ -613,7 +618,8 @@ try {
     smRed.addEventListener('dragend', endDrag);
     dshRct.querySelectorAll('div').forEach(e => {
       e.addEventListener('drop', drop);
-      e.addEventListener('dragover', allowDrop);
+      e.addEventListener('dragover', _over);
+      e.addEventListener('dragleave', _leave);
     });
   }
 } catch(err) { alert(err.message); }

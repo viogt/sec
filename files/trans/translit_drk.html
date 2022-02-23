@@ -554,7 +554,7 @@ setTimeout(()=>{ toScene(false, true); }, 5000);
 
 const smRed = document.querySelector('#smRed'),
   dshRct = document.querySelector('#dshRct');
-var offset = [0,0], isDown = false, isTouch, hoverOn;
+var offset = [0,0], isDown = false, isTouch, hoverOn = [0,0];
 
 function drop(evt) {
   evt.preventDefault();
@@ -587,7 +587,7 @@ try {
     /*e = e.touches[0];
     let dx = e.clientX, dy = e.clientY;
     let el = document.elementFromPoint(dx, dy);*/
-    alert(hoverOn.id);
+    alert(hoverOn[0] + ' ' + hoverOn[1]);
   }
 } catch(err) { alert(err.message); }
 }
@@ -599,14 +599,16 @@ try {
   
   e = e.touches[0];
   let dx = e.clientX, dy = e.clientY;
+
+  hoverOn = [dx, dy];
   
   smRed.style.left = `${dx + offset[0]}px`;
   smRed.style.top  = `${dy + offset[1]}px`;
 
-  let el = document.elementFromPoint(dx, dy);
+  //let el = document.elementFromPoint(dx, dy);
   //if(['drop1', 'drop2', 'drop3', 'drop4'].includes(el.id)) {
   //  el.style.backgroundColor = 'rgba(200,0,0,.3)';
-    hoverOn = el;
+  //  hoverOn = el;
   //}
     
 

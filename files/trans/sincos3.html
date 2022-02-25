@@ -13,13 +13,13 @@
 #panou {
   display: inline-block;
   float: right;
-  font-size: 16px;
+  font-size: 15px;
 }
 #angTxt {
   display: inline-block;
   float: left;
   color: #a00;
-  font-size: 24px;
+  font-size: 15px;
 }
 #graph {
   position: absolute;
@@ -236,8 +236,10 @@ function startDrag(e) {
 }
 
 function endDrag() {
-  isDown = false;
-  smRed.style.backgroundColor = '';
+  if(isDown) {
+    isDown = false;
+    smRed.style.backgroundColor = '';
+  }
 }
 
 function drag(e) {

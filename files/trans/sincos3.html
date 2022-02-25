@@ -140,6 +140,7 @@ function getAngle(n) {
 function trigMime(a, sg, isSin) {
   let absA = Math.abs(a), v = sg.toFixed(4); if(!inRad) absA /=15;
   if(isZero.test(v)) v = v.replace(isZero,'');
+  if(v == '-0') return '0';
     if(absA == 3 || absA == 9 || absA == 15 || absA == 21) return `${v} (${Math.sign(sg)<0?'-':''}√2/2)`;
     if(isSin) {
       if(absA == 2 || absA == 10 || absA == 14 || absA == 22) return `${v} (${Math.sign(sg)<0?'-':''}1/2)`;

@@ -5,19 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Graph:Sin:Cos</title>
 <style>
-* { box-sizing: border-box; font: normal 2.8vw Arial, sans-serif; }
-.panou {
-  position:absolute;
-  top: 20px;
-  left: 50vw;
-  width: 45vw;
-  text-align: right;
+* { box-sizing: border-box; font-family: Arial, sans-serif; }
+#mainPanel {
+  width: 100%;
+  padding: 8px;
+}
+#panou {
+  display: inline-block;
+  float: right;
+  font-size: 16px;
+}
+#angTxt {
+  display: inline-block;
+  float: left;
+  color: #a00;
+  font-size: 24px;
 }
 #graph {
   position: absolute;
   top: 10px; left: 10px;
   width: calc(100% - 20px);
-  border: 1px solid grey;
+  border: 1px solid #bbc;
   box-sizing: border-box;
   border-radius: 8px;
 }
@@ -26,29 +34,43 @@
   border: 1px solid red;
   border-radius: 50%;
   box-sizing: border-box;
+  box-shadow: inset 0 0 20px #f66;
 }
 .line {
   position: absolute;
-  border-top: thin dashed grey;
-  border-left: thin dashed grey;
+  border-top: thin dashed #bbc;
+  border-left: thin dashed #bbc;
 }
 #radius { border-top: 2px solid red; transform-origin: top left; }
-#xyCirc { background-color: rgba(200,0,0,.4); }
 .bgLine {
   position: absolute;
   border-top: 2px solid #00c;
   border-left: 2px solid #080;
 }
 .txt {
+  font-size: 2.8vw;
   position: absolute; padding: 8px; color: #00c;
 }
 #yTxt { transform-origin: top left; transform: rotate(-90deg); color: #080; }
-#angTxt { color: #a00; font-size: 4.2vw; }
+
+@media screen and (min-width: 600px) {
+  #graph { left: calc((100vw - 600px) / 2); width: 600px; }
+  .txt { font-size: 18px; }
+}
 </style>
 </head>
 <body>
 
-<div id='graph'></div>
+<div id='graph'>
+  <div id='mainPanel'>
+    <div id='angTxt' class='txt'></div>
+    <div id='panou'>
+      <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad
+      <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg
+      <input type="checkbox" id="chStepFive" onchange="chStep()" />Step
+    </div>
+  </div>
+</div>
 <div id='bgCirc' class='circle'></div>
 <div id='xAxis' class='line'></div>
 <div id='yAxis' class='line'></div>
@@ -60,14 +82,7 @@
 <div id='orig' class='circle'></div>
 <div id='xTxt' class='txt'></div>
 <div id='yTxt' class='txt'></div>
-<div id='angTxt' class='txt'></div>
 <div id='xyCirc' class='circle' draggable="true"></div>
-
-<div class='panou'>
-  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" checked/>Rad
-  <input type="radio" name="radOrDeg" onchange="chngRadDeg()" />Deg
-  <input type="checkbox" id="chStepFive" onchange="chStep()" />Step
-</div>
 
 <script>
   var inRad = true, Step = 1, x0, y0, R, quoAng;
@@ -145,6 +160,7 @@ function drawCircle(obj, cx,cy,r=false) {
   s.width = `${r*2}px`;
   s.height = `${r*2}px`;
 }
+
 function drawLine(obj, x1,y1,x2,y2, ang=null) {
 	let s = obj.style;
   if(x1 > x2) [x1,x2] = [x2,x1];
@@ -202,18 +218,14 @@ function drawGraph(quo) {
     drawText(yTxt, xCos>0? x0-30:x0, ySin>0? y0:y0+R,
       `sin(${txtAng}) = ${trigMime(angMime, ySin, true)}`, ySin<0);
 
-    drawText(angTxt, box.x+5, box.y, `Θ = ${txtAng} (${invAng})`, false);
+    //drawText(angTxt, box.x+5, box.y, `Θ = ${txtAng} (${invAng})`, false);
+    angTxt.innerText = `Θ = ${txtAng} (${invAng})`;
 
 //} catch(err) { alert(err.message); }
 }
 
 /*-------------------------- Drag ------------------------------*/
 var offset = [0,0], isDown = false, isTouch;
-
-function getOff(e) {
-  if(e.touches) e = e.touches[0];
-  return [ e.clientX, e.clientY ];
-}
 
 function startDrag(e) {
   isDown = true;

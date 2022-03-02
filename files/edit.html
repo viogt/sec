@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Edit</title>
+  <style>
+* { box-sizing: border-box; }
+.fix {
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  width: 50px;
+  z-index: 100;
+  font-family: Arial,sans-serif;
+  font-size: 15px;
+  /*text-align: center;
+  padding: 10px;
+  padding-top: 0;*/
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.fix::-webkit-scrollbar {  display: none; }
+
+.fix div {
+  display: inline-block;
+  width: 32px;
+  background-color: #444;
+  color: #eef;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 50%;
+}
+.subpanel { display: block; width: 38px; }
+/*------------------------ Blue Style -------------------------*/
+.blueStyle {
+  border: 1px solid #dde;
+  padding: 12px;
+  border-radius: 8px;
+  font: normal 15px Arial,Sans-serif;
+  background-color: #eeefff;
+  line-height: 1.2;
+  color: #226;
+  width: 100%;
+  display: table-cell;
+}
+.blueStyle b {
+  border: thin solid #06f;
+  /*color:#228;
+  background-color: #fff;*/
+  padding: 0px 4px;
+  /*margin: 0 4px;
+  border-radius: 4px;*/
+  font-weight: normal;
+}
+.blueStyle i { color: #06f; }
+.blueStyle u {
+  text-decoration: none;
+  border-bottom: 1px solid #06f;
+}
+.blueStyle hr {
+  border: none;
+  border-top: thin dashed #aac;
+  height: 0px;
+}
+.blueStyle h1 {
+  border: 1px solid #dde;
+  background-color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.blueStyle h2 {
+  background-color: #68a;
+  color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.blueStyle sup, .blueStyle sub { color: #06f; font-size: 11px; }
+.blueStyle strike { color: #06f; }
+.blueStyle blockquote {
+	padding-left: 12px;
+    border-left: 2px solid #06f;
+}
+
+#inCapsul {
+  overflow-y: auto;
+  width: 100%;
+  padding: 0 0 0 28px;
+  outline:none;
+}
+@media screen and (min-width: 600px) {
+  #inCapsul { width: 600px; margin: auto; }
+}
+  </style>
+</head>
+<body>
+
+<div class="fix">
+<div onclick='toClipBoard(this)'><i class="fa fa-scissors"></i></div>
+<div onclick='exe("removeFormat")'><i class="fa fa-eraser"></i></div>
+<div onclick='exe("redo")'><i class="fa fa-repeat"></i></div>
+<div onclick='exe("undo")'><i class="fa fa-undo"></i></div>
+<div onclick='exe("bold")'><i class="fa fa-bold"></i></div>
+<div onclick='exe("italic")'><i class="fa fa-italic"></i></div>
+<div onclick='exe("underline")'><i class="fa fa-underline"></i></div>
+<div onclick='exe("strikeThrough")'><i class="fa fa-strikethrough"></i></div>
+
+<div onclick='exe("justifyLeft")'><i class="fa fa-align-left"></i></div>
+<div onclick='exe("justifyCenter")'><i class="fa fa-align-center"></i></div>
+<div onclick='exe("justifyRight")'><i class="fa fa-align-right"></i></div>
+<div onclick='exe("justifyFull")'><i class="fa fa-align-justify"></i></div>
+<div onclick='exe("insertunorderedlist")'><i class="fa fa-list-ul"></i></div>
+<div onclick='exe("insertorderedlist")'><i class="fa fa-list-ol"></i></div>
+<div onclick='exe("indent")'><i class="fa fa-indent"></i></div>
+<div onclick='exe("outdent")'><i class="fa fa-dedent"></i></div>
+
+<div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
+<div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
+
+<div onclick='exe("insertHorizontalRule")'>–</div>
+<div onclick='sel("<h1>","</h1>")'><i class="fa fa-header"></i></div>
+<div onclick='sel("<h2>","</h2>")'><i class="fa fa-header" style="font-size:11px"></i></div>
+<div onclick='sel("<blockquote>","</blockquote>")'><i class="fa fa-quote-left"></i></div>
+<div onclick='up_low(true)'><i class="fa fa-font"></i></div>
+<div onclick='up_low(false)'><i class="fa fa-font" style="font-size:11px"></i></div>
+<div onclick='theme("blue")'><i class="fa fa-square" style='color:blue'></i></div>
+<div onclick='theme("grey")'><i class="fa fa-square" style='color:grey'></i></div>
+<div onclick='theme("green")'><i class="fa fa-square" style='color:green'></i></div>
+
+<div onclick='twoCol()'><i class="fa fa-columns"></i></div>
+<div onclick='fColor("red")'><i class="fa fa-font" style='color:red'></i></div>
+<div onclick='fColor("blue")'><i class="fa fa-font" style='color:blue'></i></div>
+<div onclick='fColor("green")'><i class="fa fa-font" style='color:green'></i></div>
+<div onclick='XXX'><i class="fa fa-check"></i></div>
+<div onclick='XXX'><i class="fa fa-times"></i></div>
+<div onclick='insLink()'><i class="fa fa-link"></i></div>
+<div onclick='XXX'><i class="fa fa-table"></i></div>
+
+<div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
+<span class='subpanel' style='display:none'>
+<div onclick='ins(this)'>⚑</div>
+<div onclick='ins(this)'>✎</div>
+<div onclick='ins(this)'>§</div>
+<div onclick='ins(this)'>€</div>
+<div onclick='ins(this)'>✓</div>
+<div onclick='ins(this)'>✘</div>
+<div onclick='ins(this)'>⚠</div>
+<div onclick='ins(this)'>📌</div>
+<div onclick='ins(this)'>📎</div>
+<div onclick='ins(this)'>∼</div>
+<div onclick='ins(this)'>±</div>
+<div onclick='ins(this)'>≈</div>
+<div onclick='ins(this)'>°</div>
+<div onclick='ins(this)'>–</div>
+<div onclick='ins(this)'>☎</div>
+<div onclick='ins(this)'>➝</div>
+<div onclick='ins(this)'>✉</div>
+<div onclick='ins(this)'>☢</div>
+</span>
+</div>
+
+<div id='inCapsul' contentEditable>
+  <div id='txt' class='blueStyle' >These are short, famous texts in English from classic sources like the Bible or Shakespeare. Some texts have word definitions and explanations to help you. Some of these texts are written in an old style of English. Try to understand them, because the English that we speak today is based on what our great, great, great, great grandparents spoke before! Of course, not all these texts were originally written in English. The Bible, for example, is a translation. But they are all well known in English today, and many of them express beautiful thoughts.</div>
+</div>
+
+<script>
+const T = document.querySelector('#txt'),
+	inCapsul = document.querySelector('#inCapsul');
+var isDirty = false;
+
+function exe(sCmd, sValue = null) {
+  T.focus();
+  document.execCommand(sCmd, false, sValue);
+}
+
+function toClipBoard(ob) {
+  inCapsul.focus();
+  document.execCommand("selectAll", false, null);
+  document.execCommand("copy", false, null);
+  ob.style.backgroundColor = '#f00';
+  setTimeout(()=>{ ob.style.backgroundColor=''; }, 500);
+  T.focus();
+  isDirty = false;
+}
+
+function ins(o) { exe('insertText', o.textContent); }
+function sel(tgBeg, tgEnd) {
+	let s = window.getSelection().toString();
+    if(!s) return;
+    exe("insertHTML", tgBeg + s + tgEnd);
+}
+function up_low(F) {
+	let s = window.getSelection().toString(); if(!s) return;
+    exe('insertText', F?s.toUpperCase():s.toLowerCase());
+}
+function toggle(el) {
+	let e = el.nextElementSibling; if(e.tagName != 'SPAN') return;
+    if(e.style.display != 'none') {
+    	e.style.display = 'none';
+        el.firstChild.className = 'fa fa-caret-down';
+    }
+    else {
+    	e.style.display = 'block';
+        el.firstChild.className = 'fa fa-caret-up';
+    }
+}
+
+function fColor(cl) {
+	let s = window.getSelection().toString(); if(!s) return;
+	exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
+}
+
+function theme(cl) { alert(cl); }
+
+function insLink() {
+  var sLnk=prompt('Write the URL here','http:\/\/');
+  if(sLnk && sLnk != '' && sLnk != 'http://') exe("createLink", sLnk);
+}
+
+function twoCol() {
+    exe('insertHTML','<table style="width:100%;font-size:inherit;font-family:inherit;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #ccc;width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>');
+}
+
+inCapsul.addEventListener('paste', (event) => {
+	let txt = (event.clipboardData || window.clipboardData).getData('text');
+    event.preventDefault();
+    exe('insertText', txt);
+});
+</script>
+</body>
+</html>

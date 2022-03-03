@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,6 +41,15 @@
   border-radius: 50%;
 }
 .subpanel { display: block; width: 38px; }
+#inCapsul {
+  overflow-y: auto;
+  width: 100%;
+  padding: 0 0 0 28px;
+  outline:none;
+}
+@media screen and (min-width: 600px) {
+  #inCapsul { width: 600px; margin: auto; }
+}
 /*------------------------ Blue Style -------------------------*/
 .blueStyle {
   border: 1px solid #dde;
@@ -76,7 +86,7 @@
   border-radius: 6px;
 }
 .blueStyle h2 {
-  background-color: #68a;
+  background-color: #78a;
   color: #fff;
   font-size: inherit;
   padding: 12px;
@@ -103,14 +113,14 @@
   width: 100%;
 }
 .greyStyle b {
-  border: thin solid #c00;
+  border: thin solid #e80;
   padding: 0px 4px;
   font-weight: normal;
 }
 .greyStyle i { color: #c00; }
 .greyStyle u {
   text-decoration: none;
-  border-bottom: 2px solid #c00;
+  border-bottom: 2px solid #f80;
 }
 .greyStyle hr {
   border: none;
@@ -127,7 +137,7 @@
   border-radius: 6px;
 }
 .greyStyle h2 {
-  background-color: #444;
+  background-color: #888;
   color: #fff;
   font-size: inherit;
   padding: 12px;
@@ -135,16 +145,16 @@
   margin: 0;
   border-radius: 6px;
 }
-.greyStyle sup, .greyStyle sub { color: #c00; font-size: 8px; }
+.greyStyle sup, .greyStyle sub { color: #d00; font-size: 8px; }
 .greyStyle strike { color: #c00; }
 .greyStyle blockquote {
 	margin-left: 0px;
 	padding-left: 12px;
-    border-left: 2px solid #c00;
+    border-left: 2px solid #f80;
 }
 /*------------------------ Green Style -------------------------*/
 .greenStyle {
-  border: 1px solid #9f6;
+  border: 1px solid #af8;
   padding: 12px;
   border-radius: 8px;
   font: normal 15px Arial,Sans-serif;
@@ -154,22 +164,22 @@
   width: 100%;
 }
 .greenStyle b {
-  border: thin solid #5f0;
+  border: thin solid #2d2;
   padding: 0px 4px;
   font-weight: normal;
 }
-.greenStyle i { color: #2c2; }
+.greenStyle i { color: #2b0; }
 .greenStyle u {
   text-decoration: none;
-  border-bottom: 2px solid #5f0;
+  border-bottom: 2px solid #4d2;
 }
 .greenStyle hr {
   border: none;
-  border-top: thin dashed #5f0;
+  border-top: thin dashed #8d4;
   height: 0px;
 }
 .greenStyle h1 {
-  border: 1px solid #9f6;
+  border: 1px solid #af8;
   background-color: #fff;
   font-size: inherit;
   padding: 12px;
@@ -178,7 +188,7 @@
   border-radius: 6px;
 }
 .greenStyle h2 {
-  background-color: #390;
+  background-color: #6a4;
   color: #fff;
   font-size: inherit;
   padding: 12px;
@@ -186,22 +196,12 @@
   margin: 0;
   border-radius: 6px;
 }
-.greenStyle sup, .greenStyle sub { color: #c00; font-size: 8px; }
-.greenStyle strike { color: #c00; }
+.greenStyle sup, .greenStyle sub { color: #c20; font-size: 8px; }
+.greenStyle strike { color: #842; }
 .greenStyle blockquote {
 	margin-left: 0px;
 	padding-left: 12px;
-    border-left: 2px solid #5f0;
-}
-/*------------------------ end -------------------------*/
-#inCapsul {
-  overflow-y: auto;
-  width: 100%;
-  padding: 0 0 0 28px;
-  outline:none;
-}
-@media screen and (min-width: 600px) {
-  #inCapsul { width: 600px; margin: auto; }
+    border-left: 2px solid #4d2;
 }
   </style>
 </head>
@@ -272,7 +272,7 @@
 </div>
 
 <div id='inCapsul' contentEditable>
-<table><tr><td id='txt' class='blueStyle'><h1>Begining</h1>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<hr/><blockquote>Some texts have word definitions and explanations to help you. Some of these texts are written in an old style of English. Try to understand them, because the English that we speak today is based on what our great, great, great, great grandparents spoke before!</blockquote>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<h2>Ending</h2>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
+<table><tr><td id='txt' class='greyStyle'><h1>Begining</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions and explanations to help you. Some of these texts are written in an old style of English. Try to understand them, because the English that we speak today is based on what our great, great, great, great grandparents spoke before!</blockquote>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
 </div>
 
 <script>
@@ -330,7 +330,7 @@ function insLink() {
 }
 
 function twoCol() {
-    exe('insertHTML','<table style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #ccc;width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>');
+    exe('insertHTML','<table style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #bbb;width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>');
 }
 
 inCapsul.addEventListener('paste', (event) => {

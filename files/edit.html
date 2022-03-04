@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,7 @@
 
 .fix div {
   display: inline-block;
-  width: 32px;
+  width: 34px;
   background-color: #444;
   color: #eef;
   -webkit-user-select: none;
@@ -36,7 +37,7 @@
   cursor: pointer;
   text-align: center;
   padding: 8px;
-  margin: 8px;
+  margin: 6px;
   border-radius: 50%;
 }
 .subpanel { display: block; width: 38px; }
@@ -96,8 +97,8 @@
 .blueStyle sup, .blueStyle sub { color: #06f; font-size: 8px; }
 .blueStyle strike { color: #06f; }
 .blueStyle blockquote {
-	margin-left: 0px;
-	padding-left: 12px;
+	margin: 0;
+	padding: 0 0 0 18px;
     border-left: 2px solid #06f;
 }
 /*------------------------ Grey Style -------------------------*/
@@ -147,8 +148,8 @@
 .greyStyle sup, .greyStyle sub { color: #d00; font-size: 8px; }
 .greyStyle strike { color: #c00; }
 .greyStyle blockquote {
-	margin-left: 0px;
-	padding-left: 12px;
+	margin: 0;
+	padding: 0 0 0 18px;
     border-left: 2px solid #f80;
 }
 /*------------------------ Green Style -------------------------*/
@@ -178,7 +179,7 @@
   height: 0px;
 }
 .greenStyle h1 {
-  border: 1px solid #af8;
+  border: 1px solid #cea;
   background-color: #fff;
   font-size: inherit;
   padding: 12px;
@@ -199,7 +200,7 @@
 .greenStyle strike { color: #842; }
 .greenStyle blockquote {
 	margin: 0;
-	padding: 0 0 0 12px;
+	padding: 0 0 0 18px;
     border-left: 2px solid #4d2;
 }
   </style>
@@ -207,15 +208,23 @@
 <body>
 
 <div class="fix">
-<div onclick='toClipBoard(this)'><i class="fa fa-scissors"></i></div>
+<div onclick='toClipBoard(this)' style='background-color:#905'><i class="fa fa-scissors"></i></div>
 <div onclick='exe("removeFormat")'><i class="fa fa-eraser"></i></div>
 <div onclick='exe("redo")'><i class="fa fa-repeat"></i></div>
 <div onclick='exe("undo")'><i class="fa fa-undo"></i></div>
 <div onclick='exe("bold")'><i class="fa fa-bold"></i></div>
 <div onclick='exe("italic")'><i class="fa fa-italic"></i></div>
 <div onclick='exe("underline")'><i class="fa fa-underline"></i></div>
+<div onclick='insLink()'><i class="fa fa-link"></i></div>
 <div onclick='exe("strikeThrough")'><i class="fa fa-strikethrough"></i></div>
+<div onclick='up_low(true)'><i class="fa fa-font"></i></div>
+<div onclick='up_low(false)'><i class="fa fa-font" style="font-size:11px"></i></div>
+<div onclick='exe("insertHorizontalRule")'>–</div>
+<div onclick='sel("<h1>","</h1>")'><i class="fa fa-header"></i></div>
+<div onclick='sel("<h2>","</h2>")'><i class="fa fa-header" style="font-size:11px"></i></div>
 
+<div onclick='toggle(this)' style='background-color:#44a'><i class="fa fa-caret-down"></i></div>
+<span class='subpanel' style='display:none'>
 <div onclick='exe("justifyLeft")'><i class="fa fa-align-left"></i></div>
 <div onclick='exe("justifyCenter")'><i class="fa fa-align-center"></i></div>
 <div onclick='exe("justifyRight")'><i class="fa fa-align-right"></i></div>
@@ -224,28 +233,23 @@
 <div onclick='exe("insertorderedlist")'><i class="fa fa-list-ol"></i></div>
 <div onclick='exe("indent")'><i class="fa fa-indent"></i></div>
 <div onclick='exe("outdent")'><i class="fa fa-dedent"></i></div>
+</span>
 
+<div onclick='toggle(this)' style='background-color:#484'><i class="fa fa-caret-down"></i></div>
+<span class='subpanel' style='display:none'>
 <div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
 <div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
-
-<div onclick='exe("insertHorizontalRule")'>–</div>
-<div onclick='sel("<h1>","</h1>")'><i class="fa fa-header"></i></div>
-<div onclick='sel("<h2>","</h2>")'><i class="fa fa-header" style="font-size:11px"></i></div>
 <div onclick='sel("<blockquote>","</blockquote>")'><i class="fa fa-quote-left"></i></div>
-<div onclick='up_low(true)'><i class="fa fa-font"></i></div>
-<div onclick='up_low(false)'><i class="fa fa-font" style="font-size:11px"></i></div>
 <div onclick='theme("blue")'><i class="fa fa-square" style='color:blue'></i></div>
 <div onclick='theme("grey")'><i class="fa fa-square" style='color:grey'></i></div>
 <div onclick='theme("green")'><i class="fa fa-square" style='color:green'></i></div>
-
 <div onclick='twoCol()'><i class="fa fa-columns"></i></div>
 <div onclick='fColor("red")'><i class="fa fa-font" style='color:red'></i></div>
 <div onclick='fColor("blue")'><i class="fa fa-font" style='color:blue'></i></div>
 <div onclick='fColor("green")'><i class="fa fa-font" style='color:green'></i></div>
 <div onclick='XXX'><i class="fa fa-check"></i></div>
 <div onclick='XXX'><i class="fa fa-times"></i></div>
-<div onclick='insLink()'><i class="fa fa-link"></i></div>
-<div onclick='XXX'><i class="fa fa-table"></i></div>
+</span>
 
 <div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none'>
@@ -268,10 +272,11 @@
 <div onclick='ins(this)'>✉</div>
 <div onclick='ins(this)'>☢</div>
 </span>
+<div onclick='XXX'><i class="fa fa-table"></i></div>
 </div>
 
 <div id='inCapsul' contentEditable>
-<table><tr><td id='txt' class='greyStyle'><h1>Begining</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions and explanations to help you. Some of these texts are written in an old style of English. Try to understand them, because the English that we speak today is based on what our great, great, great, great grandparents spoke before!</blockquote>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
+<table><tr><td id='txt' class='greyStyle'><h1>Begining</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions and explanations to help you. Some of these texts are written in an old style of English. Try to understand them, because the English that we speak today is based on what our great, great, great, great grandparents spoke before!</blockquote><br>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
 </div>
 
 <script>
@@ -288,8 +293,6 @@ function toClipBoard(ob) {
   inCapsul.focus();
   document.execCommand("selectAll", false, null);
   document.execCommand("copy", false, null);
-  ob.style.backgroundColor = '#f00';
-  setTimeout(()=>{ ob.style.backgroundColor=''; }, 500);
   T.focus();
   isDirty = false;
 }
@@ -332,10 +335,14 @@ function twoCol() {
     exe('insertHTML','<table style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #bbb;width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>');
 }
 
-inCapsul.addEventListener('paste', (event) => {
-	let txt = (event.clipboardData || window.clipboardData).getData('text');
-    event.preventDefault();
-    exe('insertText', txt);
+inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);
+T.addEventListener("paste",(e)=>{
+	e.preventDefault();
+    exe('insertText', e.clipboardData.getData('text/plain'));
+    isDirty = true;
+});
+window.addEventListener("beforeunload", (e)=>{
+	if(isDirty) e.returnValue = "Do you want to quit changes?";
 });
 </script>
 </body>

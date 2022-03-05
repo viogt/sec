@@ -16,9 +16,6 @@
   z-index: 100;
   font-family: Arial,sans-serif;
   font-size: 15px;
-  /*text-align: center;
-  padding: 10px;
-  padding-top: 0;*/
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -27,7 +24,7 @@
 
 .fix div {
   display: inline-block;
-  width: 34px;
+  width: 32px; height: 32px;
   background-color: #444;
   color: #eef;
   -webkit-user-select: none;
@@ -35,7 +32,7 @@
   user-select: none;
   cursor: pointer;
   text-align: center;
-  padding: 8px;
+  padding: 8px 0 0 0;
   margin: 6px;
   border-radius: 50%;
 }
@@ -43,7 +40,7 @@
 #inCapsul {
   overflow-y: auto;
   width: 100%;
-  padding: 0 0 0 28px;
+  padding: 0 0 0 24px;
   outline:none;
 }
 @media screen and (min-width: 600px) {
@@ -156,7 +153,7 @@
   border: 1px solid #cea;
   padding: 12px;
   border-radius: 8px;
-  font: normal 14px Verdana,Sans-serif;
+  font: normal 15px Arial,Sans-serif;
   background-color: #e8ffd8;
   line-height: 1.3;
   color: #060;
@@ -207,7 +204,7 @@
 <body>
 
 <div class="fix">
-<div onclick='toClipBoard(this)' style='background-color:#905'><i class="fa fa-scissors"></i></div>
+<div onclick='toClipBoard(this)' style='background-color:#735'><i class="fa fa-scissors"></i></div>
 <div onclick='exe("removeFormat")'><i class="fa fa-eraser"></i></div>
 <div onclick='exe("redo")'><i class="fa fa-repeat"></i></div>
 <div onclick='exe("undo")'><i class="fa fa-undo"></i></div>
@@ -216,8 +213,8 @@
 <div onclick='exe("underline")'><i class="fa fa-underline"></i></div>
 <div onclick='insLink()'><i class="fa fa-link"></i></div>
 <div onclick='exe("strikeThrough")'><i class="fa fa-strikethrough"></i></div>
-<div onclick='up_low(true)'><i class="fa fa-font"></i></div>
-<div onclick='up_low(false)'><i class="fa fa-font" style="font-size:11px"></i></div>
+<div onclick='up_low(true)'>A</div>
+<div onclick='up_low(false)'>a</div>
 <div onclick='exe("insertHorizontalRule")'>–</div>
 <div onclick='sel("<h1>","</h1>")'><i class="fa fa-header"></i></div>
 <div onclick='sel("<h2>","</h2>")'><i class="fa fa-header" style="font-size:11px"></i></div>
@@ -271,7 +268,9 @@
 <div onclick='ins(this)'>✉</div>
 <div onclick='ins(this)'>☢</div>
 </span>
-<div onclick='XXX'><i class="fa fa-table"></i></div>
+<div onclick='insTable()'><i class="fa fa-table"></i></div>
+<div onclick='corrDiacrit()'><i class="fa fa-pencil"></i></div>
+<div onclick='clearContent()'><i class="fa fa-trash"></i></div>
 </div>
 
 <div id='inCapsul' contentEditable>
@@ -297,6 +296,7 @@ function toClipBoard(ob) {
 }
 
 function ins(o) { exe('insertText', o.textContent); }
+
 function sel(tgBeg, tgEnd) {
 	let s = window.getSelection().toString();
     if(!s) return;
@@ -331,7 +331,41 @@ function insLink() {
 }
 
 function twoCol() {
-    exe('insertHTML','<table style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #bbb;width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>');
+	let cul = T.className.substr(0,4), brdX;
+    if(cul == 'grey') brdX = 'ccc'; else if(cul == 'blue') brdX = 'aac'; else brdX = '8d4';
+    exe('insertHTML',`<table style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #${brdX};width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>`);
+}
+
+function corrDiacrit() {
+  const r = /[ŞşŢţ]/g; if(r.test(T.textContent))
+  T.innerHTML = T.innerHTML.replace(r, function(x){ return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); });
+}
+
+function clearContent() {
+	if(confirm('Erase/clear content?')) { T.innerText = '*'; isDirty = false; }
+}
+
+function insTable() {
+    let Js, Fs = prompt('TABLE PARAMETERS:','"rows": 3, "cols": 2, "pad": 6, "border": 1,"darkCol":-1'),
+    	pops = ['rows','cols','pad','border','darkCol'];
+    if(!Fs) return;
+    try { Js = JSON.parse(`{${Fs}}`); } catch(err) { alert('Wrong format: ' + err.message); return; }
+    for(let e of pops) { if(!Js.hasOwnProperty(e)){ alert('Wrong format: no rows,cols,pad...'); return;}}
+    
+    let cul = T.className.substr(0,4), brd = '', frm = '', brdX = '8d4', frmX = '6a4';
+    if(cul == 'grey') { brdX = 'ccc'; frmX = '888'; } else if(cul == 'blue') { brdX = 'aac'; frmX = '78c'; }
+    if(Js.border > 0) { brd = `border-top:${Js.border}px solid #${brdX};`; frm = `border:${Js.border}px solid #${brdX};`; }
+    let b = `<table cellspacing="0" cellpadding="${Js.pad}" style="font-size:1em;${frm}">`,
+    	bg = `background-color: #${frmX};color:#fff;`;
+    
+    for(let r=0; r < Js.rows; r++) {
+    	b += '<tr>';
+        for(let c=0; c < Js.cols; c++) {
+        	b += `<td valign="top" style="${c==Js.darkCol?bg:''}${r==0?'':brd}">*</td>`;
+        }
+        b += '</tr>';
+    }
+    exe('insertHTML', b + '</table>');
 }
 
 inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);

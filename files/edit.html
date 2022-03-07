@@ -43,6 +43,7 @@
   padding: 0 0 0 24px;
   outline:none;
 }
+em { background-color:#c00;color:#fff;border-radius:4px;font-style:normal;padding:0 6px; }
 @media screen and (min-width: 600px) {
   #inCapsul { width: 600px; margin: auto; }
 }
@@ -370,7 +371,7 @@ function insTable() {
 
 function yesNo(f) {
 let s = window.getSelection().toString(); if(!s) return;
-exe('insertHTML', `<i style="background-color:${f?'#080':'#c00'};color:#fff;border-radius:4px;font-style: normal;">&nbsp;${s}&nbsp;</i>`);
+exe('insertHTML', `<em${f?" style='background-color:#080'":''}>${s}</em>`);
 }
 
 inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);

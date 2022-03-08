@@ -43,7 +43,7 @@
   padding: 0 0 0 24px;
   outline:none;
 }
-em { background-color:#c00;color:#fff;border-radius:4px;font-style:normal;padding:0 6px; }
+em { background-color:#c00;color:#fff;border-radius:4px;font-style:normal;white-space: pre; }
 @media screen and (min-width: 600px) {
   #inCapsul { width: 600px; margin: auto; }
 }
@@ -246,6 +246,7 @@ em { background-color:#c00;color:#fff;border-radius:4px;font-style:normal;paddin
 <div onclick='fColor("green")'><i class="fa fa-font" style='color:green'></i></div>
 <div onclick='yesNo(1)'><i class="fa fa-check"></i></div>
 <div onclick='yesNo(0)'><i class="fa fa-times"></i></div>
+<div onclick='letterSpace()'><i class="fa fa-arrows-h"></i></div>
 </span>
 
 <div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
@@ -370,8 +371,13 @@ function insTable() {
 }
 
 function yesNo(f) {
-let s = window.getSelection().toString(); if(!s) return;
-exe('insertHTML', `<em${f?" style='background-color:#080'":''}>${s}</em>`);
+	let s = window.getSelection().toString(); if(!s) s = f?'✓ ok':'✘ no';
+	exe('insertHTML', `<em${f?" style='background-color:#080'":''}> ${s} </em>`);
+}
+
+function letterSpace() {
+	let s = window.getSelection().toString(); if(!s) return;
+    exe('insertHTML', `<span style='letter-spacing:.2rem;'>${s}</span>`);
 }
 
 inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);

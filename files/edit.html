@@ -43,7 +43,14 @@
   padding: 0 0 0 24px;
   outline:none;
 }
-em { background-color:#c00;color:#fff;border-radius:4px;font-style:normal;white-space: pre; }
+em {
+	background-color:#c00;
+    color:#fff;
+    border-radius:4px;
+    font-style:normal;
+    white-space: pre;
+    padding: 0 5px;
+}
 @media screen and (min-width: 600px) {
   #inCapsul { width: 600px; margin: auto; }
 }
@@ -370,14 +377,21 @@ function insTable() {
     exe('insertHTML', b + '</table>');
 }
 
-function yesNo(f) {
+/*function yesNo(f) {
 	let s = window.getSelection().toString(); if(!s) s = f?'✓ ok':'✘ no';
 	exe('insertHTML', `<em${f?" style='background-color:#080'":''}> ${s} </em>`);
+}*/
+
+function yesNo(f) {
+	let s = window.getSelection(); if(!s.toString()) return;
+    const em = document.createElement('em');
+    if(f) em.style.backgroundColor = '#080';
+    s.getRangeAt(0).surroundContents(em);
 }
 
 function letterSpace() {
 	let s = window.getSelection().toString(); if(!s) return;
-    exe('insertHTML', `<span style='letter-spacing:.2rem;'>${s}</span>`);
+    exe('insertHTML', `<span style='letter-spacing:.2em;'>${s}</span>`);
 }
 
 inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);

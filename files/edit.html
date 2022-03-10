@@ -43,14 +43,14 @@
   padding: 0 0 0 24px;
   outline:none;
 }
-em {
+/*em {
 	background-color:#c00;
     color:#fff;
     border-radius:4px;
     font-style:normal;
     white-space: pre;
     padding: 0 5px;
-}
+}*/
 @media screen and (min-width: 600px) {
   #inCapsul { width: 600px; margin: auto; }
 }
@@ -378,11 +378,20 @@ function insTable() {
 }
 
 function yesNo(f) {
+	const s = window.getSelection();  if(s.isCollapsed) return;
+  const sp = document.createElement('span'), st = sp.style;
+  st.color = '#fff'; st.backgroundColor = f?'#080':'#c00';
+  st.borderRadius = '4px'; st.whiteSpace = 'pre';
+  sp.textContent = ` ${s.toString()} `;
+
+  const r = s.getRangeAt(0); r.deleteContents(); r.insertNode(sp);
+}  
+/*function yesNo(f) {
 	let s = window.getSelection(); if(!s.toString()) return;
     const em = document.createElement('em');
     if(f) em.style.backgroundColor = '#080';
     s.getRangeAt(0).surroundContents(em);
-}
+}*/
 
 function letterSpace() {
 	let s = window.getSelection().toString(); if(!s) return;

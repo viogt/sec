@@ -283,7 +283,7 @@ em {
 </div>
 
 <div id='inCapsul' contentEditable>
-<table><tr><td id='txt' class='greyStyle'><h1>This is a sample text. To tart from scratch, press <i class="fa fa-trash" onclick="clearContent()"></i> here or the bottom of the icons panel.</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions<sup>1</sup> and explanations to help you. Some of <strike>these</strike> texts are written in an old style of <u>English</u>. Try to understand them, because the English that we speak today is <b>based</b> on what our great, great, great, great grandparents spoke before!</blockquote><br>List:<ul><li>First item;</li><li>Second item;</li><li>Third item.</li></ul>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
+<table width='100%'><tr><td id='txt' class='greyStyle'><h1>This is a sample text. To tart from scratch, press <i class="fa fa-trash" onclick="clearContent()"></i> here or the bottom of the icons panel.</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions<sup>1</sup> and explanations to help you. Some of <strike>these</strike> texts are written in an old style of <u>English</u>. Try to understand them, because the English that we speak today is <b>based</b> on what our great, great, great, great grandparents spoke before!</blockquote><br>List:<ul><li>First item;</li><li>Second item;</li><li>Third item.</li></ul>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
 </div>
 
 <script>
@@ -376,11 +376,6 @@ function insTable() {
     }
     exe('insertHTML', b + '</table>');
 }
-
-/*function yesNo(f) {
-	let s = window.getSelection().toString(); if(!s) s = f?'✓ ok':'✘ no';
-	exe('insertHTML', `<em${f?" style='background-color:#080'":''}> ${s} </em>`);
-}*/
 
 function yesNo(f) {
 	let s = window.getSelection(); if(!s.toString()) return;

@@ -43,7 +43,14 @@
   padding: 0 0 0 24px;
   outline:none;
 }
-
+/*em {
+	background-color:#c00;
+    color:#fff;
+    border-radius:4px;
+    font-style:normal;
+    white-space: pre;
+    padding: 0 5px;
+}*/
 @media screen and (min-width: 600px) {
   #inCapsul { width: 600px; margin: auto; }
 }
@@ -206,19 +213,19 @@
 
 <div class="fix">
 <div onclick='toClipBoard(this)' style='background-color:#735'><i class="fa fa-scissors"></i></div>
-<div onclick='removeFormat()'><i class="fa fa-eraser"></i></div>
+<div onclick='exe("removeFormat")'><i class="fa fa-eraser"></i></div>
 <div onclick='exe("redo")'><i class="fa fa-repeat"></i></div>
 <div onclick='exe("undo")'><i class="fa fa-undo"></i></div>
-<div onclick='insHTML("b")'><i class="fa fa-bold"></i></div>
-<div onclick='insHTML("i")'><i class="fa fa-italic"></i></div>
-<div onclick='insHTML("u")'><i class="fa fa-underline"></i></div>
+<div onclick='exe("bold")'><i class="fa fa-bold"></i></div>
+<div onclick='exe("italic")'><i class="fa fa-italic"></i></div>
+<div onclick='exe("underline")'><i class="fa fa-underline"></i></div>
 <div onclick='insLink()'><i class="fa fa-link"></i></div>
-<div onclick='insHTML("strike")'><i class="fa fa-strikethrough"></i></div>
+<div onclick='exe("strikeThrough")'><i class="fa fa-strikethrough"></i></div>
 <div onclick='up_low(true)'>A</div>
 <div onclick='up_low(false)'>a</div>
 <div onclick='exe("insertHorizontalRule")'>–</div>
-<div onclick='insHTML("h1")'><i class="fa fa-header"></i></div>
-<div onclick='insHTML("h2")'><i class="fa fa-header" style="font-size:11px"></i></div>
+<div onclick='sel("<h1>","</h1>")'><i class="fa fa-header"></i></div>
+<div onclick='sel("<h2>","</h2>")'><i class="fa fa-header" style="font-size:11px"></i></div>
 
 <div onclick='toggle(this)' style='background-color:#44a'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none'>
@@ -234,41 +241,41 @@
 
 <div onclick='toggle(this)' style='background-color:#484'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none'>
-<div onclick='insHTML("sup")'><i class="fa fa-superscript"></i></div>
-<div onclick='insHTML("sub")'><i class="fa fa-subscript"></i></div>
-<div onclick='insHTML("blockquote")'><i class="fa fa-quote-left"></i></div>
+<div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
+<div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
+<div onclick='sel("<blockquote>","</blockquote>")'><i class="fa fa-quote-left"></i></div>
 <div onclick='theme("blue")'><i class="fa fa-square" style='color:blue'></i></div>
 <div onclick='theme("grey")'><i class="fa fa-square" style='color:grey'></i></div>
 <div onclick='theme("green")'><i class="fa fa-square" style='color:green'></i></div>
 <div onclick='twoCol()'><i class="fa fa-columns"></i></div>
-<div onclick="insHTML('span',[['color','red']])"><i class="fa fa-font" style='color:red'></i></div>
-<div onclick="insHTML('span',[['color','blue']])"><i class="fa fa-font" style='color:blue'></i></div>
-<div onclick="insHTML('span',[['color','green']])"><i class="fa fa-font" style='color:green'></i></div>
+<div onclick='fColor("red")'><i class="fa fa-font" style='color:red'></i></div>
+<div onclick='fColor("blue")'><i class="fa fa-font" style='color:blue'></i></div>
+<div onclick='fColor("green")'><i class="fa fa-font" style='color:green'></i></div>
 <div onclick='yesNo(1)'><i class="fa fa-check"></i></div>
 <div onclick='yesNo(0)'><i class="fa fa-times"></i></div>
-<div onclick="insHTML('span',[['letterSpacing','.2em']])"><i class="fa fa-arrows-h"></i></div>
+<div onclick='letterSpace()'><i class="fa fa-arrows-h"></i></div>
 </span>
 
 <div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none'>
-<div onclick='insTxt(this.textContent)'>⚑</div>
-<div onclick='insTxt(this.textContent)'>✎</div>
-<div onclick='insTxt(this.textContent)'>§</div>
-<div onclick='insTxt(this.textContent)'>€</div>
-<div onclick='insTxt(this.textContent)'>✓</div>
-<div onclick='insTxt(this.textContent)'>✘</div>
-<div onclick='insTxt(this.textContent)'>⚠</div>
-<div onclick='insTxt(this.textContent)'>📌</div>
-<div onclick='insTxt(this.textContent)'>📎</div>
-<div onclick='insTxt(this.textContent)'>∼</div>
-<div onclick='insTxt(this.textContent)'>±</div>
-<div onclick='insTxt(this.textContent)'>≈</div>
-<div onclick='insTxt(this.textContent)'>°</div>
-<div onclick='insTxt(this.textContent)'>–</div>
-<div onclick='insTxt(this.textContent)'>☎</div>
-<div onclick='insTxt(this.textContent)'>➝</div>
-<div onclick='insTxt(this.textContent)'>✉</div>
-<div onclick='insTxt(this.textContent)'>☢</div>
+<div onclick='ins(this)'>⚑</div>
+<div onclick='ins(this)'>✎</div>
+<div onclick='ins(this)'>§</div>
+<div onclick='ins(this)'>€</div>
+<div onclick='ins(this)'>✓</div>
+<div onclick='ins(this)'>✘</div>
+<div onclick='ins(this)'>⚠</div>
+<div onclick='ins(this)'>📌</div>
+<div onclick='ins(this)'>📎</div>
+<div onclick='ins(this)'>∼</div>
+<div onclick='ins(this)'>±</div>
+<div onclick='ins(this)'>≈</div>
+<div onclick='ins(this)'>°</div>
+<div onclick='ins(this)'>–</div>
+<div onclick='ins(this)'>☎</div>
+<div onclick='ins(this)'>➝</div>
+<div onclick='ins(this)'>✉</div>
+<div onclick='ins(this)'>☢</div>
 </span>
 <div onclick='insTable()'><i class="fa fa-table"></i></div>
 <div onclick='corrDiacrit()'><i class="fa fa-pencil"></i></div>
@@ -289,41 +296,25 @@ function exe(sCmd, sValue = null) {
   document.execCommand(sCmd, false, sValue);
 }
 
-function removeFormat() {
-	const s = window.getSelection(); if(s.isCollapsed) return;
-    const t = s.toString(), r = s.getRangeAt(0);
-    r.deleteContents();     
-    r.insertNode(document.createTextNode(t));
-}
-
-/*function toClipBoard(ob) {
+function toClipBoard(ob) {
   inCapsul.focus();
   document.execCommand("selectAll", false, null);
   document.execCommand("copy", false, null);
   T.focus();
   isDirty = false;
-}*/
-function toClipBoard() {
-	window.getSelection().selectAllChildren(inCapsul);
-}
-function insHTML(tg, ps = null) {
-	const s = window.getSelection(); if(s.isCollapsed) return;
-    const el = document.createElement(tg);
-    if(ps) ps.forEach(e=>{ el.style[e[0]] = e[1]; });
-    s.getRangeAt(0).surroundContents(el);
 }
 
-function insTxt(t) {
-	const r = window.getSelection().getRangeAt(0);
-    r.deleteContents();     
-    r.insertNode(document.createTextNode(t));
-}
+function ins(o) { exe('insertText', o.textContent); }
 
+function sel(tgBeg, tgEnd) {
+	let s = window.getSelection().toString();
+    if(!s) return;
+    exe("insertHTML", tgBeg + s + tgEnd);
+}
 function up_low(F) {
 	let s = window.getSelection().toString(); if(!s) return;
-    insTxt(F?s.toUpperCase():s.toLowerCase());
+    exe('insertText', F?s.toUpperCase():s.toLowerCase());
 }
-
 function toggle(el) {
 	let e = el.nextElementSibling; if(e.tagName != 'SPAN') return;
     if(e.style.display != 'none') {
@@ -336,34 +327,22 @@ function toggle(el) {
     }
 }
 
+function fColor(cl) {
+	let s = window.getSelection().toString(); if(!s) return;
+	exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
+}
+
 function theme(cl) { T.className = `${cl}Style`; }
 
 function insLink() {
-  const s = window.getSelection(); if(s.isCollapsed) return;
   var sLnk=prompt('Write the URL here','http:\/\/');
-  if(!sLnk || sLnk == 'http://') return;
-  const a = document.createElement('a'); a.href = sLnk;
-  s.getRangeAt(0).surroundContents(a);
-}
-
-function mkTd(vl, props) {
-	const c = document.createElement('td');
-    c.innerText = vl;
-	props.forEach(p=>{ c.style[p[0]] = p[1]; });
-    return c;
+  if(sLnk && sLnk != '' && sLnk != 'http://') exe("createLink", sLnk);
 }
 
 function twoCol() {
 	let cul = T.className.substr(0,4), brdX;
     if(cul == 'grey') brdX = 'ccc'; else if(cul == 'blue') brdX = 'aac'; else brdX = '8d4';
-    
-    const Tb = document.createElement('table'), R = document.createElement('tr');    
-    Tb.style.width = '100%'; Tb.style.fontSize = '1em';
-    
-    R.appendChild(mkTd('*',[['padding','0 8px 0 0'],['width','50%'],['borderRight',`thin solid #${brdX}`],['verticalAlign','top']]));
-    R.appendChild(mkTd('*',[['padding','0 0 0 8px'],['width','50%'],['verticalAlign','top']]));
-	Tb.appendChild(R);
-    window.getSelection().getRangeAt(0).insertNode(Tb);
+    exe('insertHTML',`<table style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #${brdX};width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>`);
 }
 
 function corrDiacrit() {
@@ -375,6 +354,29 @@ function clearContent() {
 	if(confirm('Erase/clear content?')) { T.innerText = '*'; isDirty = false; }
 }
 
+function insTable() {
+    let Js, Fs = prompt('TABLE PARAMETERS:','"rows": 3, "cols": 2, "pad": 6, "border": 1,"darkCol":-1'),
+    	pops = ['rows','cols','pad','border','darkCol'];
+    if(!Fs) return;
+    try { Js = JSON.parse(`{${Fs}}`); } catch(err) { alert('Wrong format: ' + err.message); return; }
+    for(let e of pops) { if(!Js.hasOwnProperty(e)){ alert('Wrong format: no rows,cols,pad...'); return;}}
+    
+    let cul = T.className.substr(0,4), brd = '', frm = '', brdX = '8d4', frmX = '6a4';
+    if(cul == 'grey') { brdX = 'ccc'; frmX = '888'; } else if(cul == 'blue') { brdX = 'aac'; frmX = '78c'; }
+    if(Js.border > 0) { brd = `border-top:${Js.border}px solid #${brdX};`; frm = `border:${Js.border}px solid #${brdX};`; }
+    let b = `<table cellspacing="0" cellpadding="${Js.pad}" style="font-size:1em;${frm}">`,
+    	bg = `background-color: #${frmX};color:#fff;`;
+    
+    for(let r=0; r < Js.rows; r++) {
+    	b += '<tr>';
+        for(let c=0; c < Js.cols; c++) {
+        	b += `<td valign="top" style="${c==Js.darkCol?bg:''}${r==0?'':brd}">*</td>`;
+        }
+        b += '</tr>';
+    }
+    exe('insertHTML', b + '</table>');
+}
+
 function yesNo(f) {
 	const s = window.getSelection();  if(s.isCollapsed) return;
   const sp = document.createElement('span'), st = sp.style;
@@ -383,46 +385,25 @@ function yesNo(f) {
   sp.textContent = ` ${s.toString()} `;
 
   const r = s.getRangeAt(0); r.deleteContents(); r.insertNode(sp);
-}
+}  
+/*function yesNo(f) {
+	let s = window.getSelection(); if(!s.toString()) return;
+    const em = document.createElement('em');
+    if(f) em.style.backgroundColor = '#080';
+    s.getRangeAt(0).surroundContents(em);
+}*/
 
-function insTable() {
-    let Js, Fs = prompt('TABLE PARAMETERS:','"rows": 3, "cols": 2, "pad": 6, "border": 1,"darkCol":-1'),
-    	pops = ['rows','cols','pad','border','darkCol'];
-    if(!Fs) return;
-    try { Js = JSON.parse(`{${Fs}}`); } catch(err) { alert('Wrong format: ' + err.message); return; }
-    for(let e of pops) { if(!Js.hasOwnProperty(e)){ alert('Wrong format: no rows,cols,pad...'); return;}}
-    
-    let cul = T.className.substr(0,4), brFm;
-    if(cul == 'grey') brFm = ['#ccc','#888'];
-    else if(cul == 'blue') brFm = ['#aac','#78c'];
-    else brFm = ['#8d4','#6a4'];
-    
-    const Tb = document.createElement('table');    
-    Tb.style.borderSpacing = '0'; Tb.style.fontSize = '1em';
-    if(Js.border > 0) Tb.style.border = `${Js.border}px solid ${brFm[0]}`;
-    
-    for(let r=0; r < Js.rows; r++) {
-    	let R = document.createElement('tr');
-        for(let c=0; c < Js.cols; c++) {
-        	let C = document.createElement('td');
-            C.style.verticalAlign = 'top'; C.style.padding = `${Js.pad}px`;
-            if(c == Js.darkCol) { C.style.backgroundColor = brFm[1]; C.style.color = '#fff'; }
-            C.innerText = '*';
-            if(r > 0 && Js.border > 0) C.style.borderTop = `${Js.border}px solid ${brFm[0]}`; 
-        	R.appendChild(C);
-        }
-        Tb.appendChild(R);
-    }
-    window.getSelection().getRangeAt(0).insertNode(Tb);
+function letterSpace() {
+	let s = window.getSelection().toString(); if(!s) return;
+    exe('insertHTML', `<span style='letter-spacing:.2em;'>${s}</span>`);
 }
 
 inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);
 T.addEventListener("paste",(e)=>{
 	e.preventDefault();
-    insTxt(e.clipboardData.getData('text/plain'));
+    exe('insertText', e.clipboardData.getData('text/plain'));
     isDirty = true;
 });
-
 window.addEventListener("beforeunload", (e)=>{
 	if(isDirty) e.returnValue = "Do you want to quit changes?";
 });

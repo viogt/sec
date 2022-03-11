@@ -296,16 +296,16 @@ function removeFormat() {
     r.insertNode(document.createTextNode(t));
 }
 
-function toClipBoard(ob) {
+/*function toClipBoard(ob) {
   inCapsul.focus();
   document.execCommand("selectAll", false, null);
   document.execCommand("copy", false, null);
   T.focus();
   isDirty = false;
-}
-/*function toClipBoard() {
-	window.getSelection().selectAllChildren(inCapsul);
 }*/
+function toClipBoard() {
+	window.getSelection().selectAllChildren(inCapsul);
+}
 function insHTML(tg, ps = null) {
 	const s = window.getSelection(); if(s.isCollapsed) return;
     const el = document.createElement(tg);

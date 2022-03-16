@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       .out {
         font: normal 14px Monospace;
@@ -8,7 +9,8 @@
         background-size: cover;
         border: 1px solid lightgrey;
         min-height: 400px;
-        width: 50%;
+        width: 80%;
+        height: 90vh;
       }
   .panel {
       padding: 24px;
@@ -26,7 +28,7 @@
       backdrop-filter: blur(3px);
       transition: top .6s ease;
   }
-  input[type=button] { width: 100%; font-size: 16px; margin-top: 16px; }
+  input[type=button] { width: 100%; font-size: 16px; margin-top: 16px; border: 1px solid grey; border-radius: 24px; padding: 8px; font-family: inherit; }
     </style>
   </head>
   <body onload='init()'>
@@ -165,21 +167,21 @@ try {
 
 	document.body.addElm('div',{className: 'out'},null);
 	let B = document.body.addElm('div',{className: 'panel'},null);
-    B.addElm('input',{ type: 'radio', name: 'rand', checked: true, onclick: setVal },null);
+    B.addElm('input',{ type: 'radio', name: 'rand', checked: true, onchange: setVal },null);
     B.addElm('label',{ innerText: 'Uniform' },null);
-    B.addElm('input',{ type: 'radio', name: 'rand', checked: false, onclick: setVal },null);
+    B.addElm('input',{ type: 'radio', name: 'rand', checked: false, onchange: setVal },null);
     B.addElm('label',{ innerText: 'Random' },null);
     B.addElm('hr',null,null);
 
-    B.addElm('input',{ type: 'radio', name: 'cul', checked: true, onclick: setVal },null);
+    B.addElm('input',{ type: 'radio', name: 'cul', checked: true, onchange: setVal },null);
     B.addElm('label',{ innerText: 'Auto' },null);
-    B.addElm('input',{ type: 'radio', name: 'cul', checked: false, onclick: setVal },null);
+    B.addElm('input',{ type: 'radio', name: 'cul', checked: false, onchange: setVal },null);
     B.addElm('label',{ innerText: 'Defined' },null);
     B.addElm('hr',null,null);
 
-    B.addElm('input',{ type: 'radio', name: 'grad', checked: true, onclick: setVal },null);
+    B.addElm('input',{ type: 'radio', name: 'grad', checked: true, onchange: setVal },null);
     B.addElm('label',{ innerText: 'Flat' },null);
-    B.addElm('input',{ type: 'radio', name: 'grad', checked: false, onclick: setVal },null);
+    B.addElm('input',{ type: 'radio', name: 'grad', checked: false, onchange: setVal },null);
     B.addElm('label',{ innerText: 'Gradient' },null);
     
     B.addElm('input',{ type: 'button', name: 'grad', value: 'Make waves', onclick: getSVG },null);

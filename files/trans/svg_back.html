@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .out {
+        font: normal 14px Monospace;
+        background-image:;
+        background-size: cover;
+        border: 1px solid lightgrey;
+        min-height: 400px;
+        width: 50%;
+      }
+  .panel {
+      padding: 24px;
+      background-color: rgba(255,255,255,.3);
+      border: 1px solid grey;
+      width: 180px;
+      left: calc((100vw - 180px) / 2);
+      position: absolute;
+      top: 80px;
+      text-align: center;
+      font: normal 14px monospace;
+      box-shadow: 0px 3px 10px #668;
+      border-radius: 8px;
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+      transition: top .6s ease;
+  }
+  input[type=button] { width: 100%; font-size: 16px; margin-top: 16px; }
+    </style>
+  </head>
+  <body onload='init()'>
+  <script>
+
+Object.prototype.addElm = function (tg, vls, ops) {
+try {
+	const el = document.createElement(tg);
+    if(vls) Object.entries(vls).forEach(([key, value])=>el[key] = value);
+    if(ops) Object.entries(ops).forEach(([key, value])=>el.style[key] = value);
+    this.appendChild(el);
+    return el;
+} catch(err) { alert(err); }
+}
+
+const svg = {
+  waves:6, nodes:5, waveH: 30,
+  waveProc: oneWave,
+  getNextCul: getNextMid,
+  grad: false,
+  culIndex: -1, cul: ['#eef', '#efe', '#fee', '#ffe', '#eff', '#fef'],
+  culMin: [200,200,255], culMax: [200,255,255],
+  out: '.out'
+};
+
+function oneWave(yp) {
+    let dif = Math.round(svg.w/svg.nodes);
+    let d = `M0 ${yp}Q${Math.round(dif/2)},${yp-svg.waveH} ${dif},${yp}`; 
+    for(let xp=(dif+dif), c=0; c < svg.nodes; c++, xp += dif) d += `T${xp} ${yp}`;
+    d += `V${svg.h}H0Z`;
+	return d;
+}
+
+function randWave(yp) {
+	let nds = Math.round(svg.nodes/2 + Math.random()*svg.nodes);
+    let dif = Math.round(svg.w/svg.nodes), xp = 0, dir = Math.random()<.5?-1:1;
+    let hDif, vDif, d = `M0 ${yp}`;
+    
+    for(let c=0; c < nds; c++) {
+    	hDif = Math.round(dif/2 + Math.random()*dif);
+        vDif = Math.round(svg.waveH/2 + Math.random()*svg.waveH) * (dir *= -1);
+        
+    	d += `Q${xp + hDif},${yp + vDif} ${(c < nds-1)?(xp += hDif+hDif):svg.w},${yp}`;
+    }
+    d += `V${svg.h}H0Z`;
+	return d;
+}
+
+function getSVG() {
+try {
+	let rct = document.querySelector(svg.out); //.getBoundingClientRect();
+    svg.w = rct.scrollWidth; svg.h = rct.scrollHeight;
+    let difH = Math.round(svg.h/svg.waves);
+    let T = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${svg.w}' height='${svg.h}' style='background-color:%23${svg.getNextCul()}'%3E`;
+    if(svg.grad) T += getGradients();
+    for(let yp = 0, ix=0; ix < svg.waves; ix++, yp += difH)	{
+    	let c = svg.grad?`url(%23g${ix})`:`%23${svg.getNextCul()}`;
+      	T += `%3Cpath fill='${c}' d='${svg.waveProc(yp)}'/%3E`;
+      	//T += `%3Cpath fill='${c}' d='${randWave(yp)}'/%3E`;
+    }
+    T += '%3C/svg%3E")';
+    changeCSS(svg.out, 'backgroundImage', T);
+    //rct.innerText = T;
+} catch(err) { alert(err.message); }
+}
+
+function getNextEven() {
+  if(svg.culIndex < 0) {
+    svg.culIndex = Math.floor(Math.random()*svg.cul.length);
+    return svg.cul[svg.culIndex].slice(1);
+  }
+  svg.culIndex++; if(svg.culIndex >= svg.cul.length) svg.culIndex = 0;
+  return svg.cul[svg.culIndex].slice(1);
+}
+
+function getNextMid() {
+try {
+  svg.culIndex++; if(svg.culIndex >= svg.waves) svg.culIndex = 0;
+  let r = '';
+  for(let i=0; i<3; i++) {
+    let x =  Math.round((svg.culMax[i]-svg.culMin[i])/svg.waves*svg.culIndex + svg.culMin[i]);
+    if(x>255) x=255; else if(x<0) x=0;
+    r += (' '+x.toString(16)).slice(-2);
+  }
+  return r;
+} catch(err) { alert(err.message); }
+}
+
+function tint(cX, drk) {
+	let res = '';
+	for(let c of cX) {
+		let x = parseInt(c,16);
+    	x += Math.round(x*drk/100);
+        res += x.toString(16);
+    }
+    return res;
+}
+
+function getGradients() {
+	let G = '%3Cdefs%3E';
+    //svg.culIndex = -1;
+    for(let i=0; i<svg.waves; i++) {
+    	let c1 = svg.getNextCul(), c2 = tint(c1, -20);
+        G += `%3ClinearGradient id='g${i}' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' style='stop-color:%23${c1}' /%3E%3Cstop offset='100%25' style='stop-color:%23${c2}' /%3E%3C/linearGradient%3E`;
+    }
+    G += '%3C/defs%3E';
+    return G;
+}
+
+ 
+function changeCSS(rule, slctr, newContent) {
+  const sh = document.styleSheets[0],
+        r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
+  if(r) r.style[slctr] = newContent;
+}
+
+function svgSettings(wProc, lentCul, grad) {
+	svg.waveProc = wProc? oneWave : randWave;
+	svg.getNextCul = lentCul ? getNextMid : getNextEven;
+    svg.grad = grad;
+    svg.culIndex = -1;
+    getSVG();
+}
+
+function setVal(ev) {
+	const nm = ev.target.name, vl = document.getElementsByName(nm)[0].checked;
+    if(nm == 'rand') svg.waveProc = vl? oneWave : randWave;
+    if(nm == 'cul') svg.getNextCul = vl? getNextMid : getNextEven;
+    if(nm == 'grad') svg.grad = !vl;
+    svg.culIndex = -1;
+    getSVG();
+}
+
+function init() {
+try {
+
+	document.body.addElm('div',{className: 'out'},null);
+	let B = document.body.addElm('div',{className: 'panel'},null);
+    B.addElm('input',{ type: 'radio', name: 'rand', checked: true, onclick: setVal },null);
+    B.addElm('label',{ innerText: 'Uniform' },null);
+    B.addElm('input',{ type: 'radio', name: 'rand', checked: false, onclick: setVal },null);
+    B.addElm('label',{ innerText: 'Random' },null);
+    B.addElm('hr',null,null);
+
+    B.addElm('input',{ type: 'radio', name: 'cul', checked: true, onclick: setVal },null);
+    B.addElm('label',{ innerText: 'Auto' },null);
+    B.addElm('input',{ type: 'radio', name: 'cul', checked: false, onclick: setVal },null);
+    B.addElm('label',{ innerText: 'Defined' },null);
+    B.addElm('hr',null,null);
+
+    B.addElm('input',{ type: 'radio', name: 'grad', checked: true, onclick: setVal },null);
+    B.addElm('label',{ innerText: 'Flat' },null);
+    B.addElm('input',{ type: 'radio', name: 'grad', checked: false, onclick: setVal },null);
+    B.addElm('label',{ innerText: 'Gradient' },null);
+    
+    B.addElm('input',{ type: 'button', name: 'grad', value: 'Make waves', onclick: getSVG },null);
+    getSVG();
+  
+} catch(err) { alert(err.message); }
+}
+
+</script>
+
+</body>
+</html>

@@ -15,12 +15,11 @@
   .panel {
       padding: 24px;
       background-color: rgba(255,255,255,.3);
-      border: 1px solid grey;
-      width: 180px;
-      left: calc((100vw - 180px) / 2);
+      border: 1px solid #ccc;
+      left: 50%;
+      transform: translate(-50%, 0);
       position: absolute;
       top: 80px;
-      text-align: center;
       font: normal 14px monospace;
       box-shadow: 0px 3px 10px #668;
       border-radius: 8px;
@@ -28,13 +27,14 @@
       backdrop-filter: blur(3px);
       transition: top .6s ease;
   }
-  input[type=button] { width: 100%; font-size: 16px; margin-top: 16px; border: 1px solid grey; border-radius: 24px; padding: 8px; font-family: inherit; }
+  input[type=button] { width: 100%; font-size: 16px; margin-top: 16px; border: 1px solid #ccc; border-radius: 24px; padding: 8px; font-family: inherit; }
+  td { padding: 4px; white-space: nowrap; }
     </style>
   </head>
   <body onload='init()'>
   <script>
 
-Object.prototype.addElm = function (tg, vls, ops) {
+Object.prototype.addElm = function (tg, vls = null, ops = null) {
 try {
 	const el = document.createElement(tg);
     if(vls) Object.entries(vls).forEach(([key, value])=>el[key] = value);
@@ -165,27 +165,41 @@ function setVal(ev) {
 function init() {
 try {
 
-	document.body.addElm('div',{className: 'out'},null);
-	let B = document.body.addElm('div',{className: 'panel'},null);
-    B.addElm('input',{ type: 'radio', name: 'rand', checked: true, onchange: setVal },null);
-    B.addElm('label',{ innerText: 'Uniform' },null);
-    B.addElm('input',{ type: 'radio', name: 'rand', checked: false, onchange: setVal },null);
-    B.addElm('label',{ innerText: 'Random' },null);
-    B.addElm('hr',null,null);
-
-    B.addElm('input',{ type: 'radio', name: 'cul', checked: true, onchange: setVal },null);
-    B.addElm('label',{ innerText: 'Auto' },null);
-    B.addElm('input',{ type: 'radio', name: 'cul', checked: false, onchange: setVal },null);
-    B.addElm('label',{ innerText: 'Defined' },null);
-    B.addElm('hr',null,null);
-
-    B.addElm('input',{ type: 'radio', name: 'grad', checked: true, onchange: setVal },null);
-    B.addElm('label',{ innerText: 'Flat' },null);
-    B.addElm('input',{ type: 'radio', name: 'grad', checked: false, onchange: setVal },null);
-    B.addElm('label',{ innerText: 'Gradient' },null);
+	document.body.addElm('div',{className: 'out'});
+	let Tr, Td, B = document.body.addElm('div',{className: 'panel'}).addElm('table');
     
-    B.addElm('input',{ type: 'button', name: 'grad', value: 'Make waves', onclick: getSVG },null);
-    getSVG();
+    Tr = B.addElm('tr');
+    Tr.addElm('td', {innerText: 'Waves:'});
+    Td = Tr.addElm('td');
+    	Td.addElm('input',{ type: 'radio', name: 'rand', checked: true, onchange: setVal });
+    	Td.addElm('label',{ innerText: 'Uniform' });
+    Td = Tr.addElm('td');
+    	Td.addElm('input',{ type: 'radio', name: 'rand', checked: false, onchange: setVal });
+    	Td.addElm('label',{ innerText: 'Random' });
+
+    Tr = B.addElm('tr');
+    Tr.addElm('td', {innerText: 'Colors:'});
+    Td = Tr.addElm('td');
+    	Td.addElm('input',{ type: 'radio', name: 'cul', checked: true, onchange: setVal });
+    	Td.addElm('label',{ innerText: 'Auto' });
+    Td = Tr.addElm('td');
+    	Td.addElm('input',{ type: 'radio', name: 'cul', checked: false, onchange: setVal });
+    	Td.addElm('label',{ innerText: 'Defined' });
+
+    Tr = B.addElm('tr');
+    Tr.addElm('td', {innerText: 'Gradient:'});
+    Td = Tr.addElm('td');
+		Td.addElm('input',{ type: 'radio', name: 'grad', checked: true, onchange: setVal });
+    	Td.addElm('label',{ innerText: 'Flat' });
+    Td = Tr.addElm('td');
+    	Td.addElm('input',{ type: 'radio', name: 'grad', checked: false, onchange: setVal });
+    	Td.addElm('label',{ innerText: 'Gradient' });
+    
+    Tr = B.addElm('tr');
+    Td = Tr.addElm('td', {colSpan: 3});
+    Td.addElm('input',{ type: 'button', name: 'grad', value: 'Make waves', onclick: getSVG });
+
+	getSVG();
   
 } catch(err) { alert(err.message); }
 }

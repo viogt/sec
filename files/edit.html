@@ -45,7 +45,6 @@
 }
 ul,ol { padding-left: 1em; }
 li { margin-bottom: .6em; }
-
 @media screen and (min-width: 600px) {
   #inCapsul { width: 600px; margin: auto; }
 }
@@ -349,23 +348,38 @@ function clearContent() {
 	if(confirm('Erase/clear content?')) { T.innerText = '*'; isDirty = false; }
 }
 
+function getCSSrule(rule, slctr) {
+    const   sh = document.styleSheets[1],
+            r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
+    return r ? r.style[slctr]:'';
+}
+
 function insTable() {
-    let Js, Fs = prompt('TABLE PARAMETERS:','"rows": 3, "cols": 2, "pad": 6, "border": 1,"darkCol":-1'),
-    	pops = ['rows','cols','pad','border','darkCol'];
+    let Js, Fs = prompt('TABLE PARAMETERS:','"rows": 3, "cols": "*20%,", "pad": 6, "border": 1'),
+    	pops = ['rows','cols','pad','border'];
     if(!Fs) return;
     try { Js = JSON.parse(`{${Fs}}`); } catch(err) { alert('Wrong format: ' + err.message); return; }
     for(let e of pops) { if(!Js.hasOwnProperty(e)){ alert('Wrong format: no rows,cols,pad...'); return;}}
     
-    let cul = T.className.substr(0,4), brd = '', frm = '', brdX = '8d4', frmX = '6a4';
-    if(cul == 'grey') { brdX = 'ccc'; frmX = '888'; } else if(cul == 'blue') { brdX = 'aac'; frmX = '78c'; }
-    if(Js.border > 0) { brd = `border-top:${Js.border}px solid #${brdX};`; frm = `border:${Js.border}px solid #${brdX};`; }
-    let b = `<table cellspacing="0" cellpadding="${Js.pad}" style="font-size:1em;${frm}">`,
-    	bg = `background-color: #${frmX};color:#fff;`;
+    let tCul = getCSSrule(`.${T.className} h2`, 'backgroundColor'),
+    	cols = Js.cols.split(','), colLen = cols.length, brdTop = '', brd = '';
+    if(Js.border > 0) {
+    	brdTop = `border-top:${Js.border}px solid ${tCul};`;
+        brd = `border:${Js.border}px solid ${tCul};`;
+    }
+    let b = `<table cellspacing="0" cellpadding="${Js.pad}" style="width:100%;font-size:1em;${brd}">`;
     
     for(let r=0; r < Js.rows; r++) {
     	b += '<tr>';
-        for(let c=0; c < Js.cols; c++) {
-        	b += `<td valign="top" style="${c==Js.darkCol?bg:''}${r==0?'':brd}">*</td>`;
+        for(let c=0; c < colLen; c++) {
+        	let bg, w = cols[c];
+        	if(w.charAt(0) == '*') {
+            	bg = `background-color: ${tCul};color:#fff;`;
+                w = w.slice(1);
+            }
+            else bg = 'background-color: #fff;';
+            if(w) w = `width:${w};`;
+        	b += `<td valign="top" style="${w}${bg}${r==0 && Js.border > 0 ?'':brdTop}">*</td>`;
         }
         b += '</tr>';
     }

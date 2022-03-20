@@ -326,7 +326,14 @@ function fColor(cl) {
 	exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
 }
 
-function theme(cl) { T.className = `${cl}Style`; }
+function theme(cl) {
+	T.className = `${cl}Style`;
+    let Js = {}, cul = `1px solid ${getCSSrule("."+T.className+" h2", "backgroundColor")}`;
+    T.querySelectorAll('table').forEach(e=>{
+    	if(e.hasAttribute('two')) e.rows[0].cells[0].style.borderRight = cul;
+        else { infoTable(e, Js); chTbOpts(e, Js); }
+    });
+}
 
 function insLink() {
   var sLnk=prompt('Write the URL here','http:\/\/');
@@ -334,9 +341,7 @@ function insLink() {
 }
 
 function twoCol() {
-	let cul = T.className.substr(0,4), brdX;
-    if(cul == 'grey') brdX = 'ccc'; else if(cul == 'blue') brdX = 'aac'; else brdX = '8d4';
-    exe('insertHTML',`<table style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:thin solid #${brdX};width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>`);
+    exe('insertHTML',`<table two style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:1px solid ${getCSSrule("."+T.className+" h2", "backgroundColor")};width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>`);
 }
 
 function corrDiacrit() {

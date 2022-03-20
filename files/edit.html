@@ -354,36 +354,131 @@ function getCSSrule(rule, slctr) {
     return r ? r.style[slctr]:'';
 }
 
-function insTable() {
-    let Js, Fs = prompt('TABLE PARAMETERS:','"rows": 3, "cols": "*20%,", "pad": 6, "border": 1'),
-    	pops = ['rows','cols','pad','border'];
-    if(!Fs) return;
-    try { Js = JSON.parse(`{${Fs}}`); } catch(err) { alert('Wrong format: ' + err.message); return; }
-    for(let e of pops) { if(!Js.hasOwnProperty(e)){ alert('Wrong format: no rows,cols,pad...'); return;}}
-    
-    let tCul = getCSSrule(`.${T.className} h2`, 'backgroundColor'),
-    	cols = Js.cols.split(','), colLen = cols.length, brdTop = '', brd = '';
-    if(Js.border > 0) {
-    	brdTop = `border-top:${Js.border}px solid ${tCul};`;
-        brd = `border:${Js.border}px solid ${tCul};`;
-    }
-    let b = `<table cellspacing="0" cellpadding="${Js.pad}" style="width:100%;font-size:1em;${brd}">`;
-    
-    for(let r=0; r < Js.rows; r++) {
-    	b += '<tr>';
-        for(let c=0; c < colLen; c++) {
-        	let bg, w = cols[c];
-        	if(w.charAt(0) == '*') {
-            	bg = `background-color: ${tCul};color:#fff;`;
+/*---------------------------- Table Functions -------------------------------*/
+function chTbOpts(TB, Js) {
+try {
+	const rs = TB.rows, rsL = rs.length;
+    let cols = Js.cols.split(','), cul = getCSSrule(`.${T.className} h2`, 'backgroundColor');
+    const Br = Js.border > 0?`${Js.border}px solid ${cul}`:'none';
+    TB.style.border = Br;
+    for(let r=0; r<rsL; r++) {
+    	const cs = rs[r].cells, csL = cs.length;
+        for(let c=0; c<csL; c++) {
+        	let st = cs[c].style, w = cols[c];
+            st.padding = `${Js.pad}px`;
+        	st.borderTop = r>0 ? Br : 'none';
+            if(w.charAt(0) == '*') {
+            	st.backgroundColor = cul;
+                st.color = '#fff';
                 w = w.slice(1);
             }
-            else bg = 'background-color: #fff;';
-            if(w) w = `width:${w};`;
-        	b += `<td valign="top" style="${w}${bg}${r==0 && Js.border > 0 ?'':brdTop}">*</td>`;
-        }
-        b += '</tr>';
+            else { st.backgroundColor = '#fff'; st.color = 'inherit'; }
+            if(w) st.width = w;
+    	}
     }
-    exe('insertHTML', b + '</table>');
+} catch(err) { alert(err.message); }
+}
+function mkTable(rows, cols) {
+	const Tb = document.createElement('table');
+    Tb.style.width = '100%'; Tb.style.fontSize = '1em';
+    Tb.style.borderCollapse = 'collapse'; Tb.style.borderSpacing = '0px';
+    for(let r=0; r<rows; r++) {
+    	let R = Tb.insertRow();
+        for(let c=0; c<cols; c++) R.insertCell().innerText = '*';
+    }
+    return Tb;
+}
+
+function alterTable(tb, Js, cmd) {
+
+	let cms = cmd.toLowerCase().split(' ');
+    if(cms[0] == 'add') { R = -1; C = -1; } else { R = Js.rInx; C = Js.cInx; }
+    if(cms[0] == 'del') {
+    	if(cms[1] == 'row') {
+        	if(tb.rows.length>1) tb.deleteRow(R);
+            else alert('Last row: use "del table".');
+            return true;
+        }
+        if(cms[1] == 'col') {
+        	let rs = tb.rows;
+            if(rs[0].cells.length < 2) { alert('Last col: use "del table".'); return true; }
+        	for(let r=0; r<tb.rows.length; r++) tb.rows[r].deleteCell(C);
+            let arr = Js.cols.split(','); arr.splice(C,1); Js.cols = arr.join(',');
+        	return true;
+        }
+        if(cms[1] == 'table') { tb.remove(); Js.cols = null; return false; }
+    }
+    // --- Add | Ins ---//
+    if(cms[1] == 'row') {
+    	let cLen = tb.rows[0].cells.length;
+    	let rIns = tb.insertRow(R);
+        for(let i=0; i<cLen; i++) rIns.insertCell().innerText = '*';
+        return true;
+    }
+    if(cms[1] == 'col') {
+    	for(let r=0; r<tb.rows.length; r++) tb.rows[r].insertCell(C).innerText = '*';
+        let arr = Js.cols.split(','); arr.splice(Js.cInx, 0, ''); Js.cols = arr.join(',');
+        return true;
+    }
+    return false;
+}
+
+function infoTable(tb, Js) {
+	Js.border = tb.style.border != 'none'?parseInt(tb.style.border,10):0;
+    let cs = tb.rows[0].cells;
+    Js.pad = parseInt(cs[0].style.padding,10);
+    let ps = [];
+    for(let i=0; i < cs.length; i++) {
+        ps[i] = cs[i].style.width ? cs[i].style.width:'';
+        if(cs[i].style.backgroundColor != 'rgb(255, 255, 255)') ps[i] = '*' + ps[i];
+    }
+    Js.cols = ps.join(','); 
+}
+
+function insTable() {
+//try {
+	let Js={}, tb, pops, prom1, prom2, oldCols, nd = window.getSelection().anchorNode;
+    if(!nd) { alert('No focus on doc'); return; }
+    while(nd.tagName != 'TD') nd = nd.parentNode;
+    const newTb = nd.id?true:false;
+    
+    if(newTb) {
+    	prom1 = 'TABLE PARAMETERS:';
+        prom2 = '{"rows": 3, "cols": "*20%,", "pad": 6, "border": 1}';
+        pops = ['rows','cols','pad','border'];
+    }
+    else {
+    	tb = nd.parentElement.parentElement.parentElement;
+        Js.cInx = nd.cellIndex;
+        Js.rInx = nd.parentElement.rowIndex;
+        infoTable(tb, Js);
+        oldCols = Js.cols.split(',').length;
+    	prom1 = `Add Row/Col, Del/Ins Row/Col (Row ${Js.rInx}/Col ${Js.cInx}), Del Table:`;
+        prom2 = `{"cols": "${Js.cols}", "pad": ${Js.pad}, "border": ${Js.border}}`;
+        pops = ['cols','pad','border'];
+    }
+
+    let Fs = prompt(prom1,prom2); if(!Fs) return;
+    
+    if(!newTb && !Fs.includes('{')) {
+    	if(alterTable(tb, Js, Fs)) chTbOpts(tb, Js);
+        else alert(Js.rows?'Bad command format.':'Table deleted');
+        return;
+    }
+    try { Js = JSON.parse(Fs); } catch(err) { alert('Wrong format: ' + err.message); return; }
+    for(let e of pops) { if(!Js.hasOwnProperty(e)){ alert('Wrong format: no rows,cols,pad...'); return; }}
+
+ 	if(newTb) {
+    	tb = mkTable(Js.rows, Js.cols.split(',').length);
+    	chTbOpts(tb, Js);
+    	exe('insertHTML', tb.outerHTML);
+    }
+    else {
+    	if(!newTb && oldCols != Js.cols.split(',').length) { alert('Different number of cols.'); return; }
+    	chTbOpts(tb, Js);
+    }
+ 
+//} catch(err) { alert(err.message); }
 }
 
 function yesNo(f) {
@@ -395,12 +490,6 @@ function yesNo(f) {
 
   const r = s.getRangeAt(0); r.deleteContents(); r.insertNode(sp);
 }  
-/*function yesNo(f) {
-	let s = window.getSelection(); if(!s.toString()) return;
-    const em = document.createElement('em');
-    if(f) em.style.backgroundColor = '#080';
-    s.getRangeAt(0).surroundContents(em);
-}*/
 
 function letterSpace() {
 	let s = window.getSelection().toString(); if(!s) return;

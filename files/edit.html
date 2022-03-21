@@ -389,7 +389,11 @@ function mkTable(rows, cols) {
     Tb.style.borderCollapse = 'collapse'; Tb.style.borderSpacing = '0px';
     for(let r=0; r<rows; r++) {
     	let R = Tb.insertRow();
-        for(let c=0; c<cols; c++) R.insertCell().innerText = '*';
+        for(let c=0; c<cols; c++) {
+        	let c = R.insertCell();
+            c.innerText = '*';
+            c.style.verticalAlign = 'top';
+        }
     }
     return Tb;
 }
@@ -442,7 +446,8 @@ function infoTable(tb, Js) {
 
 function insTable() {
 //try {
-	let Js={}, tb, pops, prom1, prom2, oldCols, nd = window.getSelection().anchorNode;
+	let Js={}, tb, pops, prom1, prom2, oldCols,
+    	SEL = window.getSelection(), nd = SEL.anchorNode;
     if(!nd) { alert('No focus on doc'); return; }
     while(nd.tagName != 'TD') nd = nd.parentNode;
     const newTb = nd.id?true:false;
@@ -476,7 +481,9 @@ function insTable() {
  	if(newTb) {
     	tb = mkTable(Js.rows, Js.cols.split(',').length);
     	chTbOpts(tb, Js);
-    	exe('insertHTML', tb.outerHTML);
+    	//exe('insertHTML', tb.outerHTML);
+        SEL.getRangeAt(0).insertNode(tb);
+        SEL.collapse(tb.rows[0].cells[0]);
     }
     else {
     	if(!newTb && oldCols != Js.cols.split(',').length) { alert('Different number of cols.'); return; }

@@ -218,8 +218,8 @@ li { margin-bottom: .6em; }
 <div onclick='up_low(true)'>A</div>
 <div onclick='up_low(false)'>a</div>
 <div onclick='exe("insertHorizontalRule")'>–</div>
-<div onclick='sel("<h1>","</h1>")'><i class="fa fa-header"></i></div>
-<div onclick='sel("<h2>","</h2>")'><i class="fa fa-header" style="font-size:11px"></i></div>
+<div onclick="sel('h1')"><i class="fa fa-header"></i></div>
+<div onclick='sel("h2")'><i class="fa fa-header" style="font-size:11px"></i></div>
 
 <div onclick='toggle(this)' style='background-color:#44a'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none'>
@@ -237,7 +237,7 @@ li { margin-bottom: .6em; }
 <span class='subpanel' style='display:none'>
 <div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
 <div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
-<div onclick='sel("<blockquote>","</blockquote>")'><i class="fa fa-quote-left"></i></div>
+<div onclick='sel("blockquote")'><i class="fa fa-quote-left"></i></div>
 <div onclick='theme("blue")'><i class="fa fa-square" style='color:blue'></i></div>
 <div onclick='theme("grey")'><i class="fa fa-square" style='color:grey'></i></div>
 <div onclick='theme("green")'><i class="fa fa-square" style='color:green'></i></div>
@@ -245,6 +245,7 @@ li { margin-bottom: .6em; }
 <div onclick='fColor("red")'><i class="fa fa-font" style='color:red'></i></div>
 <div onclick='fColor("blue")'><i class="fa fa-font" style='color:blue'></i></div>
 <div onclick='fColor("green")'><i class="fa fa-font" style='color:green'></i></div>
+<div onclick='fColor("#ff0")'><i class="fa fa-font" style='color:#ff0'></i></div>
 <div onclick='yesNo(1)'><i class="fa fa-check"></i></div>
 <div onclick='yesNo(0)'><i class="fa fa-times"></i></div>
 <div onclick='letterSpace()'><i class="fa fa-arrows-h"></i></div>
@@ -300,10 +301,9 @@ function toClipBoard(ob) {
 
 function ins(o) { exe('insertText', o.textContent); }
 
-function sel(tgBeg, tgEnd) {
-	let s = window.getSelection().toString();
-    if(!s) return;
-    exe("insertHTML", tgBeg + s + tgEnd);
+function sel(tg) {
+	let s = window.getSelection().toString(); if(!s) return;
+    exe("insertHTML", `<${tg}>${s}</${tg}>`);
 }
 function up_low(F) {
 	let s = window.getSelection().toString(); if(!s) return;
@@ -322,8 +322,13 @@ function toggle(el) {
 }
 
 function fColor(cl) {
-	let s = window.getSelection().toString(); if(!s) return;
-	exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
+	const s = window.getSelection(); if(s.isCollapsed) return;
+    const el = document.createElement('font');
+    el.color = cl;
+    s.getRangeAt(0).surroundContents(el);
+	/*let s = window.getSelection().toString(); if(!s) return;
+	//exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
+    exe("insertHTML", `<font color="${cl}">${s}</font>`);*/
 }
 
 function theme(cl) {
@@ -396,7 +401,7 @@ function mkTable(rows, cols) {
 }
 
 function alterTable(tb, Js, cmd) {
-
+//try {
 	let cms = cmd.toLowerCase().split(' ');
     if(cms[0] == 'add') { R = -1; C = -1; } else { R = Js.rInx; C = Js.cInx; }
     if(cms[0] == 'del') {
@@ -407,12 +412,16 @@ function alterTable(tb, Js, cmd) {
         }
         if(cms[1] == 'col') {
         	let rs = tb.rows;
-            if(rs[0].cells.length < 2) { alert('Last col: use "del table".'); return true; }
+            if(rs[0].cells.length < 2) { alert('Last col: use "del table".'); return true; 			}
         	for(let r=0; r<tb.rows.length; r++) tb.rows[r].deleteCell(C);
             let arr = Js.cols.split(','); arr.splice(C,1); Js.cols = arr.join(',');
         	return true;
         }
         if(cms[1] == 'table') { tb.remove(); Js.cols = null; return false; }
+    }
+    if(cms[0] == 'align') {
+    	for(let r=0; r<tb.rows.length; r++) tb.rows[r].cells[C].style.textAlign = cms[1];
+        return true;
     }
     // --- Add | Ins ---//
     if(cms[1] == 'row') {
@@ -427,6 +436,7 @@ function alterTable(tb, Js, cmd) {
         return true;
     }
     return false;
+//} catch(err) { alert(err.message); }
 }
 
 function infoTable(tb, Js) {
@@ -460,7 +470,7 @@ function insTable() {
         Js.rInx = nd.parentElement.rowIndex;
         infoTable(tb, Js);
         oldCols = Js.cols.split(',').length;
-    	prom1 = `Add Row/Col, Del/Ins Row/Col (Row ${Js.rInx}/Col ${Js.cInx}), Del Table:`;
+    	prom1 = `Add Row/Col, Del/Ins Row/Col (Row ${Js.rInx}/Col ${Js.cInx}), Del Table, Align right:`;
         prom2 = `{"cols": "${Js.cols}", "pad": ${Js.pad}, "border": ${Js.border}}`;
         pops = ['cols','pad','border'];
     }

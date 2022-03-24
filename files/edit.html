@@ -249,6 +249,7 @@ li { margin-bottom: .6em; }
 <div onclick='yesNo(1)'><i class="fa fa-check"></i></div>
 <div onclick='yesNo(0)'><i class="fa fa-times"></i></div>
 <div onclick='letterSpace()'><i class="fa fa-arrows-h"></i></div>
+<div onclick='insHTML()'><i class="fa fa-code"></i></div>
 </span>
 
 <div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
@@ -331,6 +332,16 @@ function fColor(cl) {
     exe("insertHTML", `<font color="${cl}">${s}</font>`);*/
 }
 
+function insHTML() {
+	const s = window.getSelection(); if(s.isCollapsed) return;
+	let css = prompt('Insert CSS properties:','border-bottom: 2px solid red; background-color: #ff6'); if(!css) return;
+    let arr = styleToArr(css);
+    const el = document.createElement('span'), st = el.style;
+    el.innerText = s.toString();
+    arr.forEach(e => st[e[0]] = e[1]);
+    exe("insertHTML", el.outerHTML);
+}
+
 function theme(cl) {
 	T.className = `${cl}Style`;
     let Js = {}, cul = `1px solid ${getCSSrule("."+T.className+" h2", "backgroundColor")}`;
@@ -341,7 +352,7 @@ function theme(cl) {
 }
 
 function insLink() {
-  var sLnk=prompt('Write the URL here','http:\/\/');
+  let sLnk=prompt('Write the URL here','http:\/\/');
   if(sLnk && sLnk != '' && sLnk != 'http://') exe("createLink", sLnk);
 }
 
@@ -364,6 +375,17 @@ function getCSSrule(rule, slctr) {
     return r ? r.style[slctr]:'';
 }
 
+function styleToArr(css) {
+  let arr = [];
+  css.split(';').forEach(e => {
+    if(e = e.trim()) {
+      let ps = e.split(':'); ps[0] = ps[0].trim(); //ps[1] = ps[1].trim();
+      if(ps[0].includes('-')) ps[0] = ps[0].replace(/-./, m=>{ return m.slice(1).toUpperCase();});
+      arr.push([ps[0],ps[1]]);
+    }
+  });
+  return arr;
+}
 /*---------------------------- Table Functions -------------------------------*/
 function chTbOpts(TB, Js) {
 try {
@@ -417,10 +439,19 @@ function alterTable(tb, Js, cmd) {
             let arr = Js.cols.split(','); arr.splice(C,1); Js.cols = arr.join(',');
         	return true;
         }
-        if(cms[1] == 'table') { tb.remove(); Js.cols = null; return false; }
+        if(cms[1] == 'table') { tb.remove(); Js.cols = null; return true; }
     }
     if(cms[0] == 'align') {
     	for(let r=0; r<tb.rows.length; r++) tb.rows[r].cells[C].style.textAlign = cms[1];
+        return true;
+    }
+    if(cms[0] == 'col') {
+    	let arr = styleToArr(cmd.slice(4));
+    	for(let r=0; r<tb.rows.length; r++) {
+        	let st = tb.rows[r].cells[C].style;
+            arr.forEach(e => st[e[0]] = e[1]);
+        }
+        Js.cols = null;
         return true;
     }
     // --- Add | Ins ---//
@@ -478,8 +509,8 @@ function insTable() {
     let Fs = prompt(prom1,prom2); if(!Fs) return;
     
     if(!newTb && !Fs.includes('{')) {
-    	if(alterTable(tb, Js, Fs)) chTbOpts(tb, Js);
-        else alert(Js.rows?'Bad command format.':'Table deleted');
+    	if(alterTable(tb, Js, Fs) && Js.cols) chTbOpts(tb, Js);
+        else if(Js.cols) alert('Bad command format.');
         return;
     }
     try { Js = JSON.parse(Fs); } catch(err) { alert('Wrong format: ' + err.message); return; }

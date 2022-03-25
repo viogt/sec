@@ -521,7 +521,10 @@ function insTable() {
     	chTbOpts(tb, Js);
     	//exe('insertHTML', tb.outerHTML);
         SEL.getRangeAt(0).insertNode(tb);
-        SEL.collapse(tb.rows[0].cells[0]);
+        let el = tb.rows[0].cells[0];
+        SEL.collapse(el);
+        el.selectionStart = 0;
+   	el.focus();
     }
     else {
     	if(!newTb && oldCols != Js.cols.split(',').length) { alert('Different number of cols.'); return; }

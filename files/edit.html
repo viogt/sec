@@ -32,7 +32,8 @@
   user-select: none;
   cursor: pointer;
   text-align: center;
-  padding: 8px 0 0 0;
+  line-height: 32px;
+  /*padding: 8px 0 0 0;*/
   margin: 6px;
   border-radius: 50%;
 }
@@ -565,7 +566,7 @@ function lstToTbl() {
         tbl.setAttribute('lst', true);
         e.querySelectorAll('li').forEach(li => {
         	let c, r = tbl.insertRow();
-            let d = mkElm('div',{innerText: cnt++},{ display: 'table-cell', width: '32px', height: '32px', borderRadius: '50%', textAlign: 'center', verticalAlign: 'middle', backgroundColor: cul, color: '#fff'});
+            let d = mkElm('div',{innerText: cnt++},{ display: 'inline-block', width: '32px', height: '32px', lineHeight: '32px', borderRadius: '50%', textAlign: 'center', backgroundColor: cul, color: '#fff'});
             c = mkElm('td', null, { verticalAlign:'top' });
             c.appendChild(d); r.appendChild(c);
             c = mkElm('td', {innerHTML: li.innerHTML}, { verticalAlign:'top', padding: '0 0 1em 1em' });

@@ -229,6 +229,7 @@ li { margin-bottom: .6em; }
 <div onclick='exe("justifyFull")'><i class="fa fa-align-justify"></i></div>
 <div onclick='exe("insertunorderedlist")'><i class="fa fa-list-ul"></i></div>
 <div onclick='exe("insertorderedlist")'><i class="fa fa-list-ol"></i></div>
+<div onclick='lstToTbl()'><i class="fa fa-refresh"></i></div>
 <div onclick='exe("indent")'><i class="fa fa-indent"></i></div>
 <div onclick='exe("outdent")'><i class="fa fa-dedent"></i></div>
 </span>
@@ -326,7 +327,7 @@ function fColor(cl) {
 	const s = window.getSelection(); if(s.isCollapsed) return;
     const el = document.createElement('font');
     el.color = cl;
-    s.getRangeAt(0).surroundContents(el);
+    s.getRangeAt(0).surroundContents(el); isDirty = true;
 	/*let s = window.getSelection().toString(); if(!s) return;
 	//exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
     exe("insertHTML", `<font color="${cl}">${s}</font>`);*/
@@ -344,10 +345,11 @@ function insHTML() {
 
 function theme(cl) {
 	T.className = `${cl}Style`;
-    let Js = {}, cul = `1px solid ${getCSSrule("."+T.className+" h2", "backgroundColor")}`;
+    let Js = {}, bg = getCSSrule("."+T.className+" h2", "backgroundColor"), cul = `1px solid ${bg}`;
     T.querySelectorAll('table').forEach(e=>{
-    	if(e.hasAttribute('two')) e.rows[0].cells[0].style.borderRight = cul;
-        else { infoTable(e, Js); chTbOpts(e, Js); }
+    	if(e.hasAttribute('tbl')) { infoTable(e, Js); chTbOpts(e, Js); }
+    	else if(e.hasAttribute('two')) e.rows[0].cells[0].style.borderRight = cul;
+        else if(e.hasAttribute('lst')) for(let r of e.rows) r.cells[0].firstChild.style.backgroundColor = bg;
     });
 }
 
@@ -363,6 +365,7 @@ function twoCol() {
 function corrDiacrit() {
   const r = /[ŞşŢţ]/g; if(r.test(T.textContent))
   T.innerHTML = T.innerHTML.replace(r, function(x){ return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); });
+  isDirty = true;
 }
 
 function clearContent() {
@@ -413,12 +416,13 @@ try {
 }
 function mkTable(rows, cols) {
 	const Tb = document.createElement('table');
-    Tb.style.width = '100%'; Tb.style.fontSize = '1em';
+    Tb.style.width = '100%'; Tb.style.fontSize = '1em'; Tb.setAttribute('tbl', true);
     Tb.style.borderCollapse = 'collapse'; Tb.style.borderSpacing = '0px';
     for(let r=0; r<rows; r++) {
     	let R = Tb.insertRow();
         for(let c=0; c<cols; c++) R.insertCell().innerText = '*';
     }
+    isDirty = true;
     return Tb;
 }
 
@@ -521,10 +525,7 @@ function insTable() {
     	chTbOpts(tb, Js);
     	//exe('insertHTML', tb.outerHTML);
         SEL.getRangeAt(0).insertNode(tb);
-        let el = tb.rows[0].cells[0];
-        SEL.collapse(el);
-        el.selectionStart = 0;
-   	el.focus();
+        SEL.collapse(tb.rows[0].cells[0]);
     }
     else {
     	if(!newTb && oldCols != Js.cols.split(',').length) { alert('Different number of cols.'); return; }
@@ -542,11 +543,37 @@ function yesNo(f) {
   sp.textContent = ` ${s.toString()} `;
 
   const r = s.getRangeAt(0); r.deleteContents(); r.insertNode(sp);
+  isDirty = true;
 }  
 
 function letterSpace() {
 	let s = window.getSelection().toString(); if(!s) return;
     exe('insertHTML', `<span style='letter-spacing:.2em;'>${s}</span>`);
+}
+
+function mkElm(tg, vls = null, ops = null) {
+	const el = document.createElement(tg);
+    if(vls) Object.entries(vls).forEach(([key, value])=>el[key] = value);
+    if(ops) Object.entries(ops).forEach(([key, value])=>el.style[key] = value);
+    return el;
+}
+
+function lstToTbl() {
+	let cul = getCSSrule(`.${T.className} h2`, 'backgroundColor');
+	document.querySelectorAll('ol').forEach(e => {
+    	let cnt = 1, tbl = mkElm('table',{ borderCollapse:'collapse', borderSpacing: '0px' });
+        tbl.setAttribute('lst', true);
+        e.querySelectorAll('li').forEach(li => {
+        	let c, r = tbl.insertRow();
+            let d = mkElm('div',{innerText: cnt++},{ display: 'flex', width: '32px', height: '32px', borderRadius: '18px', justifyContent: 'center', alignItems: 'center', backgroundColor: cul, color: '#fff'});
+            c = mkElm('td', null, { verticalAlign:'top' });
+            c.appendChild(d); r.appendChild(c);
+            c = mkElm('td', {innerHTML: li.innerHTML}, { verticalAlign:'top', padding: '0 0 1em 1em' });
+            r.appendChild(c);
+        });
+        e.replaceWith(tbl);
+        isDirty = true;
+    });
 }
 
 inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);

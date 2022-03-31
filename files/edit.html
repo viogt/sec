@@ -561,11 +561,11 @@ function mkElm(tg, vls = null, ops = null) {
 function lstToTbl() {
 	let cul = getCSSrule(`.${T.className} h2`, 'backgroundColor');
 	document.querySelectorAll('ol').forEach(e => {
-    	let cnt = 1, tbl = mkElm('table',{ borderCollapse:'collapse', borderSpacing: '0px' });
+    	let cnt = 1, tbl = mkElm('table',{ borderCollapse:'collapse', borderSpacing: '0px' },{fontSize: '1em'});
         tbl.setAttribute('lst', true);
         e.querySelectorAll('li').forEach(li => {
         	let c, r = tbl.insertRow();
-            let d = mkElm('div',{innerText: cnt++},{ display: 'flex', width: '32px', height: '32px', borderRadius: '18px', justifyContent: 'center', alignItems: 'center', backgroundColor: cul, color: '#fff'});
+            let d = mkElm('div',{innerText: cnt++},{ display: 'table-cell', width: '32px', height: '32px', borderRadius: '50%', textAlign: 'center', verticalAlign: 'middle', backgroundColor: cul, color: '#fff'});
             c = mkElm('td', null, { verticalAlign:'top' });
             c.appendChild(d); r.appendChild(c);
             c = mkElm('td', {innerHTML: li.innerHTML}, { verticalAlign:'top', padding: '0 0 1em 1em' });

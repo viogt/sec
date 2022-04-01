@@ -12,7 +12,7 @@
   position: fixed;
   top: 0; left: 0;
   height: 100%;
-  width: 50px;
+  width: 42px;
   z-index: 100;
   font-family: Arial,sans-serif;
   font-size: 15px;
@@ -34,10 +34,10 @@
   text-align: center;
   line-height: 32px;
   /*padding: 8px 0 0 0;*/
-  margin: 6px;
+  margin: 5px;
   border-radius: 50%;
 }
-.subpanel { display: block; width: 38px; }
+.subpanel { width: 40px; }
 #inCapsul {
   overflow-y: auto;
   width: 100%;
@@ -223,7 +223,7 @@ li { margin-bottom: .6em; }
 <div onclick='sel("h2")'><i class="fa fa-header" style="font-size:11px"></i></div>
 
 <div onclick='toggle(this)' style='background-color:#44a'><i class="fa fa-caret-down"></i></div>
-<span class='subpanel' style='display:none'>
+<span class='subpanel' style='display:none; background-color: rgb(0,0,220,.1);'>
 <div onclick='exe("justifyLeft")'><i class="fa fa-align-left"></i></div>
 <div onclick='exe("justifyCenter")'><i class="fa fa-align-center"></i></div>
 <div onclick='exe("justifyRight")'><i class="fa fa-align-right"></i></div>
@@ -236,7 +236,7 @@ li { margin-bottom: .6em; }
 </span>
 
 <div onclick='toggle(this)' style='background-color:#484'><i class="fa fa-caret-down"></i></div>
-<span class='subpanel' style='display:none'>
+<span class='subpanel' style='display:none; background-color: rgb(0,220,0,.1); '>
 <div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
 <div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
 <div onclick='sel("blockquote")'><i class="fa fa-quote-left"></i></div>
@@ -255,7 +255,7 @@ li { margin-bottom: .6em; }
 </span>
 
 <div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
-<span class='subpanel' style='display:none'>
+<span class='subpanel' style='display:none; background-color: rgb(220,0,0,.1); '>
 <div onclick='ins(this)'>⚑</div>
 <div onclick='ins(this)'>✎</div>
 <div onclick='ins(this)'>§</div>

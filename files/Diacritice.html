@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Topa case - Essentials - Robu Ordinance</title>
+  <title>DIACRITICE</title>
   <style>
   * { box-sizing: border-box; }
   html, body {
       padding: 8px;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
       height: 100%;
   }
@@ -23,7 +23,7 @@
     width: 100%;
     margin: 0;
   }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   body { width:100%; }
 }
   </style>
@@ -31,12 +31,12 @@
 <body>
 
 <textarea></textarea>
-
 <button onclick='Diac()'>Clean the above text</button>
 
 <script>
     
     const txt = document.querySelector("textarea");
+    txt.focus();
     
     function Diac() {
         var T = txt.value.trim();
@@ -50,10 +50,10 @@
         });
         
         // si
-        T = T.replace(/(?<=\s)si(?=\s)/gmi, x=>{ return (x.charAt(0)=='s'?'ș':'Ș') + x.charAt(1); });
+        T = T.replace(/(?<=\s|\b)si(?=\s)/gmi, x=>{ return (x.charAt(0)=='s'?'ș':'Ș') + x.charAt(1); });
         
         // in
-        T = T.replace(/(?<=\s)in(?=\s)/gmi, x=>{ return (x.charAt(0)=='i'?'î':'Î') + x.charAt(1); });
+        T = T.replace(/(?<=\s|\b)in(?=\s)/gmi, x=>{ return (x.charAt(0)=='i'?'î':'Î') + x.charAt(1); });
        
         // atît cît încît
         T = T.replace(/(î|Î)t\b/gmi, x=>{

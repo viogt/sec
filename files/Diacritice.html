@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,16 +60,18 @@
         	return (x.charAt(0)=='î'?'â':'Â') + x.slice(1);
         });
         
-        // si
-        T = T.replace(/(?<=\s|\b)si(?=\s)/gmi, x=>{ return (x.charAt(0)=='s'?'ș':'Ș') + x.charAt(1); });
+        // si -- (?<=\s|\b)
+        T = T.replace(/(?<=\s)si(?=\s)/gmi, x=>{ return (x.charAt(0)=='s'?'ș':'Ș') + x.charAt(1); });
         
         // in
-        T = T.replace(/(?<=\s|\b)in(?=\s)/gmi, x=>{ return (x.charAt(0)=='i'?'î':'Î') + x.charAt(1); });
+        T = T.replace(/(?<=\s)in(?=\s)/gmi, x=>{ return (x.charAt(0)=='i'?'î':'Î') + x.charAt(1); });
        
         // atît cît încît
         T = T.replace(/(î|Î)t\b/gmi, x=>{
         	return x.replace(/î|Î/, c => c=='î'?'â':'Â');
         });
+        
+        // sînt sânt sunt - amîn... - pîrît... .în - .ân
 
         // hotărî...
         T = T.replace(/\bhot(ă|Â)r(î|Î)\b/gmi, x=>{

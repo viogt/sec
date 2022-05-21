@@ -49,11 +49,10 @@
     txt.focus();
     
     const PREF = ['neî','preî','desî','dezî','deî','străî','răsî','răzî','contraî','interî','antiî','supraî','postî','ultraî','arhiî','subî','inî','conî','comî','transî','hiperî','coî'];
-    
-    let b = '', cnt = 0, corr = 0;
+
     
     function Diac() {
-        var T = txt.value.trim();
+        let T = txt.value.trim(), b = '', cnt = 0, corr = 0;
 
         //Diacriticie
         T = T.replace(/[ŞşŢţ]/g, x=>{ corr++; return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); });

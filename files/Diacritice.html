@@ -123,6 +123,9 @@
 
         // double \n
         T = T.replace(/(?<!\n)\n(?!\n)/gm,"\n\n");
+        
+        // correct quotation marks
+        T = T.replace(/["'„”“‟](.+?)["'„”“‟]/gm, x => '„'+x.substr(1,x.length-2)+'”');
 
         document.querySelector("div").innerText =
         `Total words: ${cnt}, Corrections: ${corr}\n\n${b}`;

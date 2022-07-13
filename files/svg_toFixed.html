@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <title>📌 SVG decimals</title>
+  <style>
+    textarea { width: 100%; height: calc(100vh - 70px); }
+  </style>
+<body>
+
+<textarea>1.1K -34.091 H0.340 123.123Boo 20.200</textarea>
+Decimals:<input type="text" style="width:20px" id="dec" value="1">
+Remove prefix zero:<input type="checkbox" id="ch" checked>
+<button onclick='go()'>Go!</button>
+
+<script>
+function go() {
+	let t = document.querySelector('textarea'),
+      dec = document.querySelector('#dec').value*1,
+      ch = document.querySelector('#ch').checked? true: false;
+  dec = Math.pow(10,dec);
+  
+  t.value = t.value.replace(/\d*\.\d+/g, m => {
+      let r = (Math.round(m*dec)/dec).toString(10);
+      if(ch) if(r.slice(0,2) == '0.') r = r.slice(1);
+      return r;
+  });
+}
+</script>
+ 
+</body>
+</html>

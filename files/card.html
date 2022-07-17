@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Card</title>
+  <style>
+* { box-sizing: border-box; font: normal 15px Arial,Sans-serif; }
+body { background-color: #eee; margin:0; }
+#availScreen {
+  width: 100%;
+}
+#scr {
+  overflow-y: auto;
+  width: 100%;
+  height: calc(100vh - 64px);
+  padding: 8px;
+}
+.Card {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 3px 5px #888;
+}
+.Card .Prev {
+  display: inline-block;
+  width: 32px; height: 32px;
+  background-color: #88a;
+  color: #eef;
+  text-align: center;
+  line-height: 32px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
+.Card .Body {
+  display: inline-block;
+  width: calc(100% - 88px);
+}
+.Card .Title {
+  width: 100%;
+  font-weight: bold;
+}
+.Card .Subtitle {
+  width: 100%;
+  color: #444;
+  font-size: 13px;
+  margin-top: 8px;
+}
+.Card .Teil {
+  display: inline-block;
+  width: 32px; height: 32px;
+  background-color: #e88;
+  color: #eef;
+  font-size: 18px;
+  text-align: center;
+  margin-left: 12px;
+  line-height: 32px;
+  border-radius: 50%;
+}
+#heading {
+  display: inline-block;
+  width: 100%;
+  height: 32px;
+  text-align: center;
+  border-bottom: 1px solid #88a;
+  padding: 8px;
+  background-color: #ccd;
+  border-radius: 0 0 8px 8px;
+}
+#bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 32px;
+  border-top: 1px solid #88a;
+  padding: 8px 20px;
+  background-color: #ccd;
+  border-radius: 8px 8px 0 0;
+}
+#bottom div {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+}
+
+
+@media screen and (min-width: 600px) {
+  #availScreen { width: 600px; margin: auto; }
+}
+</style>
+</head>
+<body><div id='availScreen'>
+  <div id='heading'>Loading...</div>
+  <div id='scr'></div>
+  <div id='bottom'>
+    <div onclick='getData(0)'><i class="fa fa-book"></i> Users</div>
+    <div onclick='getData(1)'><i class="fa fa-address-card"></i> Posts</div>
+    <div onclick='getData(2)'><i class="fa fa-commenting"></i> Comments</div>
+    <div onclick='sortData()'><i class="fa fa-sort-amount-asc"></i> Sort</div>
+  </div>
+</div>
+<script>
+
+  const parent = document.querySelector('#scr'),
+        heading = document.querySelector('#heading');
+  
+  const nav = [
+    { url: 'users', one: 'id', two: 'name', three: 'email' },
+    { url: 'posts', one: 'id', two: 'title', three: 'body' },
+    { url: 'comments', one: 'id', two: 'name', three: 'body' }
+  ];
+  var Data, selIndex = 1, sortDir = 0;
+  
+  function Elem(cls, txt=null) {
+    let e = document.createElement('div');
+    e.className = cls;
+    console.log(cls);
+    if(txt) e.innerHTML = txt;
+    return e;
+  }
+
+  function newCard(prev, title, subtitle) {
+    let crd = Elem('Card'), bdy = Elem('Body');
+    bdy.appendChild(Elem('Title',title)); bdy.appendChild(Elem('Subtitle',subtitle));
+    crd.appendChild(Elem('Prev',prev));
+    crd.appendChild(bdy);
+      let i = document.createElement('i');
+      i.className = "fa fa-trash";
+      let teil = Elem('Teil');
+      teil.addEventListener('click', ()=>{
+        let e = event.target; while(e.className != 'Card') e = e.parentElement;
+        let x = Data.findIndex(el => el.id == e.firstChild.innerText);
+        //alert(e.className + ' ' + e.firstChild.innerText + ' ' + x);
+        e.remove();
+        Data.splice(x,1);
+        injectData(true);
+      });
+      teil.appendChild(i);
+    crd.appendChild(teil);
+    parent.appendChild(crd);
+  }
+  
+  function injectData(headOnly = false) {
+    let i = selIndex;
+    let srt = `<i class="fa fa-${sortDir==0?'sort':(sortDir==1?'sort-alpha-asc':'sort-alpha-desc')}"></i>`;
+    heading.innerHTML = `${nav[i].url.toUpperCase()}: <u>${Data.length}</u> items ${srt}`;
+    if(headOnly) return;
+    document.querySelectorAll(".Card").forEach(e => e.remove());
+    Data.forEach(e => newCard(e[nav[i].one], e[nav[i].two], e[nav[i].three]));
+  }
+  
+  function getData(ix) {
+    let url = 'https://jsonplaceholder.typicode.com/' + nav[ix].url;
+    heading.innerText = 'Loading...';
+    fetch(url)
+      .then(res => res.json())
+      .then(data =>{
+        Data = data; selIndex = ix; sortDir = 0;
+        injectData();
+      })
+      .catch(console.error);
+  }
+  
+  function sortData() {
+    sortDir = sortDir==0?1:sortDir*(-1);
+    const n = selIndex == 1?'title':'name';
+    Data.sort((a,b)=>{ return a[n].localeCompare(b[n])*sortDir; });
+    injectData();
+  }
+
+  getData(1);
+</script>
+</body>
+</html>

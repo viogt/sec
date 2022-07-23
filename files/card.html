@@ -186,7 +186,7 @@ margin-right: 12px;
 
   function newCard(prev, title, subtitle) {
     let crd = Elem('Card'), bdy = Elem('Body');
-    bdy.appendChild(Elem('Title',title)); bdy.appendChild(Elem('Subtitle',selIndex?subtitle:`<a href='#'>${selIndex}</a>`));
+    bdy.appendChild(Elem('Title',title)); bdy.appendChild(Elem('Subtitle',selIndex?subtitle:`<a href='#'>${subtitle}</a>`));
     if(selIndex) crd.appendChild(Elem('Prev',prev));
     else crd.appendChild(Elem('usr' + (prev%5),''));
     crd.appendChild(bdy);

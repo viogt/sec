@@ -68,17 +68,18 @@ margin-right: 12px;
   justify-content: space-between;
   width: 100%;
   padding: 12px;
-  background-color: rgb(255,255,255,.6);
+  background-color: rgb(255,255,255,.4);
   border-radius: 12px;
   margin-bottom: 12px;
   box-shadow: 0 2px 5px #888;
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 .Card .Prev {
   display: inline-block;
   min-width: 32px; height: 32px;
   background-color: #99b;
+  background-image: linear-gradient(#bbd, #88a);
   color: #eef;
   text-align: center;
   line-height: 32px;
@@ -104,15 +105,16 @@ margin-right: 12px;
   display: inline-block;
   min-width: 32px; height: 32px;
   background-color: #e88;
+  background-image: linear-gradient(#faa, #d66);
   color: #eef;
   font-size: 18px;
   text-align: center;
   margin-left: 12px;
   line-height: 32px;
   border-radius: 50%;
-  transition: background-color .4s, transform .4s;
+  transition: transform .3s;
 }
-.Card .Teil:hover { transform: scale(1.3); background-color: #f00; }
+.Card .Teil:hover { transform: scale(1.3); }
 #heading {
   position: absolute;
   top: 0;
@@ -120,25 +122,25 @@ margin-right: 12px;
   width: 100%;
   height: 32px;
   text-align: center;
-  border-bottom: 1px solid #446;
+  border-bottom: 2px solid #557;
   padding: 8px;
   color: #eef;
-  background-color: rgb(10,30,40,.6);
+  background-color: rgb(30,30,60,.6);
   border-radius: 0 0 12px 12px;
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
 }
 #bottom {
   position: absolute;
-  bottom: 0;
+  top: calc(100% - 32px);
   display: flex;
   justify-content: space-between;
   width: 100%;
   height: 32px;
-  border-top: 1px solid #446;
+  border-top: 2px solid #557;
   padding: 8px 20px;
   color: #eef;
-  background-color: rgb(10,40,30,.6);
+  background-color: rgb(30,30,60,.6);
   border-radius: 12px 12px 0 0;
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
@@ -149,7 +151,7 @@ margin-right: 12px;
   cursor: pointer;
 }
 .toast {
-  font: normal 24px Arial, sans-serif;
+  font-size: 24px;
   padding: 18px 28px;
   position: absolute;
   left: 50%; max-width: 80%;

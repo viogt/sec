@@ -117,6 +117,13 @@ margin-right: 12px;
   background-color: #c0c0dd;
   border-radius: 0 0 8px 8px;
 }
+#headTheme {
+  width: 20px; height: 20px; line-height: 20px; border-radius: 50%;
+  float: right;
+  margin-right: 0;
+  font-size: 12px;
+  color: #fff; background-color: #555;
+}
 #bottom {
   display: flex;
   justify-content: space-between;
@@ -154,7 +161,10 @@ margin-right: 12px;
 </style>
 </head>
 <body><div id='availScreen'>
-  <div id='heading'>Loading...</div>
+  <div id='heading'>
+    <span id='headText'>Loading...</span>
+    <span id='headTheme'><i class="fa fa-paint-brush"></i></span>
+  </div>
   <div id='scr'></div>
   <div id='bottom'>
     <div onclick='getData(0)'><i class="fa fa-book"></i> Users</div>
@@ -166,8 +176,9 @@ margin-right: 12px;
 <div class='toast'><i class="fa fa-exclamation-triangle" style="color:#ff0;"></i> <span></span></div>
 <script>
 
-  const parent = document.querySelector('#scr'),
-        heading = document.querySelector('#heading');
+const parent = document.querySelector('#scr'),
+      heading = document.querySelector('#heading'),
+      headText = document.querySelector('#headText');
   
   const nav = [
     { url: 'users', one: 'id', two: 'name', three: 'email' },
@@ -209,7 +220,7 @@ margin-right: 12px;
   function injectData(headOnly = false) {
     let i = selIndex;
     let srt = `<i class="fa fa-${sortDir==0?'sort':(sortDir==1?'sort-alpha-asc':'sort-alpha-desc')}"></i>`;
-    heading.innerHTML = `${nav[i].url.toUpperCase()}: <u>${Data.length}</u> items ${srt}`;
+    headText.innerHTML = `${nav[i].url.toUpperCase()}: <u>${Data.length}</u> items ${srt}`;
     if(headOnly) return;
     document.querySelectorAll(".Card").forEach(e => e.remove());
     Data.forEach(e => newCard(e[nav[i].one], e[nav[i].two], e[nav[i].three]));
@@ -217,7 +228,7 @@ margin-right: 12px;
   
   function getData(ix) {
     let url = 'https://jsonplaceholder.typicode.com/' + nav[ix].url;
-    heading.innerText = 'Loading...';
+    headText.innerText = 'Loading...';
     fetch(url)
       .then(res => res.json())
       .then(data =>{

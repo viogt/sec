@@ -19,7 +19,7 @@ const db = getFirestore(firebaseApp);
 //const Users = collection(db,'users');
 
 const email = "v0990091.bg@rest.md", password = "hello-hello";
-/*
+
 signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
@@ -39,7 +39,7 @@ signInWithEmailAndPassword(auth, email, password)
       out("USER SIGNED OUT.")
     }
   });
-*/
+
 
 /*const docRef = doc(db, "users", "D1");
 

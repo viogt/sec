@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Edit</title>
+  <style>
+* { box-sizing: border-box; }
+.fix {
+  position: fixed;
+  top: 0; left: 0;
+  height: 100%;
+  width: 42px;
+  z-index: 100;
+  font-family: Arial,sans-serif;
+  font-size: 15px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.fix::-webkit-scrollbar {  display: none; }
+
+.fix div {
+  display: inline-block;
+  width: 32px; height: 32px;
+  background-color: #444;
+  color: #eef;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  line-height: 32px;
+  /*padding: 8px 0 0 0;*/
+  margin: 5px;
+  border-radius: 50%;
+}
+.subpanel { width: 40px; }
+#inCapsul {
+  overflow-y: auto;
+  width: 100%;
+  padding: 0 0 0 24px;
+  outline:none;
+}
+ul,ol { padding-left: 1em; }
+li { margin-bottom: .6em; }
+@media screen and (min-width: 600px) {
+  #inCapsul { width: 600px; margin: auto; }
+}
+/*------------------------ Blue Style -------------------------*/
+.blueStyle {
+  border: 1px solid #dde;
+  padding: 12px;
+  border-radius: 8px;
+  font: normal 15px Arial,Sans-serif;
+  background-color: #eeefff;
+  line-height: 1.3;
+  color: #226;
+  width: 100%;
+}
+.blueStyle b {
+  border: thin solid #06f;
+  padding: 0px 4px;
+  font-weight: normal;
+}
+.blueStyle i { color: #06f; }
+.blueStyle u {
+  text-decoration: none;
+  border-bottom: 2px solid #06f;
+}
+.blueStyle hr {
+  border: none;
+  border-top: thin dashed #aac;
+  height: 0px;
+}
+.blueStyle h1 {
+  border: 1px solid #dde;
+  background-color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.blueStyle h2 {
+  background-color: #78c;
+  color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.blueStyle sup, .blueStyle sub { color: #06f; font-size: 8px; }
+.blueStyle strike { color: #06f; }
+.blueStyle blockquote {
+	margin: 0;
+	padding: 0 0 0 18px;
+    border-left: 2px solid #06f;
+}
+/*------------------------ Grey Style -------------------------*/
+.greyStyle {
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+  font: normal 15px Arial,Sans-serif;
+  background-color: #f0f0f0;
+  line-height: 1.3;
+  color: #222;
+  width: 100%;
+}
+.greyStyle b {
+  border: thin solid #e80;
+  padding: 0px 4px;
+  font-weight: normal;
+}
+.greyStyle i { color: #c00; }
+.greyStyle u {
+  text-decoration: none;
+  border-bottom: 2px solid #f80;
+}
+.greyStyle hr {
+  border: none;
+  border-top: thin dashed #ccc;
+  height: 0px;
+}
+.greyStyle h1 {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.greyStyle h2 {
+  background-color: #888;
+  color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.greyStyle sup, .greyStyle sub { color: #d00; font-size: 8px; }
+.greyStyle strike { color: #c00; }
+.greyStyle blockquote {
+	margin: 0;
+	padding: 0 0 0 18px;
+    border-left: 2px solid #f80;
+}
+/*------------------------ Green Style -------------------------*/
+.greenStyle {
+  border: 1px solid #cea;
+  padding: 12px;
+  border-radius: 8px;
+  font: normal 15px Arial,Sans-serif;
+  background-color: #e8ffd8;
+  line-height: 1.3;
+  color: #060;
+  width: 100%;
+}
+.greenStyle b {
+  border: thin solid #2d2;
+  padding: 0px 4px;
+  font-weight: normal;
+}
+.greenStyle i { color: #2b0; }
+.greenStyle u {
+  text-decoration: none;
+  border-bottom: 2px solid #4d2;
+}
+.greenStyle hr {
+  border: none;
+  border-top: thin dashed #8d4;
+  height: 0px;
+}
+.greenStyle h1 {
+  border: 1px solid #cea;
+  background-color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.greenStyle h2 {
+  background-color: #6a4;
+  color: #fff;
+  font-size: inherit;
+  padding: 12px;
+  font-weight: normal;
+  margin: 0;
+  border-radius: 6px;
+}
+.greenStyle sup, .greenStyle sub { color: #c20; font-size: 8px; }
+.greenStyle strike { color: #842; }
+.greenStyle blockquote {
+	margin: 0;
+	padding: 0 0 0 18px;
+    border-left: 2px solid #4d2;
+}
+  </style>
+</head>
+<body>
+
+<div class="fix">
+<div onclick='toClipBoard(this)' style='background-color:#808'><i class="fa fa-scissors"></i></div>
+<div onclick='exe("removeFormat")'><i class="fa fa-eraser"></i></div>
+<div onclick='exe("redo")'><i class="fa fa-repeat"></i></div>
+<div onclick='exe("undo")'><i class="fa fa-undo"></i></div>
+<div onclick='exe("bold")'><i class="fa fa-bold"></i></div>
+<div onclick='exe("italic")'><i class="fa fa-italic"></i></div>
+<div onclick='exe("underline")'><i class="fa fa-underline"></i></div>
+<div onclick='insLink()'><i class="fa fa-link"></i></div>
+<div onclick='exe("strikeThrough")'><i class="fa fa-strikethrough"></i></div>
+<div onclick='up_low(true)'>A</div>
+<div onclick='up_low(false)'>a</div>
+<div onclick='exe("insertHorizontalRule")'>–</div>
+<div onclick="sel('h1')"><i class="fa fa-header"></i></div>
+<div onclick='sel("h2")'><i class="fa fa-header" style="font-size:11px"></i></div>
+
+<div onclick='toggle(this)' style='background-color:#44a'><i class="fa fa-caret-down"></i></div>
+<span class='subpanel' style='display:none; background-color: rgb(0,0,220,.1);'>
+<div onclick='exe("justifyLeft")'><i class="fa fa-align-left"></i></div>
+<div onclick='exe("justifyCenter")'><i class="fa fa-align-center"></i></div>
+<div onclick='exe("justifyRight")'><i class="fa fa-align-right"></i></div>
+<div onclick='exe("justifyFull")'><i class="fa fa-align-justify"></i></div>
+<div onclick='exe("insertunorderedlist")'><i class="fa fa-list-ul"></i></div>
+<div onclick='exe("insertorderedlist")'><i class="fa fa-list-ol"></i></div>
+<div onclick='lstToTbl()'><i class="fa fa-refresh"></i></div>
+<div onclick='exe("indent")'><i class="fa fa-indent"></i></div>
+<div onclick='exe("outdent")'><i class="fa fa-dedent"></i></div>
+</span>
+
+<div onclick='toggle(this)' style='background-color:#484'><i class="fa fa-caret-down"></i></div>
+<span class='subpanel' style='display:none; background-color: rgb(0,220,0,.1); '>
+<div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
+<div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
+<div onclick='sel("blockquote")'><i class="fa fa-quote-left"></i></div>
+<div onclick='theme("blue")'><i class="fa fa-square" style='color:blue'></i></div>
+<div onclick='theme("grey")'><i class="fa fa-square" style='color:grey'></i></div>
+<div onclick='theme("green")'><i class="fa fa-square" style='color:green'></i></div>
+<div onclick='twoCol()'><i class="fa fa-columns"></i></div>
+<div onclick='fColor("red")'><i class="fa fa-font" style='color:red'></i></div>
+<div onclick='fColor("blue")'><i class="fa fa-font" style='color:blue'></i></div>
+<div onclick='fColor("green")'><i class="fa fa-font" style='color:green'></i></div>
+<div onclick='fColor("#ff0")'><i class="fa fa-font" style='color:#ff0'></i></div>
+<div onclick='yesNo(1)'><i class="fa fa-check"></i></div>
+<div onclick='yesNo(0)'><i class="fa fa-times"></i></div>
+<div onclick='letterSpace()'><i class="fa fa-arrows-h"></i></div>
+<div onclick='insHTML()'><i class="fa fa-code"></i></div>
+</span>
+
+<div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
+<span class='subpanel' style='display:none; background-color: rgb(220,0,0,.1); '>
+<div onclick='ins(this)'>⚑</div>
+<div onclick='ins(this)'>✎</div>
+<div onclick='ins(this)'>§</div>
+<div onclick='ins(this)'>€</div>
+<div onclick='ins(this)'>✓</div>
+<div onclick='ins(this)'>✘</div>
+<div onclick='ins(this)'>⚠</div>
+<div onclick='ins(this)'>📌</div>
+<div onclick='ins(this)'>📎</div>
+<div onclick='ins(this)'>∼</div>
+<div onclick='ins(this)'>±</div>
+<div onclick='ins(this)'>≈</div>
+<div onclick='ins(this)'>°</div>
+<div onclick='ins(this)'>–</div>
+<div onclick='ins(this)'>☎</div>
+<div onclick='ins(this)'>➝</div>
+<div onclick='ins(this)'>✉</div>
+<div onclick='ins(this)'>☢</div>
+</span>
+<div onclick='insTable()'><i class="fa fa-table"></i></div>
+<div onclick='corrDiacrit()'><i class="fa fa-pencil"></i></div>
+<div onclick='clearContent()'><i class="fa fa-trash"></i></div>
+</div>
+
+<div id='inCapsul' contentEditable>
+<table width='100%'><tr><td id='txt' class='greyStyle'><h1>This is a sample text. To start from scratch, press <i class="fa fa-trash" onclick="clearContent()"></i> here or the bottom of the icons panel.</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions<sup>1</sup> and explanations to help you. Some of <strike>these</strike> texts are written in an old style of <u>English</u>. Try to understand them, because the English that we speak today is <b>based</b> on what our great, great, great, great grandparents spoke before!</blockquote><br>List:<ul><li>First item;</li><li>Second item;</li><li>Third item.</li></ul>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
+</div>
+
+<script>
+const T = document.querySelector('#txt'),
+	inCapsul = document.querySelector('#inCapsul');
+var isDirty = false;
+
+function exe(sCmd, sValue = null) {
+  T.focus();
+  document.execCommand(sCmd, false, sValue);
+}
+
+function toClipBoard(ob) {
+  inCapsul.focus();
+  document.execCommand("selectAll", false, null);
+  document.execCommand("copy", false, null);
+  T.focus();
+  isDirty = false;
+}
+
+function ins(o) { exe('insertText', o.textContent); }
+
+function sel(tg) {
+	let s = window.getSelection().toString(); if(!s) return;
+    exe("insertHTML", `<${tg}>${s}</${tg}>`);
+}
+function up_low(F) {
+	let s = window.getSelection().toString(); if(!s) return;
+    exe('insertText', F?s.toUpperCase():s.toLowerCase());
+}
+function toggle(el) {
+	let e = el.nextElementSibling; if(e.tagName != 'SPAN') return;
+    if(e.style.display != 'none') {
+    	e.style.display = 'none';
+        el.firstChild.className = 'fa fa-caret-down';
+    }
+    else {
+    	e.style.display = 'block';
+        el.firstChild.className = 'fa fa-caret-up';
+    }
+}
+
+function fColor(cl) {
+	const s = window.getSelection(); if(s.isCollapsed) return;
+    const el = document.createElement('font');
+    el.color = cl;
+    s.getRangeAt(0).surroundContents(el); isDirty = true;
+	/*let s = window.getSelection().toString(); if(!s) return;
+	//exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
+    exe("insertHTML", `<font color="${cl}">${s}</font>`);*/
+}
+
+function insHTML() {
+	const s = window.getSelection(); if(s.isCollapsed) return;
+	let css = prompt('Insert CSS properties:','border-bottom: 2px solid red; background-color: #ff6'); if(!css) return;
+    let arr = styleToArr(css);
+    const el = document.createElement('span'), st = el.style;
+    el.innerText = s.toString();
+    arr.forEach(e => st[e[0]] = e[1]);
+    exe("insertHTML", el.outerHTML);
+}
+
+function theme(cl) {
+	T.className = `${cl}Style`;
+    let Js = {}, bg = getCSSrule("."+T.className+" h2", "backgroundColor"), cul = `1px solid ${bg}`;
+    T.querySelectorAll('table').forEach(e=>{
+    	if(e.hasAttribute('tbl')) { infoTable(e, Js); chTbOpts(e, Js); }
+    	else if(e.hasAttribute('two')) e.rows[0].cells[0].style.borderRight = cul;
+        else if(e.hasAttribute('lst')) for(let r of e.rows) r.cells[0].firstChild.style.backgroundColor = bg;
+    });
+}
+
+function insLink() {
+  let sLnk=prompt('Write the URL here','http:\/\/');
+  if(sLnk && sLnk != '' && sLnk != 'http://') exe("createLink", sLnk);
+}
+
+function twoCol() {
+    exe('insertHTML',`<table two style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:1px solid ${getCSSrule("."+T.className+" h2", "backgroundColor")};width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>`);
+}
+
+function corrDiacrit() {
+  const r = /[ŞşŢţ]/g; if(r.test(T.textContent))
+  T.innerHTML = T.innerHTML.replace(r, function(x){ return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); });
+  isDirty = true;
+}
+
+function clearContent() {
+	if(confirm('Erase/clear content?')) { T.innerText = '*'; isDirty = false; }
+}
+
+function getCSSrule(rule, slctr) {
+    const   sh = document.styleSheets[1],
+            r = [...(sh.cssRules || sh.rules)].find(e => e.selectorText == rule);
+    return r ? r.style[slctr]:'';
+}
+
+function styleToArr(css) {
+  let arr = [];
+  css.split(';').forEach(e => {
+    if(e = e.trim()) {
+      let ps = e.split(':'); ps[0] = ps[0].trim(); //ps[1] = ps[1].trim();
+      if(ps[0].includes('-')) ps[0] = ps[0].replace(/-./, m=>{ return m.slice(1).toUpperCase();});
+      arr.push([ps[0],ps[1]]);
+    }
+  });
+  return arr;
+}
+/*---------------------------- Table Functions -------------------------------*/
+function chTbOpts(TB, Js) {
+try {
+	const rs = TB.rows, rsL = rs.length;
+    let cols = Js.cols.split(','), cul = getCSSrule(`.${T.className} h2`, 'backgroundColor');
+    const Br = Js.border > 0?`${Js.border}px solid ${cul}`:'none';
+    TB.style.border = Br;
+    for(let r=0; r<rsL; r++) {
+    	const cs = rs[r].cells, csL = cs.length;
+        for(let c=0; c<csL; c++) {
+        	let st = cs[c].style, w = cols[c];
+            st.padding = `${Js.pad}px`;
+        	st.borderTop = r>0 ? Br : 'none';
+            st.verticalAlign = 'top';
+            if(w.charAt(0) == '*') {
+            	st.backgroundColor = cul;
+                st.color = '#fff';
+                w = w.slice(1);
+            }
+            else { st.backgroundColor = '#fff'; st.color = 'inherit'; }
+            if(w) st.width = w;
+    	}
+    }
+} catch(err) { alert(err.message); }
+}
+function mkTable(rows, cols) {
+	const Tb = document.createElement('table');
+    Tb.style.width = '100%'; Tb.style.fontSize = '1em'; Tb.setAttribute('tbl', true);
+    Tb.style.borderCollapse = 'collapse'; Tb.style.borderSpacing = '0px';
+    for(let r=0; r<rows; r++) {
+    	let R = Tb.insertRow();
+        for(let c=0; c<cols; c++) R.insertCell().innerText = '*';
+    }
+    isDirty = true;
+    return Tb;
+}
+
+function alterTable(tb, Js, cmd) {
+//try {
+	let cms = cmd.toLowerCase().split(' ');
+    if(cms[0] == 'add') { R = -1; C = -1; } else { R = Js.rInx; C = Js.cInx; }
+    if(cms[0] == 'del') {
+    	if(cms[1] == 'row') {
+        	if(tb.rows.length>1) tb.deleteRow(R);
+            else alert('Last row: use "del table".');
+            return true;
+        }
+        if(cms[1] == 'col') {
+        	let rs = tb.rows;
+            if(rs[0].cells.length < 2) { alert('Last col: use "del table".'); return true; 			}
+        	for(let r=0; r<tb.rows.length; r++) tb.rows[r].deleteCell(C);
+            let arr = Js.cols.split(','); arr.splice(C,1); Js.cols = arr.join(',');
+        	return true;
+        }
+        if(cms[1] == 'table') { tb.remove(); Js.cols = null; return true; }
+    }
+    if(cms[0] == 'align') {
+    	for(let r=0; r<tb.rows.length; r++) tb.rows[r].cells[C].style.textAlign = cms[1];
+        return true;
+    }
+    if(cms[0] == 'col') {
+    	let arr = styleToArr(cmd.slice(4));
+    	for(let r=0; r<tb.rows.length; r++) {
+        	let st = tb.rows[r].cells[C].style;
+            arr.forEach(e => st[e[0]] = e[1]);
+        }
+        Js.cols = null;
+        return true;
+    }
+    // --- Add | Ins ---//
+    if(cms[1] == 'row') {
+    	let cLen = tb.rows[0].cells.length;
+    	let rIns = tb.insertRow(R);
+        for(let i=0; i<cLen; i++) rIns.insertCell().innerText = '*';
+        return true;
+    }
+    if(cms[1] == 'col') {
+    	for(let r=0; r<tb.rows.length; r++) tb.rows[r].insertCell(C).innerText = '*';
+        let arr = Js.cols.split(','); arr.splice(Js.cInx, 0, ''); Js.cols = arr.join(',');
+        return true;
+    }
+    return false;
+//} catch(err) { alert(err.message); }
+}
+
+function infoTable(tb, Js) {
+	Js.border = tb.style.border != 'none'?parseInt(tb.style.border,10):0;
+    let cs = tb.rows[0].cells;
+    Js.pad = parseInt(cs[0].style.padding,10);
+    let ps = [];
+    for(let i=0; i < cs.length; i++) {
+        ps[i] = cs[i].style.width ? cs[i].style.width:'';
+        if(cs[i].style.backgroundColor != 'rgb(255, 255, 255)') ps[i] = '*' + ps[i];
+    }
+    Js.cols = ps.join(',');
+}
+
+function insTable() {
+//try {
+	let Js={}, tb, pops, prom1, prom2, oldCols,
+    	SEL = window.getSelection(), nd = SEL.anchorNode;
+    if(!nd) { alert('No focus on doc'); return; }
+    while(nd.tagName != 'TD') nd = nd.parentNode;
+    const newTb = nd.id?true:false;
+    
+    if(newTb) {
+    	prom1 = 'TABLE PARAMETERS:';
+        prom2 = '{"rows": 3, "cols": "*20%,", "pad": 6, "border": 1}';
+        pops = ['rows','cols','pad','border'];
+    }
+    else {
+    	tb = nd.parentElement.parentElement.parentElement;
+        Js.cInx = nd.cellIndex;
+        Js.rInx = nd.parentElement.rowIndex;
+        infoTable(tb, Js);
+        oldCols = Js.cols.split(',').length;
+    	prom1 = `Add Row/Col, Del/Ins Row/Col (Row ${Js.rInx}/Col ${Js.cInx}), Del Table, Align right:`;
+        prom2 = `{"cols": "${Js.cols}", "pad": ${Js.pad}, "border": ${Js.border}}`;
+        pops = ['cols','pad','border'];
+    }
+
+    let Fs = prompt(prom1,prom2); if(!Fs) return;
+    
+    if(!newTb && !Fs.includes('{')) {
+    	if(alterTable(tb, Js, Fs) && Js.cols) chTbOpts(tb, Js);
+        else if(Js.cols) alert('Bad command format.');
+        return;
+    }
+    try { Js = JSON.parse(Fs); } catch(err) { alert('Wrong format: ' + err.message); return; }
+    for(let e of pops) { if(!Js.hasOwnProperty(e)){ alert('Wrong format: no rows,cols,pad...'); return; }}
+
+ 	if(newTb) {
+    	tb = mkTable(Js.rows, Js.cols.split(',').length);
+    	chTbOpts(tb, Js);
+    	//exe('insertHTML', tb.outerHTML);
+        SEL.getRangeAt(0).insertNode(tb);
+        SEL.collapse(tb.rows[0].cells[0]);
+    }
+    else {
+    	if(!newTb && oldCols != Js.cols.split(',').length) { alert('Different number of cols.'); return; }
+    	chTbOpts(tb, Js);
+    }
+ 
+//} catch(err) { alert(err.message); }
+}
+
+function yesNo(f) {
+	const s = window.getSelection();  if(s.isCollapsed) return;
+  const sp = document.createElement('span'), st = sp.style;
+  st.color = '#fff'; st.backgroundColor = f?'#080':'#c00';
+  st.borderRadius = '4px'; st.whiteSpace = 'pre';
+  sp.textContent = ` ${s.toString()} `;
+
+  const r = s.getRangeAt(0); r.deleteContents(); r.insertNode(sp);
+  isDirty = true;
+}
+
+function letterSpace() {
+	let s = window.getSelection().toString(); if(!s) return;
+    exe('insertHTML', `<span style='letter-spacing:.2em;'>${s}</span>`);
+}
+
+function mkElm(tg, vls = null, ops = null) {
+	const el = document.createElement(tg);
+    if(vls) Object.entries(vls).forEach(([key, value])=>el[key] = value);
+    if(ops) Object.entries(ops).forEach(([key, value])=>el.style[key] = value);
+    return el;
+}
+
+function lstToTbl() {
+	let cul = getCSSrule(`.${T.className} h2`, 'backgroundColor');
+	document.querySelectorAll('ol').forEach(e => {
+    	let cnt = 1, tbl = mkElm('table',{ borderCollapse:'collapse', borderSpacing: '0px' },{fontSize: '1em'});
+        tbl.setAttribute('lst', true);
+        e.querySelectorAll('li').forEach(li => {
+        	let c, r = tbl.insertRow();
+            let d = mkElm('div',{innerText: cnt++},{ display: 'inline-block', width: '32px', height: '32px', lineHeight: '32px', borderRadius: '50%', textAlign: 'center', backgroundColor: cul, color: '#fff'});
+            c = mkElm('td', null, { verticalAlign:'top' });
+            c.appendChild(d); r.appendChild(c);
+            c = mkElm('td', {innerHTML: li.innerHTML}, { verticalAlign:'top', padding: '0 0 1em 1em' });
+            r.appendChild(c);
+        });
+        e.replaceWith(tbl);
+        isDirty = true;
+    });
+}
+
+inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);
+T.addEventListener("paste",(e)=>{
+	e.preventDefault();
+    exe('insertText', e.clipboardData.getData('text/plain'));
+    isDirty = true;
+});
+window.addEventListener("beforeunload", (e)=>{
+	if(isDirty) e.returnValue = "Do you want to quit changes?";
+});
+</script>
+</body>
+</html>

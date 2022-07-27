@@ -98,7 +98,7 @@ li { margin-bottom: .6em; }
 .blueStyle blockquote {
 	margin: 0;
 	padding: 0 0 0 18px;
-    border-left: 2px solid #06f;
+  border-left: 2px solid #06f;
 }
 /*------------------------ Grey Style -------------------------*/
 .greyStyle {
@@ -202,56 +202,71 @@ li { margin-bottom: .6em; }
 	padding: 0 0 0 18px;
     border-left: 2px solid #4d2;
 }
+.toast {
+  font: normal 24px Arial, sans-serif;
+  padding: 18px 28px;
+  position: absolute;
+  left: 50%; max-width: 80%;
+  transform: translate(-50%, 0);
+  top: -100vh;
+  text-align: center;
+  background-color: rgb(0,0,0,.8);
+  color: #fff;
+  border-radius: 12px;
+  /*white-space: nowrap;*/
+  z-index: 33;
+  transition: top .2s ease;
+}
   </style>
 </head>
 <body>
 
 <div class="fix">
-<div onclick='toClipBoard(this)' style='background-color:#808'><i class="fa fa-scissors"></i></div>
-<div onclick='exe("removeFormat")'><i class="fa fa-eraser"></i></div>
+<div onclick='toClipBoard(this)' title='copy to clipboard' style='background-color:#808'><i class="fa fa-scissors"></i></div>
+<!-- <div onclick='clearFormat()' title='clear format'><i class="fa fa-eraser"></i></div>
 <div onclick='exe("redo")'><i class="fa fa-repeat"></i></div>
-<div onclick='exe("undo")'><i class="fa fa-undo"></i></div>
-<div onclick='exe("bold")'><i class="fa fa-bold"></i></div>
-<div onclick='exe("italic")'><i class="fa fa-italic"></i></div>
-<div onclick='exe("underline")'><i class="fa fa-underline"></i></div>
-<div onclick='insLink()'><i class="fa fa-link"></i></div>
-<div onclick='exe("strikeThrough")'><i class="fa fa-strikethrough"></i></div>
-<div onclick='up_low(true)'>A</div>
-<div onclick='up_low(false)'>a</div>
-<div onclick='exe("insertHorizontalRule")'>–</div>
-<div onclick="sel('h1')"><i class="fa fa-header"></i></div>
-<div onclick='sel("h2")'><i class="fa fa-header" style="font-size:11px"></i></div>
+<div onclick='exe("undo")'><i class="fa fa-undo"></i></div> -->
+<div onclick='sur("b")' title='bold'><i class="fa fa-bold"></i></div>
+<div onclick='sur("i")' title='italic'><i class="fa fa-italic"></i></div>
+<div onclick='sur("u")' title='undeline'><i class="fa fa-underline"></i></div>
+<div onclick='insLink()' title='insert link'><i class="fa fa-link"></i></div>
+<div onclick='sur("strike")' title='strike through'><i class="fa fa-strikethrough"></i></div>
+<div onclick='up_low(true)' title='upper case'>A</div>
+<div onclick='up_low(false)' title='lower case'>a</div>
+<div onclick='horiz()' title='horizontal line'>–</div>
+<div onclick="sur('h1')" title='light heading'><i class="fa fa-header"></i></div>
+<div onclick='sur("h2")' title='dark heading' style='background-color:#000;'><i class="fa fa-header" style="color:#aaa;"></i></div>
 
 <div onclick='toggle(this)' style='background-color:#44a'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none; background-color: rgb(0,0,220,.1);'>
-<div onclick='exe("justifyLeft")'><i class="fa fa-align-left"></i></div>
-<div onclick='exe("justifyCenter")'><i class="fa fa-align-center"></i></div>
-<div onclick='exe("justifyRight")'><i class="fa fa-align-right"></i></div>
-<div onclick='exe("justifyFull")'><i class="fa fa-align-justify"></i></div>
-<div onclick='exe("insertunorderedlist")'><i class="fa fa-list-ul"></i></div>
-<div onclick='exe("insertorderedlist")'><i class="fa fa-list-ol"></i></div>
-<div onclick='lstToTbl()'><i class="fa fa-refresh"></i></div>
-<div onclick='exe("indent")'><i class="fa fa-indent"></i></div>
-<div onclick='exe("outdent")'><i class="fa fa-dedent"></i></div>
+<div onclick='indent("left")'><i class="fa fa-align-left"></i></div>
+<div onclick='indent("center")'><i class="fa fa-align-center"></i></div>
+<div onclick='indent("right")'><i class="fa fa-align-right"></i></div>
+<div onclick='indent("justify")'><i class="fa fa-align-justify"></i></div>
+<div onclick='indent("ul")'><i class="fa fa-list-ul"></i></div>
+<div onclick='indent("ol")'><i class="fa fa-list-ol"></i></div>
+<!-- <div onclick='lstToTbl()'><i class="fa fa-refresh"></i></div> -->
+<div onclick='indent("indent")'><i class="fa fa-indent"></i></div>
+<div onclick='indent("outdent")'><i class="fa fa-dedent"></i></div>
 </span>
 
 <div onclick='toggle(this)' style='background-color:#484'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none; background-color: rgb(0,220,0,.1); '>
-<div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
-<div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
-<div onclick='sel("blockquote")'><i class="fa fa-quote-left"></i></div>
-<div onclick='theme("blue")'><i class="fa fa-square" style='color:blue'></i></div>
-<div onclick='theme("grey")'><i class="fa fa-square" style='color:grey'></i></div>
-<div onclick='theme("green")'><i class="fa fa-square" style='color:green'></i></div>
-<div onclick='twoCol()'><i class="fa fa-columns"></i></div>
-<div onclick='fColor("red")'><i class="fa fa-font" style='color:red'></i></div>
-<div onclick='fColor("blue")'><i class="fa fa-font" style='color:blue'></i></div>
-<div onclick='fColor("green")'><i class="fa fa-font" style='color:green'></i></div>
-<div onclick='fColor("#ff0")'><i class="fa fa-font" style='color:#ff0'></i></div>
-<div onclick='yesNo(1)'><i class="fa fa-check"></i></div>
-<div onclick='yesNo(0)'><i class="fa fa-times"></i></div>
-<div onclick='letterSpace()'><i class="fa fa-arrows-h"></i></div>
-<div onclick='insHTML()'><i class="fa fa-code"></i></div>
+<div onclick='sur("sup")' title='superscript'><i class="fa fa-superscript"></i></div>
+<div onclick='sur("sub")' title='subscript'><i class="fa fa-subscript"></i></div>
+<div onclick='sur("blockquote")' title='blockquote'><i class="fa fa-quote-left"></i></div>
+<div onclick='theme("blue")' title='blue theme'><i class="fa fa-square" style='color:blue'></i></div>
+<div onclick='theme("grey")' title='grey theme'><i class="fa fa-square" style='color:grey'></i></div>
+<div onclick='theme("green")' title='green theme'><i class="fa fa-square" style='color:green'></i></div>
+<!-- <div onclick='twoCol()'><i class="fa fa-columns"></i></div> -->
+<div onclick='fColor("red")' title='red text'><i class="fa fa-font" style='color:red'></i></div>
+<div onclick='fColor("blue")' title='blue text'><i class="fa fa-font" style='color:blue'></i></div>
+<div onclick='fColor("green")' title='green text'><i class="fa fa-font" style='color:green'></i></div>
+<div onclick='fColor("#ff0")' title='yellow text'><i class="fa fa-font" style='color:#ff0'></i></div>
+<div onclick='yesNo(1)' title='green highlight'><i class="fa fa-check" style='color:#afa'></i></div>
+<div onclick='yesNo(0)' title='red highlight'><i class="fa fa-times" style='color:#faa'></i></div>
+<div onclick='letterSpace()' title='larger letter space'><i class="fa fa-arrows-h"></i></div>
+<div onclick='insHTML()' title='insert HTML style'><i class="fa fa-code"></i></div>
 </span>
 
 <div onclick='toggle(this)' style='background-color:darkred'><i class="fa fa-caret-down"></i></div>
@@ -275,24 +290,38 @@ li { margin-bottom: .6em; }
 <div onclick='ins(this)'>✉</div>
 <div onclick='ins(this)'>☢</div>
 </span>
-<div onclick='insTable()'><i class="fa fa-table"></i></div>
-<div onclick='corrDiacrit()'><i class="fa fa-pencil"></i></div>
-<div onclick='clearContent()'><i class="fa fa-trash"></i></div>
+<!-- <div onclick='insTable()'><i class="fa fa-table"></i></div> -->
+<div onclick='corrDiacrit()' title='Corectarea diacriticelor'><i class="fa fa-pencil"></i></div>
+<div onclick='clearContent()' title='clear content'><i class="fa fa-trash"></i></div>
 </div>
 
 <div id='inCapsul' contentEditable>
-<table width='100%'><tr><td id='txt' class='greyStyle'><h1>This is a sample text. To start from scratch, press <i class="fa fa-trash" onclick="clearContent()"></i> here or the bottom of the icons panel.</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions<sup>1</sup> and explanations to help you. Some of <strike>these</strike> texts are written in an old style of <u>English</u>. Try to understand them, because the English that we speak today is <b>based</b> on what our great, great, great, great grandparents spoke before!</blockquote><br>List:<ul><li>First item;</li><li>Second item;</li><li>Third item.</li></ul>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
+<table width='100%'><tr><td id='txt' contentEditable class='greyStyle'><h1>This is a sample text. To start from scratch, press <i class="fa fa-trash" onclick="clearContent()"></i> here or the bottom of the icons panel.</h1><br>These are short, <b>famous</b> texts in English from classic <i>sources</i> like the <u>Bible</u> or Shakespeare.<br><hr/><blockquote>Some texts have word definitions<sup>1</sup> and explanations to help you. Some of <strike>these</strike> texts are written in an old style of <u>English</u>. Try to understand them, because the English that we speak today is <b>based</b> on what our great, great, great, great grandparents spoke before!</blockquote><br>List:<ul><li>First item;</li><li>Second item;</li><li>Third item.</li></ul>Of course, not all<sup>2</sup> these texts were originally written<sub>12</sub> in English. The <strike>Bible</strike>, for example, is a translation.<br><br><h2>Ending</h2><br>But they are all well known in English today, and many of them express beautiful thoughts.</td></tr></table>
 </div>
+<div class='toast'><i class="fa fa-exclamation-triangle" style="color:#ff0;"></i> <span></span></div>
 
 <script>
 const T = document.querySelector('#txt'),
 	inCapsul = document.querySelector('#inCapsul');
 var isDirty = false;
 
-function exe(sCmd, sValue = null) {
+function sur(el) {
+  if(notEmpty()) return;
+  Rng.surroundContents(typeof el != 'string' ? el : document.createElement(el));
+}
+
+function notEmpty() {
+  if(Rng.collapsed) { toast('No text selected'); return true; }
+  return false;
+}
+
+/*function exe(sCmd, sValue = null) {
+  alert(sCmd);
+  try {
   T.focus();
   document.execCommand(sCmd, false, sValue);
-}
+  } catch(err) { alert(err.message); }
+}*/
 
 function toClipBoard(ob) {
   inCapsul.focus();
@@ -300,18 +329,54 @@ function toClipBoard(ob) {
   document.execCommand("copy", false, null);
   T.focus();
   isDirty = false;
+  toast('Paste to your email')
 }
 
-function ins(o) { exe('insertText', o.textContent); }
-
-function sel(tg) {
-	let s = window.getSelection().toString(); if(!s) return;
-    exe("insertHTML", `<${tg}>${s}</${tg}>`);
+function ins(o) {
+  if(!Rng.collapsed) Rng.deleteContents();
+  let el = document.createTextNode(o.textContent);
+  Rng.insertNode(el);
+  //T.focus();Rng.selectNodeContents(el);
+  //Rng.endOffset
 }
+
 function up_low(F) {
-	let s = window.getSelection().toString(); if(!s) return;
-    exe('insertText', F?s.toUpperCase():s.toLowerCase());
+  if(notEmpty()) return;
+	let s = Rng.toString();
+	Rng.deleteContents(); Rng.insertNode(document.createTextNode(F?s.toUpperCase():s.toLowerCase()));
 }
+
+function horiz() {
+  Rng.insertNode(document.createElement('hr'));
+}
+
+function indent(tip) {
+  if(notEmpty()) return;
+	let el, ls, s = Rng.toString();
+	console.log(tip);
+	if(tip == 'ol' || tip == 'ul') {
+	  el = document.createElement(tip);
+	  ls = s.split('\n');
+	  for(let ln of ls) { let l = document.createElement('li'); l.innerText = ln; el.appendChild(l); }
+	}
+	else if('right.left.center.justify.'.includes(tip+'.')) {
+	   el = document.createElement('div');
+	   el.style.textAlign = tip; el.innerText = s;
+	}
+	else if('indent.outdent.'.includes(tip+'.')) {
+	   el = document.createElement('div');
+	   el.style.paddingLeft = '18px'; el.innerText = s;
+	}
+	Rng.deleteContents(); Rng.insertNode(el);
+	//Rng.surroundContents(el);
+}
+
+function clearFormat( ) {
+  if(notEmpty()) return;
+	let s = Rng.toString();
+	Rng.deleteContents(); Rng.insertNode(document.createTextNode(s));
+}
+
 function toggle(el) {
 	let e = el.nextElementSibling; if(e.tagName != 'SPAN') return;
     if(e.style.display != 'none') {
@@ -325,23 +390,20 @@ function toggle(el) {
 }
 
 function fColor(cl) {
-	const s = window.getSelection(); if(s.isCollapsed) return;
-    const el = document.createElement('font');
-    el.color = cl;
-    s.getRangeAt(0).surroundContents(el); isDirty = true;
-	/*let s = window.getSelection().toString(); if(!s) return;
-	//exe("insertHTML", `<span style="color:${cl}">${s}</span>`);
-    exe("insertHTML", `<font color="${cl}">${s}</font>`);*/
+	if(notEmpty()) return;
+  const el = document.createElement('font');
+  el.color = cl;
+  Rng.surroundContents(el); isDirty = true;
 }
 
 function insHTML() {
-	const s = window.getSelection(); if(s.isCollapsed) return;
+	if(notEmpty()) return;
 	let css = prompt('Insert CSS properties:','border-bottom: 2px solid red; background-color: #ff6'); if(!css) return;
-    let arr = styleToArr(css);
+  let arr = styleToArr(css);
     const el = document.createElement('span'), st = el.style;
-    el.innerText = s.toString();
+    el.innerText = Rng.toString();
     arr.forEach(e => st[e[0]] = e[1]);
-    exe("insertHTML", el.outerHTML);
+  Rng.surroundContents(el); isDirty = true;
 }
 
 function theme(cl) {
@@ -350,18 +412,19 @@ function theme(cl) {
     T.querySelectorAll('table').forEach(e=>{
     	if(e.hasAttribute('tbl')) { infoTable(e, Js); chTbOpts(e, Js); }
     	else if(e.hasAttribute('two')) e.rows[0].cells[0].style.borderRight = cul;
-        else if(e.hasAttribute('lst')) for(let r of e.rows) r.cells[0].firstChild.style.backgroundColor = bg;
+      else if(e.hasAttribute('lst')) for(let r of e.rows) r.cells[0].firstChild.style.backgroundColor = bg;
     });
 }
 
 function insLink() {
+  if(notEmpty()) return;
   let sLnk=prompt('Write the URL here','http:\/\/');
-  if(sLnk && sLnk != '' && sLnk != 'http://') exe("createLink", sLnk);
+  if(sLnk && sLnk != '' && sLnk != 'http://') sur(mkElm('a',{ href: sLnk}));
 }
 
-function twoCol() {
-    exe('insertHTML',`<table two style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:1px solid ${getCSSrule("."+T.className+" h2", "backgroundColor")};width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>`);
-}
+/*function twoCol() {
+  exe('insertHTML',`<table two style="width:100%;font-size:1em;"><tr><td valign="top" style="padding:0 8px 0 0;border-right:1px solid ${getCSSrule("."+T.className+" h2", "backgroundColor")};width:50%">*</td><td valign="top" style="padding:0 0 0 8px;width:50%">*</td></tr></table>`);
+}*/
 
 function corrDiacrit() {
   const r = /[ŞşŢţ]/g; if(r.test(T.textContent))
@@ -484,7 +547,7 @@ function infoTable(tb, Js) {
         ps[i] = cs[i].style.width ? cs[i].style.width:'';
         if(cs[i].style.backgroundColor != 'rgb(255, 255, 255)') ps[i] = '*' + ps[i];
     }
-    Js.cols = ps.join(','); 
+    Js.cols = ps.join(',');
 }
 
 function insTable() {
@@ -537,26 +600,25 @@ function insTable() {
 }
 
 function yesNo(f) {
-	const s = window.getSelection();  if(s.isCollapsed) return;
+  if(notEmpty()) return;
   const sp = document.createElement('span'), st = sp.style;
   st.color = '#fff'; st.backgroundColor = f?'#080':'#c00';
   st.borderRadius = '4px'; st.whiteSpace = 'pre';
-  sp.textContent = ` ${s.toString()} `;
-
-  const r = s.getRangeAt(0); r.deleteContents(); r.insertNode(sp);
+  sp.textContent = ` ${Rng.toString()} `;
+  Rng.deleteContents(); Rng.insertNode(sp);
   isDirty = true;
-}  
+}
 
 function letterSpace() {
-	let s = window.getSelection().toString(); if(!s) return;
-    exe('insertHTML', `<span style='letter-spacing:.2em;'>${s}</span>`);
+	if(notEmpty()) return;
+	sur(mkElm('span',null,{ letterSpacing: '.2em'}));
 }
 
 function mkElm(tg, vls = null, ops = null) {
 	const el = document.createElement(tg);
     if(vls) Object.entries(vls).forEach(([key, value])=>el[key] = value);
     if(ops) Object.entries(ops).forEach(([key, value])=>el.style[key] = value);
-    return el;
+  return el;
 }
 
 function lstToTbl() {
@@ -577,15 +639,36 @@ function lstToTbl() {
     });
 }
 
-inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);
+/*inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);
 T.addEventListener("paste",(e)=>{
 	e.preventDefault();
     exe('insertText', e.clipboardData.getData('text/plain'));
     isDirty = true;
+});*/
+
+var Rng = new Range();
+T.addEventListener("mouseup",(e)=>{
+  Rng = window.getSelection().getRangeAt(0);
+  console.log('MOUSE > ' + Rng.toString());
 });
+document.addEventListener("keyup",(e)=>{
+  Rng = window.getSelection().getRangeAt(0);
+  console.log('KEY > ' + Rng.toString());
+});
+
 window.addEventListener("beforeunload", (e)=>{
 	if(isDirty) e.returnValue = "Do you want to quit changes?";
 });
+
+function toast(txt, opn = true) {
+  	let T = document.querySelector('.toast');
+  	if(opn) {
+  	  T.querySelector('span').innerHTML = txt;
+  	  T.style.top = '60px';
+  	}
+  	else T.style.top = `-${T.getBoundingClientRect().height}px`;
+  	if(opn) setTimeout( function() { toast(null, false); }, 1000);
+}
 </script>
 </body>
 </html>

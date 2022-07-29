@@ -505,6 +505,7 @@ function infoTable(tb, Js) {
 
 function insTable() {
 //try {
+	setFocus();
 	let Js={}, tb, pops, prom1, prom2, oldCols,
     	SEL = window.getSelection(), nd = SEL.anchorNode;
     if(!nd) { alert('No focus on doc'); return; }

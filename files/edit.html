@@ -205,10 +205,10 @@ li { margin-bottom: .6em; }
 .toast {
   font: normal 24px Arial, sans-serif;
   padding: 18px 28px;
-  position: absolute;
+  position: fixed;
   left: 50%; max-width: 80%;
   transform: translate(-50%, 0);
-  top: -100vh;
+  top: -100%;
   text-align: center;
   background-color: rgb(0,0,0,.8);
   color: #fff;
@@ -226,11 +226,11 @@ li { margin-bottom: .6em; }
 <div onclick='exe("removeFormat")'><i class="fa fa-eraser"></i></div>
 <div onclick='exe("redo")'><i class="fa fa-repeat"></i></div>
 <div onclick='exe("undo")'><i class="fa fa-undo"></i></div>
-<div onclick='exe("bold")'><i class="fa fa-bold"></i></div>
-<div onclick='exe("italic")'><i class="fa fa-italic"></i></div>
-<div onclick='exe("underline")'><i class="fa fa-underline"></i></div>
+<div onclick='exe("bold",null,true)'><i class="fa fa-bold"></i></div>
+<div onclick='exe("italic",null,true)'><i class="fa fa-italic"></i></div>
+<div onclick='exe("underline",null,true)'><i class="fa fa-underline"></i></div>
 <div onclick='insLink()'><i class="fa fa-link"></i></div>
-<div onclick='exe("strikeThrough")'><i class="fa fa-strikethrough"></i></div>
+<div onclick='exe("strikeThrough",null,true)'><i class="fa fa-strikethrough"></i></div>
 <div onclick='up_low(true)'>A</div>
 <div onclick='up_low(false)'>a</div>
 <div onclick='exe("insertHorizontalRule")'>–</div>
@@ -252,8 +252,8 @@ li { margin-bottom: .6em; }
 
 <div onclick='toggle(this)' style='background-color:#484'><i class="fa fa-caret-down"></i></div>
 <span class='subpanel' style='display:none; background-color: rgb(0,220,0,.1); '>
-<div onclick='exe("superscript")'><i class="fa fa-superscript"></i></div>
-<div onclick='exe("subscript")'><i class="fa fa-subscript"></i></div>
+<div onclick='exe("superscript",null,true)'><i class="fa fa-superscript"></i></div>
+<div onclick='exe("subscript",null,true)'><i class="fa fa-subscript"></i></div>
 <div onclick='sel("blockquote")'><i class="fa fa-quote-left"></i></div>
 <div onclick='theme("blue")'><i class="fa fa-square" style='color:blue'></i></div>
 <div onclick='theme("grey")'><i class="fa fa-square" style='color:grey'></i></div>
@@ -305,9 +305,11 @@ const T = document.querySelector('#txt'),
 	inCapsul = document.querySelector('#inCapsul');
 var isDirty = false;
 
-function exe(sCmd, sValue = null) {
+function exe(sCmd, sValue = null, isEmpty = false) {
+  if(isEmpty) if(notEmpty()) return;
   setFocus();
   document.execCommand(sCmd, false, sValue);
+  setRng();
 }
 
 function toClipBoard(ob) {
@@ -627,8 +629,9 @@ function toast(txt, opn = true) {
   	  t.querySelector('span').innerHTML = txt;
   	  t.style.top = '60px';
   	}
+  	//else t.style.top = '-100%';
   	else t.style.top = `-${t.getBoundingClientRect().height}px`;
-  	if(opn) setTimeout( function() { toast(null, false); }, 1000);
+  	if(opn) setTimeout( function() { toast(null, false); }, 1500);
 }
 function notEmpty() {
   if(Rng.coll) { toast('No text selected'); return true; }

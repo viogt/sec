@@ -591,17 +591,17 @@ function lstToTbl() {
     });
 }
 
-const Rng = {};
+const Rng = { r: document.createRange() };
 function setFocus(){
-  let s = window.getSelection(),
-      r = document.createRange();
-  r.setStart(Rng.st, Rng.stOff);
-  r.setEnd(Rng.end, Rng.endOff);
+  let s = window.getSelection();
+  Rng.r.setStart(Rng.st, Rng.stOff);
+  Rng.r.setEnd(Rng.end, Rng.endOff);
   s.removeAllRanges();
-  s.addRange(r);
+  s.addRange(Rng.r);
   //console.log(`SET: ${Rng.st.nodeName},${Rng.stOff} - ${Rng.end.nodeName},${Rng.endOff}`);
 }
 function setRng() {
+  if(window.getSelection().rangeCount < 1) return;
   let rng = window.getSelection().getRangeAt(0);
   Rng.st = rng.startContainer;
   Rng.stOff = rng.startOffset;
@@ -610,8 +610,9 @@ function setRng() {
   Rng.coll = rng.collapsed;
   //console.log(`GET: ${Rng.st.nodeName},${Rng.stOff} - ${Rng.end.nodeName},${Rng.endOff}`);
 }
-T.addEventListener("mouseup", setRng);
-document.addEventListener("keyup",setRng);
+//T.addEventListener("mouseup", setRng);
+//document.addEventListener("keyup",setRng);
+document.addEventListener("selectionchange",setRng);
 
 inCapsul.addEventListener("input", ()=>{ isDirty = true; }, false);
 T.addEventListener("paste",(e)=>{
@@ -629,7 +630,6 @@ function toast(txt, opn = true) {
   	  t.querySelector('span').innerHTML = txt;
   	  t.style.top = '60px';
   	}
-  	//else t.style.top = '-100%';
   	else t.style.top = `-${t.getBoundingClientRect().height}px`;
   	if(opn) setTimeout( function() { toast(null, false); }, 1500);
 }

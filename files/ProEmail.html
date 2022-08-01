@@ -74,15 +74,15 @@ Lorem ipsum dolor sit _amet_, consectetuer adipiscing elit, sed diam nonummy nib
 
 <script>
   const cls = [
-{ margin: "#fff0e6",head: "#f60", headText: "#fff", body: "#fff", bodyText: "#620", borderSus: "#ec8", border: "#fa0"},
-{ margin: "#cef",   head: "#06c", headText: "#fff", body: "#fff", bodyText: "#013", borderSus: "#6ac", border: "#08f"},
+{ margin: "#ffe0cc",head: "#f60", headText: "#fff", body: "#fff", bodyText: "#620", borderSus: "#feb", border: "#fa0"},
+{ margin: "#cef",   head: "#06c", headText: "#fff", body: "#fff", bodyText: "#013", borderSus: "#6ad", border: "#0ae"},
 { margin: "#cec",   head: "#093", headText: "#fff", body: "#fff", bodyText: "#031", borderSus: "#0c0", border: "#0e0"},
-{ margin: "#eee6ff",head: "#96c", headText: "#fff", body: "#fff", bodyText: "#103", borderSus: "#b8e", border: "#b8e"},
+{ margin: "#eee6ff",head: "#96c", headText: "#fff", body: "#fff", bodyText: "#103", borderSus: "#c8f", border: "#b8e"},
 { margin: "#d9e6f2",head: "#369", headText: "#fff", body: "#fff", bodyText: "#234", borderSus: "#0ac", border: "#0ac"},
-{ margin: "#fff2cc",head: "#c90", headText: "#fff", body: "#fff", bodyText: "#330", borderSus: "#fc0", border: "#ca0"},
-{ margin: "#f2d9e6",head: "#c69", headText: "#fff", body: "#fff", bodyText: "#413", borderSus: "#e8b", border: "#e8b"},
+{ margin: "#fff2cc",head: "#c90", headText: "#fff", body: "#fff", bodyText: "#330", borderSus: "#fc0", border: "#ea0"},
+{ margin: "#f2d9e6",head: "#c69", headText: "#fff", body: "#fff", bodyText: "#413", borderSus: "#f8c", border: "#e8b"},
 { margin: "#ddd",   head: "#666", headText: "#fff", body: "#fff", bodyText: "#333", borderSus: "#c66", border: "#f88"},
-{ margin: "#666",   head: "#000", headText: "#aaa", body: "#444", bodyText: "#fff", borderSus: "#660", border: "#880"}
+{ margin: "#666",   head: "#000", headText: "#ddd", body: "#444", bodyText: "#fff", borderSus: "#880", border: "#880"}
   ];
 
   const _dv = document.getElementById("board"),
@@ -109,14 +109,12 @@ Lorem ipsum dolor sit _amet_, consectetuer adipiscing elit, sed diam nonummy nib
     let ob = _tb.rows[rw].cells[1], dvs = ob.querySelectorAll("i");
     for(var d of dvs) d.style.borderColor = brd;
     if(ob.innerHTML.indexOf('_') >= 0)
-    ob.innerHTML = ob.innerHTML.replace(/_(.*?)_/g, `<i style='font-style: normal; padding: 0 6px; border:1px solid ${brd};'>$1</i>`);
+    ob.innerHTML = ob.innerHTML.replace(/_(.+?)_/g, `<i style='font-style:normal;border:1px solid ${brd};'>&nbsp;$1&nbsp;</i>`);
   }
   
   function clearUnder() {
-    for(let i=0; i<2; i++) {
-      let x = _tb.rows[i].cells[1].innerHTML;
-      _tb.rows[i].cells[1].innerHTML = x.replace(/<i .+?>(.+?)<\/i>/g,'$1');
-    }
+    for(let i=0; i<2; i++)
+      _tb.rows[i].cells[1].innerHTML = _tb.rows[i].cells[1].innerHTML.replace(/<i .+?>&nbsp;(.+?)&nbsp;<\/i>/g,'$1');
   }
 
   function copyThat() {

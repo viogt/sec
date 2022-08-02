@@ -26,7 +26,7 @@
   div { padding: 10px; }
 </style>
 </head>
-<body style="font:normal 1em Arial,sans-serif;">
+<body style="font:normal 15px Arial,sans-serif;">
 
 <button onclick="arrange(0)" style="background-color:#f60;"></button>
 <button onclick="arrange(1)" style="background-color:#06c;"></button>
@@ -36,11 +36,12 @@
 <button onclick="arrange(5)" style="background-color:#c90;"></button>
 <button onclick="arrange(6)" style="background-color:#c69;"></button>
 <button onclick="arrange(7)" style="background-color:#aaa;"></button>
-<button onclick="arrange(8)" style="background-color:#000;"></button>
+<button onclick="arrange(8)" style="background-color:#8fa6bc;"></button>
+<button onclick="arrange(9)" style="background-color:#000;"></button>
 <button onclick="Clear()" style="background-color:#fff;">Clear</button>
 <button onclick="clearUnder()" style="background-color:#fff;">No '_'</button>
 
-<div id="board" style="border:1px dashed grey; padding:8px;" contentEditable='true'>
+<div id="board" style="border:1px dashed grey;font-size:15px;padding:8px;" contentEditable='true'>
 <table id="tblClip" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,sans-serif;font-size:15px; background-color:#ccc;line-height:1.4;">
   <tr>
     <td style="width:10%;"></td>
@@ -51,7 +52,7 @@ Lorem ipsum dolor sit amet, _consectetuer_ adipiscing elit, sed diam nonummy nib
   </tr>
   <tr>
     <td style="width:10%;"></td>
-    <td style="width:80%;background-color:#f0f0f0;padding:24px 5%;">
+    <td style="width:80%;background-color:#f0f0f0;font-size:15px;padding:24px 5%;">
 Lorem ipsum dolor sit _amet_, consectetuer adipiscing elit, sed diam nonummy nibh _euismod_ tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
     </td>
     <td style="width:10%;"></td>
@@ -78,14 +79,15 @@ Lorem ipsum dolor sit _amet_, consectetuer adipiscing elit, sed diam nonummy nib
 
 <script>
   const cls = [
-{ margin: "#ffe0cc",head: "#f60", headText: "#fff", body: "#fff", bodyText: "#620", borderSus: "#feb", border: "#fa0"},
+{ margin: "#ffe0cc",head: "#f60", headText: "#fff", body: "#fff0e6", bodyText: "#331400", borderSus: "#feb", border: "#fa0"},
 { margin: "#cef",   head: "#06c", headText: "#fff", body: "#fff", bodyText: "#013", borderSus: "#6ad", border: "#0ae"},
 { margin: "#cec",   head: "#093", headText: "#fff", body: "#fff", bodyText: "#031", borderSus: "#0c0", border: "#0e0"},
 { margin: "#eee6ff",head: "#96c", headText: "#fff", body: "#fff", bodyText: "#103", borderSus: "#c8f", border: "#b8e"},
 { margin: "#d9e6f2",head: "#369", headText: "#fff", body: "#fff", bodyText: "#234", borderSus: "#0ac", border: "#0ac"},
-{ margin: "#fff2cc",head: "#c90", headText: "#fff", body: "#fff", bodyText: "#330", borderSus: "#fc0", border: "#ea0"},
+{ margin: "#fff2cc",head: "#c90", headText: "#fff", body: "#fffff0", bodyText: "#330", borderSus: "#fc0", border: "#ea0"},
 { margin: "#f2d9e6",head: "#c69", headText: "#fff", body: "#fff", bodyText: "#413", borderSus: "#f8c", border: "#e8b"},
 { margin: "#ddd",   head: "#666", headText: "#fff", body: "#fff", bodyText: "#333", borderSus: "#c66", border: "#f88"},
+{ margin: "#cfd8e2",head: "#607d9f", headText: "#fff", body: "#eff2f5", bodyText: "#304050", borderSus: "#bfcbd9", border: "#bfcbd9"},
 { margin: "#666",   head: "#000", headText: "#ddd", body: "#444", bodyText: "#fff", borderSus: "#880", border: "#880"}
   ];
 

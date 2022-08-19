@@ -71,7 +71,7 @@ margin-right: 12px;
   margin-bottom: 12px;
   box-shadow: 0 3px 5px #888;
 }
-.Card .Prev {
+.Card > .Prev {
   display: inline-block;
   min-width: 32px; height: 32px;
   background-color: #99b;
@@ -80,7 +80,16 @@ margin-right: 12px;
   line-height: 32px;
   margin-right: 12px;
   border-radius: 50%;
+  cursor: pointer;
+  -webkit-touch-callout: none; /* iOS Safari */
+  user-select: none;
 }
+@keyframes flipPrev {
+  40% { transform: rotateY(180deg); }
+  60% { background-color: orange; }
+  100% { transform: rotateY(360deg); }
+}
+.Card > .Prev:hover { animation: flipPrev 1s; }
 .Card .Body {
   display: inline-block;
   min-width: calc(100% - 120px);

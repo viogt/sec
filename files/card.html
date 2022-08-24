@@ -211,7 +211,7 @@ const parent = document.querySelector('#scr'),
     let crd = Elem('Card'), bdy = Elem('Body');
     bdy.appendChild(Elem('Title',title)); bdy.appendChild(Elem('Subtitle',selIndex?subtitle:`<a href='#'>${subtitle}</a>`));
     if(selIndex) crd.appendChild(Elem('Prev',prev));
-    else crd.appendChild(Elem('usr' + (prev%5),''));
+    else crd.appendChild(Elem('usr usr' + (prev%5),''));
     crd.appendChild(bdy);
       let i = document.createElement('i');
       i.className = "fa fa-trash";

@@ -203,19 +203,44 @@ li { margin-bottom: .6em; }
     border-left: 2px solid #4d2;
 }
 .toast {
-  font: normal 24px Arial, sans-serif;
-  padding: 18px 28px;
+  top:0; left: 50%; max-width: 80%;
   position: fixed;
-  left: 50%; max-width: 80%;
-  transform: translate(-50%, 0);
-  top: -100%;
-  text-align: center;
-  background-color: rgb(0,0,0,.8);
+  background-color: #c00;
   color: #fff;
   border-radius: 12px;
-  /*white-space: nowrap;*/
+  font: normal 18px arial,sans-serif;
+  padding: 16px 24px;
   z-index: 33;
-  transition: top .2s ease;
+  transform: translate(-50%,-100%);
+}
+.toast.setOnce { animation: apar .4s ease forwards, dispar .4s ease 1.8s forwards; }
+@keyframes apar {
+  0% {
+  transform: translate(-50%,-100%);
+    opacity: 0;
+  }
+  70% {
+  transform: translate(-50%,110px) scale(1.2);
+    opacity: .6;
+  }
+  100% {
+  transform: translate(-50%,100px) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes dispar {
+  0% {
+  transform: translate(-50%,100px);
+    opacity: 1;
+  }
+  30% {
+  transform: translate(-50%,110px) scale(1.2);
+    opacity: .6;
+  }
+  100% {
+  transform: translate(-50%,-100%) scale(1);
+    opacity: 0;
+  }
 }
   </style>
 </head>
@@ -624,15 +649,24 @@ window.addEventListener("beforeunload", (e)=>{
 	if(isDirty) e.returnValue = "Do you want to quit changes?";
 });
 
-function toast(txt, opn = true) {
-  	let t = document.querySelector('.toast');
-  	if(opn) {
-  	  t.querySelector('span').innerHTML = txt;
-  	  t.style.top = '60px';
-  	}
-  	else t.style.top = `-${t.getBoundingClientRect().height}px`;
-  	if(opn) setTimeout( function() { toast(null, false); }, 1500);
+function toast(txt) {
+  let el = document.querySelector('.toast');
+  if(el == null) {
+    const i = document.createElement('i');
+    i.className="fa fa-exclamation-triangle"; i.style.color='#ff0';
+    i.style.marginRight = '18px';
+    el = document.createElement('div');
+    el.appendChild(i);
+    el.appendChild(document.createElement('span'));
+    el.className = 'toast';
+    document.body.appendChild(el);
+  }
+  else if(el.classList.contains('setOnce')) return;
+  el.querySelector('span').innerHTML = txt;
+  el.className = "toast setOnce";
+  setTimeout(()=>{ el.className = "toast"; }, 2600);
 }
+
 function notEmpty() {
   if(Rng.coll) { toast('No text selected'); return true; }
   return false;

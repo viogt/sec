@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial;
+            --col: teal;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 2%;
+            margin: 0 0 18px 0;
+        }
+
+        .col { width: 100%; }
+
+        .col > label {
+            display: block;
+            font-size: .8em;
+            color: var(--col);
+        }
+		/*input[type="checkbox"],input[type="radio"] { margin-right: 4px; }*/
+        /*.colInp > input,.colInp > select*/
+        /*.colInp > *:nth-child(2) {*/
+
+        .col > div > :first-child {
+            width: 100%;
+            font-size: 1em;
+            border: none;
+            padding: .6em 0;
+            outline: none;
+            border-bottom: 1px solid #ddd;
+        }
+        .col > div > input:focus { border-color: red; }
+        .col > div > textarea:focus { border-color: red; }
+        .col > label::before {
+            content: "↓ ";
+            color: var(--col);
+        }
+        input { accent-color: var(--col); }
+        .frm {
+            /*background-color: #f0f0f8;
+            border: 1px solid #cce;*/
+            width: 100%;
+            padding: 1em;
+            margin: auto;
+        }
+
+        @media only screen and (min-width: 600px) {
+            .frm { width: 600px; }
+        }
+        h2 { text-align:center; color:var(--col); margin:0; width:100%; }
+/*---------------- Switch ---------------------*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+.switch > input { opacity: 0; width: 0; height: 0; }
+.switch > span {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 10px;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.switch > span:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.switch > input:checked + span { background-color: var(--col); }
+.switch > input:checked + span:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+    </style>
+</head>
+
+<body>
+
+    <form class='frm'>
+    <div class="row"><h2>DATA COLLECTION FORM</h2></div>
+        
+        <div class="row">
+            <div class="col">
+                <label>Name:</label>
+                <div><input type="text" value="Cabronius"></div>
+            </div>
+            <div class="col">
+                <label>Forename:</label>
+                <div><input type="text" value="Misulan"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Your choice:</label>
+                <div><select id='mode1'>
+                    <option value='Normal' selected>Normal</option>
+                    <option value='Medium'>Medium</option>
+                    <option value='Heigh'>Heigh</option>
+                    <option value='Undetermined'>Undetermined</option>
+                </select></div>
+            </div>
+            <div class="col">
+                <label>Data set:</label>
+                <div><input list="regimes" id="list_data">
+                <datalist id="regimes">
+                    <option value="Abominal">
+                    <option value="Abysmal">
+                    <option value="Bearable">
+                    <option value="Doubtful">
+                    <option value="Meaningful">
+                </datalist></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Modes:</label>
+                <div><div>
+                    <input type='radio' name='addr' value='Mr' checked>Mr
+                    <input type='radio' name='addr' value='Ms'>Ms
+                    <input type='radio' name='addr' value='Mss'>Mss
+                </div></div>
+            </div>
+            <div class="col">
+                <label>Remarks:</label>
+                <div><div>
+                    <input type='checkbox' id='rm1' checked>Yes
+                    <input type='checkbox' id='rm2'>No
+                    <input type='checkbox' id='rm3'>Maybe
+                </div></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Preferences:</label>
+                <div><div>
+                <label class="switch">
+                    <input type="checkbox" id="remind">
+                    <span></span>
+                </label> Reminder&nbsp;
+                <label class="switch">
+                    <input type="checkbox" id="record" checked>
+                    <span></span>
+                </label> Record&nbsp;
+                <label class="switch">
+                    <input type="checkbox" id="postpone">
+                    <span></span>
+                </label> Postpone
+                </div></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Performance:</label>
+                <input type='range' style='width:100%;padding:8px 4px;' id='rng' min='0' max='100' value='50'>
+            </div>
+        </div>
+        
+       <div class="row">
+            <div class="col">
+                <label>Your essay:</label>
+                <div><textarea id='comment' style='width:100%' rows='3'>...No comments yet.</textarea></div>
+            </div>
+        </div>
+
+    </form>
+</body>
+
+</html>

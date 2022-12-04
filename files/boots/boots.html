@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>> Bootstrap Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+    <div class="container-sm">
+        <h3 class="mb-2 mt-3">DATA FORM</h3>
+        <form id="frm">
+            <div class="row mb-2">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person-bounding-box"></i></span>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="name" placeholder="name">
+                            <label for="name">Name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="forename" placeholder="forename">
+                            <label for="forename">Forename</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="email" placeholder="email">
+                            <label for="email">User's email</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="psw" placeholder="password">
+                            <label for="psw">Password</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2 form-check">
+                <input type="checkbox" class="form-check-input" id="whether">
+                <label class="form-check-label" for="whether">Override</label>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <label for="firstPilar" class="text-secondary small">First Pilar:</label>
+                    <select id="firstPilar" class="form-select" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="One">One</option>
+                        <option value="Two">Two</option>
+                        <option value="Three">Three</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="secondPilar" class="text-secondary small">Second Pilar:</label>
+                    <select id="secondPilar" class="form-select" aria-label="Default select example">
+                        <option value="One">One</option>
+                        <option selected value="Two">Two</option>
+                        <option value="Three">Three</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <div class="col form-check form-switch form-check-inline">
+                    <input class="form-check-input" type="checkbox" role="switch" id="now">
+                    <label class="form-check-label" for="now">Accept now</label>
+                </div>
+                <div class="col form-check form-switch form-check-inline">
+                    <input class="form-check-input" type="checkbox" role="switch" id="later" checked>
+                    <label class="form-check-label" for="later">Accept later</label>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label class="form-check-label text-secondary small">Mode:</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" checked type="radio" name="mode" id="inlineRadio1" value="Low">
+                    <label class="form-check-label" for="inlineRadio1">Low</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mode" id="inlineRadio2" value="Medium">
+                    <label class="form-check-label" for="inlineRadio2">Medium</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mode" id="inlineRadio3" value="High">
+                    <label class="form-check-label" for="inlineRadio3">High</label>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label for="rng" class="form-label text-secondary small">Performance rate:</label>
+                <input type="range" class="form-range" min="0" max="5" value="2" id="rng">
+            </div>
+
+            <div class="mb-2 form-group">
+                <label for="comment" class="text-secondary small">Essay here:</label>
+                <textarea class="form-control auto-resize" id="comment" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script>
+        function setVal(id, val) { document.getElementById(id).value = val; }
+        function setRadio(nm, val) {
+            const ar = document.getElementsByName(nm);
+            for (let e of ar) if (e.value == val) { e.checked = true; return; }
+        }
+
+        function updFrm(x) {
+            //socket.emit('mess', x);
+            setVal('comment', JSON.stringify(x));
+        }
+
+        function normForm(txt_id) {
+            let els = document.getElementById(txt_id).elements;
+            for (let e of els) {
+                if (e.tagName == 'SELECT' || e.type == 'radio' || e.type == 'checkbox') e.addEventListener("change", e => {
+                    const el = e.target;
+                    if (el.type == 'checkbox') { updFrm({ cmd: 'frm', id: el.id, tip: 1, val: el.checked ? true : false }); return; }
+                    if (el.tagName == 'SELECT') { updFrm({ cmd: 'frm', id: el.id, tip: 0, val: el.value }); return; }
+                    updFrm({ cmd: 'frm', id: el.name, tip: 2, val: document.querySelector(`input[name="${el.name}"]:checked`).value });
+                }, false);
+                else e.addEventListener("input", e => {
+                    const el = e.target;
+                    updFrm({ cmd: 'frm', id: el.id, tip: 0, val: el.value });
+                }, false);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            /*alert('Hopa!');
+            try {
+                setVal('name', 'Viorel');
+                setVal('secondPilar', 'Three');
+                setVal('rng', '5');
+                setVal('comment', 'Just a comment');
+                document.getElementById('whether').checked = true;
+                document.getElementById('now').checked = true;
+                setRadio('mode', 'Medium');
+            } catch (err) { alert(err.stack); }*/
+            normForm('frm');
+        });
+    </script>
+</body>
+
+</html>

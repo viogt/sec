@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         * { font-family: Arial, sans-serif; }
+        .dash { border:1px dashed grey; }
+        button { font-size: 16px; padding: 4px 10px; }
     </style>
 </head>
 
 <body onClick='chClck(event)'>
-    <br>
-    <table cellPadding='6' cellSpacing='0' style='border:1px dashed grey;'>
+<button onclick="recons('1em')">1em</button>
+<button onclick="recons('15px')">15px</button>
+<button onclick="recons('16px')">16px</button>
+<button onclick="recons('18px')">18px</button>
+    <table cellPadding='6' cellSpacing='0' class='dash'>
 
         <!-- L A R G E -->
         <tr>
@@ -57,19 +61,19 @@
         <!-- T I N Y -->
         <tr>
             <td width='100px'>
-<table cellPadding='0' cellSpacing='0' width='100%' style="font-size:1em;"><tr>
+<table cellPadding='0' cellSpacing='0' style="width: 100%; font-size:1em;"><tr>
     <td style='background-color:#ccc;width:10pt;'>&nbsp;</td>
     <td style='padding:6pt;background-color:#eee;color:#333;'>_</td>
 </tr></table>
             </td>
             <td width='100px'>
-<table cellPadding='0' cellSpacing='0' width='100%' style="font-size:1em;"><tr>
+<table cellPadding='0' cellSpacing='0' style="width: 100%; font-size:1em;"><tr>
     <td style='background-color:#dd6;width:10pt;'>&nbsp;</td>
     <td style='padding:6pt;background-color:#ffa;color:#330;'>_</td>
 </tr></table>
             </td>
             <td width='100px'>
-<table cellPadding='0' cellSpacing='0' width='100%' style="font-size:1em;"><tr>
+<table cellPadding='0' cellSpacing='0' style="width: 100%; font-size:1em;"><tr>
     <td style='background-color:#bcf;width:10pt;'>&nbsp;</td>
     <td style='padding:6pt;background-color:#eef;color:#004;'>_</td>
 </tr></table>
@@ -77,19 +81,19 @@
         </tr>
         <tr>
             <td width='100px'>
-<table cellPadding='0' cellSpacing='0' width='100%' style="font-size:1em;"><tr>
+<table cellPadding='0' cellSpacing='0' style="width: 100%; font-size:1em;"><tr>
     <td style='background-color:#aea;width:10pt;'>&nbsp;</td>
     <td style='padding:6pt;background-color:#dfd;color:#040;'>_</td>
 </tr></table>
             </td>
             <td width='100px'>
-<table cellPadding='0' cellSpacing='0' width='100%' style="font-size:1em;"><tr>
+<table cellPadding='0' cellSpacing='0' style="width: 100%; font-size:1em;"><tr>
     <td style='background-color:#faa;width:10pt;'>&nbsp;</td>
     <td style='padding:6pt;background-color:#fee;color:#400;'>_</td>
 </tr></table>
             </td>
             <td width='100px'>
-<table cellPadding='0' cellSpacing='0' width='100%' style="font-size:1em;"><tr>
+<table cellPadding='0' cellSpacing='0' style="width: 100%; font-size:1em;"><tr>
     <td style='background-color:#000;width:10pt;'>&nbsp;</td>
     <td style='padding:6pt;background-color:#444;color:#ddd;'>_</td>
 </tr></table>
@@ -99,7 +103,7 @@
 
     <br>
     <!-- M A R K S -->
-    <table cellPadding='8' cellSpacing='0' style='border:1px dashed grey'>
+    <table cellPadding='8' cellSpacing='0' class='dash'>
         <tr>
             <td>
 
@@ -232,7 +236,13 @@
             document.execCommand('selectAll', false, '');
             document.execCommand('copy', false, '');
             x.style.display = 'none';
+
         }
+
+        function recons(vl) {
+            document.querySelectorAll('.dash table').forEach(e =>{ e.style.fontSize = vl; });
+        }
+
 </script>
 </body>
 </html>

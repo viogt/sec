@@ -1,182 +1,125 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <title>★ Edit for Facebook</title>
   <style>
-    .iS { cursor:pointer; margin:1px; padding:2px; border:none; font-size:18px; color: grey; background-color: #111111;}
-    .bT { cursor:pointer; margin:2px; border:1px solid #222;padding:6px; border-radius:6px; font-size:14px; color: grey; background-color: #111111; outline:none;}
-    .bT:hover { border:1px solid blue; }
+    * {
+      box-sizing: border-box;
+      font: normal 18px sans-serif;
+      margin: 0;
+    }
+
+  input {
+    cursor: pointer;
+    margin: 2px;
+    border: 1px solid #666;
+    padding:6px;
+    border-radius: 6px;
+    color: grey;
+    background-color: #000;
+    outline: none;
+  }
   
-  .EdDiv {
-    font:normal 16pt Ubuntu,Verdana,Arimo;
-    background-color:black;
+  button {
+    cursor:pointer;
+    margin:3px; padding:2px; border:none;
+    color: grey;
+    background-color: #000;
+  }
+  
+  #EdDiv {
+    float: left;
+    background-color: black;
+    border: 1px solid #666;
     color:lightgreen;
-    margin-right:50px;
-    position:absolute;
-    top:30px; left: 260px;
-    border:1px solid #222222;
-    padding:60px;
+    width: 75%;
+    vertical-align: top;
+    height: 100dvh;
+    padding: 12px;
+    overflow-y: auto;
+  }
+
+  #basic {
+    outline: none;
+    width: 100%;
+  }
+
+  #panel {
+    float: left;
+    width: 25%;
+    padding: 12px;
+    height: 100dvh;
+    overflow-y: auto;
+  }
+
+  @media screen and (max-width: 800px) {
+    #EdDiv { width: 100%; height: 75dvh; }
+    #panel { width: 100%; height: 25dvh; }
   }
 
   </style>
 </head>
 <body bgColor='#111111'>
   
-  <div style='position:fixed; top:30px; left: 10px; width:240px;'>
+<div id="panel">
     
-      <INPUT class='bT' style='width:128px' type='button' onClick='toClipboard(this)' value='Copy to clipboard'/><br>
-      <INPUT class='bT' style='width:38px' type='button' onClick='upperCase(true)' value='Upr'/>
-      <INPUT class='bT' style='width:38px' type='button' onClick='upperCase(false)' value='Low'/>
-      <INPUT class='bT' style='width:38px' type='button' onClick='removeDiacrit()' value='Dia'/><br>
-      <INPUT class='bT' style='width:60px' type='button' onClick='save(this)' value='Save'/>
-      <INPUT class='bT' style='width:60px' type='button' onClick='retrieve(this)' value='Get'/>
+<input type='button' onClick='toClipboard(this)' value='Copy to clipboard'/>
+<input type='button' onClick='upperCase(true)' value='Upr'/>
+<input type='button' onClick='upperCase(false)' value='Low'/>
+<input type='button' onClick='removeDiacrit()' value='Dia'/>
+<input type='button' onClick='save(this)' value='Save'/>
+<input type='button' onClick='retrieve(this)' value='Get'/>
 
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✔'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⚑'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✎'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⚠'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='☢'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='☠'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✘'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='▉'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='▶'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✓'/>
-    <br>
+</div>
+<div id='EdDiv'><div id='basic' contentEditable>...</div></div>
 
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='‧'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='┆'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='┊'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='▨'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='≈'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='€'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='★'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='§'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='▲'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='▼'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➝'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➜'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➤'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='—'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✅'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✍'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='☝'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⁂'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='░'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='☎'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➊'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➋'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➌'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➍'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➎'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➏'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➐'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➑'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➒'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='➓'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓐ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓑ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓒ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓓ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓔ'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓕ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓖ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓗ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓘ'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='Ⓙ'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='☕'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✉'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='❤'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='🔍'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='🎺'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='🎭'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='❗'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='📣'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='❌'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='📝'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='💰'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='💡'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='🚑'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='🔔'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='💉'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='🎬'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='📢'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='🔒'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⭕'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✞'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⨀'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⨂'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='◉'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='▣'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='✿'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='①'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='②'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='③'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='④'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⑤'/>
-    <br>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⑥'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⑦'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⑧'/>
-      <INPUT class='iS' type='button' onClick='fDoc("insertText",this)' value='⑨'/>
-      <INPUT class='iS' type='button' onClick='alert(T.textContent); fDoc("insertText",this)' value='⑩'/>
+<script>
 
-  </div>
-  <div class='EdDiv'>
-    <div id='basic' contentEditable='true' style='display: inline-block;outline:none;'>...</div>
-  </div>
-  
-  <script type="text/javascript">
-
-    function id(x) { return document.getElementById(x); }
-    const T = id('basic');
-    function fDoc(cmd, el) { Foc(); document.execCommand(cmd, false, el.value); }
-    function toClipboard(ob) {
-      setT(ob); Foc();
-      document.execCommand('selectAll', false, '');
-      document.execCommand('copy', false, '');
+  const T = document.getElementById('basic');
+  document.addEventListener("DOMContentLoaded", () => {
+    let x = '–➝—✔⚑✎‧⚠☢✘▉▶▲▼➜➤✓│┊▨≈€∼§✅✍☝⁰¹²³⁴⁵⁶⁷⁸⁹₀₁₂₃₄₅₆₇₈₉➊➋➌➍➎➏➐➑➒➓①②③④⑤⑥⑦⑧⑨⑩ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ⁂★░☎☕✉❤❗❌⭕✞⨀☠⨂◉▣✿';
+    let Dv = document.querySelector('#panel');
+    let L = x.length;
+    for(let i = 0; i < L; i++) {
+      let el = document.createElement('button');
+      el.innerText = x.charAt(i);
+      el.addEventListener("click", ev => {
+        Foc(); document.execCommand('insertText', false, ev.target.innerText);
+      });
+      Dv.appendChild(el);
+      console.log(x.charAt(i));
     }
-    function upperCase(F) {
-      Foc();
-      var a = window.getSelection().toString();
-      document.execCommand('insertText', false, F?a.toUpperCase():a.toLowerCase());
-    }
-    
-    function removeDiacrit() {
-      let r = /Ş|ş|Ţ|ţ/g; if(r.test(T.textContent)) {
-      T.innerHTML = T.innerHTML.replace(r, function(x){ return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); }); return; }
+  });
 
-      r = /Ă|ă|Î|î|Ș|ș|Ț|ț|Â|â/g; if(r.test(T.textContent))
-      T.innerText = T.innerText.replace(/Ă|ă|Î|î|Ș|ș|Ț|ț|Â|â/g, function(x){ return "AaIiSsTtAa".charAt("ĂăÎîȘșȚțÂâ".indexOf(x)); });
+  function toClipboard(ob) {
+    setT(ob); Foc();
+    document.execCommand('selectAll', false, '');
+    document.execCommand('copy', false, '');
+  }
+  function upperCase(F) {
+    Foc();
+    var a = window.getSelection().toString();
+    document.execCommand('insertText', false, F?a.toUpperCase():a.toLowerCase());
+  }
+    
+  function removeDiacrit() {
+    let r = /Ş|ş|Ţ|ţ/g;
+    if(r.test(T.textContent)) {
+      T.innerHTML = T.innerHTML.replace(r, function(x){ return "ȘșȚț".charAt("ŞşŢţ".indexOf(x)); });
+      return;
     }
+
+    r = /Ă|ă|Î|î|Ș|ș|Ț|ț|Â|â/g; if(r.test(T.textContent))
+    T.innerText = T.innerText.replace(/Ă|ă|Î|î|Ș|ș|Ț|ț|Â|â/g, function(x){ return "AaIiSsTtAa".charAt("ĂăÎîȘșȚțÂâ".indexOf(x)); });
+  }
     
-    function save(ob) { setT(ob); localStorage.setItem("facebook_edit", T.innerText); Foc(); }
-    function retrieve(ob) { setT(ob); T.innerText = localStorage.getItem("facebook_edit"); Foc(); }
-    function setT(ob) { ob.style.backgroundColor = 'blue'; setTimeout(function(){ ob.style.backgroundColor = ''; }, 600); }
-    function Foc() { T.focus(); }
-    //function manageEnter(e) {
-      //event.preventDefault();
-      //var key = event.keyCode;
-      //if(key===13) alert(id('basic').innerHTML);
-      //{ document.execCommand('insertHTML', false, '<br>'); alert(id('basic').innerHTML); return false; } return true;
-    //}
-    
+  function save(ob) { setT(ob); localStorage.setItem("facebook_edit", T.innerText); Foc(); }
+  function retrieve(ob) { setT(ob); T.innerText = localStorage.getItem("facebook_edit"); Foc(); }
+  function setT(ob) { ob.style.backgroundColor = 'blue'; setTimeout(function(){ ob.style.backgroundColor = ''; }, 600); }
+  function Foc() { T.focus(); }
+
   T.addEventListener("paste",function(e) {
     e.preventDefault(); T.focus();
     document.execCommand('insertText', false, e.clipboardData.getData('text/plain'));

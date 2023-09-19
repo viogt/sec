@@ -11,7 +11,7 @@
             border-top: 1px dashed lightgray;
             padding-top: 1em;
         }
-        input { width: 16vw; }
+        input { width: 16vw; font-size: 1em; }
         input:invalid { border-color: red; }
         #tggl { color: blue; font-style: italic; cursor: pointer; float: right; }
         #c_code {
@@ -219,7 +219,7 @@ function check() {
 
 function toggle_C_code(obj) {
     const el = document.getElementById("c_code");
-    if(el.style.display == 'none') {
+    if(el.style.display != 'block') {
         el.style.display = 'block';
         obj.innerText = 'Hide C code';
     }

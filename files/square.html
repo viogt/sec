@@ -11,7 +11,7 @@
             border-top: 1px dashed lightgray;
             padding-top: 1em;
         }
-        input { width: 20vw; }
+        input { width: 16vw; }
         input:invalid { border-color: red; }
         #tggl { color: blue; font-style: italic; cursor: pointer; float: right; }
         #c_code {
@@ -22,11 +22,12 @@
     </style>
 </head>
 <body>
-
+<div style="font-size: 10px">
     From <input type="number" min="2" value="100"/>
     To <input type="number" min="10" max="10000000" value="10000"/>
-    Group <input type="number" style="width:10vw" min="1" max="10" value="3"/>
-    <button onclick="check()">Check</button><br>
+    Group <input type="number" style="width:8vw" min="1" max="10" value="3"/>
+    <button onclick="check()">Check</button>
+</div>
     Total combinations: <span id="res">0</span>
     <span id="tggl" onclick="toggle_C_code(this)">Show C code</span>
     <div id="c_code">

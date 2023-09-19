@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Factor</title>
+    <style>
+        * { font: normal 1em sans-serif; }
+        .Pre {
+            border-top: 1px dashed lightgray;
+            padding-top: 1em;
+        }
+        input { width: 20vw; }
+        input:invalid { border-color: red; }
+        #tggl { color: blue; font-style: italic; cursor: pointer; float: right; }
+        #c_code {
+            display: none;
+            max-height: 40vh;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+
+    From <input type="number" min="2" value="100"/>
+    To <input type="number" min="10" max="10000000" value="10000"/>
+    Group <input type="number" style="width:10vw" min="1" max="10" value="3"/>
+    <button onclick="check()">Check</button><br>
+    Total combinations: <span id="res">0</span>
+    <span id="tggl" onclick="toggle_C_code(this)">Show C code</span>
+    <div id="c_code">
+        <div style="border:1px solid #d8d8ea;background-color:#eef;width:100%;overflow-x:auto;"><table cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;line-height:1.4;"><tr><td valign="top" align="right" style="background-color:#d8d8ea;color:#669;padding: 6px 18px;width:auto;"><pre>1
+        2
+        3
+        4
+        5
+        6
+        7
+        8
+        9
+        10
+        11
+        12
+        13
+        14
+        15
+        16
+        17
+        18
+        19
+        20
+        21
+        22
+        23
+        24
+        25
+        26
+        27
+        28
+        29
+        30
+        31
+        32
+        33
+        34
+        35
+        36
+        37
+        38
+        39
+        40
+        41
+        42
+        43
+        44
+        45
+        46
+        47
+        48
+        49
+        50
+        51
+        52
+        53
+        54
+        55
+        56
+        57
+        58
+        59
+        60
+        61
+        62
+        63
+        64
+        65
+        66</pre></td><td valign="top" style="padding:6px 18px;color:#000;"><pre>#include &lt;stdio.<span style="color:purple">h</span>&gt;
+        #include &lt;stdlib.<span style="color:purple">h</span>&gt;
+        
+        <b style="color:#00a;">int</b> <span style="color:purple;">ifHasSquare</span>(<b style="color:#00a;">int</b> n) {
+            <b style="color:#00a;">int</b> times = <span style="color:#00f;">0</span>;
+            <b style="color:#00a;">while</b>(n % <span style="color:#00f;">2</span> == <span style="color:#00f;">0</span>) {
+                times++;
+                <span style="color:purple;">if</span>(times == <span style="color:#00f;">2</span>) <b style="color:#00a;">return</b> <span style="color:#00f;">2</span>;
+                n /= <span style="color:#00f;">2</span>;
+            }
+            <b style="color:#00a;">for</b>(<b style="color:#00a;">int</b> fct = <span style="color:#00f;">3</span>; fct &lt; n; fct += <span style="color:#00f;">2</span>) {
+                times = <span style="color:#00f;">0</span>;
+                <b style="color:#00a;">while</b>(n % fct ==<span style="color:#00f;">0</span>) {
+                    times++;
+                    <span style="color:purple;">if</span>(times == <span style="color:#00f;">2</span>) <b style="color:#00a;">return</b> fct;
+                    n /= fct;
+                }
+            }
+            <b style="color:#00a;">return</b> <span style="color:#00f;">0</span>;
+        }
+        
+        <b style="color:#00a;">void</b> <span style="color:purple;">check</span>(<b style="color:#00a;">int</b> n, <b style="color:#00a;">int</b> end, <b style="color:#00a;">int</b> groupN) {
+            <b style="color:#00a;">int</b> fc[<span style="color:#00f;">11</span>], cnt = <span style="color:#00f;">0</span>;
+            <b style="color:#00a;">while</b>(n &lt; end) {
+                <b style="color:#00a;">int</b> i;
+                <b style="color:#00a;">for</b>(i = <span style="color:#00f;">0</span>; i &lt; groupN; i++) {
+                    fc[i] = <span style="color:purple;">ifHasSquare</span>(n + i);
+                    <span style="color:purple;">if</span>(fc[i] == <span style="color:#00f;">0</span>) <b style="color:#00a;">break</b>;
+                }
+                <span style="color:purple;">if</span>(i == groupN) { <span style="color:#669;">// found! now print</span>
+                    cnt++;
+                    <span style="color:purple;">printf</span>(<span style="color:#080;">"-------------------(%i)\n"</span>, cnt);
+                    <b style="color:#00a;">for</b>(i = <span style="color:#00f;">0</span>; i &lt; groupN; i++) {
+                        <b style="color:#00a;">int</b> N = n + i, f = fc[i];
+                        <span style="color:purple;">printf</span>(<span style="color:#080;">"%i (%i) = %i * %i\n"</span>,
+                        N, f, f*f, N/f/f);
+                    }
+                    n += groupN;
+                }
+                <b style="color:#00a;">else</b> n += (i + <span style="color:#00f;">1</span>);
+            }
+            <span style="color:purple;">if</span>(cnt == <span style="color:#00f;">0</span>) <span style="color:purple;">printf</span>(<span style="color:#080;">"No group of %i numbers found.\n"</span>, groupN);
+        }
+        
+        <b style="color:#00a;">int</b> <span style="color:purple;">main</span>(<b style="color:#00a;">int</b> argc, <b style="color:#00a;">char</b> *argv[]) {
+            <span style="color:purple;">if</span>(argc &lt; <span style="color:#00f;">4</span>) {
+                <b style="color:#00a;">char</b> *msg = <span style="color:#080;">"\nBy default assumed:\n\tstart = 1000, end = 10000, group = 3\nOtherwise, run with arguments &lt;start&gt; &lt;end&gt; &lt;group&gt;\n"</span>;
+                <span style="color:purple;">puts</span>(msg);
+                <span style="color:purple;">check</span>(<span style="color:#00f;">1000</span>, <span style="color:#00f;">10000</span>, <span style="color:#00f;">3</span>);
+                <span style="color:purple;">puts</span>(msg);
+                <b style="color:#00a;">return</b> <span style="color:#00f;">0</span>;
+            }
+            
+            <b style="color:#00a;">int</b> start = <span style="color:purple;">atoi</span>(argv[<span style="color:#00f;">1</span>]),
+                end = <span style="color:purple;">atoi</span>(argv[<span style="color:#00f;">2</span>]),
+                group = <span style="color:purple;">atoi</span>(argv[<span style="color:#00f;">3</span>]);
+            <span style="color:purple;">if</span>(start &lt; <span style="color:#00f;">2</span> || end &lt; <span style="color:#00f;">2</span> || end &gt; <span style="color:#00f;">10000000</span> || group &lt; <span style="color:#00f;">2</span> || group &gt; <span style="color:#00f;">10</span> || start &gt; end) {
+                <span style="color:purple;">puts</span>(<span style="color:#080;">"Wrong arguments range: start &lt;2..&gt; end &lt;2..10,000,000&gt; group &lt;2..10&gt;\n"</span>);
+                <b style="color:#00a;">return</b> <span style="color:#00f;">0</span>;
+            }
+            
+            <span style="color:purple;">printf</span>(<span style="color:#080;">"Assumed: start = %i, end = %i, group = %i\n"</span>, start, end, group);
+            <span style="color:purple;">check</span>(start, end, group);
+            
+            <b style="color:#00a;">return</b> <span style="color:#00f;">0</span>;
+        }</pre></td></tr></table></div></div>
+    <div id="out"></div>
+   
+<script>
+
+    const   out = document.getElementById("out"),
+            res = document.getElementById("res");
+
+    function ifHasSquare(n) {
+        let times = 0;
+        while(n % 2 ==0) {
+            times++;
+            if(times == 2) return 2;
+            n /= 2;
+        }
+    
+        for(let fct = 3; fct < n; fct += 2) {
+            times = 0;
+            while(n % fct ==0) {
+                times++;
+                if(times == 2) return fct;
+                n /= fct;
+            }
+        }
+        return 0;
+    }
+
+function check() {
+    const inps = document.querySelectorAll("input");
+    let n = parseInt(inps[0].value);
+    const end = parseInt(inps[1].value), groupN = parseInt(inps[2].value);
+    const fc = new Array(10);
+    //out.innerHTML = '';
+    while(out.firstChild) out.removeChild(out.firstChild);
+
+    while(n < end) {
+        let i;
+        for(i = 0; i < groupN; i++) {
+            fc[i] = ifHasSquare(n + i);
+            if(fc[i] == 0) break;
+        }
+        if(i == groupN) { // found! now print
+            let el = document.createElement("pre");
+            for(i = 0; i < groupN; i++) {    
+                let N = n + i, f = fc[i];
+                el.className = 'Pre';
+                el.textContent += `${N} (${f}²) = ${f*f} * ${N/f/f}\n`;
+            }
+            out.appendChild(el);
+            n += groupN;
+        }
+        else n += (i + 1);
+    }
+    res.innerText = out.childNodes.length;
+}
+
+function toggle_C_code(obj) {
+    const el = document.getElementById("c_code");
+    if(el.style.display == 'none') {
+        el.style.display = 'block';
+        obj.innerText = 'Hide C code';
+    }
+    else {
+        el.style.display = 'none';
+        obj.innerText = 'Show C code';
+    }
+}
+</script>
+</body>
+</html>

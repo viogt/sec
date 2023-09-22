@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variatii</title>
+<style>
+    body { margin: 0; font: normal 12px monospace; }
+    #tbl {
+        border-collapse: separate;
+        border-spacing: 1em;
+        background-color: #f0f0ff;
+    }
+    #tbl td {
+        border: 1px solid lightgray;
+        border-radius: 8px;
+        text-align: right;
+        white-space: nowrap;
+        padding: 1em;
+        background-color: white;
+    }
+</style>
+</head>
+<body>
+
+
+> S (length) MIN <input type="number" min="2" max="40" value="2" onchange="check()"/>
+MAX <input type="number" min="5" max="40" value="8" onchange="check()"/>
+
+<table id="tbl"></table>
+
+<script>
+    const tbl = document.getElementById('tbl'),
+        inps = document.querySelectorAll('input');
+
+    function makeNumber(n, len, pos) {
+        let res = n.toString().repeat(len) * 1;
+        if(pos > -1) res += Math.pow(10, pos);
+        return res;
+    }
+
+    function crossSum(x) {
+        let sum = 0;
+        x.toString().split('').forEach(el => { sum += el*1; });
+        return sum;
+    }
+
+    function checkElem(slen, pos) {
+        let n = makeNumber(4, slen, pos);
+        let m = makeNumber(4, slen, -1);
+        let k = makeNumber(1, slen, -1);
+        let r = (n+m) * (n-m) + k;
+        let dlt = `${(n+m) * (n-m)}<br>${".".repeat(pos)}${k}`;
+        let csum = crossSum(r);
+        let RES = `S=${slen}, pos=<font color="blue">${pos}</font><br>n = ${n}<br>m = ${m}<br>k = ${k}<br>${dlt}<br><font color="blue">${r}</font><br>CrossSum=(<font color="red">${csum}</font>)`;
+        return RES;
+    }
+
+    function check() {
+        let min = inps[0].value * 1, max = inps[1].value * 1;
+        while(tbl.rows.length > 0) tbl.deleteRow(0);
+        for(let slen = min; slen <= max; slen++) {
+            let r = tbl.insertRow();
+            for(let ps = 0; ps < slen; ps++) {
+                let c = r.insertCell();
+                c.innerHTML = checkElem(slen, ps);
+            }
+        }  
+    }
+
+    check();
+</script>
+</body>
+</html>

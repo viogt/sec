@@ -4,10 +4,10 @@ body {
   font: normal 15px/30px Roboto;
   color: #444;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
   body {
     margin: 5px 1em;
-    width: 100%; /* The width is 100%, when the viewport is 600px or smaller */
+    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
   }
 }
 u { text-decoration:none; border-bottom:3px solid #d0d0ff; }

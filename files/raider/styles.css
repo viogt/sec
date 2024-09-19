@@ -1,13 +1,13 @@
 body {
-  width: clamp(25ch, 80%, 75ch);
+  width: clamp(80%, 80%, 75ch);
   margin: 5px auto;
   font: normal 16px/28px Roboto;
   color: #666;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 600px) {
   body {
     margin: 5px 16px;
-    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+    width: 100%; /* The width is 100%, when the viewport is 600px or smaller */
   }
 }
 u { text-decoration:none; border-bottom:3px solid #d0d0ff; }
@@ -56,7 +56,7 @@ background-repeat: no-repeat;
 }
 
 .magnMap {
-	-webkit-tap-highlight-color: transparent;
+	/*-webkit-tap-highlight-color: transparent;*/
   transform: translate(0px, 0px) scale(1);
   transition: transform 1s;
 }
@@ -64,7 +64,7 @@ background-repeat: no-repeat;
   transform: translate(-1000px, -880px) scale(3);
 }
 .txtMap {
-  -webkit-tap-highlight-color: transparent;
+  /*-webkit-tap-highlight-color: transparent;*/
   opacity: 0;
   transition: opacity 1s;
 }

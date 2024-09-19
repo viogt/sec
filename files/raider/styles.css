@@ -1,12 +1,12 @@
 body {
-  width: clamp(25ch, 60%, 75ch);
-  margin: 38px auto 0 auto;
-  font: normal 15px/30px Roboto;
-  color: #444;
+  width: clamp(25ch, 80%, 75ch);
+  margin: 5px auto;
+  font: normal 16px/28px Roboto;
+  color: #666;
 }
 @media screen and (max-width: 800px) {
   body {
-    margin: 5px 1em;
+    margin: 5px 16px;
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
   }
 }

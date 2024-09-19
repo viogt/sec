@@ -55,6 +55,7 @@ background-repeat: no-repeat;
 }
 
 .magnMap {
+	-webkit-tap-highlight-color: transparent;
   transform: translate(0px, 0px) scale(1);
   transition: transform 1s;
 }

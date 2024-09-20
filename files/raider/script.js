@@ -4,3 +4,14 @@ const observer = new IntersectionObserver(entries => {
   },{ threshold: .5 });
   
   document.querySelectorAll('.aHide').forEach(h => observer.observe(h));
+  
+function showContent(obj) {
+  let el = obj.nextElementSibling.style;
+  if(el.display=='block') {
+    el.display = 'none';
+    obj.innerText='Show the table of contents';
+  } else {
+    el.display = 'block';
+    obj.innerText = 'Hide the table of contents';
+  }
+}

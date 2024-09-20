@@ -12,11 +12,11 @@ body {
     width: 100%; /* The width is 100%, when the viewport is 600px or smaller */
   }
 }
-u { text-decoration:none; border-bottom:.6px dashed #666; }
+u { text-decoration:none; border-bottom:.6px dashed #000; }
 li { margin-bottom: 1em; }
 h3 { font: normal 26px 'Roboto Condensed', Sans-serif; color: #000; }
 h1 { font: normal 26px 'Roboto Condensed', Sans-serif; color: #000;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;
   text-align: center; padding: 12px 0;
   /*z-index: 111;
   position: sticky; top: 0;
@@ -68,7 +68,7 @@ background-repeat: no-repeat;
 .aHide {
   /*filter: blur(3px);*/
 	/*transform: translateX(-24px);*/
-	transform: scaleX(.8);
+	transform: scaleX(.9);
 	transition: transform .3s ease-out;
 }
 .aShow {
@@ -78,15 +78,17 @@ background-repeat: no-repeat;
 }
 
 .magnMap {
-  transform: translate(0px, 0px) scale(1);
-  transition: transform 1s;
+  /*transform: translate(0px, 0px) scale(1);*/
+  transform: matrix(1,0,0,1,0,0);
+  transition: transform .6s;
 }
 .magnMapUp {
-  transform: translate(-1000px, -880px) scale(3);
+  /*transform: translate(-1000px, -880px) scale(3);*/
+  transform: matrix(3,0,0,3,-1000,-800);
 }
 .txtMap {
   opacity: 0;
-  transition: opacity 1s;
+  transition: opacity .6s;
 }
 .txtMapUp {
   opacity: 1;
@@ -95,13 +97,12 @@ background-repeat: no-repeat;
 blockquote {
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' x='30' y='960' width='400' height='400' viewBox='0 0 310 310' fill='%23ddd'%3E%3Cpath d='M79 142.16c-6.02 0-11.42.28-16.25.81 7.1-29.03 22.95-44.36 45.88-56.04 5.33-2.71 7.63-9.1 5.23-14.57l-6.04-13.77c-2.59-5.91-9.62-8.44-15.38-5.53-22.1 11.11-37.39 23.92-48.76 40.63C28.42 116.11 21 145.6 21 183.83v16.52c0 31.95.11 57.81 58 57.81 58 0 58-25.97 58-58s.38-58-58-58zm152 0c-6.02 0-11.42.28-16.25.81 7.1-29.03 22.95-44.36 45.88-56.04 5.33-2.71 7.63-9.1 5.23-14.57l-6.04-13.77c-2.59-5.91-9.62-8.44-15.38-5.53-22.1 11.11-37.39 23.92-48.76 40.63C180.42 116.11 173 145.6 173 183.83v16.52c0 31.95.11 57.81 58 57.81 58 0 58-25.97 58-58s.38-58-58-58z'%3E%3C/path%3E%3C/svg%3E");
 background-repeat: no-repeat;
-background-size: 80px;
-min-height: 80px;
+background-size: 60px;
+min-height: 60px;
 margin:1em 0;
-padding-left:90px;
+padding-left:70px;
 }
 @media screen and (max-width: 600px) {
-  body {
-    width: 100%; /* The width is 100%, when the viewport is 600px or smaller */
-  }
+  body { width: 100%; }
+  a:hover { color: #000; }
 }

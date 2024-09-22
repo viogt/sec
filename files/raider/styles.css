@@ -45,16 +45,16 @@ background-repeat: no-repeat;
 
 .fx_div {
   position: fixed;
-  width: 62px;
-  bottom: 10px;
-  left: calc(100% - 72px);
+  width: 24px;
+  bottom: 6px;
+  left: calc(100% - 34px);
   z-index: 100;
 }
 
 .fx {
-  margin-top: 10px;
-  width: 48px;
-  height: 48px;
+  margin-top: 6px;
+  width: 32px;
+  height: 32px;
   background-color: rgb(255,255,255,.5);
   float: left;
   border-radius: 50%;
@@ -62,12 +62,12 @@ background-repeat: no-repeat;
   /*background-image: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath d='M3 2.5H25M14 6.5V26M14 6.5L5 13.5M14 6.5L23 13.5' stroke='%23aaa' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: center center;*/
-	font-size: 24px;
-	line-height: 48px;
+	font-size: 20px;
+	line-height: 32px;
 	text-align: center;
 	-webkit-user-select: none;
   user-select: none;
-	cursor: pointer;
+  cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);

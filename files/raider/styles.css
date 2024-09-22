@@ -67,6 +67,7 @@ background-repeat: no-repeat;
 	text-align: center;
 	-webkit-user-select: none;
   user-select: none;
+	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);

@@ -87,7 +87,8 @@ background-repeat: no-repeat;
 .magnMap {
   /*transform: translate(0px, 0px) scale(1);*/
   transform: matrix(1,0,0,1,0,0);
-  transition: transform .6s;
+  /*transition: transform .6s;*/
+  transition: transform .8s cubic-bezier(.87,-.41,.19,1.44);
 }
 .magnMapUp {
   /*transform: translate(-1000px, -880px) scale(3);*/
@@ -96,6 +97,7 @@ background-repeat: no-repeat;
 .txtMap {
   opacity: 0;
   transition: opacity .6s;
+  transition-delay: .2s;
 }
 .txtMapUp {
   opacity: 1;

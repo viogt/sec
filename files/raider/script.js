@@ -40,3 +40,27 @@ function createPanel() {
 }
 
 setTimeout(createPanel, 500);
+
+var tmOut, cnt = false;
+
+function moveMap(el) {
+  tmOut = setTimeout(()=>{
+    if(cnt) { cnt = false; return; }
+    el.querySelector('.magnMap').classList.toggle('magnMapUp');
+    el.querySelector('.txtMap').classList.toggle('txtMapUp');
+  }, 250);
+}
+
+function enlargeMap(el) {
+  clearTimeout(tmOut);
+  cnt = true;
+  let sgn = el.querySelector('.setButn');
+  if(el.style.width != '100%') {
+    el.style.width = '100%';
+    sgn.innerText = '-';
+  }
+  else {
+    el.style.width = '40%';
+    sgn.innerText = '+';
+  }
+}

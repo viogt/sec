@@ -16,7 +16,7 @@ u { text-decoration:none; border-bottom:.8px dashed #000; }
 li { margin-bottom: 1em; }
 h3 { font: bold 26px 'Roboto', Sans-serif; color: #000; }
 h1 { font: normal 26px 'Roboto Condensed', Sans-serif; color: #666;
-  border-bottom: 2px solid #ddd; letter-spacing: .1em;
+  border-bottom: 2px solid #ddd;
   text-align: center; padding: 12px 0;
   /*z-index: 111;
   position: sticky; top: 0;

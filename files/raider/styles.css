@@ -163,10 +163,18 @@ padding-left:70px;
 }
 
 .embPic {
-width: 100%; height: auto;
-border-radius: .8em;
-border: .8px solid rgba(0,0,0,.2);
-box-shadow: inset 0 3px 5px rgba(255,255,255,.5),
-inset 0 -3px 5px rgba(0,0,0,.5),
-0 2px 4px rgba(0,0,0,.5);
+  width:100%; height:auto;
+  border-radius: .6em;
+  border: .8px solid rgba(0,0,0,.4);
+  box-shadow:
+    inset 0 4px 6px #fff,
+    inset 0 -4px 6px #000,
+    0 2px 4px rgba(0,0,0,.5);
+}
+.embPic img {
+  display: block;
+  width:100%; height:auto;
+  border-radius: .6em;
+    position: relative;
+    z-index: -1;
 }

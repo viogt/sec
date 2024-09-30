@@ -6,8 +6,8 @@
   </style>
 <body>
 
-<textarea>1.1K -34.091 H0.340 123.123Boo 20.200</textarea>
-Decimals:<input type="text" style="width:20px" id="dec" value="1">
+<textarea>Text x="20.045" y="-0.65" AND x="0.045" y="-30.65" AND x="230.045" y=".6534"...</textarea>
+Decimals:<input type="text" style="width:20px" id="dec" value="0">
 Remove prefix zero:<input type="checkbox" id="ch" checked>
 <button onclick='go()'>Go!</button>
 
@@ -18,10 +18,14 @@ function go() {
       ch = document.querySelector('#ch').checked? true: false;
   dec = Math.pow(10,dec);
   
-  t.value = t.value.replace(/\d*\.\d+/g, m => {
+  /*t.value = t.value.replace(/\d*\.\d+/g, m => {
       let r = (Math.round(m*dec)/dec).toString(10);
       if(ch) if(r.slice(0,2) == '0.') r = r.slice(1);
       return r;
+  });*/
+
+  t.value = t.value.replace(/=\"\d*\.\d+\"/g, m => {
+      return `="${parseFloat(m.slice(2))}"`;
   });
 }
 </script>

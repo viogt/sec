@@ -25,6 +25,7 @@ function go() {
   });*/
 
   t.value = t.value.replace(/=\"\d*\.\d+\"/g, m => {
+    alert( parseFloat(m.slice(2)) );
       return `="${parseFloat(m.slice(2))}"`;
   });
 }

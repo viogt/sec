@@ -16,7 +16,7 @@ function go() {
 	let t = document.querySelector('textarea'),
       dec = parseInt(document.querySelector('#dec').value),
       ch = document.querySelector('#ch').checked? true: false;
-  dec = Math.pow(10,dec);
+  if(dec>0) dec = Math.pow(10,dec);
   
   /*t.value = t.value.replace(/\d*\.\d+/g, m => {
       let r = (Math.round(m*dec)/dec).toString(10);
@@ -26,8 +26,8 @@ function go() {
 
   t.value = t.value.replace(/=\"-?\d*\.\d+\"/g, m => {
     let n = parseFloat(m.slice(2));
-    alert( n + '\n' + n.toFixed(0) + '\n' + dec );
-      return `="${n.toFixed(0)}"`;
+    alert( n + '\n' + n.toFixed(dec) + '\n' + dec );
+      return `="${n.toFixed(dec)}"`;
   });
 }
 </script>

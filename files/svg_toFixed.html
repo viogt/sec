@@ -14,7 +14,7 @@ Remove prefix zero:<input type="checkbox" id="ch" checked>
 <script>
 function go() {
 	let t = document.querySelector('textarea'),
-      dec = document.querySelector('#dec').value*1,
+      dec = parseInt(document.querySelector('#dec').value),
       ch = document.querySelector('#ch').checked? true: false;
   dec = Math.pow(10,dec);
   

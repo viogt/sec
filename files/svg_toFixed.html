@@ -6,7 +6,7 @@
   </style>
 <body>
 
-<textarea rows="20">Text x="20.045" height="auto" y='-0.65' AND x="0.045" y="-30.65" AND x="230.045" y=".6534"... m="34.05L -0.301 M120.09956 0.45091"></textarea>
+<textarea rows="20">Text x="20.045" height="auto" y='-0.65' AND x="0.045" y="-30.65" AND x="230.045" y=".6534"... d="34.05L -0.301 M120.09956 0.45091"></textarea>
 <textarea rows="20" id="Res" style="background-color:#ffa">Result...</textarea>
 
 Decimals: <input type="text" style="width:20px;text-align:center" id="dec" value="0"> <button onclick='go()'>Go!</button> <span style="color:red" id="out"></span><br>
@@ -35,12 +35,14 @@ function go() {
 	    R = document.querySelector('#Res'),
       attr = document.querySelector('#attr').value,
       pnts = document.querySelector('#pnts').value,
-      fnd = /(\w+-?\w*)=(\".+?\"|\'.+?\')/gm;
+fnd = /(\w+-?\w*)=(\"|\')(.+?)\2/gm;
+//fnd = /(\w+-?\w*)=(\".+?\"|\'.+?\')/gm;
   BASE = Math.pow(10, parseInt(document.querySelector('#dec').value));
 
-  Res.value = t.value.replace(fnd, (m, nm, vl) => {
-    let ch = vl.charAt(0);
-    vl = vl.slice(1,vl.length-1);
+  Res.value = t.value.replace(fnd, (m, nm, dlm, vl) => {
+    //let ch = vl.charAt(0);
+    //vl = vl.slice(1,vl.length-1);
+	  let ch = dlm;
     if(pnts.includes(nm+',')) return `${nm}=${ch}${getPnts(vl)}${ch}`;
     else if(attr.includes(nm+',')) return `${nm}=${ch}${getRnd(vl)}${ch}`;
     else return m;

@@ -6,8 +6,7 @@ body {
   /*width: 80%; clamp(80%, 80%, 75ch);*/
   max-width: 75ch;
   margin: 5px auto;
-  font: normal 16px Roboto;
-line-height: 24px;
+  font: normal 16px/26px Roboto;
   color: #666;
 }
 /*@media screen and (max-width: 600px) {
@@ -15,8 +14,8 @@ line-height: 24px;
     box-sizing: border-box;
     margin: 0; padding: 5px 16px;
     width: 100%; The width is 100%, when the viewport is 600px or smaller
-  }*/
 }
+}*/
 u { text-decoration:none; border-bottom:.8px dashed #000; }
 li { margin-bottom: 1em; }
 h3 { font: bold 26px 'Roboto', Sans-serif; color: #000; }

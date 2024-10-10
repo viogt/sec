@@ -5,7 +5,7 @@
 body {
   /*width: 80%; clamp(80%, 80%, 75ch);*/
   max-width: 75ch;
-  margin: 5px auto;
+  margin: 8px; /*5px auto;*/
   font: normal 16px/26px Roboto;
   color: #666;
 }
@@ -45,9 +45,8 @@ background-repeat: no-repeat;
   display: grid;
   grid-template-columns: auto repeat(5,1fr);
   grid-gap: 1em;
-  font-size: min(2vw, 16px);
-line-height: 1.1;
-	padding: 8px;
+  font-size: min(2.1vw, 16px);
+line-height: 1.2;
 }
 
 .tbl_continut {

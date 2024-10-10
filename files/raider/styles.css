@@ -6,7 +6,8 @@ body {
   /*width: 80%; clamp(80%, 80%, 75ch);*/
   max-width: 75ch;
   margin: 5px auto;
-  font: normal 16px/28px Roboto;
+  font: normal 16px Roboto;
+line-height: 16px;
   color: #666;
 }
 /*@media screen and (max-width: 600px) {

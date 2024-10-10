@@ -46,7 +46,7 @@ background-repeat: no-repeat;
   grid-template-columns: auto repeat(5,1fr);
   grid-gap: 1em;
   font-size: min(2vw, 16px);
-line-height: 1.1;
+line-height: 15px;
 }
 
 .tbl_continut {

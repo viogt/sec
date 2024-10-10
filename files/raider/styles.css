@@ -7,7 +7,7 @@ body {
   max-width: 75ch;
   margin: 5px auto;
   font: normal 16px Roboto;
-line-height: 16px;
+line-height: 24px;
   color: #666;
 }
 /*@media screen and (max-width: 600px) {
@@ -47,7 +47,8 @@ background-repeat: no-repeat;
   grid-template-columns: auto repeat(5,1fr);
   grid-gap: 1em;
   font-size: min(2vw, 16px);
-line-height: 15px;
+line-height: 1.1;
+	padding: 8px;
 }
 
 .tbl_continut {

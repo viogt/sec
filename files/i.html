@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>Upload an Excel File</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <style>
+        body {
+            background-color: #ccc;
+        }
+
+        .container {
+            max-width: 440px;
+            margin: auto;
+            padding: 24px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px #888;
+            border-radius: 16px;
+            font:
+                normal 15px Arial,
+                sans-serif;
+        }
+
+        svg,
+        .deasupra {
+            grid-area: 1 / 1;
+        }
+
+        svg {
+            width: 60%;
+            margin-left: 40%;
+        }
+
+        #percentage-text {
+            font-size: 28px;
+            font-weight: bold;
+            fill: #bdb;
+            text-anchor: middle;
+        }
+
+        h2 {
+            font:
+                bold 24px Arial, sans-serif;
+            color: green;
+        }
+
+        .withIcon {
+            background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Efile_type_excel2%3C/title%3E%3Cpath d='M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z' style='fill:%23008000;fill-rule:evenodd'%3E%3C/path%3E%3Crect x='22.487' y='7.439' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='10.94' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='14.441' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='17.942' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='21.443' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Cpolygon points='6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673' style='fill:%23ffffff;fill-rule:evenodd'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-size: 1.1em;
+            padding-left: 1.5em;
+            color: #008000;
+        }
+
+        input[type="file"] {
+            font-size: 16px;
+        }
+
+        ::file-selector-button {
+            border: none;
+            padding: 5px 1.2em;
+            border-radius: 13px;
+            background: linear-gradient(to bottom, #484, #242);
+            color: #fff;
+            transition: 0.2s;
+        }
+
+        b {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' height='16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='6.5' r='3.1' stroke='black' stroke-width='1.6' fill='none'/%3E%3Crect x='3' y='6.8' width='10' height='6.8' rx='1' fill='black'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 2px 0;
+            background-size: 20px;
+            font-weight: normal;
+            background-color: #fb5;
+            box-shadow: 0 2px 4px #444;
+            padding: 2px 6px 2px 24px;
+            border-radius: 6px;
+        }
+
+        b[lilac] {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' height='16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='black' fill='none'%3E%3Cpath d='M1 8 Q8 0 15 8 Q8 16 1 8z' stroke-width='1' stroke-linejoin='round'/%3E%3Ccircle cx='8' cy='8' r='2.4' fill='black' stroke-width='1.6'/%3E%3Cpath d='M3 13 L13 3' stroke-width='1.8' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+            background-color: #fe2;
+        }
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            padding: 12px;
+            border-top: 0.8px solid #ccc;
+        }
+
+        td {
+            border-bottom: 0.8px solid #ccc;
+            padding: 6px 4px;
+        }
+
+        #progress {
+            width: 100%;
+            height: 32px;
+            background: #ded;
+            margin: 20px 0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        #bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to bottom, #484, #242);
+            transition: 0.2s;
+            color: #fff;
+            text-align: center;
+            font:
+                normal 16px/32px Arial,
+                sans-serif;
+        }
+
+        span {
+            color: #c00;
+        }
+
+        p {
+            background-image: url("data:image/svg+xml,%3Csvg fill='%23008000' width='64px' height='64px' viewBox='-4 0 32 32' version='1.1' xmlns='http://www.w3.org/2000/svg' stroke='%23008000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Echeck%3C/title%3E%3Cpath d='M19.375 5.063l-9.5 13.625-6.563-4.875-3.313 4.594 11.188 8.531 12.813-18.375z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: 22px;
+            margin: 0;
+            padding: 4px 0 4px 22px;
+            transform: translateX(100px);
+            opacity: 0;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="withIcon">Upload an .xlsx file</h2>
+        <input type="file" id="fileInput" accept=".xlsx" onchange="uploadFile()" />
+        <div id="progress">
+            <div id="bar"></div>
+        </div>
+        <div style="display: grid;">
+            <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#eee" stroke-width="10" />
+                <path id="percentage-arc" fill="none" stroke="#bdb" stroke-width="10" stroke-linecap="round" />
+                <text id="percentage-text" x="50" y="60">0%</text>
+            </svg>
+            <div class="deasupra" id="message"></div>
+        </div>
+        <div id="rezultat"></div>
+    </div>
+
+    <script>
+        const log = document.getElementById("message");
+        const bar = document.getElementById("bar");
+        const rezultat = document.getElementById("rezultat");
+        const fileInput = document.getElementById("fileInput");
+
+        const rgx = /xl\/worksheets\/sheet\d+\.xml/;
+        const zip = new JSZip();
+        const parser = new DOMParser();
+        const xmlSerializer = new XMLSerializer();
+
+        var fileToDownload, foi, foiAdd, modified, progress;
+        var totSheets, remSheets, doneSheets;
+
+        function sendProg(cod, mssg) {
+            if (cod < 0) {
+                rezultat.innerHTML = mssg;
+                window.scroll({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                });
+                return;
+            }
+            progress += cod; if (progress > 100) progress = 100;
+            percent = progress + "%";
+            bar.style.width = percent;
+            bar.textContent = percent;
+            const el = document.createElement("p");
+            el.innerHTML = mssg;
+            log.appendChild(el);
+            el.classList.add("fadeIn");
+
+            arcElement.setAttribute('d', describeArc(progress));
+            textElement.textContent = percent;
+        }
+
+        function calcProgess() {
+            let perSheet;
+            if (totSheets < 0) {
+                perSheet = 3;
+                remSheets -= perSheet;
+                doneSheets++;
+            } else {
+                perSheet = remSheets / (totSheets - doneSheets);
+                remSheets -= perSheet;
+                if (remSheets <= 0) {
+                    perSheet = 1;
+                    remSheets = 0;
+                }
+                doneSheets++;
+            }
+            return perSheet;
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            foi = [];
+            foiAdd = [];
+            modified = false;
+            totSheets = -1;
+            remSheets = 70;
+            doneSheets = 0;
+            progress = 0;
+            log.innerHTML = "";
+            rezultat.innerHTML = "";
+
+            const arrayBuffer = await file.arrayBuffer();
+            const contents = await zip.loadAsync(arrayBuffer);
+            sendProg(8, "File loaded.");
+
+            for (const [pth, file] of Object.entries(contents.files)) {
+                if (pth === "xl/workbook.xml") {
+                    let change = false;
+                    const buf = await file.async("text");
+                    const doc = parser.parseFromString(buf, "text/xml");
+                    const wkProt = doc.querySelector("workbookProtection");
+                    if (wkProt) {
+                        wkProt.remove();
+                        change = true;
+                    }
+                    sendProg(
+                        8,
+                        `Workbook ${wkProt ? "<span>unlocked</span>" : "is not locked"}.`
+                    );
+                    const sheets = doc.querySelectorAll("sheets > sheet");
+                    for (const sheet of sheets) {
+                        foi.push({
+                            name: sheet.getAttribute("name"),
+                            state: sheet.getAttribute("state"),
+                            id: sheet.getAttribute("r:id"),
+                        });
+                    }
+                    let sCnt = 0, hid;
+                    totSheets = sheets.length * 2;
+                    for (const sheet of sheets) {
+                        hid = sheet.getAttribute("state") === "hidden";
+                        if (hid) {
+                            sheet.removeAttribute("state");
+                            change = true;
+                            sCnt++;
+                        }
+                        sendProg(
+                            calcProgess(),
+                            `Sheet <u>${sheet.getAttribute("name")}</u> ${hid ? "<span>unhidden</span>" : "not hidden"
+                            }.`
+                        );
+                    }
+                    if (change) {
+                        zip.file(pth, xmlSerializer.serializeToString(doc));
+                        modified = true;
+                    }
+                }
+
+                else if (rgx.test(pth)) {
+                    const buf = await file.async("text");
+                    const doc = parser.parseFromString(buf, "text/xml");
+                    const prt = doc.querySelector("sheetProtection");
+                    foiAdd.push({ pth: pth, prot: prt ? true : false });
+                    if (prt) {
+                        prt.remove();
+                        zip.file(pth, xmlSerializer.serializeToString(doc));
+                        modified = true;
+                    }
+                    sendProg(
+                        calcProgess(), `Sheet <u>${pth.slice(
+                            pth.lastIndexOf("/") + 1
+                        )}</u> ${prt ? "<span>unprotected</span>" : "not protected"}.`
+                    );
+                }
+            }
+            sendProg(100, "Processing complete.")
+            if (!modified) {
+                sendProg(-1,
+                    "<br/><div class='withIcon'>THIS FILE IS NOT LOCKED.</div>"
+                );
+                return;
+            }
+            fileToDownload = await zip.generateAsync({
+                type: "blob",
+                compression: "DEFLATE",
+                compressionOptions: { level: 9 },
+            });
+            sendProg(-1, show());
+        }
+
+        function show() {
+            for (el of foiAdd) {
+                const num = parseInt(el.pth.match(/\d+\.xml$/)[0]) - 1;
+                foi[num].prot = el.prot;
+            }
+            let num = 1;
+            let str = "<br/><div class='withIcon'>FILE UNLOCKED:</div><table>";
+            for (el of foi) {
+                str += `<tr><td>${num}</td><td align="left">${el.name}</td><td>${el.state == "hidden" ? "<b lilac>hidden</b>" : "—"
+                    }</td><td>${el.prot ? "<b>protected</b>" : "—"}</td></tr>`;
+                num++;
+            }
+            return (
+                str +
+                "</table><br/><div class='withIcon'><a href='#' style='color:#008000' onclick='save(this);return false;'>DOWNLOAD UNLOCKED</a></div>"
+            );
+        }
+        /* ---------------- progress circular ---------------- */
+        const CENTER_X = 50;
+        const CENTER_Y = 50;
+        const RADIUS = 45;
+
+        const arcElement = document.getElementById('percentage-arc');
+        const textElement = document.getElementById('percentage-text');
+
+        function polarToCartesian(angleInDegrees) {
+            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+            return {
+                x: CENTER_X + (RADIUS * Math.cos(angleInRadians)),
+                y: CENTER_Y + (RADIUS * Math.sin(angleInRadians))
+            };
+        }
+
+        function describeArc(percentage) {
+            const endAngle = percentage * 3.6;
+            const start = polarToCartesian(0);
+            const end = polarToCartesian(endAngle);
+            const largeArcFlag = endAngle <= 180 ? "0" : "1";
+            const sweepFlag = "1";
+            if (percentage === 100) {
+                const d = [
+                    `M ${start.x} ${start.y}`,
+                    `A ${RADIUS} ${RADIUS} 0 1 1 ${start.x - 0.01} ${start.y}`
+                ].join(' ');
+                return d;
+            }
+            const d = [
+                `M ${start.x} ${start.y}`,
+                `A ${RADIUS} ${RADIUS} 0 ${largeArcFlag} ${sweepFlag} ${end.x} ${end.y}`
+            ].join(' ');
+
+            return d;
+        }
+        function save(obj) {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(fileToDownload);;
+            a.download = "unlocked.xlsx";
+            document.body.appendChild(a); // needed for Firefox
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+    </script>
+</body>
+
+</html>

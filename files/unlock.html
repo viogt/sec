@@ -4,34 +4,22 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>Upload an Excel File</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <style>
-        body {
-            background-color: #ccc;
-        }
-
         .container {
-            max-width: 440px;
+            max-width: 420px;
             margin: auto;
             padding: 24px;
             background-color: #fff;
-            box-shadow: 0 4px 8px #888;
-            border-radius: 16px;
             font:
-                normal 15px Arial,
-                sans-serif;
+                normal 15px Arial, sans-serif;
         }
 
         svg,
         .deasupra {
             grid-area: 1 / 1;
-        }
-
-        svg {
-            width: 60%;
-            margin-left: 40%;
+            width: 100%;
         }
 
         #percentage-text {
@@ -45,19 +33,18 @@
             font:
                 bold 24px Arial, sans-serif;
             color: green;
+            margin-bottom: 8px;
         }
 
         .withIcon {
-            background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Efile_type_excel2%3C/title%3E%3Cpath d='M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z' style='fill:%23008000;fill-rule:evenodd'%3E%3C/path%3E%3Crect x='22.487' y='7.439' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='10.94' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='14.441' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='17.942' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='21.443' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Cpolygon points='6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673' style='fill:%23ffffff;fill-rule:evenodd'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: 0 0;
-            background-size: 1.1em;
+            background: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Efile_type_excel2%3C/title%3E%3Cpath d='M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z' style='fill:%23008000;fill-rule:evenodd'%3E%3C/path%3E%3Crect x='22.487' y='7.439' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='10.94' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='14.441' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='17.942' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='21.443' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Cpolygon points='6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673' style='fill:%23ffffff;fill-rule:evenodd'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E") no-repeat 0/1.1em;
             padding-left: 1.5em;
             color: #008000;
         }
 
         input[type="file"] {
             font-size: 16px;
+            margin-bottom: 1em;
         }
 
         ::file-selector-button {
@@ -66,7 +53,6 @@
             border-radius: 13px;
             background: linear-gradient(to bottom, #484, #242);
             color: #fff;
-            transition: 0.2s;
         }
 
         b {
@@ -82,46 +68,19 @@
         }
 
         b[lilac] {
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' height='16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='black' fill='none'%3E%3Cpath d='M1 8 Q8 0 15 8 Q8 16 1 8z' stroke-width='1' stroke-linejoin='round'/%3E%3Ccircle cx='8' cy='8' r='2.4' fill='black' stroke-width='1.6'/%3E%3Cpath d='M3 13 L13 3' stroke-width='1.8' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' height='16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='black' fill='none'%3E%3Cpath d='M1 8 Q8 0 15 8 Q8 16 1 8z' stroke-width='.6' stroke-linejoin='round'/%3E%3Ccircle cx='8' cy='8' r='2.4' fill='black'/%3E%3Cpath d='M3 13 L13 3' stroke-width='1.8' stroke='darkred' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
             background-color: #fe2;
-        }
-
-        img {
-            width: 20px;
-            height: 20px;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
-            padding: 12px;
             border-top: 0.8px solid #ccc;
         }
 
         td {
             border-bottom: 0.8px solid #ccc;
-            padding: 6px 4px;
-        }
-
-        #progress {
-            width: 100%;
-            height: 32px;
-            background: #ded;
-            margin: 20px 0;
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        #bar {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(to bottom, #484, #242);
-            transition: 0.2s;
-            color: #fff;
-            text-align: center;
-            font:
-                normal 16px/32px Arial,
-                sans-serif;
+            padding: 6px 2px;
         }
 
         span {
@@ -129,29 +88,9 @@
         }
 
         p {
-            background-image: url("data:image/svg+xml,%3Csvg fill='%23008000' width='64px' height='64px' viewBox='-4 0 32 32' version='1.1' xmlns='http://www.w3.org/2000/svg' stroke='%23008000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Echeck%3C/title%3E%3Cpath d='M19.375 5.063l-9.5 13.625-6.563-4.875-3.313 4.594 11.188 8.531 12.813-18.375z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-size: 22px;
+            background: url("data:image/svg+xml,%3Csvg fill='%23008000' width='64px' height='64px' viewBox='-4 0 32 32' version='1.1' xmlns='http://www.w3.org/2000/svg' stroke='%23008000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Echeck%3C/title%3E%3Cpath d='M19.375 5.063l-9.5 13.625-6.563-4.875-3.313 4.594 11.188 8.531 12.813-18.375z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E") no-repeat 2px/19px;
             margin: 0;
-            padding: 4px 0 4px 22px;
-            transform: translateX(100px);
-            opacity: 0;
-        }
-
-        .fadeIn {
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                transform: translateX(100px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            padding: 4px 0 4px 24px;
         }
     </style>
 </head>
@@ -160,9 +99,6 @@
     <div class="container">
         <h2 class="withIcon">Upload an .xlsx file</h2>
         <input type="file" id="fileInput" accept=".xlsx" onchange="uploadFile()" />
-        <div id="progress">
-            <div id="bar"></div>
-        </div>
         <div style="display: grid;">
             <svg viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" fill="none" stroke="#eee" stroke-width="10" />
@@ -199,13 +135,9 @@
             }
             progress += cod; if (progress > 100) progress = 100;
             percent = progress + "%";
-            bar.style.width = percent;
-            bar.textContent = percent;
             const el = document.createElement("p");
             el.innerHTML = mssg;
             log.appendChild(el);
-            el.classList.add("fadeIn");
-
             arcElement.setAttribute('d', describeArc(progress));
             textElement.textContent = percent;
         }

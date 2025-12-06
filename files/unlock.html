@@ -151,10 +151,9 @@
         function sendProg(cod, mssg) {
             if (cod < 0) {
                 rezultat.innerHTML = mssg;
-                requestAnimationFrame(() => {
-                    const el = document.documentElement;
-                    const maxScroll = el.scrollHeight - window.innerHeight;
-                    window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+                rezultat.scrollIntoView({
+                    behavior: "smooth",
+                    block: "end"
                 });
                 return;
             }

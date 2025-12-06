@@ -151,10 +151,11 @@
         function sendProg(cod, mssg) {
             if (cod < 0) {
                 rezultat.innerHTML = mssg;
-                    window.scroll({
-                        top: document.documentElement.scrollHeight,
-                        behavior: "smooth",
-                    });
+                requestAnimationFrame(() => {
+                    const el = document.documentElement;
+                    const maxScroll = el.scrollHeight - window.innerHeight;
+                    window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+                });
                 return;
             }
             progress += cod; if (progress > 100) progress = 100;

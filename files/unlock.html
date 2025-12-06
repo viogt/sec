@@ -22,6 +22,37 @@
             width: 100%;
         }
 
+        .hdr {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 20px;
+            margin-bottom: 1em;
+        }
+
+        .xlsx {
+            display: inline-block;
+            background: url("data:image/svg+xml,%3Csvg width='100%' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Efile_type_excel2%3C/title%3E%3Cpath d='M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z' style='fill:%23008000;fill-rule:evenodd'%3E%3C/path%3E%3Crect x='22.487' y='7.439' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='10.94' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='14.441' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='17.942' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='21.443' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Cpolygon points='6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673' style='fill:%23ffffff;fill-rule:evenodd'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E") no-repeat;
+            aspect-ratio: 1 / 1;
+        }
+
+        .xlsx-title {
+            font: bold 24px Arial, sans-serif;
+            color: green;
+            margin-bottom: 8px;
+        }
+
+        .sm-hdr {
+            display: grid;
+            grid-template-columns: 26px 1fr;
+            gap: 9px;
+            padding: 1em 0;
+        }
+        .sm-hdr-title {
+            margin-top: 4px;
+            font: bold 18px Arial, sans-serif;
+            color: green;
+        }
+
         #percentage-text {
             font-size: 28px;
             font-weight: bold;
@@ -29,29 +60,16 @@
             text-anchor: middle;
         }
 
-        h2 {
-            font:
-                bold 24px Arial, sans-serif;
-            color: green;
-            margin-bottom: 8px;
-        }
-
-        .withIcon {
-            background: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Efile_type_excel2%3C/title%3E%3Cpath d='M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z' style='fill:%23008000;fill-rule:evenodd'%3E%3C/path%3E%3Crect x='22.487' y='7.439' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='10.94' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='14.441' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='17.942' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='21.443' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Cpolygon points='6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673' style='fill:%23ffffff;fill-rule:evenodd'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E") no-repeat 0/1.1em;
-            padding-left: 1.5em;
-            color: #008000;
-        }
-
         input[type="file"] {
             font-size: 16px;
-            margin-bottom: 1em;
+            color: green;
         }
 
         ::file-selector-button {
             border: none;
-            padding: 5px 1.2em;
-            border-radius: 13px;
-            background: linear-gradient(to bottom, #484, #242);
+            padding: 5px 24px;
+            border-radius: 16px;
+            background: green;
             color: #fff;
         }
 
@@ -98,8 +116,13 @@
 
 <body>
     <div class="container">
-        <h2 class="withIcon">Upload an .xlsx file</h2>
-        <input type="file" id="fileInput" accept=".xlsx" onchange="uploadFile()" />
+        <div class="hdr">
+            <div class="xlsx"></div>
+            <div>
+                <div class="xlsx-title">Upload an .xlsx file</div>
+                <input type="file" id="fileInput" accept=".xlsx" onchange="uploadFile()" />
+            </div>
+        </div>
         <div style="display: grid;">
             <svg viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" fill="none" stroke="#eee" stroke-width="10" />
@@ -122,8 +145,7 @@
         const parser = new DOMParser();
         const xmlSerializer = new XMLSerializer();
 
-        var fileToDownload, foi, foiAdd, modified, progress;
-        var totSheets, remSheets, doneSheets;
+        var fileToDownload, progress;
 
         function sendProg(cod, mssg) {
             if (cod < 0) {
@@ -135,7 +157,7 @@
                 return;
             }
             progress += cod; if (progress > 100) progress = 100;
-            percent = progress + "%";
+            percent = progress.toFixed(0) + "%";
             const el = document.createElement("p");
             el.innerHTML = mssg;
             log.appendChild(el);
@@ -143,35 +165,13 @@
             textElement.textContent = percent;
         }
 
-        function calcProgess() {
-            let perSheet;
-            if (totSheets < 0) {
-                perSheet = 3;
-                remSheets -= perSheet;
-                doneSheets++;
-            } else {
-                perSheet = remSheets / (totSheets - doneSheets);
-                remSheets -= perSheet;
-                if (remSheets <= 0) {
-                    perSheet = 1;
-                    remSheets = 0;
-                }
-                doneSheets++;
-            }
-            return perSheet;
-        }
-
         async function uploadFile() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
             if (!file) return;
 
-            foi = [];
-            foiAdd = [];
-            modified = false;
-            totSheets = -1;
-            remSheets = 70;
-            doneSheets = 0;
+            const foi = [], foiAdd = [];
+            let modified = false, perSheet;
             progress = 0;
             log.innerHTML = "";
             rezultat.innerHTML = "";
@@ -203,7 +203,7 @@
                         });
                     }
                     let sCnt = 0, hid;
-                    totSheets = sheets.length * 2;
+                    perSheet = 80 / sheets.length / 2;
                     for (const sheet of sheets) {
                         hid = sheet.getAttribute("state") === "hidden";
                         if (hid) {
@@ -212,7 +212,7 @@
                             sCnt++;
                         }
                         sendProg(
-                            calcProgess(),
+                            perSheet,
                             `Sheet <u>${sheet.getAttribute("name")}</u> ${hid ? "<span>unhidden</span>" : "not hidden"
                             }.`
                         );
@@ -234,7 +234,7 @@
                         modified = true;
                     }
                     sendProg(
-                        calcProgess(), `Sheet <u>${pth.slice(
+                        perSheet, `Sheet <u>${pth.slice(
                             pth.lastIndexOf("/") + 1
                         )}</u> ${prt ? "<span>unprotected</span>" : "not protected"}.`
                     );
@@ -243,7 +243,7 @@
             sendProg(100, "Processing complete.")
             if (!modified) {
                 sendProg(-1,
-                    "<br/><div class='withIcon'>THIS FILE IS NOT LOCKED.</div>"
+                    "<div class='sm-hdr'><div class='xlsx'></div><div class='sm-hdr-title'>THIS FILE IS NOT LOCKED.</div></div>"
                 );
                 return;
             }
@@ -252,16 +252,16 @@
                 compression: "DEFLATE",
                 compressionOptions: { level: 9 },
             });
-            sendProg(-1, show());
+            sendProg(-1, show(foi, foiAdd));
         }
 
-        function show() {
+        function show(foi, foiAdd) {
             for (el of foiAdd) {
                 const num = parseInt(el.pth.match(/\d+\.xml$/)[0]) - 1;
                 foi[num].prot = el.prot;
             }
             let num = 1;
-            let str = "<br/><div class='withIcon'>FILE UNLOCKED:</div><table>";
+            let str = "<div class='sm-hdr'><div class='xlsx'></div><div class='sm-hdr-title'>FILE UNLOCKED:</div></div><table>";
             for (el of foi) {
                 str += `<tr><td>${num}</td><td align="left">${el.name}</td><td>${el.state == "hidden" ? "<b lilac>hidden</b>" : "—"
                     }</td><td>${el.prot ? "<b>protected</b>" : "—"}</td></tr>`;
@@ -269,7 +269,7 @@
             }
             return (
                 str +
-                "</table><br/><div class='withIcon'><a href='#' style='color:#008000' onclick='save(this);return false;'>DOWNLOAD UNLOCKED</a></div>"
+                "</table><div class='sm-hdr'><div class='xlsx'></div><a class='sm-hdr-title' href='#' onclick='save(this);return false;'>DOWNLOAD UNLOCKED</a></div>"
             );
         }
         /* ---------------- progress circular ---------------- */

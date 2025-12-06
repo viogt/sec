@@ -47,6 +47,7 @@
             gap: 9px;
             padding: 1em 0;
         }
+
         .sm-hdr-title {
             margin-top: 4px;
             font: bold 18px Arial, sans-serif;
@@ -150,9 +151,11 @@
         function sendProg(cod, mssg) {
             if (cod < 0) {
                 rezultat.innerHTML = mssg;
-                window.scroll({
-                    top: document.body.scrollHeight,
-                    behavior: "smooth",
+                requestAnimationFrame(() => {
+                    window.scroll({
+                        top: document.body.scrollHeight,
+                        behavior: "smooth",
+                    });
                 });
                 return;
             }

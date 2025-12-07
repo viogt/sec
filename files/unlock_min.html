@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload an Excel File</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <style>
+        .container {
+            max-width: 420px;
+            margin: auto;
+            padding: 24px;
+            font: normal 15px Arial, sans-serif;
+        }
+
+        .xlsx {
+            display: block;
+            margin: 14px 0;
+            background: url("data:image/svg+xml,%3Csvg width='100%' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Efile_type_excel2%3C/title%3E%3Cpath d='M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z' style='fill:%23008000;fill-rule:evenodd'%3E%3C/path%3E%3Crect x='22.487' y='7.439' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='10.94' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='14.441' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='17.942' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='21.443' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Cpolygon points='6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673' style='fill:%23ffffff;fill-rule:evenodd'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E") no-repeat 0/1em;
+            padding: 0 1.2em;
+            color: green;
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            font-size: 16px;
+            color: green;
+        }
+
+        ::file-selector-button {
+            border: none;
+            padding: 5px 18px;
+            border-radius: 13px;
+            background: green;
+            color: #fff;
+        }
+
+        b {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='6.5' r='3.1' stroke='black' stroke-width='1.6' fill='none'/%3E%3Crect x='3' y='6.8' width='10' height='6.8' rx='1' fill='black'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 2px 0;
+            background-size: 20px;
+            font-weight: normal;
+            background-color: #fc6;
+            box-shadow: 0 2px 4px #444;
+            padding: 2px 6px 2px 24px;
+            border-radius: 6px;
+        }
+
+        b[lilac] {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cellipse rx='7.4' ry='4' cx='8' cy='8' fill='none' stroke='black' stroke-width='.5' /%3E%3Ccircle cx='8' cy='8' r='3.2' fill='black'/%3E%3Cpath d='M3 13 L13 3' stroke='red' stroke-width='3' opacity='.7' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-color: #fe2;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border-top: 0.8px solid #ccc;
+        }
+
+        td {
+            vertical-align: top;
+            border-bottom: 0.8px solid #ccc;
+            padding: 6px 2px;
+        }
+
+        .loader {
+            width: 1em;
+            height: 1em;
+            border: 2px solid currentColor;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .process {
+            margin: 16px 0;
+            text-align: center;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="xlsx" style="font-size: 22px;">Upload an .xlsx file</div>
+        <input type="file" id="fileInput" accept=".xlsx" onchange="uploadFile()" />
+        <div id="rezultat"></div>
+    </div>
+
+    <script>
+        const rezultat = document.getElementById("rezultat");
+        const fileInput = document.getElementById("fileInput");
+
+        const rgx = /xl\/worksheets\/sheet\d+\.xml/;
+        const extr = /\d+\.xml$/;
+        const zip = new JSZip();
+        const parser = new DOMParser();
+        const xmlSerializer = new XMLSerializer();
+
+        var fileToDownload;
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const foi = [];
+            let modified = false;
+            rezultat.innerHTML = "<div class='process'><div class='loader'></div>&nbsp;Processing...</div>";
+
+            const arrayBuffer = await file.arrayBuffer();
+            const contents = await zip.loadAsync(arrayBuffer);
+
+            for (const [pth, file] of Object.entries(contents.files)) {
+                if (pth === "xl/workbook.xml") {
+                    let change = false;
+                    const buf = await file.async("text");
+                    const doc = parser.parseFromString(buf, "text/xml");
+                    const wkProt = doc.querySelector("workbookProtection");
+                    if (wkProt) {
+                        wkProt.remove();
+                        change = true;
+                    }
+                    const sheets = doc.querySelectorAll("sheets > sheet");
+                    for (const sheet of sheets) {
+                        const hid = sheet.getAttribute("state") === "hidden";
+                        if (hid) {
+                            sheet.removeAttribute("state");
+                            change = true;
+                        }
+                        foi.push({
+                            name: sheet.getAttribute("name"),
+                            state: hid ? "<b lilac>hidden</b>" : ''
+                        });
+                    }
+                    if (change) {
+                        zip.file(pth, xmlSerializer.serializeToString(doc));
+                        modified = true;
+                    }
+                }
+
+                else if (rgx.test(pth)) {
+                    const buf = await file.async("text");
+                    const doc = parser.parseFromString(buf, "text/xml");
+                    const prt = doc.querySelector("sheetProtection");
+                    if (prt) {
+                        const num = parseInt(pth.match(extr)[0]) - 1;
+                        foi[num].state += "<b>protected</b>";
+                        prt.remove();
+                        zip.file(pth, xmlSerializer.serializeToString(doc));
+                        modified = true;
+                    }
+                }
+            }
+            if (!modified) {
+                rezultat.innerHTML = "<div class='xlsx'>THIS FILE IS NOT LOCKED.</div>";
+                return;
+            }
+            fileToDownload = await zip.generateAsync({
+                type: "blob",
+                compression: "DEFLATE",
+                compressionOptions: { level: 9 },
+            });
+
+            let num = 1;
+            let str = "<div class='xlsx'>FILE UNLOCKED:</div><table>";
+            for (el of foi) {
+                str += `<tr><td>${num++}</td><td align="left">${el.name}</td><td>${el.state}</td></tr>`;
+            }
+            rezultat.innerHTML = str + "</table><a class='xlsx' href='#' onclick='save(this);return false;'>DOWNLOAD UNLOCKED</a>";
+            /*setTimeout(() => {
+                rezultat.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 50);*/
+        }
+        function save(obj) {
+            const a = document.createElement('a');
+            const url = URL.createObjectURL(fileToDownload);
+            a.href = url;
+            a.download = "unlocked.xlsx";
+            document.body.appendChild(a); // needed for Firefox
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+    </script>
+</body>
+</html>

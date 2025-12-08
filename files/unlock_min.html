@@ -8,12 +8,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <style>
         body {
-            margin:0;
-            background: linear-gradient(
-  to bottom, #beb,
-  #fff 80px
-) no-repeat;
+            margin: 0;
+            background: linear-gradient(to bottom, #beb,
+                    #fff 80px) no-repeat;
         }
+
         .container {
             max-width: 420px;
             margin: auto;
@@ -84,9 +83,15 @@
         }
 
         @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
         .process {
             margin: 16px 0;
             text-align: center;
@@ -115,7 +120,6 @@
         var fileToDownload;
 
         async function uploadFile() {
-            const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
             if (!file) return;
 
@@ -199,4 +203,5 @@
         }
     </script>
 </body>
+
 </html>

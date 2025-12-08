@@ -132,7 +132,11 @@
             </svg>
             <div class="deasupra" id="message"></div>
         </div>
+        <div id="showSVG"></div>
         <div id="rezultat"></div>
+        <svg width="300px" height="18" xmlns="http://www.w3.org/2000/svg">
+            <text id="masura" x="0" y="18" font-family="Arial,sans-serif" font-size="18" opacity="0"></text>
+        </svg>
     </div>
 
     <script>
@@ -140,6 +144,7 @@
         const bar = document.getElementById("bar");
         const rezultat = document.getElementById("rezultat");
         const fileInput = document.getElementById("fileInput");
+        const showSVG = document.getElementById('showSVG');
 
         const rgx = /xl\/worksheets\/sheet\d+\.xml/;
         const zip = new JSZip();
@@ -151,10 +156,9 @@
         function sendProg(cod, mssg) {
             if (cod < 0) {
                 rezultat.innerHTML = mssg;
-                rezultat.scrollIntoView({
-                    behavior: "smooth",
-                    block: "end"
-                });
+                setTimeout(() => {
+                    rezultat.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 50);
                 return;
             }
             progress += cod; if (progress > 100) progress = 100;
@@ -167,7 +171,6 @@
         }
 
         async function uploadFile() {
-            const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
             if (!file) return;
 
@@ -176,6 +179,7 @@
             progress = 0;
             log.innerHTML = "";
             rezultat.innerHTML = "";
+            showSVG.innerHTML = '';
 
             const arrayBuffer = await file.arrayBuffer();
             const contents = await zip.loadAsync(arrayBuffer);
@@ -254,6 +258,7 @@
                 compressionOptions: { level: 9 },
             });
             sendProg(-1, show(foi, foiAdd));
+            getSVG(showSVG);
         }
 
         function show(foi, foiAdd) {
@@ -311,12 +316,101 @@
         }
         function save(obj) {
             const a = document.createElement('a');
-            a.href = URL.createObjectURL(fileToDownload);;
+            const url = URL.createObjectURL(fileToDownload);
+            a.href = url;
             a.download = "unlocked.xlsx";
             document.body.appendChild(a); // needed for Firefox
             a.click();
             a.remove();
             setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function getSVG(undeScrie) {
+            const fontSize = 18, padding = 18;
+            const bLine = 260, labLine = 10;
+            let buf = '';
+            const foi = [
+                { name: "Дюрация", state: "hidden" },
+                { name: "ФОРМА СКБСЖ", state: "protected" },
+                { name: "Свод", state: "" },
+                { name: "Каналы", state: "" },
+                { name: "Регионы", state: "protected" },
+                { name: "спр", state: "hidden" },
+                { name: "ЛБ", state: "protected" }
+            ];
+
+            const masura = document.getElementById('masura');
+
+            const cul = ['#ffa', '#afa', '#bbf', '#aff', '#fcf'];
+            const culLem = cul.length;
+            const LEN = foi.length;
+            let svgLen = padding * 2;
+            for (const e of foi) {
+                masura.textContent = e.name;
+                e.len = masura.getComputedTextLength();
+                svgLen += e.len + padding * 2;
+            }
+
+            const unh = "Unhidden", unp = "Unpotected";
+            masura.textContent = unh;
+            const hLen = masura.getComputedTextLength();
+            masura.textContent = unp;
+            const pLen = masura.getComputedTextLength();
+
+            const lHeight = fontSize + padding * 2;
+            const dif = (svgLen - (hLen + pLen + padding * 4)) / 3;
+            const pXpos = dif + hLen + dif;
+            const hidX = dif + padding + hLen / 2, procX = pXpos + padding + pLen / 2;
+            const bottom = lHeight + labLine;
+
+            let curPos = svgLen - padding;
+            for (let i = LEN - 1; i >= 0; i--) {
+                const e = foi[i];
+                const w = e.len + padding * 2, h = padding * 2 + fontSize;
+                curPos -= w;
+                buf += `<path d="M${curPos} ${bLine} h${w + padding} l-${padding * 2} ${h} H${curPos} v-${h}z" fill="${cul[i % culLem]}" stroke="#000" stroke-width="1"/>\n`;
+                if (e.state.includes('hidden')) {
+                    const xx = curPos + padding + e.len / 2, yy = bLine + fontSize + padding * 2;
+                    buf += `<path d="M${hidX} ${bottom} Q${hidX + (xx - hidX) * .8} ${bottom + (bLine - bottom) * .2} ${xx} ${bLine}" stroke="#333" stroke-width="2" fill="none" stroke-dasharray="8" marker-end="url(#arrow)"/>`;
+                    buf += `<use href="#hidden" x="${xx - 18}" y="${yy - padding / 2}"/>`;
+                }
+                else if (e.state.includes('protected')) {
+                    const xx = curPos + padding + e.len / 2, yy = bLine + fontSize + padding * 2;
+                    //buf += `<path d="M${procX} ${bottom} L${xx} ${bLine}" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>`;
+                    buf += `<path d="M${procX} ${bottom} Q${procX + (xx - procX) * .8} ${bottom + (bLine - bottom) * .2} ${xx} ${bLine}" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)"/>`;
+                    buf += `<use href="#protect" x="${xx - 18}" y="${yy - padding / 2}"/>`;
+                }
+                buf += `<text x="${curPos + padding}" y="${bLine + padding + fontSize}">${e.name}</text>\n`;
+            }
+
+            buf += `<rect x="${dif}" y="${labLine + padding / 4}" width="${hLen + padding * 2}" height="${lHeight}" rx="${lHeight / 2}" fill="#f80" />`;
+            buf += `<text x="${dif + padding}" y="${labLine + padding + fontSize}" fill="#fff">${unh}</text>\n`;
+
+            buf += `<rect x="${dif + hLen + dif}" y="${labLine + padding / 4}" width="${pLen + padding * 2}" height="${lHeight}" rx="${lHeight / 2}" fill="#b20" />`;
+            buf += `<text x="${pXpos + padding}" y="${labLine + padding + fontSize}" fill="#fff">${unp}</text>\n`;
+
+
+            buf = `<svg viewBox="0 0 ${svgLen} ${bLine + fontSize + padding * 2 + 36}" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <style>text { font-size: ${fontSize}px; font-family: Arial, sans-serif; }</style>
+                <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0 0 L6 3 L0 6z" fill="#333" /></marker>
+                <g id="protect">
+      <circle cx="18" cy="18" r="17" fill="#fff" stroke="#000" stroke-width="1"/>
+      <circle cx='18' cy='14' r='6' stroke='black' stroke-width='4' fill='none'/>
+      <rect x='7' y='15' width='22' height='15' rx='4' fill='black'/>
+      <circle cx="18" cy="20.8" r="2.3" fill="#fff"/>
+      <path d="M18 21 V26" stroke="#fff" stroke-width="2"/>
+      </g>
+                <g id="hidden">
+      <circle cx="18" cy="18" r="17" fill="#fff" stroke="#000" stroke-width="1"/>
+      <ellipse rx='14' ry='8' cx='18' cy='18' fill='#fff' stroke='black' stroke-width='1'/>
+      <circle cx='18' cy='18' r='7' fill='black'/>
+      <circle cx='18' cy='18' r='3' fill='#fff'/>
+      <path d='M9 27 L27 9' stroke='red' stroke-width='6' opacity='.7' stroke-linecap='round'/>
+      </g>    
+      </defs>
+    ${buf}</svg>`;
+            undeScrie.innerHTML = buf;
         }
     </script>
 </body>

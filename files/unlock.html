@@ -87,7 +87,7 @@
         }
 
         b[lilac] {
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' height='16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='black' fill='white'%3E%3Cpath d='M1 8 Q8 0 15 8 Q8 16 1 8z' stroke-width='.6' stroke-linejoin='round'/%3E%3Ccircle cx='8' cy='8' r='2.4' fill='black'/%3E%3Cpath d='M3 13 L13 3' stroke-width='1.8' stroke='darkred' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' height='16' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='black'%3E%3Cpath d='M1 8 Q8 0 15 8 Q8 16 1 8z' stroke-width='.6' fill='white' stroke-linejoin='round'/%3E%3Ccircle cx='8' cy='8' r='2.4' fill='black'/%3E%3Cpath d='M3 13 L13 3' stroke-width='1.8' stroke='darkred' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
             background-color: #fe2;
         }
 
@@ -389,22 +389,20 @@
     const times = [], timesLen = pos.length, timeSpan = 1/(timesLen-2);
     times[0] = 0; times[timesLen -1] = 1;
     for(let i = 1; i < timesLen-1; i++) times[i] = Math.round((times[i-1] + timeSpan)*10)/10;
-    let an = `<rect x="${pos[0]}" y="${bLine}" width="${wids[0]}" height="${fontSize + padding * 2}" rx="${fontSize/2 + padding}" fill="none" stroke="red" stroke-width="7">
+    const an = `<rect x="${pos[0]}" y="${bLine}" width="${wids[timesLen -1]}" height="${fontSize + padding * 2}" rx="${fontSize/2 + padding}" fill="none" stroke="red" stroke-width="7" style="will-change:x,width">
     <animate
       attributeName="x"
-      dur="6s" 
+      begin="0s" dur="6s" 
       repeatCount="indefinite"
       values="${pos.reverse().join(';')}" 
       keyTimes="${times.join(';')}"
-      fill="freeze"
     />
     <animate
       attributeName="width"
-      dur="6s"
+      begin="0s" dur="6s"
       repeatCount="indefinite"
       values="${wids.reverse().join(';')}" 
       keyTimes="${times.join(';')}"
-      fill="freeze"
     />
     </rect>`;
 

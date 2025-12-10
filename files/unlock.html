@@ -158,6 +158,8 @@
                 rezultat.innerHTML = mssg;
                 setTimeout(() => {
                     rezultat.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    AnimX.beginElement();
+                    AnimW.beginElement();
                 }, 50);
                 return;
             }
@@ -390,14 +392,14 @@
     times[0] = 0; times[timesLen -1] = 1;
     for(let i = 1; i < timesLen-1; i++) times[i] = Math.round((times[i-1] + timeSpan)*10)/10;
     const an = `<rect x="${pos[0]}" y="${bLine}" width="${wids[timesLen -1]}" height="${fontSize + padding * 2}" rx="${fontSize/2 + padding}" fill="none" stroke="red" stroke-width="7" style="will-change:x,width">
-    <animate
+    <animate id="AnimX"
       attributeName="x"
       begin="0s" dur="6s" 
       repeatCount="indefinite"
       values="${pos.reverse().join(';')}" 
       keyTimes="${times.join(';')}"
     />
-    <animate
+    <animate id="AnimW"
       attributeName="width"
       begin="0s" dur="6s"
       repeatCount="indefinite"

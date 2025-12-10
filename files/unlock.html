@@ -156,7 +156,9 @@
         function sendProg(cod, mssg) {
             if (cod < 0) {
                 rezultat.innerHTML = mssg;
-                rezultat.scrollIntoView({ block: 'end' });
+                setTimeout(() => {
+                    rezultat.scrollIntoView({ block: 'end' });
+                }, 50);
                 /*setTimeout(() => {
                     rezultat.scrollIntoView({ behavior: 'smooth', block: 'end' });
                 }, 50);*/

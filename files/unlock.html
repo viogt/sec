@@ -156,9 +156,10 @@
         function sendProg(cod, mssg) {
             if (cod < 0) {
                 rezultat.innerHTML = mssg;
-                setTimeout(() => {
+                rezultat.scrollIntoView({ block: 'end' });
+                /*setTimeout(() => {
                     rezultat.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                }, 50);
+                }, 50);*/
                 return;
             }
             progress += cod; if (progress > 100) progress = 100;

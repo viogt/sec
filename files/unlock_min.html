@@ -16,8 +16,6 @@
             margin: auto;
             padding: 24px;
             font: normal 15px Arial, sans-serif;
-            background: radial-gradient(ellipse at top, #cfc 0%, #fff 60%) top center no-repeat;
-            background-size: 100% 80%;
         }
 
         .xlsx {
@@ -27,6 +25,11 @@
             padding: 0 1.2em;
             color: green;
             font-weight: bold;
+        }
+        .titlu {
+            text-align: center;
+            margin: 1em 0;
+            color: green;
         }
 
         input[type="file"] {
@@ -96,6 +99,25 @@
             margin: 16px 0;
             text-align: center;
             color: red;
+        }
+        .morph {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            background: #008000;
+            will-change: clip-path;
+            animation: arrowToSquare 1.4s infinite alternate ease-in-out;
+            clip-path: polygon(75% 0, 75% 50%, 100% 50%, 50% 100%, 0 50%, 25% 50%, 25% 0);
+        }
+        @keyframes arrowToSquare {
+            0%,
+            30% {
+                clip-path: polygon(75% 0, 75% 50%, 100% 50%, 50% 100%, 0 50%, 25% 50%, 25% 0);
+            }
+            70%,
+            100% {
+                clip-path: polygon(43% 55%, 76% 0, 100% 15%, 49% 100%, 0 49%, 17% 31%, 43% 55%);
+            }
         }
     </style>
 </head>
@@ -172,7 +194,7 @@
                 }
             }
             if (!modified) {
-                rezultat.innerHTML = "<div class='xlsx'>THIS FILE IS NOT LOCKED.</div>";
+                rezultat.innerHTML = "<div class='titlu'>THIS FILE IS NOT LOCKED.</div>";
                 return;
             }
             fileToDownload = await zip.generateAsync({
@@ -182,11 +204,11 @@
             });
 
             let num = 1;
-            let str = "<div class='xlsx'>FILE UNLOCKED:</div><table>";
+            let str = "<div class='titlu'>FILE UNLOCKED:</div><table>";
             for (el of foi) {
                 str += `<tr><td>${num++}</td><td align="left">${el.name}</td><td>${el.state}</td></tr>`;
             }
-            rezultat.innerHTML = str + "</table><a class='xlsx' href='#' onclick='save(this);return false;'>DOWNLOAD UNLOCKED</a>";
+            rezultat.innerHTML = str + "</table><div class='titlu'><div class='morph'></div>&nbsp;<a style='color:green' href='#' onclick='save(this);return false;'>DOWNLOAD UNLOCKED</a></div>";
             /*setTimeout(() => {
                 rezultat.scrollIntoView({ behavior: 'smooth', block: 'end' });
             }, 50);*/

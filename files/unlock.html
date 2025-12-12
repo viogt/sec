@@ -274,6 +274,7 @@
             }
             fileToDownload = await zip.generateAsync({
                 type: "blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 compression: "DEFLATE",
                 compressionOptions: { level: 9 },
             });

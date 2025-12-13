@@ -10,13 +10,14 @@
         body {
             margin: 0;
         }
+
         .container {
             max-width: 420px;
             margin: auto;
             padding: 24px;
             font:
                 normal 15px Arial, sans-serif;
-            background: radial-gradient(ellipse at top, #cfc 0%, #fff 60%) top center no-repeat;
+            background: radial-gradient(ellipse at top, #aea 0%, #fff 60%) top center no-repeat;
             background-size: 100% 80%;
         }
 
@@ -37,6 +38,23 @@
             display: inline-block;
             background: url("data:image/svg+xml,%3Csvg width='100%' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' fill='%23000000'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Ctitle%3Efile_type_excel2%3C/title%3E%3Cpath d='M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z' style='fill:%23008000;fill-rule:evenodd'%3E%3C/path%3E%3Crect x='22.487' y='7.439' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='10.94' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='14.441' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='17.942' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Crect x='22.487' y='21.443' width='4.323' height='2.2' style='fill:%23008000'%3E%3C/rect%3E%3Cpolygon points='6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673' style='fill:%23ffffff;fill-rule:evenodd'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E") no-repeat;
             aspect-ratio: 1 / 1;
+            transform: perspective 800px, rotateY(180deg);
+            transform-style: preserve-3d;
+            animation: spin 1s ease-out .6s forwards;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: perspective(800px) rotateY(180deg);
+            }
+
+            80% {
+                transform: perspective(800px) rotateY(390deg);
+            }
+
+            100% {
+                transform: perspective(800px) rotateY(360deg);
+            }
         }
 
         .xlsx-title {
@@ -120,11 +138,14 @@
             animation: arrowToSquare 1.4s infinite alternate ease-in-out;
             clip-path: polygon(75% 0, 75% 50%, 100% 50%, 50% 100%, 0 50%, 25% 50%, 25% 0);
         }
+
         @keyframes arrowToSquare {
+
             0%,
             30% {
                 clip-path: polygon(75% 0, 75% 50%, 100% 50%, 50% 100%, 0 50%, 25% 50%, 25% 0);
             }
+
             70%,
             100% {
                 clip-path: polygon(43% 55%, 76% 0, 100% 15%, 49% 100%, 0 49%, 17% 31%, 43% 55%);
@@ -427,11 +448,11 @@
     />
     </rect>`;
 
-    buf += `<rect x="${dif}" y="${labLine}" width="${hLen + padding * 2}" height="${lHeight}" rx="${lHeight / 2}" fill="#ffa" filter="url(#shdw)"/>`;
-    buf += `<text x="${dif + padding}" y="${labLine + padding + fontSize * .8}" fill="#000">${unh}</text>\n`;
+            buf += `<rect x="${dif}" y="${labLine}" width="${hLen + padding * 2}" height="${lHeight}" rx="${lHeight / 2}" fill="#ffa" filter="url(#shdw)"/>`;
+            buf += `<text x="${dif + padding}" y="${labLine + padding + fontSize * .8}" fill="#000">${unh}</text>\n`;
 
-    buf += `<rect x="${dif + hLen + dif}" y="${labLine}" width="${pLen + padding * 2}" height="${lHeight}" rx="${lHeight / 2}" fill="#fc8" filter="url(#shdw)"/>`;
-    buf += `<text x="${pXpos + padding}" y="${labLine + padding + fontSize * .8}" fill="#000">${unp}</text>\n`;
+            buf += `<rect x="${dif + hLen + dif}" y="${labLine}" width="${pLen + padding * 2}" height="${lHeight}" rx="${lHeight / 2}" fill="#fc8" filter="url(#shdw)"/>`;
+            buf += `<text x="${pXpos + padding}" y="${labLine + padding + fontSize * .8}" fill="#000">${unp}</text>\n`;
 
             buf = `<svg viewBox="0 0 ${svgLen} ${bLine + fontSize + padding * 2 + 36}" width="100%" xmlns="http://www.w3.org/2000/svg">
                 <style>text { font-size: ${fontSize}px; font-family: Arial, sans-serif; }</style>

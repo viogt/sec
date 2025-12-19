@@ -400,19 +400,21 @@
                 const e = foi[i];
                 const w = e.len + padding * 2;
                 curPos -= w;
-                buf += `<path d="M${curPos} ${bLine} h${w + padding} l-${padding * 2} ${h} H${curPos} v-${h}z" fill="${cul[i % culLem]}" stroke="#000" stroke-width="1"/>\n`;
+                buf += `<path d="M${curPos} ${bLine} h${w + padding} l-${padding * 2} ${h} H${curPos} v-${h}z" fill="${cul[i % culLem]}" filter="url(#shdw)"/>\n`;
                 if (e.state.includes('hidden')) {
                     pos.push(curPos); wids.push(w);
                     pos.push(curPos); wids.push(w);
                     const xx = curPos + padding + e.len / 2, yy = bLine + fontSize + padding * 2;
-                    buf += `<path d="M${hidX} ${bottom} Q${hidX + (xx - hidX) * .8} ${bottom + (bLine - bottom) * .2} ${xx} ${bLine}" stroke="#333" stroke-width="2" fill="none" stroke-dasharray="8" marker-end="url(#arrow)"/>`;
+                    //buf += `<path d="M${hidX} ${bottom} Q${hidX + (xx - hidX) * .8} ${bottom + (bLine - bottom) * .2} ${xx} ${bLine}" stroke="#333" stroke-width="2" fill="none" stroke-dasharray="8" marker-end="url(#arrow)"/>`;
+                    buf += `<path d="M${hidX} ${bottom} C${hidX} ${(bLine - bottom)/2}, ${xx} ${(bLine - bottom)/2}, ${xx} ${bLine}" stroke="#444" stroke-width="3.2" fill="none" stroke-dasharray="8" marker-end="url(#arrow)"/>`;
                     buf += `<use href="#hidden" x="${xx - 18}" y="${yy - padding / 2}" filter="url(#shdw)"/>`;
                 }
                 else if (e.state.includes('protected')) {
                     pos.push(curPos); wids.push(w);
                     pos.push(curPos); wids.push(w);
                     const xx = curPos + padding + e.len / 2, yy = bLine + fontSize + padding * 2;
-                    buf += `<path d="M${procX} ${bottom} Q${procX + (xx - procX) * .8} ${bottom + (bLine - bottom) * .2} ${xx} ${bLine}" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)"/>`;
+                    //buf += `<path d="M${procX} ${bottom} Q${procX + (xx - procX) * .8} ${bottom + (bLine - bottom) * .2} ${xx} ${bLine}" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)"/>`;
+                    buf += `<path d="M${procX} ${bottom} C${procX} ${(bLine - bottom)/2}, ${xx} ${(bLine - bottom)/2}, ${xx} ${bLine}" stroke="#444" stroke-width="3.2" fill="none" marker-end="url(#arrow)"/>`;
                     buf += `<use href="#protect" x="${xx - 18}" y="${yy - padding / 2}" filter="url(#shdw)"/>`;
                 }
                 buf += `<text x="${curPos + padding}" y="${bLine + padding + fontSize}">${e.name}</text>\n`;
@@ -448,7 +450,7 @@
                 <style>text { font-size: ${fontSize}px; font-family: Arial, sans-serif; }</style>
 <defs>
 <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-<path d="M0 0 L6 3 L0 6z" fill="#333" /></marker>
+<path d="M0 0 L6 3 L0 6z" fill="#444" /></marker>
 <filter id="shdw" x="-50%" y="-50%" width="200%" height="200%">
 <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/>
 <feOffset dx="0" dy="3" result="offsetBlur"/>

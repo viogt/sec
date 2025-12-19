@@ -40,21 +40,11 @@
             aspect-ratio: 1 / 1;
             transform: perspective 800px, rotateY(180deg);
             transform-style: preserve-3d;
-            animation: spin 1s ease-out .6s forwards;
+            animation: spin 1s cubic-bezier(.34, 1.56, .64, 1) .6s forwards;
         }
-
         @keyframes spin {
-            0% {
-                transform: perspective(800px) rotateY(180deg);
-            }
-
-            80% {
-                transform: perspective(800px) rotateY(390deg);
-            }
-
-            100% {
-                transform: perspective(800px) rotateY(360deg);
-            }
+            0% { transform: perspective(800px) rotateY(180deg); }
+            100% { transform: perspective(800px) rotateY(360deg); }
         }
 
         .xlsx-title {
@@ -475,7 +465,7 @@
     <path d="M18 21 V26" stroke="#fff" stroke-width="2"/>
 </g>
 <g id="hidden">
-    <circle cx="18" cy="18" r="17" fill="#fff" stroke="#000" stroke-width="1"/>
+    <circle cx="18" cy="18" r="17" fill="#cc8" stroke="#000" stroke-width="1"/>
     <ellipse rx='14' ry='8' cx='18' cy='18' fill='#fff' stroke='black' stroke-width='1'/>
     <circle cx='18' cy='18' r='7' fill='black'/>
     <circle cx='18' cy='18' r='3' fill='#fff'/>

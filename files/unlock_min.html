@@ -16,6 +16,8 @@
             margin: auto;
             padding: 24px;
             font: normal 15px Arial, sans-serif;
+            transform: translateY(-110px);
+            animation: hop .5s cubic-bezier(0.34, 1.56, 0.64, 1) .2s forwards;
         }
 
         .xlsx {
@@ -25,6 +27,11 @@
             padding: 0 1.2em;
             color: green;
             font-weight: bold;
+            font-size: 24px;
+        }
+        @keyframes hop {
+            0% { transform: translateY(-110px); }
+            100% { transform: translateY(0); }
         }
         .titlu {
             text-align: center;
@@ -84,15 +91,9 @@
             box-sizing: border-box;
             animation: rotation 1s linear infinite;
         }
-
         @keyframes rotation {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .process {
@@ -124,7 +125,7 @@
 
 <body>
     <div class="container">
-        <div class="xlsx" style="font-size: 22px;">Upload an .xlsx file</div>
+        <div class="xlsx">Upload an .xlsx file</div>
         <input type="file" id="fileInput" accept=".xlsx" onchange="uploadFile()" />
         <div id="rezultat"></div>
     </div>

@@ -83,7 +83,8 @@ const URLs = [
     'eng/Aggr7.txt'
 ],
     //CNTs = [URLs.length];
-	CNTs = new Array(URLs.length);
+	//CNTs = new Array(URLs.length);
+	CNTs = [];
 
   const log = document.getElementById('log'),
     textarea = document.getElementById('txt'),
@@ -157,7 +158,8 @@ function theme(o) {
 
 function xhrFile(ix) {
     fetch(URLs[ix]).then(res => res.text())
-    .then(txt => CNTs[ix]=txt)
+    //.then(txt => CNTs[ix]=txt)
+	.then(txt => CNTs.push(txt))
     .catch(err => log.innerText += err);
 }
 /*function xhrFile(ix) {
@@ -191,7 +193,7 @@ function verify(){
 }
 
 getAllFiles();
-setTimeout(verify, 1000);
+//setTimeout(verify, 1000);
 //textarea.focus();
 document.getElementById('pattern').focus();
 

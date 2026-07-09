@@ -27,7 +27,7 @@
       #log {
         width: 100%;
         height: calc(100% - 80px);
-        padding: 22px;
+        padding: 12px;
         font: normal 15px Arial, sans-serif;
         box-sizing: border-box;
         overflow-y: scroll;
@@ -35,11 +35,9 @@
       #panel {
         width: 100%;
         height: 80px;
-        padding: 16px;
         font: normal 15px Arial, sans-serif;
         box-sizing: border-box;
         white-space: nowrap;
-		  background-color: #ff6;
 	  }
       #log p { margin: 0px; margin-bottom: 12px; padding: 0px; }
       #log p > span { color: blue; font-weight: bold; }
@@ -60,7 +58,7 @@
             <textarea id="txt" placeholder="Write here..."></textarea>            
         </td>
         <td id="rPanel" style="width:35%; color: #222; background-color: #eee;">
-            <div id="panel">
+            <div id="panel" style="background-color:#ff6">
             <input type="checkbox" id="lookUp"> Word,
             Theme: <a href="#" onclick="theme(this)" title="Theme">Dark</a><br>
             <input type="text" id="pattern" placeholder="Use ? for one letter, * - for many" onchange="seePattern(this)">
@@ -163,7 +161,7 @@ function xhrFile(ix) {
 	.then(txt => {
 		CNTs.push(txt);
 		if(URLs.length == CNTs.length)
-			document.getElementById("panel").style.backgroundColor = 'white';
+			document.getElementById("panel").style.backgroundColor = '';
 	})
     .catch(err => log.innerText += err);
 }

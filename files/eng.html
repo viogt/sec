@@ -39,7 +39,8 @@
         font: normal 15px Arial, sans-serif;
         box-sizing: border-box;
         white-space: nowrap;
-      }
+		  background-color: #ff6;
+	  }
       #log p { margin: 0px; margin-bottom: 12px; padding: 0px; }
       #log p > span { color: blue; font-weight: bold; }
       #pattern {
@@ -159,7 +160,11 @@ function theme(o) {
 function xhrFile(ix) {
     fetch(URLs[ix]).then(res => res.text())
     //.then(txt => CNTs[ix]=txt)
-	.then(txt => CNTs.push(txt))
+	.then(txt => {
+		CNTs.push(txt);
+		if(URLs.length == CNTs.length)
+			panel.style.backgroundColor = '';
+	})
     .catch(err => log.innerText += err);
 }
 /*function xhrFile(ix) {

@@ -10,7 +10,7 @@
         height: 100%;
         padding: 24px;
         font: normal 15px Arial, sans-serif;
-        background-color: lightyellow;
+        background-color: white;
         box-sizing: border-box;
         outline: none;
         resize: none;
@@ -163,7 +163,7 @@ function xhrFile(ix) {
 	.then(txt => {
 		CNTs.push(txt);
 		if(URLs.length == CNTs.length)
-			document.getElementById("panel").style.backgroundColor = 'red';
+			document.getElementById("panel").style.backgroundColor = 'white';
 	})
     .catch(err => log.innerText += err);
 }

@@ -163,7 +163,7 @@ function xhrFile(ix) {
 	.then(txt => {
 		CNTs.push(txt);
 		if(URLs.length == CNTs.length)
-			panel.style.backgroundColor = '';
+			document.getElementById("panel").style.backgroundColor = 'red';
 	})
     .catch(err => log.innerText += err);
 }

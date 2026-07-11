@@ -56,10 +56,9 @@
 <body style="padding:0px; margin:0px;">
 <div id="tbl" class="tbl2">
 <textarea onfocus="rem(1)" id="txt" placeholder="Write here..."></textarea>
-<div id="rPanel" style="width:45%; background-color: #eee;">
+<div id="rPanel" style="background-color: #eee;">
     <div id="panel" style="background-color:#ff6">
-        <input type="checkbox" id="lookUp"> Word,
-        Theme: <a href="#" onclick="theme(this)" title="Theme">Dark</a><br>
+        <input type="checkbox" id="lookUp"> Word<br>
         <input type="text" onfocus="rem(2)" id="pattern" placeholder="Use ? for one letter, * - for many" onchange="seePattern(this)">
     </div>
     <div id="log"></div>
@@ -127,32 +126,6 @@ function findWord(wrd) {
     if(!log.firstChild) log.appendChild(document.createTextNode("<no occurence found>"));
 }
 
-function seePattern(st) {
-    let x = st.value.trim(); if(x == '') return;
-    st.style.backgroundColor = 'yellow';
-    if(lookUp.checked) x="\\b" + x.replace(/\?/g,'\\w').replace(/\*/g,'\\w*') + "\\b";
-    findWord(x);
-    setTimeout(function() { st.style.backgroundColor = ''; }, 300);
-}
-
-function theme(o) {
-    let rp = document.getElementById("rPanel").style;
-    if(o.innerText == 'Light') {
-        textarea.style.backgroundColor = "lightyellow";
-        textarea.style.color = "black";
-        rp.backgroundColor = "#eee";
-        rp.color = "#222";
-        o.innerText = 'Dark';
-    }
-    else {
-        textarea.style.backgroundColor = "black";
-        textarea.style.color = "lightgreen";
-        rp.backgroundColor = "#333";
-        rp.color = "#ccc";
-        o.innerText = 'Light';
-    }
-}
-
 function xhrFile(ix) {
     fetch(URLs[ix]).then(res => res.text())
     //.then(txt => CNTs[ix]=txt)
@@ -163,34 +136,9 @@ function xhrFile(ix) {
 	})
     .catch(err => log.innerText += err);
 }
-/*function xhrFile(ix) {
-    const rq = new XMLHttpRequest();
-    rq.open("GET", URLs[ix], true);
-    rq.onreadystatechange = ()=>{
-        if(rq.readyState === 4) {
-            if(rq.status === 200 || rq.status == 0)
-            CNTs[ix] = rq.responseText;
-        }
-    }
-    rq.send(null);
-}*/
 
 function getAllFiles() {
     for(let i in URLs) xhrFile(i);
-}
-
-function seeAllFiles() {
-    for(let i in URLs) {
-        alert(i + " " + URLs[i] + "\n" + CNTs[i].substr(100,200));
-    }
-}
-
-function verify(){
-    for(let i in CNTs) if(typeof CNTs[i] == 'undefined' || CNTs[i]=='') {
-        setTimeout(verify, 1000);
-        return;
-    }
-    document.getElementById('panel').style.backgroundColor = '';
 }
 
 function rem(m){
@@ -198,8 +146,6 @@ function rem(m){
 }
 
 getAllFiles();
-//setTimeout(verify, 1000);
-//textarea.focus();
 document.getElementById('pattern').focus();
 
 </script>

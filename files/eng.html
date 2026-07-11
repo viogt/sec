@@ -19,12 +19,12 @@
       }
       .tbl1 {
 		  display: grid;
-		  grid-template-columns: auto 30%;
+		  grid-template-columns: auto 40%;
 		  grid-gap: 10px;
       }
 	.tbl2 {
 		display: grid;
-		grid-template-columns: 30% auto;
+		grid-template-columns: 40% auto;
 		grid-gap: 10px;
 	}
       #log {
@@ -59,7 +59,7 @@
 <div id="rPanel" style="background-color: #eee;">
     <div id="panel" style="background-color:#ff6">
         <input type="checkbox" id="lookUp"> Word<br>
-        <input type="text" onfocus="rem(2)" id="pattern" placeholder="Use ? for one letter, * - for many" onchange="seePattern(this)">
+        <input type="text" onfocus="rem(2)" id="pattern" placeholder="RegExp accepted..." onchange="findWord(this.value)">
     </div>
     <div id="log"></div>
 </div>
@@ -78,31 +78,16 @@ const URLs = [
     'eng/Aggr6.txt',
     'eng/Aggr7.txt'
 ],
-    //CNTs = [URLs.length];
-	//CNTs = new Array(URLs.length);
 	CNTs = [];
 
   const log = document.getElementById('log'),
     textarea = document.getElementById('txt'),
     lookUp = document.getElementById('lookUp');
 
-function logSelection(event) {
-  /*log.innerText = window.getSelection().toString();
-  const selection = event.target.value.substring(event.target.selectionStart, event.target.selectionEnd);
-  log.innerText = `You selected: ${selection}`;*/
-  findWord( window.getSelection().toString() );
-}
+    textarea.onselect = function() {
+		findWord( window.getSelection().toString() );
+	};
 
-    textarea.onselect = logSelection;
-    //textarea.addEventListener("select", logSelection);
-/*
-function findWord(wrd) {
-    var buf='', Rx = new RegExp("^.*" + wrd + ".*$",'gim'), arr;
-    for(let i in CNTs)
-        if(arr = CNTs[i].match(Rx)) buf += arr.join("\n\n") + "\n\n";
-    log.innerText = buf?buf:"<no occurence found>";
-}
-*/
 function findWord(wrd) {
     while(log.firstChild) log.removeChild(log.lastChild);
     var Res, Rx = new RegExp("^.*(" + wrd + ").*$",'gim');
@@ -128,7 +113,6 @@ function findWord(wrd) {
 
 function xhrFile(ix) {
     fetch(URLs[ix]).then(res => res.text())
-    //.then(txt => CNTs[ix]=txt)
 	.then(txt => {
 		CNTs.push(txt);
 		if(URLs.length == CNTs.length)

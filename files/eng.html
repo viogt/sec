@@ -19,12 +19,12 @@
       }
       .tbl1 {
 		  display: grid;
-		  grid-template-columns: auto 40%;
+		  grid-template-columns: 60% 40%;
 		  grid-gap: 10px;
       }
 	.tbl2 {
 		display: grid;
-		grid-template-columns: 40% auto;
+		grid-template-columns: 40% 60%;
 		grid-gap: 10px;
 	}
       #log {
@@ -49,7 +49,7 @@
         padding: 8px 12px;
         box-sizing: border-box; 
         outline: none;
-        font-size: 18px;
+        font-size: 15px;
       }
     </style>
   </head>
@@ -89,6 +89,7 @@ const URLs = [
 	};
 
 function findWord(wrd) {
+	alert(wrd);
     while(log.firstChild) log.removeChild(log.lastChild);
     var Res, Rx = new RegExp("^.*(" + wrd + ").*$",'gim');
     for(let i in CNTs) {

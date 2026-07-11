@@ -8,7 +8,7 @@
       #txt {
         width: 100%;
         height: 100%;
-        padding: 24px;
+        padding: 8px;
         font: normal 15px Arial, sans-serif;
         background-color: white;
         box-sizing: border-box;
@@ -20,17 +20,15 @@
       .tbl1 {
 		  display: grid;
 		  grid-template-columns: 60% 40%;
-		  grid-gap: 10px;
       }
 	.tbl2 {
 		display: grid;
 		grid-template-columns: 40% 60%;
-		grid-gap: 10px;
 	}
       #log {
         width: 100%;
         height: calc(100% - 80px);
-        padding: 12px;
+        padding: 8px 0 0 8px;
         font: normal 15px Arial, sans-serif;
         box-sizing: border-box;
         overflow-y: scroll;
@@ -39,7 +37,7 @@
       #log p > span { color: blue; font-weight: bold; }
       #pattern {
         width:100%;
-        padding: 8px 12px;
+        padding: 8px;
         box-sizing: border-box; 
         outline: none;
         font-size: 15px;
@@ -71,15 +69,13 @@ const URLs = [
 	CNTs = [];
 
   const log = document.getElementById('log'),
-    textarea = document.getElementById('txt'),
-    lookUp = document.getElementById('lookUp');
+    textarea = document.getElementById('txt');
 
     textarea.onselect = function() {
 		findWord( window.getSelection().toString() );
 	};
 
 function findWord(wrd) {
-	alert(wrd);
     while(log.firstChild) log.removeChild(log.lastChild);
     var Res, Rx = new RegExp("^.*(" + wrd + ").*$",'gim');
     for(let i in CNTs) {

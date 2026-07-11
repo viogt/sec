@@ -27,7 +27,6 @@
 	}
       #log {
         width: 100%;
-        height: calc(100% - 80px);
         padding: 8px 0 0 8px;
         font: normal 15px Arial, sans-serif;
         box-sizing: border-box;
@@ -40,6 +39,8 @@
         padding: 8px;
         box-sizing: border-box; 
         outline: none;
+		  border: none;
+		  border-bottom: 1px solid #000;
         font-size: 15px;
       }
     </style>
@@ -47,7 +48,7 @@
 <body style="padding:0px; margin:0px;">
 <div id="tbl" class="tbl2">
 <textarea onfocus="rem(1)" id="txt" placeholder="Write here..."></textarea>
-<div id="rPanel" style="background-color: #eee;">
+<div id="rPanel" style="border-left: 1px solid #000;">
     <input type="text" onfocus="rem(2)" id="pattern" placeholder="RegExp accepted..." onchange="findWord(this.value)" style="background-color:#ff6;">
     <div id="log"></div>
 </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Monaco Editor Integration</title>
+    <style>
+        /* The container must have explicit dimensions for the editor to render */
+        #editor-container {
+            width: 800px;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>My Web-Based Code Editor</h2>
+    <div id="editor-container"></div>
+
+    <!-- 1. Load the Monaco Loader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    
+    <script>
+        // 2. Configure the AMD loader to point to the CDN
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min' }});
+
+        // 3. Initialize the editor once the module is loaded
+        require(['vs/editor/editor.main'], function() {
+            var editor = monaco.editor.create(document.getElementById('editor-container'), {
+                value: [
+                    '// Write your JavaScript code here',
+                    'function greet(name) {',
+                    '    console.log("Hello, " + name + "!");',
+                    '}',
+                    '',
+                    'greet("Developer");'
+                ].join('\n'),
+                language: 'javascript',
+                theme: 'vs-dark' // Options: 'vs' (light), 'vs-dark', 'hc-black'
+            });
+
+            // Optional: Retrieve text from the editor later
+            // var currentCode = editor.getValue();
+        });
+    </script>
+
+</body>
+</html>

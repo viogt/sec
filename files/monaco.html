@@ -52,11 +52,49 @@
       
       // Initial code content
       const initialCode = `// Welcome to Monaco Editor!
-function greet(name) {
-    console.log(\`Hello, \${name}!\`);
+const menu = document.getElementById('custom-menu');
+const targetArea = document.getElementById('target-area');
+
+targetArea.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+
+    const posX = e.clientX;
+    const posY = e.clientY;
+
+    menu.style.display = 'block';
+});
+
+document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target)) {
+        menu.style.display = 'none';
+    }
+});
+
+function menuAction(action) {
+    menu.style.display = 'none';
 }
 
-greet('World');`;
+document.addEventListener('DOMContentLoaded', () => {
+  const tabButtonsContainer = document.querySelector('.tab-buttons');
+
+  tabButtonsContainer.addEventListener('click', (event) => {
+    const clickedBtn = event.target.closest('.tab-btn');
+    
+    // If a button wasn't clicked, do nothing
+    if (!clickedBtn) return;
+
+    // Get the target panel ID from data-tab attribute
+    const targetTabId = clickedBtn.getAttribute('data-tab');
+
+    // 1. Remove 'active' class from all buttons and panels
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+    // 2. Add 'active' class to the clicked button and targeted panel
+    clickedBtn.classList.add('active');
+    document.getElementById(targetTabId).classList.add('active');
+  });
+});`;
 
       // 4. Create the editor instance
       const editor = monaco.editor.create(document.getElementById('editor-container'), {

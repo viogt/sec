@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rich Text Editor</title>
+
+  <style>
+    :root {
+      --doc-name: ""; /* Default empty document name */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      background: #e9edf2;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 6px;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      box-shadow: 0 2px 5px #00000030;
+
+      &::-webkit-scrollbar { display: none; }
+      -ms-overflow-style: none;     /* IE and Old Edge */
+      scrollbar-width: none;        /* Firefox */
+  }
+
+    .toolbar button,
+    .toolbar select {
+      padding: 4px;
+      font-family: Arial, sans-serif;
+      border: none;
+      background: #fff;
+      margin: 0;
+      cursor: pointer;
+    }
+    .toolbar select { font-size: 15px; vertical-align: middle; }
+
+    .toolbar button:hover,
+    .toolbar select:hover {
+      background: #edf2f7;
+    }
+
+    .toolbar button.active {
+      background: #dceafe;
+      border-color: #6699dd;
+    }
+
+.toolbar button .material-symbols-outlined {
+  font-size: 18px;
+  line-height: 1;
+  vertical-align: middle;
+}
+    .toolbar .pdf-button {
+      color: #fff;
+      background: #1769aa;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .toolbar .pdf-button:hover {
+      background: purple;
+    }
+
+    .separator {
+      display: inline-block;
+      vertical-align: middle;
+      width: 1px;
+      height: 24px;
+      margin: 0 4px;
+      background: #d3d7dd;
+    }
+
+    .workspace {
+      padding: 30px 15px 60px;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 15mm 30mm; /* Matches print margins */
+      background: #fff;
+      box-shadow: 0 3px 15px #00000020;
+      position: relative;
+    }
+
+    #editor {
+      min-height: 267mm;
+      outline: none;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      overflow-wrap: break-word;
+      cursor: text;
+    }
+
+    #editor,
+    #editor:focus,
+    #editor:focus-visible,
+    #editor .ProseMirror,
+    #editor .ProseMirror:focus,
+    #editor .ProseMirror:focus-visible,
+    #editor [contenteditable="true"],
+    #editor [contenteditable="true"]:focus,
+    #editor [contenteditable="true"]:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    #editor .ProseMirror {
+      min-height: 267mm;
+      border: 0 !important;
+    }
+
+    #editor p, #editor h1, #editor h2, #editor li, #editor blockquote {
+      margin: 0 0 1em;
+      line-height: 1.5;
+    }
+
+    #editor h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 1em;
+    }
+
+    #editor h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 0.8em;
+    }
+
+    #editor ul, #editor ol {
+      padding-left: 28px;
+      margin: 0.5em 0;
+    }
+
+    #editor blockquote {
+      margin: 1em 0;
+      padding: 0 0 0 24px;
+      border-left: 3px solid #ccc;
+      color: #000;
+      /*font-style: italic;*/
+    }
+
+    #editor a {
+      color: #1769aa;
+      text-decoration: underline;
+    }
+
+    #editor table, .ProseMirror table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      width: 100%;
+      margin: 1em 0;
+      overflow: hidden;
+    }
+
+    #editor table td, #editor table th,
+    .ProseMirror table td, .ProseMirror table th {
+      min-width: 1em;
+      border: 1px solid #ced4da;
+      padding: 8px 10px;
+      vertical-align: top;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    #editor table td p, #editor table th p,
+    .ProseMirror table td p, .ProseMirror table th p {
+      margin: 0 !important;
+    }
+
+    #editor table th, .ProseMirror table th {
+      font-weight: bold;
+      background-color: #f1f3f5;
+    }
+
+    #editor .material-symbols-outlined {
+      font-size: 18px; /* 1em */
+      line-height: 1;
+      vertical-align: text-bottom;
+    }
+
+    .status {
+      max-width: 210mm;
+      margin: 12px auto 0;
+      color: #596273;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    /* Modal dialog styling */
+    .modal-overlay[hidden] { display: none !important; }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 18px;
+    }
+    .modal-dialog {
+      background: #fff;
+      width: 320px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .modal-dialog h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #222;
+    }
+    .modal-field {
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .modal-field label {
+      font-size: 13px;
+      font-weight: bold;
+      color: #444;
+    }
+    .modal-field input[type="number"] {
+      height: 34px;
+      padding: 0 8px;
+      border: 1px solid #c7cbd1;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .modal-field-checkbox {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .modal-field-checkbox label {
+      font-weight: normal;
+      cursor: pointer;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .modal-actions button {
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .modal-btn-cancel {
+      background: #fff;
+      border: 1px solid #c7cbd1;
+      color: #333;
+    }
+    .modal-btn-confirm {
+      background: #1769aa;
+      border: 1px solid #1769aa;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Print settings & Asymmetric Margins */
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+      }
+
+      .toolbar,
+      .status {
+        display: none !important;
+      }
+
+      .workspace {
+        padding: 0 !important;
+      }
+
+      .page {
+        width: 100% !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+      }
+
+      #editor {
+        min-height: auto !important;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 15mm 30mm; /* 15mm Top/Bottom, 30mm Left/Right */
+        @bottom-left {
+          content: var(--doc-name);
+          font-family: Arial, sans-serif;
+          font-size: 9pt;
+          color: #5a5a5a;
+        }
+        @bottom-right {
+          content: "Page " counter(page) " of " counter(pages);
+          font-family: Arial, sans-serif;
+          font-size: 9pt;
+          color: #5a5a5a;
+        }
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+<body>
+  <div class="toolbar" role="toolbar" aria-label="Text formatting">
+
+    <button type="button" id="printPdf" class="pdf-button" title="Download the document as PDF">PDF <span class="material-symbols-outlined">
+download</span></button>
+    <button type="button" data-command="docName" title="Set Document Name for Footer"><span class="material-symbols-outlined">
+edit_square</span></button>
+
+    <button type="button" data-command="undo" title="Undo (Ctrl+Z)"><span class="material-symbols-outlined">
+undo</span></button>
+    <button type="button" data-command="redo" title="Redo (Ctrl+Y)"><span class="material-symbols-outlined">
+redo</span></button>
+    <button type="button" id="clearSelection" title="Remove formatting from selection"><span class="material-symbols-outlined">
+format_clear</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
+    <button type="button" data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">
+format_italic</span></button>
+    <button type="button" data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">
+format_underlined</span></button>
+    <button type="button" data-command="link" title="Insert/Edit Link"><span class="material-symbols-outlined">
+link</span></button>
+
+    <span class="separator"></span>
+
+    <select id="blockType" aria-label="Paragraph style">
+        <option value="paragraph">¶ Body text</option>
+        <option value="h1">H1 Heading 1</option>
+        <option value="h2">H2 Heading 2</option>
+        <option value="blockquote">« Quote</option>
+    </select>
+
+    <span class="separator"></span>
+
+    <button type="button" data-align="left" title="Align left"><span class="material-symbols-outlined">
+format_align_left</span></button>
+    <button type="button" data-align="center" title="Align center"><span class="material-symbols-outlined">
+format_align_center</span></button>
+    <button type="button" data-align="right" title="Align right"><span class="material-symbols-outlined">
+format_align_right</span></button>
+    <button type="button" data-align="justify" title="Justify"><span class="material-symbols-outlined">
+format_align_justify</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="bulletList" title="Bulleted list"><span class="material-symbols-outlined">
+format_list_bulleted</span></button>
+    <button type="button" data-command="orderedList" title="Numbered list"><span class="material-symbols-outlined">
+format_list_numbered</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">
+format_indent_decrease</span></button>
+    <button type="button" data-command="indent" title="Increase indent"><span class="material-symbols-outlined">
+format_indent_increase</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="table" title="Insert Table"><span class="material-symbols-outlined">
+table</span></button>
+    <button type="button" id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">
+mop</span></button>
+      <button type="button" data-command="frag" title="Insert Fragment"><span class="material-symbols-outlined" style="color:#a20">
+table</span></button>
+      <button type="button" data-command="tbl" title="Insert Table"><span class="material-symbols-outlined" style="color:#a6a">
+table</span></button>
+      <button type="button" data-command="svgIcon" title="Insert SVG Icon"><span class="material-symbols-outlined" style="color:#080">table</span></button>
+  </div>
+
+  <main class="workspace">
+    <div class="page" id="pageContainer">
+      <div id="editor"></div>
+    </div>
+    <div class="status" id="status">A4 document · Arial · 16px body text</div>
+  </main>
+
+  <!-- Table Insertion Modal Dialog -->
+  <div id="tableModal" class="modal-overlay" hidden>
+    <div class="modal-dialog">
+      <h3>Insert Table</h3>
+      <div class="modal-field">
+        <label for="tableRows">Rows</label>
+        <input type="number" id="tableRows" value="3" min="1" max="50">
+      </div>
+      <div class="modal-field">
+        <label for="tableCols">Columns</label>
+        <input type="number" id="tableCols" value="3" min="1" max="20">
+      </div>
+      <div class="modal-field modal-field-checkbox">
+        <input type="checkbox" id="tableHeader" checked>
+        <label for="tableHeader">Include header row</label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="tableModalCancel" class="modal-btn-cancel">Cancel</button>
+        <button type="button" id="tableModalInsert" class="modal-btn-confirm">Insert</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Editor, Extension } from 'https://esm.sh/@tiptap/core@2.11.5';
+    import StarterKit from 'https://esm.sh/@tiptap/starter-kit@2.11.5';
+    import TextAlign from 'https://esm.sh/@tiptap/extension-text-align@2.11.5';
+    import Underline from 'https://esm.sh/@tiptap/extension-underline@2.11.5';
+    import Link from 'https://esm.sh/@tiptap/extension-link@2.11.5';
+    import Table from 'https://esm.sh/@tiptap/extension-table@2.11.5';
+    import TableRow from 'https://esm.sh/@tiptap/extension-table-row@2.11.5';
+    import TableCell from 'https://esm.sh/@tiptap/extension-table-cell@2.11.5';
+    import TableHeader from 'https://esm.sh/@tiptap/extension-table-header@2.11.5';
+
+    import Image from 'https://esm.sh/@tiptap/extension-image@2.11.5';
+
+
+
+import { Mark, mergeAttributes } from 'https://esm.sh/@tiptap/core@2.11.5';
+
+// Define a custom mark that allows spans with classes and styles
+const CustomSpan = Mark.create({
+  name: 'customSpan',
+  
+  parseHTML() {
+    return [{ tag: 'span[class], span[style]' }];
+  },
+  
+  renderHTML({ HTMLAttributes }) {
+    return ['span', mergeAttributes(HTMLAttributes), 0];
+  },
+  
+  addAttributes() {
+    return {
+      class: {
+        default: null,
+        parseHTML: element => element.getAttribute('class'),
+        renderHTML: attributes => {
+          if (!attributes.class) return {};
+          return { class: attributes.class };
+        }
+      },
+      style: {
+        default: null,
+        parseHTML: element => element.getAttribute('style'),
+        renderHTML: attributes => {
+          if (!attributes.style) return {};
+          return { style: attributes.style };
+        }
+      }
+    };
+  }
+});
+const CustomTableCell = TableCell.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      // Allow a custom border color attribute
+      borderColor: {
+        default: null,
+        parseHTML: element => element.style.borderColor,
+        renderHTML: attributes => {
+          if (!attributes.borderColor) {
+            return {}
+          }
+          return {
+            style: `border-color: ${attributes.borderColor}`,
+          }
+        },
+      },
+    }
+  },
+});
+
+
+
+
+
+
+    const IndentExtension = Extension.create({
+      name: 'indent',
+      addOptions() {
+        return {
+          types: ['paragraph', 'heading', 'blockquote'],
+          minLevel: 0,
+          maxLevel: 6,
+        };
+      },
+      addGlobalAttributes() {
+        return [
+          {
+            types: this.options.types,
+            attributes: {
+              indent: {
+                default: 0,
+                parseHTML: element => {
+                  const level = parseInt(element.getAttribute('data-indent'), 10);
+                  return level && !isNaN(level) ? level : 0;
+                },
+                renderHTML: attributes => {
+                  if (!attributes.indent || attributes.indent <= this.options.minLevel) return {};
+                  return {
+                    'data-indent': attributes.indent,
+                    style: `margin-left: ${attributes.indent * 2}em;`,
+                  };
+                },
+              },
+            },
+          },
+        ];
+      },
+      addCommands() {
+        const setNodeIndentMarkup = (tr, pos, delta) => {
+          const node = tr?.doc?.nodeAt(pos);
+          if (node) {
+            const nextLevel = (node.attrs.indent || 0) + delta;
+            const { minLevel, maxLevel } = this.options;
+            const indent = nextLevel < minLevel ? minLevel : nextLevel > maxLevel ? maxLevel : nextLevel;
+            if (indent !== node.attrs.indent) {
+              const { indent: oldIndent, ...currentAttrs } = node.attrs;
+              const nodeAttrs = indent > minLevel ? { ...currentAttrs, indent } : currentAttrs;
+              return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
+            }
+          }
+          return tr;
+        };
+
+        const updateIndentLevel = (tr, delta) => {
+          const { doc, selection } = tr;
+          if (doc && selection) {
+            const { from, to } = selection;
+            doc.nodesBetween(from, to, (node, pos) => {
+              if (this.options.types.includes(node.type.name)) {
+                tr = setNodeIndentMarkup(tr, pos, delta);
+                return false;
+              }
+              return true;
+            });
+          }
+          return tr;
+        };
+
+        const applyIndent = direction => () => ({ tr, state, dispatch }) => {
+          const { selection } = state;
+          tr = tr.setSelection(selection);
+          tr = updateIndentLevel(tr, direction);
+          if (tr.docChanged) {
+            dispatch?.(tr);
+            return true;
+          }
+          return false;
+        };
+
+        return {
+          indent: applyIndent(1),
+          outdent: applyIndent(-1),
+        };
+      },
+      addKeyboardShortcuts() {
+        return {
+          Tab: () => this.editor.commands.indent(),
+          'Shift-Tab': () => this.editor.commands.outdent(),
+        };
+      },
+    });
+
+    const editorElement = document.querySelector('#editor');
+    const status = document.querySelector('#status');
+    const blockType = document.querySelector('#blockType');
+    const pageContainer = document.querySelector('#pageContainer');
+    
+    // Modal elements
+    const tableModal = document.querySelector('#tableModal');
+    const tableRowsInput = document.querySelector('#tableRows');
+    const tableColsInput = document.querySelector('#tableCols');
+    const tableHeaderCheckbox = document.querySelector('#tableHeader');
+    const tableModalCancel = document.querySelector('#tableModalCancel');
+    const tableModalInsert = document.querySelector('#tableModalInsert');
+
+    const editor = new Editor({
+      element: editorElement,
+      editable: true,
+      extensions: [
+        StarterKit.configure({ heading: { levels: [1, 2] } }),
+        Underline,
+        Link.configure({ openOnClick: false, HTMLAttributes: { target: '_blank', rel: 'noopener noreferrer' } }),
+        Table.configure({ resizable: true }),
+        TableRow,
+        TableHeader,
+        TableCell,
+        IndentExtension,
+        TextAlign.configure({
+          types: ['heading', 'paragraph', 'blockquote'],
+          alignments: ['left', 'center', 'right', 'justify'],
+          defaultAlignment: 'left'
+        }),
+        CustomSpan,
+        CustomTableCell,
+        Image.configure({
+          inline: true,      // Crucial so it sits inline like text/icons
+          //allowBase64: true, // Required if you are passing data URIs
+        })
+      ],
+      content: `
+<h1>Document title</h1>
+<p>Start writing your document here (type -- for an en-dash).</p>
+<h2>Section heading</h2>
+<blockquote>This is an inspiring blockquote.</blockquote>
+`,
+      onSelectionUpdate: updateToolbar,
+      onTransaction: () => {
+        updateToolbar();
+        checkPageHeight();
+      },
+      editorProps: {
+        attributes: {
+          spellcheck: 'true',
+          'aria-label': 'Document content'
+        },
+        handleTextInput: (view, from, to, text) => {
+          if (text === '-' && from > 1) {
+            const $from = view.state.doc.resolve(from);
+            const prevChar = $from.parent.textBetween(Math.max(0, $from.parentOffset - 1),$from.parentOffset);
+            if (prevChar === '-') {
+              view.dispatch(view.state.tr.replaceWith(from - 1, to, view.state.schema.text('–')));
+              return true;
+            }
+          }
+          return false;
+        }
+      }
+    });
+
+    function checkPageHeight() {
+      const contentHeight = editorElement.offsetHeight;
+      const onePageHeightPx = 267 * 3.7795; // 297mm height minus 30mm top/bottom padding
+      const neededPages = Math.max(1, Math.ceil(contentHeight / onePageHeightPx));
+      pageContainer.style.minHeight = `${neededPages * 297}mm`;
+    }
+
+    function updateToolbar() {
+      if (!editor || editor.isDestroyed) return;
+
+      document.querySelectorAll('[data-command]').forEach(button => {
+        const command = button.dataset.command;
+        let active = false;
+
+        if (['bold', 'italic', 'underline', 'link', 'bulletList', 'orderedList'].includes(command)) {
+          active = editor.isActive(command);
+        }
+
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      document.querySelectorAll('[data-align]').forEach(button => {
+        const align = button.dataset.align;
+        const active = editor.isActive({ textAlign: align });
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      if (editor.isActive('heading', { level: 1 })) {
+        blockType.value = 'h1';
+      } else if (editor.isActive('heading', { level: 2 })) {
+        blockType.value = 'h2';
+      } else if (editor.isActive('blockquote')) {
+        blockType.value = 'blockquote';
+      } else {
+        blockType.value = 'paragraph';
+      }
+    }
+
+    document.querySelectorAll('[data-command]').forEach(button => {
+      button.addEventListener('mousedown', event => event.preventDefault());
+      button.addEventListener('click', () => {
+        const command = button.dataset.command;
+        const commands = {
+          undo: () => editor.chain().focus().undo().run(),
+          redo: () => editor.chain().focus().redo().run(),
+          indent: () => editor.commands.indent(),
+          outdent: () => editor.commands.outdent(),
+          bold: () => editor.chain().focus().toggleBold().run(),
+          italic: () => editor.chain().focus().toggleItalic().run(),
+          underline: () => editor.chain().focus().toggleUnderline().run(),
+          link: () => {
+            const previousUrl = editor.getAttributes('link').href;
+            const url = window.prompt('Enter URL:', previousUrl || 'https://');
+            if (url === null) return;
+            if (url === '') {
+              editor.chain().focus().extendMarkRange('link').unsetLink().run();
+              return;
+            }
+            editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+          },
+          bulletList: () => editor.chain().focus().toggleBulletList().run(),
+          orderedList: () => editor.chain().focus().toggleOrderedList().run(),
+          table: () => {
+            tableModal.hidden = false;
+            tableRowsInput.focus();
+          },
+          docName: () => {
+            const currentName = getComputedStyle(document.documentElement).getPropertyValue('--doc-name').replace(/"/g, '').trim();
+            const newName = window.prompt('Enter document name for footer:', currentName);
+            if (newName !== null) {
+              const formattedName = newName.trim() ? `"${newName.trim()}"` : '""';
+              document.documentElement.style.setProperty('--doc-name', formattedName);
+              status.textContent = newName.trim() ? `Document name set to "${newName.trim()}" · A4` : 'Document name cleared · A4';
+            }
+          },
+          frag: () => {
+            editor.chain().focus()
+            .insertContent('<span class="material-symbols-outlined" style="font-size: 48px;float: left;margin-right: 10px;">nest_clock_farsight_analog</span>')
+            .run();
+          },
+          tbl: () => {
+editor.chain().focus().insertContent({
+  type: 'table',
+  content: [
+    {
+      type: 'tableRow',
+      content: [
+        {
+          type: 'tableCell',
+          //attrs: { colwidth: [100] },
+          content: [
+            {
+              type: 'paragraph',
+              content: [{ type: 'text', text: 'To: ...' }]
+            }
+          ]
+        },
+        {
+          type: 'tableCell',
+          content: [
+            {
+              type: 'paragraph',
+              content: [{ type: 'text', text: 'From: ...' }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'tableRow',
+      content: [
+        {
+          type: 'tableCell',
+          attrs: { colspan: 2 }, // Explicitly define colspan here
+          content: [
+            {
+              type: 'paragraph',
+              attrs: { textAlign: 'center' },
+              content: [{ type: 'text', text: 'A large cell text' }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}).run();
+          },
+
+          svgIcon: () => {
+            const rawSvg = `<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>`;
+            const encodedSvgUrl = `data:image/svg+xml;utf8,${encodeURIComponent(rawSvg)}`;
+            editor.chain().focus().setImage({ src: encodedSvgUrl }).run();
+          }
+        };
+        commands[command]?.();
+      });
+    });
+
+    tableModalCancel.addEventListener('click', () => {
+      tableModal.hidden = true;
+    });
+
+    tableModalInsert.addEventListener('click', () => {
+      const rows = Math.max(1, parseInt(tableRowsInput.value, 10) || 3);
+      const cols = Math.max(1, parseInt(tableColsInput.value, 10) || 3);
+      const withHeaderRow = tableHeaderCheckbox.checked;
+
+      editor.chain().focus().insertTable({ rows, cols, withHeaderRow }).run();
+      tableModal.hidden = true;
+    });
+
+    tableModal.addEventListener('click', event => {
+      if (event.target === tableModal) {
+        tableModal.hidden = true;
+      }
+    });
+
+    document.querySelectorAll('[data-align]').forEach(button => {
+      button.addEventListener('mousedown', event => event.preventDefault());
+      button.addEventListener('click', () => {
+        editor.chain().focus().setTextAlign(button.dataset.align).run();
+      });
+    });
+
+    blockType.addEventListener('change', () => {
+      const chain = editor.chain().focus();
+      if (blockType.value === 'h1') chain.setHeading({ level: 1 }).run();
+      else if (blockType.value === 'h2') chain.setHeading({ level: 2 }).run();
+      else if (blockType.value === 'blockquote') chain.setBlockquote().run();
+      else chain.setParagraph().run();
+    });
+
+    document.querySelector('#clearSelection').addEventListener('click', () => {
+      editor.chain().focus().unsetAllMarks().clearNodes().setParagraph().setTextAlign('left').run();
+    });
+
+    document.querySelector('#clearAll').addEventListener('click', () => {
+      editor.chain().focus().selectAll().unsetAllMarks().clearNodes().setParagraph().setTextAlign('left').run();
+    });
+
+    document.querySelector('#printPdf').addEventListener('click', () => {
+      window.print();
+      status.textContent = 'Print dialog opened · A4';
+    });
+
+    updateToolbar();
+    checkPageHeight();
+  </script>
+</body>
+</html>

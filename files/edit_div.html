@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✎ Mini Editor</title>
+<style>
+    :root {
+      --doc-name: "";
+      --border-color: #ccc;
+      --font-size: 15px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-size: var(--font-size);
+      background: #e9edf2;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 6px;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      box-shadow: 0 2px 5px #00000030;
+
+      &::-webkit-scrollbar { display: none; }
+      -ms-overflow-style: none;     /* IE and Old Edge */
+      scrollbar-width: none;        /* Firefox */
+  }
+
+    .toolbar button,
+    .toolbar select {
+      padding: 4px;
+      font-family: Arial, sans-serif;
+      border: none;
+      background: #fff;
+      margin: 0;
+      cursor: pointer;
+    }
+    .toolbar select, .toolbar input { font-size: var(--font-size); vertical-align: middle; }
+    .toolbar input {
+      width: 160px;
+      padding: 2px 6px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      outline: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toolbar button:hover,
+    .toolbar select:hover {
+      background: #edf2f7;
+    }
+
+    .toolbar button.active {
+      background: #dceafe;
+      border-color: #6699dd;
+    }
+
+    .toolbar button .material-symbols-outlined {
+      font-size: 18px;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    #printPdf {
+      color: #fff;
+      background: #1769aa;
+      font-weight: bold;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 6px;
+    }
+
+    #printPdf:hover {
+      background: purple;
+    }
+
+    .separator {
+      display: inline-block;
+      vertical-align: middle;
+      width: 1px;
+      height: 24px;
+      margin: 0 4px;
+      background: #d3d7dd;
+    }
+
+    .workspace {
+      padding: 30px 15px 60px;
+    }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 15mm 30mm; /* Matches print margins */
+      background: #fff;
+      box-shadow: 0 3px 15px #00000020;
+      position: relative;
+    }
+
+    #editor {
+      min-height: 267mm;
+      outline: none;
+      font-family: Arial, sans-serif;
+      font-size: var(--font-size);
+      line-height: 1.5;
+      overflow-wrap: break-word;
+      cursor: text;
+    }
+    #editor blockquote {
+      margin: 1em 0;
+      padding: 0 0 0 24px;
+      border-left: 4px solid var(--border-color);
+      color: #000;
+    }
+    #editor table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    #editor table td {
+      vertical-align: top;
+    }
+    #editor H1 {
+      font-size: 24px;
+      line-height: 24px;
+      margin: 0;
+    }
+    #editor H2 {
+      font-size: 20px;
+      line-height: 20px;
+      margin: 0;
+    }
+    #editor u {
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid #000;
+    }
+    #editor ol li, #editor ul li {
+      margin-bottom: .8em;
+    }
+    #editor svg {
+      display: inline-block;
+    }
+/* Modal dialog styling */
+    .modal-overlay[hidden] { display: none !important; }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 18px;
+    }
+    .modal-dialog {
+      background: #fff;
+      width: 320px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .modal-dialog h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #222;
+    }
+    .modal-field {
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .modal-field label {
+      font-size: 13px;
+      font-weight: bold;
+      color: #444;
+    }
+    .modal-field input[type="number"] {
+      height: 34px;
+      padding: 0 8px;
+      border: 1px solid #c7cbd1;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .modal-field-checkbox {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .modal-field-checkbox label {
+      font-weight: normal;
+      cursor: pointer;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .modal-actions button {
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .modal-btn-cancel {
+      background: #fff;
+      border: 1px solid #c7cbd1;
+      color: #333;
+    }
+    .modal-btn-confirm {
+      background: #1769aa;
+      border: 1px solid #1769aa;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+      }
+
+      .toolbar {
+        display: none !important;
+      }
+
+      .workspace {
+        padding: 0 !important;
+      }
+
+      .page {
+        width: 100% !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+      }
+
+      #editor {
+        min-height: auto !important;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 15mm 30mm; /* 15mm Top/Bottom, 30mm Left/Right */
+        @bottom-left {
+          content: var(--doc-name);
+          font-family: Arial, sans-serif;
+          font-size: 9pt;
+          color: #5a5a5a;
+        }
+        @bottom-right {
+          content: "Page " counter(page) " of " counter(pages);
+          font-family: Arial, sans-serif;
+          font-size: 9pt;
+          color: #5a5a5a;
+        }
+      }
+    }
+    </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+<div class="toolbar" role="toolbar" aria-label="Text formatting">
+
+    <button type="button" id="printPdf" class="pdf-button" title="Download the document as PDF"><span style="vertical-align: middle;">PDF</span> <span class="material-symbols-outlined">
+download</span></button>
+    <input type="text" id="docNameInput" placeholder="Doc Name for Footer" title="Set Document Name for Footer">
+
+    <button type="button" data-command="undo" title="Undo (Ctrl+Z)"><span class="material-symbols-outlined">
+undo</span></button>
+    <button type="button" data-command="redo" title="Redo (Ctrl+Y)"><span class="material-symbols-outlined">
+redo</span></button>
+    <button type="button" data-command="removeFormat" title="Remove formatting from selection"><span class="material-symbols-outlined">
+format_clear</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
+    <button type="button" data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">
+format_italic</span></button>
+    <button type="button" data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">
+format_underlined</span></button>
+    <button type="button" data-command="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">
+link</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">
+format_paragraph</span></button>
+    <button type="button" data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">
+format_h1</span></button>
+    <button type="button" data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">
+format_h2</span></button>
+    <button type="button" data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">
+uppercase</span></button>
+    <button type="button" data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">
+lowercase</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="justifyLeft" title="Align left"><span class="material-symbols-outlined">
+format_align_left</span></button>
+    <button type="button" data-command="justifyCenter" title="Align center"><span class="material-symbols-outlined">
+format_align_center</span></button>
+    <button type="button" data-command="justifyRight" title="Align right"><span class="material-symbols-outlined">
+format_align_right</span></button>
+    <button type="button" data-command="justifyFull" title="Justify"><span class="material-symbols-outlined">
+format_align_justify</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="insertUnorderedList" title="Bulleted list"><span class="material-symbols-outlined">
+format_list_bulleted</span></button>
+    <button type="button" data-command="insertOrderedList" title="Numbered list"><span class="material-symbols-outlined">
+format_list_numbered</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">
+format_indent_decrease</span></button>
+    <button type="button" data-command="indent" title="Increase indent"><span class="material-symbols-outlined">
+format_indent_increase</span></button>
+    <button type="button" data-command="superscript" title="Superscript"><span class="material-symbols-outlined">
+superscript</span></button>
+    <button type="button" data-command="subscript" title="Subscript"><span class="material-symbols-outlined">
+subscript</span></button>
+
+    <span class="separator"></span>
+
+    <button type="button" data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">
+format_quote</span></button>
+    <button type="button" id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">
+page_header</span></button>
+      <button type="button" data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">
+note_alt</span></button>
+      <button type="button" data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">
+error</span></button>
+      <button type="button"  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">
+gavel</span></button>
+      <button type="button"  id="twoPanels" title="Insert a two-panel block"><span class="material-symbols-outlined">
+view_column_2</span></button>
+
+    <span class="separator"></span>
+
+    <button id="insertTable" type="button" title="Insert Table"><span class="material-symbols-outlined">
+table</span></button>
+    <button type="button" id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">
+mop</span></button>
+  </div>
+
+  <main class="workspace">
+    <div class="page" id="pageContainer">
+      <div id="editor" contenteditable="true">
+        Acest joc de cuvinte ne poate aminti despre multe.
+      </div>
+    </div>
+  </main>
+
+<!-- Table Insertion Modal Dialog -->
+  <div id="tableModal" class="modal-overlay" hidden>
+    <div class="modal-dialog">
+      <h3>Insert Table</h3>
+      <div class="modal-field">
+        <label for="tableRows">Rows</label>
+        <input type="number" id="tableRows" value="3" min="1" max="50">
+      </div>
+      <div class="modal-field">
+        <label for="tableCols">Columns</label>
+        <input type="number" id="tableCols" value="3" min="1" max="20">
+      </div>
+      <div class="modal-field modal-field-checkbox">
+        <input type="checkbox" id="tableHeader" checked>
+        <label for="tableHeader">Include header row</label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="tableModalCancel" class="modal-btn-cancel">Cancel</button>
+        <button type="button" id="tableModalInsert" class="modal-btn-confirm">Insert</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+const editorElement = document.querySelector('#editor');
+
+document.querySelectorAll('[data-command]').forEach(button => {
+      button.addEventListener('mousedown', event => event.preventDefault());
+      button.addEventListener('click', () => {
+        const command = button.dataset.command;
+        editorElement.focus();
+        console.log(`Executing command: ${command}`);
+        document.execCommand(command, false, null);
+      });
+});
+
+document.querySelectorAll('[data-sel]').forEach(button => {
+      //button.addEventListener('mousedown', event => event.preventDefault());
+      button.addEventListener('click', () => {
+        const sel = button.dataset.sel;
+        if(sel === 'UpperCase' || sel === 'LowerCase') {
+          const selection = window.getSelection();
+          if (!selection.isCollapsed) {
+            const selectedText = selection.toString();
+            const transformedText = sel === 'UpperCase' ? selectedText.toUpperCase() : selectedText.toLowerCase();
+            document.execCommand('insertText', false, transformedText);
+          }
+        } else {
+          editorElement.focus();
+          document.execCommand('formatBlock', false, sel);
+        }
+      });
+});
+
+document.querySelector('#printPdf').addEventListener('click', () => {
+  window.print();
+});
+
+document.querySelector('#docNameInput').addEventListener('change', (event) => {
+  const newName = event.target.value.trim();
+  document.documentElement.style.setProperty('--doc-name', `"${newName}"`);
+});
+
+document.querySelector('#titlu').addEventListener('click', () => {
+  const t = `<table>
+    <tr>
+        <td style="border-right: 1px solid #000; padding-bottom: .6em; vertical-align: bottom;"><H1>REQUEST</H1></td>
+        <td style="padding: 0 0 .6em 1em; width: 1%; white-space: nowrap;">To the enterprise<br>of the City Hall<br>in reverse order.</td>
+    </tr>
+    <tr>
+        <td colspan="2" style="border: 1px solid #000; padding: .6em 0; text-align: center;">The description of the claim<br>to be brought before the court.</td>
+    </tr>
+  </table>`;
+  editorElement.focus();
+  document.execCommand('insertHTML', false, t);
+});
+
+document.querySelector('#clearAll').addEventListener('click', () => {
+  editorElement.innerHTML = editorElement.textContent; // Remove all formatting but keep text
+});
+document.querySelector('#tableModalCancel').addEventListener('click', () => {
+  tableModal.hidden = true;
+});
+
+function makeRemark(mod) {
+  let svg;
+  switch(mod) {
+    case 'quote':
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>';
+      break;
+    case 'note':
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M280-280h84l240-238-86-86-238 238v86Zm352-266 42-44q6-6 6-14t-6-14l-56-56q-6-6-14-6t-14 6l-44 42 86 86ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm301.5-598.5Q510-807 510-820t-8.5-21.5Q493-850 480-850t-21.5 8.5Q450-833 450-820t8.5 21.5Q467-790 480-790t21.5-8.5ZM200-200v-560 560Z"/></svg>';
+      break;
+    case 'warning':
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5ZM440-440h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>';
+      break;
+    case 'decision':
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M160-120v-80h480v80H160Zm226-194L160-540l84-86 228 226-86 86Zm254-254L414-796l86-84 226 226-86 86Zm184 408L302-682l56-56 522 522-56 56Z"/></svg>';
+      break;
+    default: svg = '>';
+  }
+  const t = `<table><tr>
+      <td style="border-right: 1px solid #000; padding-right: 1em; width: 40px;">${svg}</td>
+      <td style="padding-left: 1em;">Write here.</td></tr></table>`;
+  editorElement.focus();
+  document.execCommand('insertHTML', false, t);
+}
+
+document.querySelectorAll('[data-remark]').forEach(button => {
+  button.addEventListener('click', () => {
+      makeRemark(button.dataset.remark);
+  });
+});
+document.querySelector('#twoPanels').addEventListener('click', () => {
+  const t = `<table><tr>
+      <td style="border-right: 1px solid #000; padding-right: 1em; width: 50%;">First panel.</td>
+      <td style="padding-left: 1em;">Second panel.</td></tr></table>`;
+  editorElement.focus();
+  document.execCommand('insertHTML', false, t);
+});
+</script>
+</body>
+</html>

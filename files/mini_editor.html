@@ -9,6 +9,8 @@
       --doc-name: "";
       --border-color: #ccc;
       --font-size: 15px;
+      --page-text: "Pag.";
+      --of-text: "din";
     }
 
     * {
@@ -27,6 +29,7 @@
     .toolbar {
       position: sticky;
       top: 0;
+      width: 100%;
       z-index: 100;
       overflow-x: auto;
       overflow-y: hidden;
@@ -37,8 +40,8 @@
       box-shadow: 0 2px 5px #00000030;
 
       &::-webkit-scrollbar { display: none; }
-      -ms-overflow-style: none;     /* IE and Old Edge */
-      scrollbar-width: none;        /* Firefox */
+      -ms-overflow-style: none; /* IE and Old Edge */
+      scrollbar-width: none; /* Firefox */
   }
 
     .toolbar button,
@@ -135,11 +138,19 @@
       vertical-align: top;
     }
     #editor H1 {
+      font-family: "Roboto Condensed", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 600;
+      font-style: bold;
       font-size: 24px;
       line-height: 24px;
       margin: 0;
     }
     #editor H2 {
+      font-family: "Roboto Condensed", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 600;
+      font-style: bold;
       font-size: 20px;
       line-height: 20px;
       margin: 0;
@@ -155,6 +166,20 @@
     #editor svg {
       display: inline-block;
     }
+    #editor .hRule {
+      border: none;
+      border-top: 1px solid #000;
+      height: 1px;
+      width: 25%;
+      margin: 0 auto;
+    }
+    #editor .chenar {
+      border: .6px solid #000;
+      padding: 1px 4px;
+      margin: 0 2px;
+      border-radius: 3px;
+    }
+
 /* Modal dialog styling */
     .modal-overlay[hidden] { display: none !important; }
     .modal-overlay {
@@ -269,7 +294,8 @@
           color: #5a5a5a;
         }
         @bottom-right {
-          content: "Page " counter(page) " of " counter(pages);
+          /*content: "Page " counter(page) " of " counter(pages);*/
+          content: var(--page-text) " " counter(page) " " var(--of-text) " " counter(pages);
           font-family: Arial, sans-serif;
           font-size: 9pt;
           color: #5a5a5a;
@@ -278,6 +304,10 @@
     }
     </style>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600&family=Roboto:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="toolbar" role="toolbar" aria-label="Text formatting">
@@ -302,19 +332,8 @@ format_italic</span></button>
 format_underlined</span></button>
     <button type="button" data-command="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">
 link</span></button>
-
-    <span class="separator"></span>
-
-    <button type="button" data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">
-format_paragraph</span></button>
-    <button type="button" data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">
-format_h1</span></button>
-    <button type="button" data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">
-format_h2</span></button>
-    <button type="button" data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">
-uppercase</span></button>
-    <button type="button" data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">
-lowercase</span></button>
+    <button type="button" id="chenar" title="Frame the selection"><span class="material-symbols-outlined">
+font_download</span></button>
 
     <span class="separator"></span>
 
@@ -336,6 +355,19 @@ format_list_numbered</span></button>
 
     <span class="separator"></span>
 
+    <button type="button" data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">
+format_paragraph</span></button>
+    <button type="button" data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">
+format_h1</span></button>
+    <button type="button" data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">
+format_h2</span></button>
+    <button type="button" data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">
+uppercase</span></button>
+    <button type="button" data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">
+lowercase</span></button>
+
+    <span class="separator"></span>
+
     <button type="button" data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">
 format_indent_decrease</span></button>
     <button type="button" data-command="indent" title="Increase indent"><span class="material-symbols-outlined">
@@ -344,6 +376,10 @@ format_indent_increase</span></button>
 superscript</span></button>
     <button type="button" data-command="subscript" title="Subscript"><span class="material-symbols-outlined">
 subscript</span></button>
+    <button type="button" id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">
+space_bar</span></button>
+    <button type="button" id="endash" title="Turn '--' into '—'"><span class="material-symbols-outlined">
+unknown_med</span></button>
 
     <span class="separator"></span>
 
@@ -352,13 +388,19 @@ format_quote</span></button>
     <button type="button" id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">
 page_header</span></button>
       <button type="button" data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">
-note_alt</span></button>
+edit_square</span></button>
       <button type="button" data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">
 error</span></button>
+      <button type="button"  data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">
+attach_file</span></button>
       <button type="button"  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">
 gavel</span></button>
       <button type="button"  id="twoPanels" title="Insert a two-panel block"><span class="material-symbols-outlined">
 view_column_2</span></button>
+      <button type="button" id="horizontalRule" title="Insert a Horizontal line"><span class="material-symbols-outlined">
+horizontal_rule</span></button>
+      <button type="button" id="tblList" title="Insert a Tabular List"><span class="material-symbols-outlined">
+list_alt</span></button>
 
     <span class="separator"></span>
 
@@ -366,6 +408,7 @@ view_column_2</span></button>
 table</span></button>
     <button type="button" id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">
 mop</span></button>
+    <button type="button" id="footerLang" title="Toggle footer language">RO</button>
   </div>
 
   <main class="workspace">
@@ -449,7 +492,7 @@ document.querySelector('#titlu').addEventListener('click', () => {
     <tr>
         <td colspan="2" style="border: 1px solid #000; padding: .6em 0; text-align: center;">The description of the claim<br>to be brought before the court.</td>
     </tr>
-  </table>`;
+  </table><br>`;
   editorElement.focus();
   document.execCommand('insertHTML', false, t);
 });
@@ -465,22 +508,25 @@ function makeRemark(mod) {
   let svg;
   switch(mod) {
     case 'quote':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>';
       break;
     case 'note':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M280-280h84l240-238-86-86-238 238v86Zm352-266 42-44q6-6 6-14t-6-14l-56-56q-6-6-14-6t-14 6l-44 42 86 86ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm301.5-598.5Q510-807 510-820t-8.5-21.5Q493-850 480-850t-21.5 8.5Q450-833 450-820t8.5 21.5Q467-790 480-790t21.5-8.5ZM200-200v-560 560Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/></svg>';
       break;
     case 'warning':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5ZM440-440h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5ZM440-440h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>';
       break;
     case 'decision':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M160-120v-80h480v80H160Zm226-194L160-540l84-86 228 226-86 86Zm254-254L414-796l86-84 226 226-86 86Zm184 408L302-682l56-56 522 522-56 56Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M160-120v-80h480v80H160Zm226-194L160-540l84-86 228 226-86 86Zm254-254L414-796l86-84 226 226-86 86Zm184 408L302-682l56-56 522 522-56 56Z"/></svg>';
+      break;
+    case 'attach':
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>';
       break;
     default: svg = '>';
   }
   const t = `<table><tr>
-      <td style="border-right: 1px solid #000; padding-right: 1em; width: 40px;">${svg}</td>
-      <td style="padding-left: 1em;">Write here.</td></tr></table>`;
+      <td style="border-right: 1px solid #000; padding-right: 1em; width: 50px;">${svg}</td>
+      <td style="padding-left: 1em;">Write here.</td></tr></table><br>`;
   editorElement.focus();
   document.execCommand('insertHTML', false, t);
 }
@@ -493,9 +539,62 @@ document.querySelectorAll('[data-remark]').forEach(button => {
 document.querySelector('#twoPanels').addEventListener('click', () => {
   const t = `<table><tr>
       <td style="border-right: 1px solid #000; padding-right: 1em; width: 50%;">First panel.</td>
-      <td style="padding-left: 1em;">Second panel.</td></tr></table>`;
+      <td style="padding-left: 1em;">Second panel.</td></tr></table><br>`;
   editorElement.focus();
   document.execCommand('insertHTML', false, t);
+});
+document.querySelector('#horizontalRule').addEventListener('click', () => {
+  editorElement.focus();
+  document.execCommand('insertHTML', false, '<br><div class="hRule"></div><br>');
+});
+document.querySelector('#nbsp').addEventListener('click', () => {
+  editorElement.focus();
+  document.execCommand('insertHTML', false, '&nbsp;');
+});
+document.querySelector('#endash').addEventListener('click', () => {
+  editorElement.innerHTML = editorElement.innerHTML.replace(/--/g, '&ndash;');
+});
+document.querySelector('#chenar').addEventListener('click', () => {
+  const selection = window.getSelection();
+  if (!selection.isCollapsed) {
+    const selectedText = selection.toString();
+    const framedText = `<span class="chenar">${selectedText}</span>`;
+    document.execCommand('insertHTML', false, framedText);
+  }
+});
+document.querySelector('#footerLang').addEventListener('click', () => {
+  const el = event.target;
+  const currentLang = getComputedStyle(document.documentElement).getPropertyValue('--page-text').trim();
+  if (el.textContent === 'RO') {
+    document.documentElement.style.setProperty('--page-text', '"Page"');
+    document.documentElement.style.setProperty('--of-text', '"of"');
+    el.textContent = 'EN';
+  } else {
+    document.documentElement.style.setProperty('--page-text', '"Pag."');
+    document.documentElement.style.setProperty('--of-text', '"din"');
+    el.textContent = 'RO';
+  }
+});
+document.querySelector('#tblList').addEventListener('click', () => {
+  const inp = prompt('Enter rows and type 1/A (e.g., 3 1', '3 1');
+  if (inp && inp.trim() !== '') {
+    const parts = inp.trim().split(' ');
+    if (parts.length < 1 || parts.length > 2) return;
+    const rows = parseInt(parts[0], 10);
+    const tip = parts[1];
+    if (isNaN(rows) || (tip != '1' && tip != 'A')) return;
+    const Flag = (tip == '1');
+    let tableHTML = '<table>';
+    for (let r = 0; r < rows; r++) {
+      const svg = `<svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="32" viewBox="0 0 32 32">
+<circle cx="16" cy="16" r="15" fill="none" stroke-width="1" stroke="#000"/>
+<text x="16" y="16" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="18" fill="#000">${ Flag ? r+1 : String.fromCharCode(r + 65) }</text>
+</svg>`;
+      tableHTML += `<tr><td style="width: 50px;">${svg}</td><td style="padding-bottom: .8em;">Item ${r+1}</td></tr>`;
+    }
+    editorElement.focus();
+    document.execCommand('insertHTML', false, tableHTML + '</table><br>');
+  }
 });
 </script>
 </body>

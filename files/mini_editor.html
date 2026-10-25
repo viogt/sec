@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>✎ 4 Mini Editor</title>
+  <title>✎ 5 Mini Editor</title>
 <style>
     :root {
       --doc-name: "";
@@ -28,10 +28,7 @@
 
     .toolbar {
       position: sticky;
-      top: 0;
-    left: 0;
-    right: 0;
-    width: auto;
+      top: 0;   
       z-index: 100;
       overflow-x: auto;
       /*overflow-y: hidden;*/
@@ -104,12 +101,13 @@
       background: #d3d7dd;
     }
 
-    .workspace {
-      transform: scale(0.6);
-      transform-origin: top center;
+    .workspace { 
       padding: 30px 15px 60px;
     }
     .page {
+      transform: scale(0.6);
+      transform-origin: top center;
+      
       width: 210mm;
       min-height: 297mm;
       margin: 0 auto;

@@ -718,7 +718,7 @@ document.querySelector('#ribbon').addEventListener('click', () => {
     document.execCommand('insertHTML', false, `<div style="text-align:center"><svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="340" viewBox="5 76 290 56">
 <text fill="black" font-family="Arial, sans-serif" font-size="12" font-weight="500" dominant-baseline="middle">
 <textPath path="M0 117q150-40 300 0" startOffset="50%" text-anchor="middle" textLength="210" lengthAdjust="spacingAndGlyphs">
-${selection.toString()}</textPath></text>
+${selection.toString().toUpperCase()}</textPath></text>
 <path d="M10 95q150-35 280 0l-15 15 5 20q-120-35-260 0l5-20Z" stroke="#000" fill="none"/>
 </svg></div>`);
 });

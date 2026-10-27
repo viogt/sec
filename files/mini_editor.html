@@ -118,9 +118,9 @@
 
 @media screen and (max-width: 768px) {
   .page {
-    width: 136mm; /*150mm;*/
+    width: 127.5mm; /*136mm; 150mm;*/
     padding: 20px 5px 10px 5px;
-    transform: scale(.75); /*scale(.68);*/
+    transform: scale(.8); /*scale(.75); scale(.68);*/
     transform-origin: top left;
   }
   .workspace {
@@ -699,11 +699,6 @@ function getCurrentElement() {
 }
 
 document.querySelector('#insertTable').addEventListener('click', () => {
-  /*const selection = window.getSelection();
-  if (selection.rangeCount > 0) {
-    const anchorNode = selection.anchorNode;
-    let elm = anchorNode.nodeType === Node.TEXT_NODE ? anchorNode.parentElement : anchorNode;*/
-
     let elm = getCurrentElement();
     if(!elm) return;
 
@@ -711,8 +706,7 @@ document.querySelector('#insertTable').addEventListener('click', () => {
   
   if(elm.tagName == 'TR') {
     
-    let T = elm.parentElement;
-    while(T.tagName != 'TABLE') T = T.parentElement;
+    let T = elm.closest('table');
     const inp = prompt('Choose: delete | insert before | insert after | delete table', 'insert after');
     if (!inp || inp.trim() == '') return;
     const clone = elm.cloneNode(true);
@@ -721,7 +715,7 @@ document.querySelector('#insertTable').addEventListener('click', () => {
     else if(inp == 'delete table') { T.remove(); return; }
     else if(inp == 'delete') { if(T.rows.length < 2) { T.remove(); return; } elm.remove(T); }
     else return;
-    if(elm.cells[0].innerHTML.slice(0,4) == '<svg') renumber(T);
+    if(elm.cells[0].firstChild.tagName == 'svg') renumber(T);
     return;
   }
   const inp = prompt('Ener one, or rows and colulms width (4 10% 60% 30%)', '4 10% 60% 30%');
@@ -748,13 +742,18 @@ document.querySelector('#insertTable').addEventListener('click', () => {
 document.querySelector('#ribbon').addEventListener('click', () => {
   const selection = window.getSelection();
   if (selection.isCollapsed) return;
-    editorElement.focus();
-    document.execCommand('insertHTML', false, `<div style="text-align:center"><svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="340" viewBox="5 76 290 56">
-<text fill="black" font-family="Arial, sans-serif" font-size="12" font-weight="500" dominant-baseline="middle">
-<textPath path="M0 117q150-40 300 0" startOffset="50%" text-anchor="middle" textLength="210" lengthAdjust="spacingAndGlyphs">
+const t = `<div style="text-align:center;">
+<svg xmlns="http://www.w3.org/2000/svg" width="340" viewBox="0 140 720 170">
+<g stroke="#000" stroke-width="2" fill="none">
+  <path d="m155 276-55-19M619 193l100 22-45 37 35 53-144-29 3-26m-3 26 54-19"/>
+  <path d="M152 249c173-22 284-19 467 8v-91c-204-31-318-31-519 0v27m52 56-52 8v-64m52 56 3 27-145 29 35-54-44-36 99-22"/>
+</g>
+<text fill="black" font-size="28" dominant-baseline="middle">
+<textPath path="M100 218 q260 -50 520 0" startOffset="50%" text-anchor="middle" textLength="450" lengthAdjust="spacingAndGlyphs">
 ${selection.toString().toUpperCase()}</textPath></text>
-<path d="M10 95q150-35 280 0l-15 15 5 20q-120-35-260 0l5-20Z" stroke="#000" fill="none"/>
-</svg></div>`);
+</svg></div>`;
+    editorElement.focus();
+    document.execCommand('insertHTML', false, t);
 });
 </script>
 </body>

@@ -54,7 +54,7 @@
       cursor: pointer;
     }
     .toolbar select, .toolbar input { font-size: var(--font-size); vertical-align: middle; }
-    .toolbar input {
+    #docNameInput {
       width: 160px;
       padding: 2px 6px;
       border: 1px solid var(--border-color);
@@ -88,11 +88,6 @@
       padding: 0 8px;
       border-radius: 6px;
     }
-
-    #printPdf:hover {
-      background: purple;
-    }
-
     .separator {
       display: inline-block;
       vertical-align: middle;
@@ -116,26 +111,15 @@
     position: relative;
     }
 
-/*@media screen and (max-width: 768px) {
-  .page {
-    width: 136mm; //150mm;
-    padding: 20px 5px 10px 5px;
-    transform: scale(.75); //scale(.68);
-    transform-origin: top left;
-  }
-  .workspace {
-      padding: 0;
-      overflow-x: clip;
-  }
-}*/
 @media screen and (max-width: 768px) {
   .page {
     width: 100%;
     padding: 20px 15px;
     font-size: 13px;
   }
+  #docNameInput { width: 100px; }
   .workspace {
-      padding: 0;
+    padding: 0;
   }
 }
 
@@ -148,16 +132,9 @@
       overflow-wrap: break-word;
       cursor: text;
     }
-  #editor p {
-    margin: 0;
-    text-align: justify;
-    line-height: 1.3;
-  }
-    #editor blockquote {
-      margin: 1em 0;
-      padding: 0 0 0 24px;
-      border-left: 4px solid var(--border-color);
-      color: #000;
+    #editor p {
+      margin: 0;
+      text-align: justify;
     }
     #editor table {
       width: 100%;
@@ -171,16 +148,16 @@
       font-family: "Roboto Condensed", sans-serif;
       font-optical-sizing: auto;
       font-weight: 600;
-      font-size: 24px;
-      line-height: 24px;
+      font-size: 1.6em;
+      line-height: 1;
       margin: 0;
     }
     #editor H2 {
       font-family: "Roboto Condensed", sans-serif;
       font-optical-sizing: auto;
       font-weight: 600;
-      font-size: 20px;
-      line-height: 20px;
+      font-size: 1.4em;
+      line-height: 1;
       margin: 0;
     }
     #editor u {
@@ -201,8 +178,7 @@
       border: none;
       border-top: 1px solid #000;
       height: 1px;
-      width: 25%;
-      margin: 0 auto;
+      width: 100%;
     }
     #editor .chenar {
       border: 1px solid #000;
@@ -212,7 +188,7 @@
       display: inline-block;
     }
 
-/* Modal dialog styling ---
+/* Modal dialog styling */
     .modal-overlay[hidden] { display: none !important; }
     .modal-overlay {
       position: fixed;
@@ -221,74 +197,25 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(15, 23, 42, 0.6);
-      padding: 18px;
+      background: rgba(0, 0, 0, .4);
     }
     .modal-dialog {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+        padding: 10px;
       background: #fff;
-      width: 320px;
+      width: min(90%,600px);
       border-radius: 8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      padding: 20px;
-      font-family: Arial, sans-serif;
+      box-shadow: 0 10px 25px rgba(0,0,0,.8);
     }
-    .modal-dialog h3 {
-      margin-top: 0;
-      font-size: 18px;
-      color: #222;
+    .modal-dialog button {
+      background: #ddd;
+      border: none;
+      width: 100%;
+      padding: 12px 0;
+      border-radius: 0px;
     }
-    .modal-field {
-      margin-bottom: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .modal-field label {
-      font-size: 13px;
-      font-weight: bold;
-      color: #444;
-    }
-    .modal-field input[type="number"] {
-      height: 34px;
-      padding: 0 8px;
-      border: 1px solid #c7cbd1;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    .modal-field-checkbox {
-      flex-direction: row;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .modal-field-checkbox label {
-      font-weight: normal;
-      cursor: pointer;
-    }
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 20px;
-    }
-    .modal-actions button {
-      height: 34px;
-      padding: 0 14px;
-      border-radius: 4px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .modal-btn-cancel {
-      background: #fff;
-      border: 1px solid #c7cbd1;
-      color: #333;
-    }
-    .modal-btn-confirm {
-      background: #1769aa;
-      border: 1px solid #1769aa;
-      color: #fff;
-      font-weight: bold;
-    } */
 
     @media print {
       body {
@@ -322,14 +249,14 @@
         @bottom-left {
           content: var(--doc-name);
           font-family: Arial, sans-serif;
-          font-size: 12px;
+          font-size: .6em;
           color: #000;
         }
         @bottom-right {
           /*content: "Page " counter(page) " of " counter(pages);*/
           content: var(--page-text) " " counter(page) " " var(--of-text) " " counter(pages);
           font-family: Arial, sans-serif;
-          font-size: 12px;
+          font-size: .6em;
           color: #000;
         }
       }
@@ -434,6 +361,8 @@ signature</span></button>
 emoji_objects</span></button>
       <button type="button"  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">
 gavel</span></button>
+      <button type="button"  data-remark="blank" title="Insert an Blank quote"><span class="material-symbols-outlined">
+dock_to_right</span></button>
       <button type="button"  id="twoPanels" title="Insert a two-panel block"><span class="material-symbols-outlined">
 view_column_2</span></button>
       <button type="button" id="horizontalRule" title="Insert a Horizontal line"><span class="material-symbols-outlined">
@@ -447,11 +376,18 @@ design_services</span></button>
 
     <button id="insertTable" type="button" title="Insert Table"><span class="material-symbols-outlined">
 table</span></button>
+    <button id="uploadFile" type="button" title="Insert an Image"><span class="material-symbols-outlined">
+add_photo_alternate</span></button>
     <button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">
 workspace_premium</span></button>
     <button type="button" id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">
 mop</span></button>
     <button type="button" id="footerLang" title="Toggle footer language">RO</button>
+
+    <button type="button" onclick="takeClipboard()" title="Content into the Clipboard"><span class="material-symbols-outlined">
+inventory</span></button>
+    <button type="button"  onclick="pushClipboard()" title="From Clipboard into Document"><span class="material-symbols-outlined">
+article_shortcut</span></button>
   </div>
 
   <main class="workspace">
@@ -463,28 +399,35 @@ mop</span></button>
   </main>
 
 <!-- Table Insertion Modal Dialog -->
-  <div id="tableModal" class="modal-overlay" hidden>
+  <div class="modal-overlay" hidden>
     <div class="modal-dialog">
-      <h3>Insert Table</h3>
-      <div class="modal-field">
-        <label for="tableRows">Rows</label>
-        <input type="number" id="tableRows" value="3" min="1" max="50">
+      <div>
+        <button onclick="fileInput.click()" style="border-bottom: 1px solid #999;">&#x1F5BC; GET AN IMAGE</button><br>
+        <img id="previewImage" style="width:100%"/>
       </div>
-      <div class="modal-field">
-        <label for="tableCols">Columns</label>
-        <input type="number" id="tableCols" value="3" min="1" max="20">
+        <div style="overflow-x: auto; white-space: nowrap; scrollbar-width: none; line-height: 1.6;">
+            <input type="file" id="fileInput" accept="image/*" style="display: none;"/>
+            <div>&#9662; Image width:</div>
+            <label><input type="radio" name="image_width" value="100%">100%</label>
+            <label><input type="radio" name="image_width" value="50%">50%</label><br>
+            <label><input type="radio" name="image_width" value="33.3%" checked>33.3%</label>
+            <label><input type="radio" name="image_width" value="25%">25%</label><hr>
+            <label><input type="checkbox" id="image_border" checked/> image border</label><br>
+            <label><input type="checkbox" id="image_radius" checked/> rounded edges<label><hr>
+            <div>&#9662; Image align:</div>
+            <label><input type="radio" name="image_align" value="left" checked> left</label>
+            <label><input type="radio" name="image_align" value="none"> none</label>
+            <label><input type="radio" name="image_align" value="right"> right</label><hr>
+            <div>&#9662; Image filter:</div>
+            <label><input type="radio" name="image_filter" value="normal" checked> normal</label>
+            <label><input type="radio" name="image_filter" value="grayscale(100%)"> grayscale</label>
+            <label><input type="radio" name="image_filter" value="sepia(100%)"> sepia</label><hr>
+            <label><input type="checkbox" id="image_shadow"/> image shadow</label>
       </div>
-      <div class="modal-field modal-field-checkbox">
-        <input type="checkbox" id="tableHeader" checked>
-        <label for="tableHeader">Include header row</label>
-      </div>
-      <div class="modal-actions">
-        <button type="button" id="tableModalCancel" class="modal-btn-cancel">Cancel</button>
-        <button type="button" id="tableModalInsert" class="modal-btn-confirm">Insert</button>
-      </div>
+      <button id="tableModalCancel">&#x2718; CANCEL</button>
+      <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
     </div>
   </div>
-
 <script>
 
 const editorElement = document.querySelector('#editor');
@@ -540,10 +483,7 @@ document.querySelector('#titlu').addEventListener('click', () => {
 });
 
 document.querySelector('#clearAll').addEventListener('click', () => {
-  editorElement.innerHTML = editorElement.textContent; // Remove all formatting but keep text
-});
-document.querySelector('#tableModalCancel').addEventListener('click', () => {
-  tableModal.hidden = true;
+  editorElement.innerHTML = `<p>${editorElement.textContent}</p>`;
 });
 
 function makeRemark(mod) {
@@ -569,9 +509,11 @@ function makeRemark(mod) {
       break;
     default: svg = '>';
   }
+  const selection = window.getSelection();
+  const sel = selection.isCollapsed ? '...' : selection.toString();
   const t = `<table><tr>
       <td style="border-right: 1px solid #000; width: 40px;">${svg}</td>
-      <td style="padding-left: 1em;">Write here.</td></tr></table><br>`;
+      <td style="padding-left: 1em;">${sel}</td></tr></table><br>`;
   editorElement.focus();
   document.execCommand('insertHTML', false, t);
 }
@@ -650,15 +592,15 @@ document.querySelector('#tblList').addEventListener('click', () => {
 document.querySelector('#signature').addEventListener('click', () => {
   const inp = prompt('How many signatories? (1-3)', '2');
   if (inp && inp.trim() !== '') {
-    let t, x = parseInt(inp, 10);
+    let x = parseInt(inp, 10);
     if (isNaN(x) || x < 1 || x > 3) return;
-    const sgn = '<td style="width: 20%; border-top: 1px solid #000; padding-top: .2em; line-height: 1;">Signatory,<br>position</td>';
-    const spc = '<td style="width: 10%;"></td>';
-    if(x == 1) t = `<table><tr>${sgn}${spc}${spc}</tr></table><br>`;
-    else if(x == 2) t = `<table><tr>${sgn}${spc}${sgn}</tr></table><br>`;
-    else t = `<table><tr>${sgn}${spc}${sgn}${spc}${sgn}</tr></table><br>`;
+
+    const fr = x < 3 ? '40%' : '30%';
+    let t = '<div style="display:flex;justify-content:space-between;line-height: 1.1;">';
+    for(let i = 0; i < x; i++)
+      t += `<div style="width:${fr}; border-top: 1px solid #000; padding-top: .2em;">Signatory,<br>position</div>`;
     editorElement.focus();
-    document.execCommand('insertHTML', false, t);
+    document.execCommand('insertHTML', false, t + '</div>');
   }
 });
 document.querySelector('#address').addEventListener('click', () => {
@@ -681,9 +623,8 @@ document.querySelector('#inlineIcon').addEventListener('click', () => {
     let x = parseInt(parts[1], 10); if(isNaN(x)) return;
     const computedStyle = window.getComputedStyle(editorElement);
     const lineHeight = computedStyle.lineHeight;
-    const fnt = parseFloat(lineHeight) * x;
     editorElement.focus();
-    document.execCommand('insertHTML', false, `<span class="material-symbols-outlined" style="font-size: ${fnt}px; line-height:1; float: left; margin-right: 10px;">${parts[0]}</span><span/>`);
+    document.execCommand('insertHTML', false, `<span class="material-symbols-outlined" style="font-size: ${parseFloat(lineHeight) * x}px; float: left; margin-right: 10px;">${parts[0]}</span>`);
   }
 });
 document.querySelector('#createLink').addEventListener('click', () => {
@@ -716,10 +657,10 @@ function getCurrentElement() {
 }
 
 document.querySelector('#insertTable').addEventListener('click', () => {
-    let elm = getCurrentElement();
-    if(!elm) return;
+  let elm = getCurrentElement();
+  if(!elm) return;
 
-    while(elm.tagName != 'TR' && elm.id != 'editor') elm = elm.parentElement;
+  while(elm.tagName != 'TR' && elm.id != 'editor') elm = elm.parentElement;
   
   if(elm.tagName == 'TR') {
     
@@ -735,17 +676,28 @@ document.querySelector('#insertTable').addEventListener('click', () => {
     if(elm.cells[0].firstChild.tagName == 'svg') renumber(T);
     return;
   }
-  const inp = prompt('Ener one, or rows and colulms width (4 10% 60% 30%)', '4 10% 60% 30%');
-  if (!inp && inp.trim() == '') return;
+
+  const inp = prompt('Ener one, list (+brd), or rows and colulms width (4 10% 60% 30%)', '4 10% 60% 30%');
+  if (!inp || inp.trim() == '') return;
   if(inp == 'one') {
     editorElement.focus();
     document.execCommand('insertHTML', false, '<table><tr><td style="padding: 1em; border: 1px solid #000;">...</td></tr></table><br>');
     return;
   }
-  const parts = inp.split(' ');
-  const L = parts.length, rows = parseInt(parts[0]);
+  const parts = inp.split(' '), L = parts.length, rows = parseInt(parts[0]);
   let T = '<table>';
-  for(let r = 1; r < rows; r++) {
+  if(L < 2) return;
+  if(parts[1] == 'list') {
+    const brd = L > 2 ? true : false;
+    for(let r = 0; r < rows; r++) {
+        T += `<tr><td style="width:2em;${ brd ? 'padding:0 1em 1em 0;border-right:1px solid #000;' : 'padding:0 1em 1em 0;' }">&ndash;</td><td style="width:100%;padding:${brd ? '0 0 1em 1em':'0 0 1em 0'};">...</td></tr>`;
+    }
+    editorElement.focus();
+    document.execCommand('insertHTML', false, T + '</table><br>');
+    return;
+  }
+
+  for(let r = 0; r < rows; r++) {
     T += '<tr>';
     for(let c = 1; c < L; c++) {
       T += `<td style="width:${parts[c]};padding:${ (c < L-1) ? '0 1em 1em 0' : '0 0 1em 0' }">...</td>`;
@@ -771,6 +723,76 @@ ${selection.toString().toUpperCase()}</textPath></text>
 </svg></div>`;
     editorElement.focus();
     document.execCommand('insertHTML', false, t);
+});
+
+/* ------------- Insert Image --------------- */
+function getRadioValue(nm) {
+    const opts = document.querySelectorAll(nm);
+    for(let el of opts) if(el.checked) return el.value;
+    return null;
+}
+document.querySelector('#uploadFile').addEventListener('click', () => {
+  document.querySelector('.modal-overlay').hidden = false;
+});
+document.querySelector('#tableModalCancel').addEventListener('click', () => {
+  document.querySelector('.modal-overlay').hidden = true;
+});
+document.querySelector('#tableModalInsert').addEventListener('click', () => {
+    const elm = getCurrentElement();
+    if(!elm || elm.tagName != 'P') {
+      document.querySelector('.modal-overlay').hidden = true;
+      return;
+    }
+    const srcImg = document.querySelector('#previewImage');
+    if(srcImg.src == '') return;
+
+    const img_width = getRadioValue('input[name="image_width"]');
+    const img_align = getRadioValue('input[name="image_align"]');
+    const img_filter = getRadioValue('input[name="image_filter"]');
+/* -- by HTML -- */
+    let algn = `width:${img_width};`;
+    const shdw = document.querySelector('#image_shadow').checked;
+    if(img_filter != 'normal' || shdw)
+      algn += `filter:${img_filter != 'normal' ? img_filter : ''}${shdw?' drop-shadow(0px 2px 3px #666)':''};`;
+    if(img_align == 'left') algn += 'margin-right:.8em; float:left;';
+    else if(img_align == 'right') algn += 'margin-left:.8em; float:right;';
+    else algn += 'margin:0;';
+    if(document.querySelector('#image_border').checked) algn += 'border:1px solid #aaa;';
+    if(document.querySelector('#image_radius').checked) algn += 'border-radius:.6em;';
+
+    editorElement.focus();
+    document.execCommand('insertHTML', false, `<img src="${srcImg.src}" style="${algn}"/>`);
+    document.querySelector('.modal-overlay').hidden = true;
+});
+
+document.querySelector('#fileInput').addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    base64File = e.target.result;
+    const prev = document.querySelector('#previewImage');
+    prev.src = base64File;
+  };
+  reader.readAsDataURL(file);
+});
+/*=============================== TAKE INTO THE CLIPBOARD ===================*/
+async function takeClipboard() {
+    try {
+        await navigator.clipboard.writeText(editorElement.innerHTML);
+    }
+    catch(err) { console.log('Clipboard failed!:', err); }
+}
+async function pushClipboard() {
+    try {
+        editorElement.innerHTML = await navigator.clipboard.readText();
+    }
+    catch(err) { console.log('Clipboard failed!:', err); }
+}
+/*=============================== ALERT ON LEAVE ===================*/
+window.addEventListener('beforeunload', (event) => {
+    event.preventDefault();
+    event.returnValue = '';
 });
 </script>
 </body>

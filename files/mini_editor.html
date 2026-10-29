@@ -131,7 +131,7 @@
 @media screen and (max-width: 768px) {
   .page {
     width: 100%;
-    padding: 20px 20px;
+    padding: 20px 15px;
     font-size: 13px;
   }
   .workspace {
@@ -681,8 +681,9 @@ document.querySelector('#inlineIcon').addEventListener('click', () => {
     let x = parseInt(parts[1], 10); if(isNaN(x)) return;
     const computedStyle = window.getComputedStyle(editorElement);
     const lineHeight = computedStyle.lineHeight;
+    const fnt = parseFloat(lineHeight) * x - 1;
     editorElement.focus();
-    document.execCommand('insertHTML', false, `<span class="material-symbols-outlined" style="font-size: ${parseFloat(lineHeight) * x}px; float: left; margin-right: 10px;">${parts[0]}</span><span/>`);
+    document.execCommand('insertHTML', false, `<span class="material-symbols-outlined" style="font-size: ${fnt}px; line-height:1; float: left; margin-right: 10px;">${parts[0]}</span><span/>`);
   }
 });
 document.querySelector('#createLink').addEventListener('click', () => {

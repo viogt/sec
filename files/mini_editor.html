@@ -490,22 +490,22 @@ function makeRemark(mod) {
   let svg;
   switch(mod) {
     case 'quote':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" fill="currentColor" viewBox="0 0 24 24"><path d="M14 21v-7q1-9 9-11l1 2q-4 2-4 6h4v10zM0 21v-7Q1 5 9 3l1 2q-4 2-4 6h4v10z"/></svg>';
       break;
     case 'note':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" fill="currentColor" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56-23t-24-57v-560q0-33 24-56t56-24h357l-80 80H200v560h560v-278l80-80v358q0 33-23 57t-57 23zm160-240v-170l367-367q12-12 27-18t30-6q16 0 31 6t26 18l56 57q11 12 17 27t6 29-5 30-18 26L530-360zm481-424-56-56zM440-440h56l232-232-28-28-29-28-231 231zm260-260-29-28zl28 28z"/></svg>';
       break;
     case 'warning':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5ZM440-440h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" fill="currentColor" viewBox="0 -960 960 960"><path d="M509-291q11-12 11-29t-11-28-29-12-28 12-12 28 12 29 28 11 29-11m-69-149h80v-240h-80zm40 360q-83 0-156-31t-127-86-85-127-32-156 32-156 85-127 127-85 156-32 156 32 127 85 86 127 31 156-31 156-86 127-127 86-156 31m0-80q134 0 227-93t93-227-93-227-227-93-227 93-93 227 93 227 227 93m0-320"/></svg>';
       break;
     case 'bulb':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-26 0-47-12.5T400-126q-33 0-56.5-23.5T320-206v-142q-59-39-94.5-103T190-590q0-121 84.5-205.5T480-880q121 0 205.5 84.5T770-590q0 77-35.5 140T640-348v142q0 33-23.5 56.5T560-126q-12 21-33 33.5T480-80Zm-80-126h160v-36H400v36Zm0-76h160v-38H400v38Zm-8-118h58v-108l-88-88 42-42 76 76 76-76 42 42-88 88v108h58q54-26 88-76.5T690-590q0-88-61-149t-149-61q-88 0-149 61t-61 149q0 63 34 113.5t88 76.5Zm88-162Zm0-38Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" fill="currentColor" viewBox="0 -960 960 960"><path d="M480-80q-26 0-47-12t-33-34q-33 0-56-23t-24-57v-142q-59-39-94-103t-36-139q0-121 85-205t205-85 206 85 84 205q0 77-35 140t-95 102v142q0 33-23 57t-57 23q-12 21-33 34t-47 12m-80-126h160v-36H400zm0-76h160v-38H400zm-8-118h58v-108l-88-88 42-42 76 76 76-76 42 42-88 88v108h58q54-26 88-76t34-114q0-88-61-149t-149-61-149 61-61 149q0 63 34 114t88 76m88-200"/></svg>';
       break;
     case 'decision':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M160-120v-80h480v80H160Zm226-194L160-540l84-86 228 226-86 86Zm254-254L414-796l86-84 226 226-86 86Zm184 408L302-682l56-56 522 522-56 56Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" fill="currentColor" viewBox="0 -960 960 960"><path d="M160-120v-80h480v80zm226-194L160-540l84-86 228 226zm254-254L414-796l86-84 226 226zm184 408L302-682l56-56 522 522z"/></svg>';
       break;
     case 'attach':
-      svg = '<svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>';
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" fill="currentColor" viewBox="0 -960 960 960"><path d="M720-330q0 104-73 177T470-80t-177-73-73-177v-370q0-75 53-127t127-53 128 53 52 127v350q0 46-32 78t-78 32-78-32-32-78v-370h80v370q0 13 9 22t21 8 22-8 8-22v-350q-1-42-29-71t-71-29-71 29-29 71v370q-1 71 49 121t121 49q70 0 119-49t51-121v-390h80z"/></svg>';
       break;
     default: svg = '>';
   }
@@ -623,8 +623,9 @@ document.querySelector('#inlineIcon').addEventListener('click', () => {
     let x = parseInt(parts[1], 10); if(isNaN(x)) return;
     const computedStyle = window.getComputedStyle(editorElement);
     const lineHeight = computedStyle.lineHeight;
+    const fnt = parseFloat(lineHeight) * x;
     editorElement.focus();
-    document.execCommand('insertHTML', false, `<span class="material-symbols-outlined" style="font-size: ${parseFloat(lineHeight) * x}px; float: left; margin-right: 10px;">${parts[0]}</span>`);
+    document.execCommand('insertHTML', false, `<span class="material-symbols-outlined" style="font-size: ${fnt}px; line-height:1; float: left; margin-right: 10px;">${parts[0]}</span><span/>`);
   }
 });
 document.querySelector('#createLink').addEventListener('click', () => {

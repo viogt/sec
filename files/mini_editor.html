@@ -13,6 +13,7 @@
       --of-text: "din";
       --font-fam: Roboto, Arial, sans-serif;
       --font-famH: 'Roboto Condensed', Arial, sans-serif;
+      /* Roboto, Arial, sans-serif select/input text */
     }
 
     * {
@@ -140,6 +141,11 @@
     #editor p {
       margin: 0;
       text-align: justify;
+    }
+    #editor p.fineprint {
+      font-weight: 100;
+      font-size: 13px;
+      line-height: 1.1;
     }
     #editor table {
       width: 100%;
@@ -374,6 +380,8 @@ view_column_2</span></button>
 horizontal_rule</span></button>
       <button type="button" id="tblList" title="Insert a Tabular List"><span class="material-symbols-outlined">
 list_alt</span></button>
+      <button type="button" id="fineprint" title="Insert Fine Print"><span class="material-symbols-outlined">
+manage_search</span></button>
       <button type="button" id="inlineIcon" title="Insert an Inline Icon"><span class="material-symbols-outlined">
 design_services</span></button>
 
@@ -638,9 +646,9 @@ document.querySelector('#inlineIcon').addEventListener('click', () => {
 document.querySelector('#createLink').addEventListener('click', () => {
   const selection = window.getSelection();
   if (!selection.isCollapsed) {
-    const inp = prompt('Enter the link address (URL like https://...)', selection);
+    const inp = prompt('Enter the link address (URL like https://...)', selection.toString());
     if (inp && inp.trim() !== '') {
-      document.execCommand('insertHTML', false, `<a href="$inp" style="font-size: 1em;">${selection}</a>`);
+      document.execCommand('insertHTML', false, `<a href="$inp" style="font-size: 1em;">${selection.toString()}</a>`);
     }         
   }
 });
@@ -683,11 +691,21 @@ document.querySelector('#insertTable').addEventListener('click', () => {
     return;
   }
 
-  const inp = prompt('Ener one, list (+brd), or rows and colulms width (4 10% 60% 30%)', '4 10% 60% 30%');
+  const inp = prompt('Ener "one", "ROWS list (+brd)", "square",\nor ROWS and colulms width (ex: 4 10% 60% 30%)', '4 10% 60% 30%');
   if (!inp || inp.trim() == '') return;
   if(inp == 'one') {
     editorElement.focus();
     document.execCommand('insertHTML', false, '<table><tr><td style="padding: 1em; border: 1px solid #000;">...</td></tr></table><br>');
+    return;
+  }
+  if(inp == 'square') {
+    let t = `<table><tr>
+      <td style="width:5%;border: 1px solid #000; border-right:none;"></td>
+      <td style="width:90%; padding: 1em 0;">...</td>
+      <td style="width:5%;border: 1px solid #000; border-left:none;"></td>
+    </tr></table><br>`;
+    editorElement.focus();
+    document.execCommand('insertHTML', false, t);
     return;
   }
   const parts = inp.split(' '), L = parts.length, rows = parseInt(parts[0]);
@@ -731,6 +749,11 @@ ${selection.toString().toUpperCase()}</textPath></text>
     document.execCommand('insertHTML', false, t);
 });
 
+document.querySelector('#fineprint').addEventListener('click', () => {
+  const selection = window.getSelection();
+  editorElement.focus();
+  document.execCommand('insertHTML', false, `<p class="fineprint">${selection.isCollapsed ? '...' : selection.toString()}</p>`);
+});
 /* ------------- Insert Image --------------- */
 function getRadioValue(nm) {
     const opts = document.querySelectorAll(nm);
@@ -791,11 +814,11 @@ document.querySelector('#pushClipboard').addEventListener('click', async (event)
   try { editorElement.innerHTML = await navigator.clipboard.readText(); }
   catch(err) { console.log('Clipboard failed!:', err); }
 });
-/*=============================== ALERT ON LEAVE ===================*/
+/*=============================== ALERT ON LEAVE ===================
 window.addEventListener('beforeunload', (event) => {
     event.preventDefault();
     event.returnValue = '';
-});
+});*/
 function getAddress(flag) {
   if(flag == 'date') {
     const now = new Date();

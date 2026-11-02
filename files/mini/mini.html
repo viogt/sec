@@ -142,12 +142,13 @@
     <input type="radio" name="font_type" value="serif"> Serif
   </div>
   <div style="margin: 1em auto;">
-    <div><input type="radio" name="font_select" value="rob" checked> Roboto, Serif, Condensed</div>
-    <div><input type="radio" name="font_select" value="src"> Source Sans 3, Source Sans 4</div>
-    <div><input type="radio" name="font_select" value="pts"> PT Sans, PT Serif</div>
+    <div><input type="radio" name="font_select" value="rob"> Roboto, Serif, Condensed</div>
+    <div><input type="radio" name="font_select" value="opn"> Open Sans, Oswald</div>
     <div><input type="radio" name="font_select" value="ars"> Arsenal, Merriweather, Arsenal</div>
+    <div><input type="radio" name="font_select" value="pts"> PT Sans, PT Serif, Cabin</div>
     <div><input type="radio" name="font_select" value="ale"> Alegreya, Bebas Neue</div>
-    <div><input type="radio" name="font_select" value="none"> None (System default)</div>
+    <div><input type="radio" name="font_select" value="src"> Source Sans 3, Source Sans 4</div>
+    <div><input type="radio" name="font_select" value="none" checked> None (System default)</div>
   </div>
   <!--<div style="text-align: center;">Font size: 15px (11.25pt)</div><input type="range" style="width:100%;margin-bottom: 1em;" oninput="this.previousSibling.innerText='Font size: ' + this.value+'px (' + this.value * .75 + 'pt)'" id="fSize" min="10" value="15" max="32">-->
   <div style="text-align: center;">Font size: 15px (11.25pt)</div><input type="range" style="width:100%;margin-bottom: 1.4em;" oninput='this.previousSibling.innerText=`Font size: ${this.value}px (${this.value * .75}pt)`' id="fSize" min="10" value="15" max="32">

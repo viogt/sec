@@ -382,13 +382,19 @@ function getAddress(flag) {
 editor.addEventListener('input', () => { isModified = true; });
 editorElement.focus();
 
-//=====================================================================================
+//================================== F O N T S ==========================================
 const fonts = {
   rob: {
     href: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
     sans: "Roboto, sans-serif",
     serif: "'Roboto Serif', serif",
     heading: "'Roboto Condensed', sans-serif"
+  },
+  opn: {
+    href: "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&display=swap",
+    sans: "'Open Sans', sans-serif",
+    serif: "Open Sans, serif",
+    heading: "'Oswald', sans-serif"
   },
   ale: {
     href: "https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Alegreya:ital,wght@0,400..900;1,400..900&family=Bebas+Neue&display=swap",
@@ -403,10 +409,10 @@ const fonts = {
     heading: "Arsenal, sans-serif"
   },
   pts: {
-    href: "https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap",
     sans: "'PT Sans', sans-serif",
     serif: "'PT Serif', serif",
-    heading: "'PT Sans', sans-serif"
+    heading: "'Cabin Condensed', sans-serif"
   },
   src: {
     href: "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap",

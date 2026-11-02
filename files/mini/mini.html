@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¶ Mini Editor</title>
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="curFonts" href="" rel="stylesheet">
+
+<link rel="stylesheet" href="res/mini.css">
+<script src="res/mini.js" defer></script>
+</head>
+<body>
+
+<div class="toolbar">
+
+<div class="menu-group">
+    <button id="printPdf" title="Download the document as PDF">PDF &#9662;</button>
+    <button data-command="undo" title="Undo (Ctrl+Z)"><span class="material-symbols-outlined">undo</span></button>
+    <button data-command="redo" title="Redo (Ctrl+Y)"><span class="material-symbols-outlined">redo</span></button>
+    <button id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">mop</span></button><br>
+    <input type="text" id="docNameInput" placeholder="Doc Name for Footer" title="Set Document Name for Footer">
+</div>
+
+<div class="menu-group">
+    <button data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
+    <button data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">format_italic</span></button>
+    <button data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">format_underlined</span></button>
+    <button id="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">link</span></button>
+    <button id="chenar" title="Frame the selection"><span class="material-symbols-outlined">font_download</span></button><br>
+
+    <button data-command="justifyLeft" title="Align left"><span class="material-symbols-outlined">format_align_left</span></button>
+    <button data-command="justifyCenter" title="Align center"><span class="material-symbols-outlined">format_align_center</span></button>
+    <button data-command="justifyRight" title="Align right"><span class="material-symbols-outlined">format_align_right</span></button>
+    <button data-command="justifyFull" title="Justify"><span class="material-symbols-outlined">format_align_justify</span></button>
+    <button data-command="removeFormat" title="Remove formatting from selection"><span class="material-symbols-outlined">format_clear</span></button>
+</div>
+
+<div class="menu-group">
+    <button data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">format_paragraph</span></button>
+    <button data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">format_h1</span></button>
+    <button data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">format_h2</span></button>
+    <button data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">uppercase</span></button>
+    <button data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">lowercase</span></button><br>
+
+    <button data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">format_indent_decrease</span></button>
+    <button data-command="indent" title="Increase indent"><span class="material-symbols-outlined">format_indent_increase</span></button>
+    <button data-command="insertUnorderedList" title="Bulleted list"><span class="material-symbols-outlined">format_list_bulleted</span></button>
+    <button data-command="insertOrderedList" title="Numbered list"><span class="material-symbols-outlined">format_list_numbered</span></button>
+    <button id="horizontalRule" title="Insert a Horizontal line"><span class="material-symbols-outlined">horizontal_rule</span></button>
+</div>
+
+<div class="menu-group">
+    <button data-command="superscript" title="Superscript"><span class="material-symbols-outlined">superscript</span></button>
+    <button data-command="subscript" title="Subscript"><span class="material-symbols-outlined">subscript</span></button>
+    <button id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">space_bar</span></button>
+    <button id="endash" title="Turn '--' into '—'"><span class="material-symbols-outlined">unknown_med</span></button>
+    <button id="sect" title="Insert paragrpagh">&sect;</button><br>
+
+    <button id="insertTable" title="Insert Table"><span class="material-symbols-outlined">table</span></button>
+    <button id="uploadFile" title="Insert an Image"><span class="material-symbols-outlined">add_photo_alternate</span></button>
+    <button  data-remark="blank" title="Insert an Blank quote"><span class="material-symbols-outlined">dock_to_right</span></button>
+    <button  id="twoPanels" title="Insert a two-panel block"><span class="material-symbols-outlined">view_column_2</span></button>
+    <button id="fineprint" title="Insert Fine Print"><span class="material-symbols-outlined">manage_search</span></button>
+</div>
+
+<div class="menu-group">
+    <button  id="address" title="Insert the Address block"><span class="material-symbols-outlined">outgoing_mail</span></button>
+    <button data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">format_quote</span></button>
+    <button id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">page_header</span></button>
+    <button data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">edit_square</span></button>
+    <button data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">error</span></button><br>
+
+    <button  data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">attach_file</span></button>
+    <button  id="signature" title="Insert the Signature block"><span class="material-symbols-outlined">signature</span></button>
+    <button  data-remark="bulb" title="Insert an Idea"><span class="material-symbols-outlined">emoji_objects</span></button>
+    <button  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">gavel</span></button>
+    <button id="tblList" title="Insert a Tabular List"><span class="material-symbols-outlined">list_alt</span></button>
+</div>
+
+<div class="menu-group">
+    <button id="inlineIcon" title="Insert an Inline Icon"><span class="material-symbols-outlined">design_services</span></button>
+    <button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">workspace_premium</span></button>
+    <button id="footerLang" title="Toggle footer language">RO</button><br>
+    <button id="changeFont" title="Select fonts"><span class="material-symbols-outlined">brand_family</span></button>
+    <button id="takeClipboard" title="Content into the Clipboard"><span class="material-symbols-outlined">inventory</span></button>
+    <button  id="pushClipboard" title="From Clipboard into Document"><span class="material-symbols-outlined">article_shortcut</span></button>
+</div>
+
+</div>
+
+  <main class="workspace">
+    <div class="page" id="pageContainer">
+      <div id="editor" contenteditable="true">
+        <p>Acest joc de cuvinte ne poate aminti despre multe. Acest joc de cuvinte ne poate aminti despre multe. Acest joc de cuvinte ne poate aminti despre multe. Acest joc de cuvinte ne poate aminti despre multe. Acest joc de cuvinte ne poate aminti despre multe. Acest joc de cuvinte ne poate aminti despre multe.</p>
+      </div>
+    </div>
+  </main>
+
+<!-- Table Insertion Modal Dialog -->
+  <div class="modal-overlay" hidden>
+    <div class="modal-dialog">
+      <div>
+        <button onclick="fileInput.click()" style="border-bottom: 1px solid #999;">&#x1F5BC; GET AN IMAGE</button><br>
+        <img id="previewImage" style="width:100%"/>
+      </div>
+  <div style="overflow-x: auto; white-space: nowrap; scrollbar-width: none; line-height: 1.6;">
+    <input type="file" id="fileInput" accept="image/*" style="display: none;"/>
+    <div>&#9662; Image width:</div>
+        <label><input type="radio" name="image_width" value="100%">100%</label>
+        <label><input type="radio" name="image_width" value="50%">50%</label><br>
+        <label><input type="radio" name="image_width" value="33.3%" checked>33.3%</label>
+        <label><input type="radio" name="image_width" value="25%">25%</label><br>
+        <label><input type="radio" name="image_width" value="lines">height by lines
+        <input id="byLines" type="number" min="2" max="40" value="5" step="1"/></label>
+        <hr>
+        <label><input type="checkbox" id="image_border" checked/> image border</label><br>
+        <label><input type="checkbox" id="image_radius" checked/> rounded edges<label><hr>
+    <div>&#9662; Image align:</div>
+        <label><input type="radio" name="image_align" value="left" checked> left</label>
+        <label><input type="radio" name="image_align" value="none"> none</label>
+        <label><input type="radio" name="image_align" value="right"> right</label>
+        <hr>
+    <div>&#9662; Image filter:</div>
+        <label><input type="radio" name="image_filter" value="normal" checked> normal</label>
+        <label><input type="radio" name="image_filter" value="grayscale(100%)"> grayscale</label>
+        <label><input type="radio" name="image_filter" value="sepia(100%)"> sepia</label><hr>
+        <label><input type="checkbox" id="image_shadow"/> image shadow</label>
+  </div>
+      <button id="tableModalCancel">&#x2718; CANCEL</button>
+      <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
+  </div>
+  </div>
+
+<dialog id="selectFontsDlg" style="width: min(90%, 300px);">
+  <button style="display: flex; align-items: center; justify-content: center; gap: 8px;"><span class="material-symbols-outlined" style="font-size: 2.4em;">brand_family</span><span>SELECT FONT:</span></button>
+  <div style="margin: 12px 0;padding: 12px; border: 1px solid #aaa; border-radius: 6px; text-align: center;">
+    <input type="radio" name="font_type" value="sans" checked> Sans Serif
+    <input type="radio" name="font_type" value="serif"> Serif
+  </div>
+  <div style="margin: 1em auto;">
+    <div><input type="radio" name="font_select" value="rob" checked> Roboto, Serif, Condensed</div>
+    <div><input type="radio" name="font_select" value="src"> Source Sans 3, Source Sans 4</div>
+    <div><input type="radio" name="font_select" value="pts"> PT Sans, PT Serif</div>
+    <div><input type="radio" name="font_select" value="ars"> Arsenal, Merriweather, Arsenal</div>
+    <div><input type="radio" name="font_select" value="ale"> Alegreya, Bebas Neue</div>
+    <div><input type="radio" name="font_select" value="none"> None (System default)</div>
+  </div>
+  <!--<div style="text-align: center;">Font size: 15px (11.25pt)</div><input type="range" style="width:100%;margin-bottom: 1em;" oninput="this.previousSibling.innerText='Font size: ' + this.value+'px (' + this.value * .75 + 'pt)'" id="fSize" min="10" value="15" max="32">-->
+  <div style="text-align: center;">Font size: 15px (11.25pt)</div><input type="range" style="width:100%;margin-bottom: 1.4em;" oninput='this.previousSibling.innerText=`Font size: ${this.value}px (${this.value * .75}pt)`' id="fSize" min="10" value="15" max="32">
+  <div class="two-columns">
+    <button onclick="this.closest('dialog')?.close()">&#x2718; CANCEL</button>
+    <button onclick="selectFont(this)" style="background-color: #bfb;">&#x2714; CHANGE</button>
+  </div>
+</dialog>
+</body>
+</html>

@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[✎ Mini Editor]</title>
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link id="curFonts" href="" rel="stylesheet">    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✎ Mini Editor</title>
 <style>
-    :root {
-      --doc-name: "";
-      --border-color: #ccc;
-      --font-size: 15px;
-      --page-text: "Pag.";
-      --of-text: "din";
-      --font-fam: Roboto, Arial, sans-serif;
-      --font-famH: 'Roboto Condensed', Arial, sans-serif;
-      /* Roboto, Arial, sans-serif select/input text */
-    }
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wdth,wght@25..150,100..1000&display=swap');
+
+:root {
+  --doc-name: "";
+  --border-color: #ccc;
+  --font-size: 15px;
+  --page-text: "Pag.";
+  --of-text: "din";
+  --font-fam: 'Roboto Flex', Arial, sans-serif;
+  --font-famH: 'Roboto Flex', Arial, sans-serif;
+}
 
     * {
       box-sizing: border-box;
@@ -33,63 +29,70 @@
       color: #222;
       line-height: 1.5;
     }
-        .toolbar {
-            position: sticky;
-            top: 0;
-            font: normal 15px Arial,sans-serif;
-            z-index: 100;
-            overflow-x: auto;
-            overflow-y: hidden;
-            white-space: nowrap;
-            padding: 6px;
-            background-color: #fff;
-            background-image: linear-gradient(to bottom, #fff 70%, #cde 100%);
-            border-bottom: 1px solid #ccc;
-            text-align: center;
-            /*box-shadow: 0 2px 5px rgba(0,0,0,.4);*/
 
-            .toolbar::-webkit-scrollbar { display: none; }
-            -ms-overflow-style: none; /* IE and Old Edge */
-            scrollbar-width: none; /* Firefox */
-        }
-        .menu-group {
-            display: inline-block;
-            padding: 0 4px;
-            border-left: 1px solid #ccc;
-        }
-        .menu-group:first-child {
-            border-left: none;
-        }
-        .menu-group button {
-            border: none;
-            background-color: transparent;
-            color: #678;
-            margin: 0;
-        }
-        .menu-group button:hover { background-color: #dde; }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      font-family: sans-serif;
+      z-index: 100;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 6px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px #00000030;
 
-        .material-symbols-outlined { font-size: 18px; }
+      .toolbar::-webkit-scrollbar { display: none; }
+      -ms-overflow-style: none; /* IE and Old Edge */
+      scrollbar-width: none; /* Firefox */
+  }
 
-        #printPdf {
-            display: inline-block;
-            background-color: #67a;
-            color: #fff;
-            border-radius: 5px;
-            padding: 3px 8px;
-            margin-bottom: 2px;
-        }
-        #docNameInput {
-            width: 160px;
-            vertical-align: middle;
-            padding: 2px 6px;
-            border: .5px solid var(--border-color);
-            font-size: var(--font-size);
-            border-radius: 4px;
-            outline: none;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .toolbar button {
+      padding: 4px;
+      font-family: Arial, sans-serif;
+      border: none;
+      background-color: transparent;
+      color: #789;
+      margin: 0;
+      cursor: pointer;
+    }
+    #docNameInput {
+      width: 160px;
+      vertical-align: middle;
+      padding: 2px 6px;
+      border: .5px solid var(--border-color);
+      font-size: var(--font-size);
+      border-radius: 4px;
+      outline: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .toolbar button:hover {
+      background-color: #eef;
+    }
+    .toolbar button .material-symbols-outlined {
+      font-size: 18px;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    #printPdf {
+      color: #fff;
+      background-color: #9ac;
+      font-weight: bold;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 6px;
+    }
+    .separator {
+      display: inline-block;
+      vertical-align: middle;
+      width: 1px;
+      height: 24px;
+      margin: 0 4px;
+      background-color: #d3d7dd;
+    }
+
     .workspace {
       padding: 30px 15px 60px;
     }
@@ -107,12 +110,14 @@
   .page {
     width: 100%;
     padding: 20px 15px;
-    font-size: 13px;
+    font-size: 12px;
   }
+  #docNameInput { width: 100px; }
   .workspace {
     padding: 0;
   }
 }
+
     #editor {
       min-height: 267mm;
       outline: none;
@@ -146,7 +151,9 @@
     #editor H1 {
       font-family: var(--font-famH);
       font-optical-sizing: auto;
-      font-weight: 600;
+      font-weight: bold;
+font-stretch: 25%;
+font-variation-settings: "wght" 700,'wdth' 25,'GRAD' -10,'YTLC' 528;
       font-size: 1.6em;
       line-height: 1;
       margin: 0;
@@ -154,7 +161,9 @@
     #editor H2 {
       font-family: var(--font-famH);
       font-optical-sizing: auto;
-      font-weight: 600;
+      font-weight: bold;
+font-stretch: 25%;
+font-variation-settings: "wght" 700,'wdth' 25,'GRAD' -10,'YTLC' 528;
       font-size: 1.4em;
       line-height: 1;
       margin: 0;
@@ -259,106 +268,139 @@
         }
       }
     }
-dialog {
-  background-color: #fff;
-  padding: 10px;
-  width: min(90%,600px);
-  border: 1px solid #888;
-  border-radius: 8px;
-  box-shadow: 0 9px 24px #666;
-}
-.two-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1em;
-}
-dialog button {
-  background: #ddd;
-  border: none;
-  width: 100%;
-  padding: 12px 0;
-  border-radius: 0px;
-}
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<!--
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@100;400;800&display=swap" rel="stylesheet">
+-->
 </head>
 <body>
+<div class="toolbar" role="toolbar" aria-label="Text formatting">
 
-<div class="toolbar">
-
-<div class="menu-group">
-    <button id="printPdf" title="Download the document as PDF">PDF &#9662;</button>
-    <button data-command="undo" title="Undo (Ctrl+Z)"><span class="material-symbols-outlined">undo</span></button>
-    <button data-command="redo" title="Redo (Ctrl+Y)"><span class="material-symbols-outlined">redo</span></button>
-    <button id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">mop</span></button><br>
+    <button type="button" id="printPdf" class="pdf-button" title="Download the document as PDF"><span style="vertical-align: middle;">PDF</span> <span class="material-symbols-outlined">
+download</span></button>
     <input type="text" id="docNameInput" placeholder="Doc Name for Footer" title="Set Document Name for Footer">
-</div>
 
-<div class="menu-group">
-    <button data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
-    <button data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">format_italic</span></button>
-    <button data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">format_underlined</span></button>
-    <button id="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">link</span></button>
-    <button id="chenar" title="Frame the selection"><span class="material-symbols-outlined">font_download</span></button><br>
+    <button type="button" data-command="undo" title="Undo (Ctrl+Z)"><span class="material-symbols-outlined">
+undo</span></button>
+    <button type="button" data-command="redo" title="Redo (Ctrl+Y)"><span class="material-symbols-outlined">
+redo</span></button>
+    <button type="button" data-command="removeFormat" title="Remove formatting from selection"><span class="material-symbols-outlined">
+format_clear</span></button>
 
-    <button data-command="justifyLeft" title="Align left"><span class="material-symbols-outlined">format_align_left</span></button>
-    <button data-command="justifyCenter" title="Align center"><span class="material-symbols-outlined">format_align_center</span></button>
-    <button data-command="justifyRight" title="Align right"><span class="material-symbols-outlined">format_align_right</span></button>
-    <button data-command="justifyFull" title="Justify"><span class="material-symbols-outlined">format_align_justify</span></button>
-    <button data-command="removeFormat" title="Remove formatting from selection"><span class="material-symbols-outlined">format_clear</span></button>
-</div>
+    <span class="separator"></span>
 
-<div class="menu-group">
-    <button data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">format_paragraph</span></button>
-    <button data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">format_h1</span></button>
-    <button data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">format_h2</span></button>
-    <button data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">uppercase</span></button>
-    <button data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">lowercase</span></button><br>
+    <button type="button" data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
+    <button type="button" data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">
+format_italic</span></button>
+    <button type="button" data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">
+format_underlined</span></button>
+    <button type="button" id="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">
+link</span></button>
+    <button type="button" id="chenar" title="Frame the selection"><span class="material-symbols-outlined">
+font_download</span></button>
 
-    <button data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">format_indent_decrease</span></button>
-    <button data-command="indent" title="Increase indent"><span class="material-symbols-outlined">format_indent_increase</span></button>
-    <button data-command="insertUnorderedList" title="Bulleted list"><span class="material-symbols-outlined">format_list_bulleted</span></button>
-    <button data-command="insertOrderedList" title="Numbered list"><span class="material-symbols-outlined">format_list_numbered</span></button>
-    <button id="horizontalRule" title="Insert a Horizontal line"><span class="material-symbols-outlined">horizontal_rule</span></button>
-</div>
+    <span class="separator"></span>
 
-<div class="menu-group">
-    <button data-command="superscript" title="Superscript"><span class="material-symbols-outlined">superscript</span></button>
-    <button data-command="subscript" title="Subscript"><span class="material-symbols-outlined">subscript</span></button>
-    <button id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">space_bar</span></button>
-    <button id="endash" title="Turn '--' into '—'"><span class="material-symbols-outlined">unknown_med</span></button>
-    <button id="sect" title="Insert paragrpagh">&sect;</button><br>
+    <button type="button" data-command="justifyLeft" title="Align left"><span class="material-symbols-outlined">
+format_align_left</span></button>
+    <button type="button" data-command="justifyCenter" title="Align center"><span class="material-symbols-outlined">
+format_align_center</span></button>
+    <button type="button" data-command="justifyRight" title="Align right"><span class="material-symbols-outlined">
+format_align_right</span></button>
+    <button type="button" data-command="justifyFull" title="Justify"><span class="material-symbols-outlined">
+format_align_justify</span></button>
 
-    <button id="insertTable" title="Insert Table"><span class="material-symbols-outlined">table</span></button>
-    <button id="uploadFile" title="Insert an Image"><span class="material-symbols-outlined">add_photo_alternate</span></button>
-    <button  data-remark="blank" title="Insert an Blank quote"><span class="material-symbols-outlined">dock_to_right</span></button>
-    <button  id="twoPanels" title="Insert a two-panel block"><span class="material-symbols-outlined">view_column_2</span></button>
-    <button id="fineprint" title="Insert Fine Print"><span class="material-symbols-outlined">manage_search</span></button>
-</div>
+    <span class="separator"></span>
 
-<div class="menu-group">
-    <button  id="address" title="Insert the Address block"><span class="material-symbols-outlined">outgoing_mail</span></button>
-    <button data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">format_quote</span></button>
-    <button id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">page_header</span></button>
-    <button data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">edit_square</span></button>
-    <button data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">error</span></button><br>
+    <button type="button" data-command="insertUnorderedList" title="Bulleted list"><span class="material-symbols-outlined">
+format_list_bulleted</span></button>
+    <button type="button" data-command="insertOrderedList" title="Numbered list"><span class="material-symbols-outlined">
+format_list_numbered</span></button>
 
-    <button  data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">attach_file</span></button>
-    <button  id="signature" title="Insert the Signature block"><span class="material-symbols-outlined">signature</span></button>
-    <button  data-remark="bulb" title="Insert an Idea"><span class="material-symbols-outlined">emoji_objects</span></button>
-    <button  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">gavel</span></button>
-    <button id="tblList" title="Insert a Tabular List"><span class="material-symbols-outlined">list_alt</span></button>
-</div>
+    <span class="separator"></span>
 
-<div class="menu-group">
-    <button id="inlineIcon" title="Insert an Inline Icon"><span class="material-symbols-outlined">design_services</span></button>
-    <button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">workspace_premium</span></button>
-    <button id="footerLang" title="Toggle footer language">RO</button><br>
-    <button id="changeFont" title="Select fonts"><span class="material-symbols-outlined">brand_family</span></button>
-    <button id="takeClipboard" title="Content into the Clipboard"><span class="material-symbols-outlined">inventory</span></button>
-    <button  id="pushClipboard" title="From Clipboard into Document"><span class="material-symbols-outlined">article_shortcut</span></button>
-</div>
+    <button type="button" data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">
+format_paragraph</span></button>
+    <button type="button" data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">
+format_h1</span></button>
+    <button type="button" data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">
+format_h2</span></button>
+    <button type="button" data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">
+uppercase</span></button>
+    <button type="button" data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">
+lowercase</span></button>
 
-</div>
+    <span class="separator"></span>
+
+    <button type="button" data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">
+format_indent_decrease</span></button>
+    <button type="button" data-command="indent" title="Increase indent"><span class="material-symbols-outlined">
+format_indent_increase</span></button>
+    <button type="button" data-command="superscript" title="Superscript"><span class="material-symbols-outlined">
+superscript</span></button>
+    <button type="button" data-command="subscript" title="Subscript"><span class="material-symbols-outlined">
+subscript</span></button>
+    <button type="button" id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">
+space_bar</span></button>
+    <button type="button" id="endash" title="Turn '--' into '—'"><span class="material-symbols-outlined">
+unknown_med</span></button>
+    <button type="button" id="sect" title="Insert paragrpagh">&sect;</button>
+
+    <span class="separator"></span>
+
+    <button type="button"  id="address" title="Insert the Address block"><span class="material-symbols-outlined">
+outgoing_mail</span></button>
+    <button type="button" data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">
+format_quote</span></button>
+    <button type="button" id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">
+page_header</span></button>
+      <button type="button" data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">
+edit_square</span></button>
+      <button type="button" data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">
+error</span></button>
+      <button type="button"  data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">
+attach_file</span></button>
+      <button type="button"  id="signature" title="Insert the Signature block"><span class="material-symbols-outlined">
+signature</span></button>
+      <button type="button"  data-remark="bulb" title="Insert an Idea"><span class="material-symbols-outlined">
+emoji_objects</span></button>
+      <button type="button"  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">
+gavel</span></button>
+      <button type="button"  data-remark="blank" title="Insert an Blank quote"><span class="material-symbols-outlined">
+dock_to_right</span></button>
+      <button type="button"  id="twoPanels" title="Insert a two-panel block"><span class="material-symbols-outlined">
+view_column_2</span></button>
+      <button type="button" id="horizontalRule" title="Insert a Horizontal line"><span class="material-symbols-outlined">
+horizontal_rule</span></button>
+      <button type="button" id="tblList" title="Insert a Tabular List"><span class="material-symbols-outlined">
+list_alt</span></button>
+      <button type="button" id="fineprint" title="Insert Fine Print"><span class="material-symbols-outlined">
+manage_search</span></button>
+      <button type="button" id="inlineIcon" title="Insert an Inline Icon"><span class="material-symbols-outlined">
+design_services</span></button>
+
+    <span class="separator"></span>
+
+    <button id="insertTable" type="button" title="Insert Table"><span class="material-symbols-outlined">
+table</span></button>
+    <button id="uploadFile" type="button" title="Insert an Image"><span class="material-symbols-outlined">
+add_photo_alternate</span></button>
+    <button id="fontDim" type="button" title="Font size"><span class="material-symbols-outlined">
+format_size</span></button>
+    <button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">
+workspace_premium</span></button>
+    <button type="button" id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">
+mop</span></button>
+    <button type="button" id="footerLang" title="Toggle footer language">RO</button>
+
+    <button type="button" id="takeClipboard" title="Content into the Clipboard"><span class="material-symbols-outlined">
+inventory</span></button>
+    <button type="button"  id="pushClipboard" title="From Clipboard into Document"><span class="material-symbols-outlined">
+article_shortcut</span></button>
+  </div>
 
   <main class="workspace">
     <div class="page" id="pageContainer">
@@ -402,27 +444,6 @@ dialog button {
       <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
   </div>
   </div>
-
-<dialog id="selectFontsDlg" style="width: min(90%, 300px);">
-  <button style="display: flex; align-items: center; justify-content: center; gap: 8px;"><span class="material-symbols-outlined" style="font-size: 2.4em;">brand_family</span><span>SELECT FONT:</span></button>
-  <div style="margin: 12px 0;padding: 12px; border: 1px solid #aaa; border-radius: 6px; text-align: center;">
-    <input type="radio" name="font_type" value="sans" checked> Sans Serif
-    <input type="radio" name="font_type" value="serif"> Serif
-  </div>
-  <div style="margin: 1em auto;">
-    <div><input type="radio" name="font_select" value="rob" checked> Roboto, Serif, Condensed</div>
-    <div><input type="radio" name="font_select" value="src"> Source Sans 3, Source Sans 4</div>
-    <div><input type="radio" name="font_select" value="pts"> PT Sans, PT Serif</div>
-    <div><input type="radio" name="font_select" value="ars"> Arsenal, Merriweather, Arsenal</div>
-    <div><input type="radio" name="font_select" value="ale"> Alegreya, Bebas Neue</div>
-    <div><input type="radio" name="font_select" value="none"> None (System default)</div>
-  </div>
-  <div class="two-columns">
-    <button onclick="this.closest('dialog')?.close()">&#x2718; CANCEL</button>
-    <button onclick="selectFont(this)" style="background-color: #bfb;">&#x2714; CHANGE</button>
-  </div>
-</dialog>
-
 <script>
 
 const editorElement = document.querySelector('#editor');
@@ -728,6 +749,13 @@ ${selection.toString().toUpperCase()}</textPath></text>
     document.execCommand('insertHTML', false, t);
 });
 
+document.querySelector('#fontDim').addEventListener('click', () => {
+  const inp = prompt('Enter the font size (15px, 10pt, ...)', '15px');
+  if (inp && inp.trim() !== '') {
+    document.documentElement.style.setProperty('--font-size', inp.trim());
+  }
+});
+
 document.querySelector('#fineprint').addEventListener('click', () => {
   const selection = window.getSelection();
   editorElement.focus();
@@ -808,61 +836,6 @@ function getAddress(flag) {
 
 editor.addEventListener('input', () => { isModified = true; });
 editorElement.focus();
-
-//=====================================================================================
-const fonts = {
-  rob: {
-    href: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
-    sans: "Roboto, sans-serif",
-    serif: "'Roboto Serif', serif",
-    heading: "'Roboto Condensed', sans-serif"
-  },
-  ale: {
-    href: "https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Alegreya:ital,wght@0,400..900;1,400..900&family=Bebas+Neue&display=swap",
-    sans: "'Alegreya Sans', sans-serif",
-    serif: "Alegreya, serif",
-    heading: "'Bebas Neue', sans-serif"
-  },
-  ars: {
-    href: "https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap",
-    sans: "Arsenal, sans-serif",
-    serif: "Merriweather, serif",
-    heading: "Arsenal, sans-serif"
-  },
-  pts: {
-    href: "https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap",
-    sans: "'PT Sans', sans-serif",
-    serif: "'PT Serif', serif",
-    heading: "'PT Sans', sans-serif"
-  },
-  src: {
-    href: "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap",
-    sans: "'Source Sans 3', sans-serif",
-    serif: "'Source Serif 4', serif",
-    heading: "'Source Sans 3', sans-serif"
-  },
-  none: {
-    href: "",
-    sans: "sans-serif",
-    serif: "serif",
-    heading: "sans-serif"
-  }
-};
-
-document.querySelector('#changeFont').addEventListener('click', () => {
-  document.getElementById('selectFontsDlg').showModal()
-});
-
-function selectFont(btn) {
-    const font = getRadioValue('input[name="font_select"]');
-    const type = getRadioValue('input[name="font_type"]');
-
-    document.getElementById('curFonts').href = fonts[font].href;
-    document.documentElement.style.setProperty('--font-fam', fonts[font][type]);
-    document.documentElement.style.setProperty('--font-famH', fonts[font].heading);
-
-    btn.closest('dialog').close();
-}
 </script>
 </body>
 </html>

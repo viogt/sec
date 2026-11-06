@@ -374,16 +374,27 @@ dialog button, dialog input[type="text"] {
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
     <div style="display: grid; grid-template-columns: 1fr 1fr;">
       <label><input type="radio" name="tbl_opt" value="one" checked><span class='chenar'>One line</span></label>
-      <label><input type="radio" name="tbl_opt" value="square">[ Square ]</label>
-      <label><input type="radio" name="tbl_opt" value="list_1">1-list</label>
-      <label><input type="radio" name="tbl_opt" value="list_A">A-list</label>
+      <label><input type="radio" name="tbl_opt" value="square">[text]</label>
+      <label><input type="radio" name="tbl_opt" value="list_1">&#x25EF;-list</label>
+      <label><input type="radio" name="tbl_opt" value="list_A">&#x25B7;-list</label>
+      <label><input type="radio" name="tbl_opt" value="list_r">&#x25F6;-list</label>
+      <label><input type="radio" name="tbl_opt" value="list_s">&#x250C;-list</label>
       <label><input type="radio" name="tbl_opt" value="list_bar">- | list</label>
       <label><input type="radio" name="tbl_opt" value="list">... List</label>
+      <div style="grid-column: span 2;border: 1px solid #ccc;margin-top:8px;padding:4px 0;text-align: center;">
+        <label>List letter: <input type="radio" name="list_lttr" value="1" checked>1... </label>
+        <label><input type="radio" name="list_lttr" value="A">A... </label>
+        <label><input type="radio" name="list_lttr" value="a">a... </label>
+      </div>
     </div>
     <div style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
       <label><input type="radio" name="tbl_opt" value="twoPanel">Two panels (50% | 50%)</label><br>
+      <label><input type="radio" name="tbl_opt" value="twoPanel_">Two panels (50%   50%)</label><br><br>
       <label><input type="radio" name="tbl_opt" value="table">Table (rows * cols)</label><br>
-      <label>Rows: <input id="tableRows" style="width:40px" type="number" value="4"/> Cols: <input  id="tableCols" style="width:120px" value="10% 60% 30%"/></label>
+      <div style="margin: 8px 4px 4px 10px;border-left:1px solid #000; padding-left:8px;">
+        <label>Rows: <input id="tableRows" style="width:40px" type="number" value="4"/></label><br>
+        <label>Cols: <input  id="tableCols" style="width:140px" value="10% 60% 30%"/></label>
+      </div>
     </div>
   <button onclick="this.closest('dialog').close()">&#x2718; CANCEL</button>
   <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>

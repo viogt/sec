@@ -114,7 +114,7 @@ document.querySelector('#chenar').addEventListener('click', () => {
   const selection = window.getSelection();
   if (!selection.isCollapsed) {
     const selectedText = selection.toString();
-    const framedText = `<span class="chenar">${selectedText}</span>`;
+    const framedText = `<b class="chenar">${selectedText}</b>`;
     editorElement.focus();
     document.execCommand('insertHTML', false, framedText);
   }
@@ -141,7 +141,7 @@ document.querySelector('#address').addEventListener('click', () => {
   document.execCommand('insertHTML', false, t);
 });
 document.querySelector('#inlineIcon').addEventListener('click', async () => {
-  const inp = await showPrompt('Icon name: ink_pen, check_circle, search, etc. +2', 'ink_pen');
+  const inp = await showPrompt('Icon name: ink_pen, check_circle, search, etc.<br>+n lines (ex: ink_pen 3)<br>or SVG or HTML code:', 'ink_pen');
   if(!inp || inp.trim() == '') return;
   if(inp.charAt(0) == '<') {
     editorElement.focus();
@@ -281,8 +281,10 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
     let t = '<table>';
     for(let r = 0; r < rows; r++) {
       t += '<tr>';
+      let btm1 = '0 1em 1em 0', btm2 = '0 0 1em 0';
+      if(r == rows-1) { btm1 = '0 1em 0 0'; btm2 = '0 0 0 0'; }
       for(let c = 0; c < L; c++) {
-        t += `<td style="width:${parts[c]};padding:${ (c < L-1) ? '0 1em 1em 0' : '0 0 1em 0' }">...</td>`;
+        t += `<td style="width:${parts[c]};padding:${ (c < L-1) ? btm1 : btm2 }">...</td>`;
       }
       t += '</tr>';
     }
@@ -298,8 +300,11 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
     const Flag = (val == 'list_1');
     let t = '<table renewable>';
     for (let r = 0; r < rows; r++) {
-      t += `<tr><td style="width: 40px;">
+      if(Flag) t += `<tr><td style="width: 40px;">
       <div style="display:inline-block;text-align:center;line-height:2em;width:2em;height:2em;border:.8px solid #000;border-radius:50%;">${Flag ? r+1 : String.fromCharCode(r + 65)}</div>
+      </td><td style="padding-bottom: .8em;">...</td></tr>`;
+      else t += `<tr><td style="width: 40px;">
+      <div style="display:inline-block; height:2em; width:2em; line-height:2em; padding-left:.5em; border: .8px solid #000; border-top-right-radius: 50%; border-bottom-right-radius: 50%;">${String.fromCharCode(r + 65)}</div>
       </td><td style="padding-bottom: .8em;">...</td></tr>`;
     }
     editorElement.focus();

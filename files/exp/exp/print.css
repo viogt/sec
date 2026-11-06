@@ -2,14 +2,14 @@
     size: A4 portrait;
     margin: 15mm 30mm;
   @bottom-left {
-    content: "Confidential";
-    font-size: 9pt;
+    content: var(--doc-name);
+    font-size: 12px;
     color: #000;
   }
 
   @bottom-right {
-    content: "Page " counter(page) " of " counter(pages);
-    font-size: 9pt;
+    content: var(--page-text) " " counter(page) " " var(--of-text) " " counter(pages);
+    font-size: 12px;
     color: #000;
   }
 }

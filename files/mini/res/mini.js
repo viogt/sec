@@ -120,7 +120,7 @@ document.querySelector('#chenar').addEventListener('click', () => {
   const selection = window.getSelection();
   if (!selection.isCollapsed) {
     const selectedText = selection.toString();
-    const framedText = `<span class="chenar">${selectedText}</span>`;
+    const framedText = `<b class="chenar">${selectedText}</b>`;
     editorElement.focus();
     document.execCommand('insertHTML', false, framedText);
   }

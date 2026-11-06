@@ -1,7 +1,7 @@
 :root {
   --doc-name: "";
   --border-color: #ccc;
-  --font-size: 15px;
+  --font-size: 14px;
   --page-text: "Pag.";
   --of-text: "din";
   --font-fam: Roboto, Arial, sans-serif;
@@ -178,6 +178,7 @@ body {
   width: 100%;
 }
 #editor .chenar {
+  font-weight: normal;
   border: 0.8px solid #000;
   padding: 0 6px 1px 6px;
   margin: 0 2px;

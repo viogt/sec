@@ -187,14 +187,22 @@ document.getElementById('insertTable') .addEventListener('click', () => {
 });
 
 function reNum(tbl) {
-  if(tbl.hasAttribute('renewable')) {
-    let iCnt = 1;
-    for (const r of tbl.rows) {
-      r.cells[0].innerHTML = r.cells[0].innerHTML.replace(/>(.)<\/div>/, (match, cnt) => {
-        return `>${ isNaN(cnt) ? String.fromCharCode(iCnt + 64) : iCnt }</text>`;
-      });
-      iCnt++;
-    }
+  if(!tbl.hasAttribute('renewable')) return;
+  const rgx = />(.)<\/div>/;
+  const lttr = tbl.rows[0].cells[0].innerHTML.match(rgx);
+  let tip = -1;
+  if(lttr) tip = lttr[0].charCodeAt(1); else { console.log('Letter ERROR'); return; }
+  if(tip >= 48 && tip <= 57) tip = 0;
+  else if(tip >= 65 && tip <= 90) tip = 1;
+  else if(tip >= 97 && tip <= 122) tip = 2;
+  if(tip == -1) { console.log('LETTER ERROR'); return; }
+  let iCnt = 0;
+  for (const r of tbl.rows) {
+    let clc = (tip == 0) ? (iCnt+1) : String.fromCharCode(iCnt + ((tip == 1) ? 65 : 97));
+    r.cells[0].innerHTML = r.cells[0].innerHTML.replace(rgx, (match, cnt) => {
+      return `>${clc}</div>`;
+    });
+    iCnt++;
   }
 }
 
@@ -293,32 +301,46 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
     return;
   }
 
-  if(val == 'list_1' || val == 'list_A') {
+  if(val.startsWith('list_')) {
     closeDlg(e.target);
     restoreSelection();
     const rows = document.getElementById('tableRows').value;
-    const Flag = (val == 'list_1');
-    let t = '<table renewable>';
+    const lttr = getRadioValue('input[name="list_lttr"]');
+    let lt, btm = ' style="padding-bottom: .8em;"', t = '<table renewable>';
     for (let r = 0; r < rows; r++) {
-      if(Flag) t += `<tr><td style="width: 40px;">
-      <div style="display:inline-block;text-align:center;line-height:2em;width:2em;height:2em;border:.8px solid #000;border-radius:50%;">${Flag ? r+1 : String.fromCharCode(r + 65)}</div>
-      </td><td style="padding-bottom: .8em;">...</td></tr>`;
+
+      if(r == rows-1) btm = '';
+      if(lttr == '1') lt = (r+1).toString();
+      else if(lttr == 'A') lt = String.fromCharCode(r + 65);
+      else lt = String.fromCharCode(r + 97);
+
+      if(val == 'list_1') t += `<tr><td style="width: 40px;">
+        <div style="display:inline-block;text-align:center;line-height:2em;width:2em;height:2em;border:.8px solid #000;border-radius:50%;">${lt}</div>
+        </td><td${btm}>...</td></tr>`;
+      else if(val == 'list_A') t += `<tr><td style="width: 40px;">
+        <div style="display:inline-block; height:2em; width:2em; line-height:2em; padding-left:.5em; border: .8px solid #000; border-top-right-radius: 50%; border-bottom-right-radius: 50%;">${lt}</div>
+        </td><td${btm}>...</td></tr>`;
+      else if(val == 'list_s') t += `<tr><td style="width: 40px;">
+        <div style="display:inline-block;height:30px;aspect-ratio:1;padding:4px 8px;border-top:.8px solid #000;border-left:.8px solid #000;">${lt}</div>
+        </td><td${btm}>...</td></tr>`;
       else t += `<tr><td style="width: 40px;">
-      <div style="display:inline-block; height:2em; width:2em; line-height:2em; padding-left:.5em; border: .8px solid #000; border-top-right-radius: 50%; border-bottom-right-radius: 50%;">${String.fromCharCode(r + 65)}</div>
-      </td><td style="padding-bottom: .8em;">...</td></tr>`;
+        <div style="display:inline-block;width:1.4em;aspect-ratio:1;padding: 0 6px 6px 0;border-right: .8px solid #000;border-bottom: .8px solid #000;border-bottom-right-radius: 60%;">${lt}</div>
+        </td><td${btm}>...</td></tr>`;
     }
     editorElement.focus();
     document.execCommand('insertHTML', false, t + '</table><br>');
     return;
   }
 
-  if(val == 'twoPanel') {
+  if(val.startsWith('twoPanel')) {
     closeDlg(e.target);
     restoreSelection();
     const rows = document.getElementById('tableRows').value;
+    const flg = (val == 'twoPanel');
     let t = '<table>';
     for (let r = 0; r < rows; r++) {
-      t += `<tr><td style="border-right: .8px solid #000; padding: ${r==0?'0':'1em'} 1em 0 0; width: 50%;">...</td><td style="padding: ${r==0?'0':'1em'} 0 0 1em;">...</td></tr>`;
+      t += `<tr><td style="${flg ? 'border-right: .8px solid #000;' : ''}padding: ${r==0?'0':'1em'} .6em 0 0; width: 50%;">...</td>
+        <td style="padding: ${r==0?'0':'1em'} 0 0 .6em;">...</td></tr>`;
     }
     editorElement.focus();
     document.execCommand('insertHTML', false, t + '</table><br>');

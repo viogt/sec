@@ -283,6 +283,18 @@ dialog button, dialog input[type="text"] {
   }
 }
 
+.radioBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.radioBtn svg {
+    stroke: currentColor;
+    fill: none;
+    width: 18px;
+    height: 18px;
+}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -374,37 +386,50 @@ dialog button, dialog input[type="text"] {
   </div>
 
 <!-- Table Insertion Modal Dialog -->
-<dialog id="insertTableDlg" style="width:460px;">
+<dialog id="insertTableDlg" style="width:400px;">
   <h3 style="margin-top: 0; text-align: center;">&#9662; INSERT A TABLE:</h3>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr;white-space: nowrap;">
-      <label><input type="radio" name="tbl_opt" value="one" checked><span class='chenar'>One line</span></label>
-      <label><input type="radio" name="tbl_opt" value="square">[text]</label>
-      <label><input type="radio" name="tbl_opt" value="list_1">&#x25EF;-list</label>
-      <label><input type="radio" name="tbl_opt" value="list_A">&#x25B7;-list</label>
-      <label><input type="radio" name="tbl_opt" value="list_r">&#x25F6;-list</label>
-      <label><input type="radio" name="tbl_opt" value="list_s">&#x250C;-list</label>
-      <label><input type="radio" name="tbl_opt" value="list_bar">- | list</label>
-      <label><input type="radio" name="tbl_opt" value="list">... List</label>
-      <div style="grid-column: span 2;border: 1px solid #ccc;margin-top:8px;padding:4px 0;text-align: center;">
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;gap:10px; white-space: nowrap;">
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="one" checked>
+        <svg><path d="M1 1 h16 v16 h-16z M4 6h10 M4 9h10 M4 12h6"/></svg>text</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="square">
+        <svg><path d="M4 1 h-3 v16 h3 M14 1h3v16h-3 M4 6h10 M4 9h10 M4 12h6"/></svg>text</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="twoPanel">
+        <svg><path d="M1 1 h16 v16 h-16z M9 1 v16"/></svg>2-bar |</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_1">
+        <svg><circle cx="9" cy="9" r="8"/><path d="M9 13v-8 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_A">
+        <svg><path d="M1 1h10 q11 8 0 16 h-10z M8 13v-8 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="twoPanel_">
+        <svg><path d="M1 1 h16 v16 h-16z M9 1 v5 M9 12v4"/></svg>2-bar</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_r">
+        <svg><path d="M17 0 q0 17-17 17 M6 11v-8 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_s">
+        <svg><path d="M17 1h-16 v16 M11 16v-9 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="table">
+        <svg><path d="M1 1 h16 v16 h-16z M1 6h16 M9 6v11"/></svg>table</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="listDash">
+        <svg><path d="M0 3h4 M6.5 2v14 M9 3h8 M9 7h8 M9 11h8 M9 15h4"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="listDash_">
+        <svg><path d="M2 2v14 M6 3h11 M6 7h11 M6 11h11 M6 15h6"/></svg>list</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap:10px; white-space: nowrap;">
+
+      <div style="border: 1px solid #ccc;margin-top:8px;padding:4px 0;text-align: center;">
         List letter:<br>
-        <input type="radio" name="list_lttr" value="1" checked>1...
-        <input type="radio" name="list_lttr" value="A">A...
-        <input type="radio" name="list_lttr" value="a">a...
+        <input type="radio" name="list_lttr" value="1" checked>1.
+        <input type="radio" name="list_lttr" value="A">A.
+        <input type="radio" name="list_lttr" value="a">a.
       </div>
-    </div>
-    <div style="overflow-x: auto; white-space: nowrap; scrollbar-width: none;">
-      <label><input type="radio" name="tbl_opt" value="twoPanel">Two panels (50% | 50%)</label><br>
-      <label><input type="radio" name="tbl_opt" value="twoPanel_">Two panels (50%   50%)</label><br><br>
-      <label><input type="radio" name="tbl_opt" value="table">Table (rows * cols)</label><br>
-      <div style="margin: 8px 4px 4px 10px;border-left:1px solid #000; padding-left:8px;">
+      <div style="border: 1px solid #ccc;margin-top:8px;padding:4px;">
         <label>Rows: <input id="tableRows" style="width:40px" type="number" value="4"/></label><br>
-        <label>Cols: <input  id="tableCols" style="width:140px" value="10% 60% 30%"/></label>
+        <label>Cols: <input  id="tableCols" style="width:120px" value="10% 60% 30%"/></label>
       </div>
+
+      <button onclick="this.closest('dialog').close()">&#x2718; CANCEL</button>
+      <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
     </div>
-  <button onclick="this.closest('dialog').close()">&#x2718; CANCEL</button>
-  <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
-  </div>
 </dialog>
 
 

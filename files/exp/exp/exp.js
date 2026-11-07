@@ -502,15 +502,23 @@ document.querySelector('#changeFont').addEventListener('click', () => {
 });
 
 function selectFont(btn) {
-    const font = getRadioValue('input[name="font_select"]');
-    const type = getRadioValue('input[name="font_type"]');
+  let base = getRadioValue('input[name="font_select"]'),
+      head = getRadioValue('input[name="Hfont_select"]'),
+      size = document.getElementById('fSize').value + 'px',
+      href = '', font = null, Hfont = null;
+  if(base != 'Default') font = base.split(':')[0].replace(/\+/g, ' ');
+  if(head != 'Default') Hfont = head.split(':')[0].replace(/\+/g, ' ');
+  if(font || Hfont)
+      href = `https://fonts.googleapis.com/css2?${font?('family='+base):''}${font && Hfont?'&':''}${Hfont?('family='+head):''}&display=swap`;
+  if(!font) font = 'Roboto, Arial, sans-serif';
+  if(!Hfont) Hfont = 'Roboto, Arial, sans-serif';
 
-    document.getElementById('curFonts').href = fonts[font].href;
-    document.documentElement.style.setProperty('--font-fam', fonts[font][type]);
-    document.documentElement.style.setProperty('--font-famH', fonts[font].heading);
-    document.documentElement.style.setProperty('--font-size', document.getElementById('fSize').value + 'px');
-
-    btn.closest('dialog').close();
+  document.getElementById('curFonts').href = href;
+  document.documentElement.style.setProperty('--font-fam', font);
+  document.documentElement.style.setProperty('--font-famH', Hfont);
+  document.documentElement.style.setProperty('--font-size', size);
+  btn.closest('dialog').close();
+  return;
 }
 
 let savedRange = null;

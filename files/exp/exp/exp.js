@@ -267,11 +267,11 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
     document.execCommand('insertHTML', false, t);
     return;
   }
-  if(val == 'list_bar' || val == 'list') {
+  if(val.startsWith('listDash')) {
     closeDlg(e.target);
     restoreSelection();
     const rows = document.getElementById('tableRows').value;
-    const brd = (val == 'list_bar') ? true : false;
+    const brd = (val == 'listDash') ? true : false;
     let t = '<table>';
     for(let r = 0; r < rows; r++) {
         t += `<tr><td style="width:2em;${ brd ? 'padding:0 1em 1em 0;border-right:.8px solid #000;' : 'padding:0 1em 1em 0;' }">&ndash;</td><td style="width:100%;padding:${brd ? '0 0 1em 1em':'0 0 1em 0'};">...</td></tr>`;

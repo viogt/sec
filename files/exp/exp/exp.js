@@ -180,6 +180,7 @@ function getCurrentElement() {
 var tableElement;
 document.getElementById('insertTable') .addEventListener('click', () => {
   tableElement = getCurrentElement();
+  if(!tableElement) return;
   saveSelection();
   tableElement = tableElement.closest('tr,#editor');
   if(tableElement.tagName == 'TR') document.getElementById('modifyTable').showModal();
@@ -247,7 +248,7 @@ function closeDlg(el) {
 document.getElementById('tableModalInsert').addEventListener('click', (e) => {
   const T = tableElement.closest('table');
   const sel = savedRange.toString();
-  const val = getRadioValue('input[name="tbl_opt"]');
+  const val = document.querySelector('dialog input[name="tbl_opt"]:checked').value;
 
   if(val == 'one') {
     closeDlg(e.target);
@@ -305,7 +306,8 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
     closeDlg(e.target);
     restoreSelection();
     const rows = document.getElementById('tableRows').value;
-    const lttr = getRadioValue('input[name="list_lttr"]');
+    
+    const lttr = document.querySelector('dialog input[name="list_lttr"]:checked').value;
     let lt, btm = ' style="padding-bottom: .8em;"', t = '<table renewable>';
     for (let r = 0; r < rows; r++) {
 
@@ -370,12 +372,9 @@ document.querySelector('#fineprint').addEventListener('click', () => {
   editorElement.focus();
   document.execCommand('insertHTML', false, `<p class="fineprint">${selection.isCollapsed ? '...' : selection.toString()}</p>`);
 });
+
 /* ------------- Insert Image --------------- */
-function getRadioValue(nm) {
-    const opts = document.querySelectorAll(nm);
-    for(let el of opts) if(el.checked) return el.value;
-    return null;
-}
+
 document.querySelector('#uploadFile').addEventListener('click', () => {
   document.getElementById('insertImageDlg').showModal();
   /*document.querySelector('.modal-overlay').hidden = false;*/
@@ -390,9 +389,9 @@ document.getElementById('imageModalInsert').addEventListener('click', (e) => {
     const srcImg = document.querySelector('#previewImage');
     if(srcImg.src == '') return;
 
-    const img_width = getRadioValue('input[name="image_width"]');
-    const img_align = getRadioValue('input[name="image_align"]');
-    const img_filter = getRadioValue('input[name="image_filter"]');
+    const img_width = document.querySelector('dialog input[name="image_width"]:checked').value;
+    const img_align = document.querySelector('dialog input[name="image_align"]:checked').value;
+    const img_filter = document.querySelector('dialog input[name="image_filter"]:checked').value;
 /* -- by HTML -- */
     let algn;
     const avatar = document.getElementById('image_avatar').checked;
@@ -451,59 +450,13 @@ function getAddress(flag) {
 editor.addEventListener('input', () => { isModified = true; });
 editorElement.focus();
 
-//================================== F O N T S ==========================================
-const fonts = {
-  rob: {
-    href: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
-    sans: "Roboto, sans-serif",
-    serif: "'Roboto Serif', serif",
-    heading: "'Roboto Condensed', sans-serif"
-  },
-  opn: {
-    href: "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&display=swap",
-    sans: "'Open Sans', sans-serif",
-    serif: "Open Sans, serif",
-    heading: "'Oswald', sans-serif"
-  },
-  ale: {
-    href: "https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Alegreya:ital,wght@0,400..900;1,400..900&family=Bebas+Neue&display=swap",
-    sans: "'Alegreya Sans', sans-serif",
-    serif: "Alegreya, serif",
-    heading: "'Bebas Neue', sans-serif"
-  },
-  ars: {
-    href: "https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap",
-    sans: "Arsenal, sans-serif",
-    serif: "Merriweather, serif",
-    heading: "Arsenal, sans-serif"
-  },
-  pts: {
-    href: "https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap",
-    sans: "'PT Sans', sans-serif",
-    serif: "'PT Serif', serif",
-    heading: "'Cabin Condensed', sans-serif"
-  },
-  src: {
-    href: "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap",
-    sans: "'Source Sans 3', sans-serif",
-    serif: "'Source Serif 4', serif",
-    heading: "'Source Sans 3', sans-serif"
-  },
-  none: {
-    href: "",
-    sans: "sans-serif",
-    serif: "serif",
-    heading: "sans-serif"
-  }
-};
-
 document.querySelector('#changeFont').addEventListener('click', () => {
   document.getElementById('selectFontsDlg').showModal()
 });
 
 function selectFont(btn) {
-  let base = getRadioValue('input[name="font_select"]'),
-      head = getRadioValue('input[name="Hfont_select"]'),
+  let base = document.querySelector('dialog input[name="font_select"]:checked').value,
+      head = document.querySelector('dialog input[name="Hfont_select"]:checked').value,
       size = document.getElementById('fSize').value + 'px',
       href = '', font = null, Hfont = null;
   if(base != 'Default') font = base.split(':')[0].replace(/\+/g, ' ');

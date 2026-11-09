@@ -21,6 +21,7 @@ body {
   background-color: #e0e0e0;
   font-family: var(--font-fam);
   font-size: var(--font-size);
+  line-height: 1.4;
 }
 
 #editor {
@@ -65,7 +66,6 @@ body {
 .menu-group button {
   border: none;
   background-color: transparent;
-  color: #678;
   margin: 0;
 }
 .menu-group button:hover {
@@ -74,7 +74,6 @@ body {
 
 button .material-symbols-outlined {
   font-size: 18px;
-  color: #678;
 }
 
 #paged-output-container {
@@ -213,6 +212,7 @@ dialog[open]::backdrop {
   gap: 1em;
 }
 dialog button, dialog input[type="text"] {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
   background: #ddd;
   border: none;
   width: 100%;
@@ -308,6 +308,7 @@ dialog button, dialog input[type="text"] {
   z-index: 1;
 }
 
+input { accent-color: #080; }
 .radioBtn:has(input[type="radio"]:checked) {
   background-color: #bfb;
 }
@@ -410,9 +411,9 @@ dialog button, dialog input[type="text"] {
 
 <!-- Table Insertion Modal Dialog -->
 <dialog id="insertTableDlg" style="width:400px;">
-  <h3 style="margin-top: 0; text-align: center;">&#9662; INSERT A TABLE:</h3>
+  <button><span class="material-symbols-outlined">table</span>INSERT A TABLE:</button>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;gap:10px; white-space: nowrap;font:normal 15px Arial,sans-serif;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;gap:8px; white-space: nowrap;font:normal 15px Arial,sans-serif;padding:8px 0;">
       <div class="radioBtn"><input type="radio" name="tbl_opt" value="one" checked>
         <svg><path d="M1 1 h16 v16 h-16z M4 6h10 M4 9h10 M4 12h6"/></svg>text</div>
       <div class="radioBtn"><input type="radio" name="tbl_opt" value="square">
@@ -437,20 +438,20 @@ dialog button, dialog input[type="text"] {
         <svg><path d="M0 3h5 M9 3h8 M9 7h8 M9 11h8 M9 15h4"/></svg>list</div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap:10px; white-space: nowrap;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap:8px; white-space: nowrap;">
 
-      <div style="border: 1px solid #ccc;margin-top:8px;padding:4px 0;text-align: center;">
-        List letter:<br>
-        <input type="radio" name="list_lttr" value="1" checked>1.
-        <input type="radio" name="list_lttr" value="A">A.
-        <input type="radio" name="list_lttr" value="a">a.
+      <div style="border: 1px solid #ccc;padding:4px;text-align: center;display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+          <div style="grid-column: span 3;">List letter:</div>
+          <div class="radioBtn"><input type="radio" name="list_lttr" value="1" checked>1.</div>
+          <div class="radioBtn"><input type="radio" name="list_lttr" value="A">A.</div>
+          <div class="radioBtn"><input type="radio" name="list_lttr" value="a">a.</div>
       </div>
-      <div style="border: 1px solid #ccc;margin-top:8px;padding:4px;">
-        <label>Rows: <input id="tableRows" style="width:40px" type="number" value="4"/></label><br>
-        <label>Cols: <input  id="tableCols" style="width:120px" value="10% 60% 30%"/></label>
+      <div style="border: 1px solid #ccc;padding:4px;display: grid; grid-template-columns: auto auto; gap: 4px;">
+        <label>Rows:</label><input id="tableRows" style="width:40px" type="number" value="4"/>
+        <label>Cols:</label><input  id="tableCols" style="width:120px" value="10% 60% 30%"/>
       </div>
 
-      <button onclick="this.closest('dialog').close()">&#x2718; CANCEL</button>
+      <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
       <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
     </div>
 </dialog>
@@ -460,7 +461,7 @@ dialog button, dialog input[type="text"] {
 <dialog id="insertImageDlg">     
 <div style="display: grid; grid-template-columns: auto 168px; gap: 8px;font:normal 15px Arial,sans-serif;">
   <div>
-    <button onclick="fileInput.click()" style="background-color: #bfb;border-bottom: 1px solid #999;">&#x1F5BC; GET&nbsp;IMAGE</button><br>
+    <button onclick="fileInput.click()" style="background-color: #bfb;border-bottom: 1px solid #999;"><span class="material-symbols-outlined">add_photo_alternate</span>GET&nbsp;IMAGE</button>
     <img id="previewImage" style="width:100%"/>
     <div id="placeHolder"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="-1 -1 12 12" fill="#fff">
     <path stroke="#ddd" stroke-width=".4" d="M0 0h10v10h-10v-10Zl10 10M0 10l10-10 Z"/></svg></div>
@@ -501,7 +502,7 @@ dialog button, dialog input[type="text"] {
         <label><input type="checkbox" id="image_avatar"/> avatar</label>
         <input id="avatar_size" type="number" value="100"/>
   </div>
-  <button onclick="this.closest('dialog').close()">&#x2718; CANCEL</button>
+  <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
   <button id="imageModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
 </div>
 </dialog>
@@ -518,7 +519,7 @@ dialog button, dialog input[type="text"] {
     <button onclick="modTable(this,2)" style="background-color: #f80;">&#x2718; Delete current row</button>
     <button onclick="modTable(this,3)" style="background-color: #f40;">&#x2718; Delete entire table</button>
   </div>
-  <button onclick="this.closest('dialog').close()" style="background-color: #0af;margin-top:1em;">&#x2718; CANCEL</button>
+  <button onclick="closeDlg(this)" style="background-color: #0af;margin-top:1em;">&#x2718; CANCEL</button>
 </dialog>
 
 <dialog id="PromptModal" style="padding: 20px; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.5);">
@@ -531,7 +532,7 @@ dialog button, dialog input[type="text"] {
 </dialog>
 
 <dialog id="selectFontsDlg" style="width:360px;">
-  <button style="display: flex; align-items: center; justify-content: center; gap: 8px;"><span class="material-symbols-outlined" style="font-size: 2.4em;">brand_family</span><span>SELECT FONT:</span></button>
+  <button><span class="material-symbols-outlined">brand_family</span>SELECT FONT:</button>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin: 1em 0;font:normal 15px Arial,sans-serif;">
   <div style="display: flex;flex-direction: column;">
     <label>&#9662; BASE FONTS:</label>
@@ -557,7 +558,7 @@ dialog button, dialog input[type="text"] {
 </div>
 <div style="text-align: center;">Font size: 15px (11.25pt)</div><input type="range" style="width:100%;margin-bottom: 1.4em;" oninput='this.previousSibling.innerText=`Font size: ${this.value}px (${this.value * .75}pt)`' id="fSize" min="10" value="15" max="32"/>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
-    <button onclick="this.closest('dialog')?.close()">&#x2718; CANCEL</button>
+    <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
     <button onclick="selectFont(this)" style="background-color: #bfb;">&#x2714; CHANGE</button>
 </div>
 </dialog>

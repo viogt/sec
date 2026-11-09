@@ -243,7 +243,8 @@ function modTable(elm, flag) {
 
 function closeDlg(el) {
   el.closest('dialog').close();
-  //editorElement.focus();
+  restoreSelection();
+  editorElement.focus();
 }
 
 document.getElementById('tableModalInsert').addEventListener('click', (e) => {

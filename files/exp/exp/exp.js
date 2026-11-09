@@ -141,7 +141,7 @@ document.querySelector('#address').addEventListener('click', () => {
   document.execCommand('insertHTML', false, t);
 });
 document.querySelector('#inlineIcon').addEventListener('click', async () => {
-  const inp = await showPrompt('Icon name: ink_pen, check_circle, search, etc.<br>+n lines (ex: ink_pen 3)<br>or SVG or HTML code:', 'ink_pen');
+  const inp = await showPrompt('Ex: ink_pen, check_circle, search, etc.<br>or ex: ink_pen 3 (lines height)<br>or SVG or HTML code:<br>', 'ink_pen');
   if(!inp || inp.trim() == '') return;
   if(inp.charAt(0) == '<') {
     editorElement.focus();

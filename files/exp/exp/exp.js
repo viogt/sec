@@ -243,6 +243,7 @@ function modTable(elm, flag) {
 
 function closeDlg(el) {
   el.closest('dialog').close();
+  //editorElement.focus();
 }
 
 document.getElementById('tableModalInsert').addEventListener('click', (e) => {
@@ -376,14 +377,14 @@ document.querySelector('#fineprint').addEventListener('click', () => {
 /* ------------- Insert Image --------------- */
 
 document.querySelector('#uploadFile').addEventListener('click', () => {
+  saveSelection();
   document.getElementById('insertImageDlg').showModal();
-  /*document.querySelector('.modal-overlay').hidden = false;*/
 });
 
 document.getElementById('imageModalInsert').addEventListener('click', (e) => {
     const elm = getCurrentElement();
     /*if(!elm || elm.tagName != 'P') {
-      //document.querySelector('.modal-overlay').hidden = true;
+      document.querySelector('.modal-overlay').hidden = true;
       return;
     }*/
     const srcImg = document.querySelector('#previewImage');
@@ -393,13 +394,13 @@ document.getElementById('imageModalInsert').addEventListener('click', (e) => {
     const img_align = document.querySelector('dialog input[name="image_align"]:checked').value;
     const img_filter = document.querySelector('dialog input[name="image_filter"]:checked').value;
 /* -- by HTML -- */
-    let algn;
+    let algn = 'display:inline-block;';
     const avatar = document.getElementById('image_avatar').checked;
     if(avatar) {
       const avSize = parseInt(document.getElementById('avatar_size').value);
-      algn = `width:${avSize}px;height:${avSize}px;border-radius: 50%;object-fit: cover;`;
+      algn += `width:${avSize}px;height:${avSize}px;border-radius: 50%;object-fit: cover;`;
     }
-    else algn = img_width == 'lines' ? `height:${document.getElementById('byLines').value}lh; width:auto;` : `width:${img_width};`;
+    else algn += (img_width == 'lines') ? `height:${document.getElementById('byLines').value}lh; width:auto;` : `width:${img_width};`;
     const shdw = document.querySelector('#image_shadow').checked;
     if(img_filter != 'normal' || shdw)
       algn += `filter:${img_filter != 'normal' ? img_filter : ''}${shdw?' drop-shadow(0px 2px 3px #666)':''};`;
@@ -409,7 +410,8 @@ document.getElementById('imageModalInsert').addEventListener('click', (e) => {
     if(document.querySelector('#image_border').checked) algn += 'border:.5px solid #888;';
     if(!avatar && document.querySelector('#image_radius').checked) algn += 'border-radius:.6em;';
 
-    e.target.closest('dialog').close();
+    closeDlg(e.target);
+    restoreSelection();
     editorElement.focus();
     document.execCommand('insertHTML', false, `<img src="${srcImg.src}" style="${algn}"/>`);
 });
@@ -470,7 +472,7 @@ function selectFont(btn) {
   document.documentElement.style.setProperty('--font-fam', font);
   document.documentElement.style.setProperty('--font-famH', Hfont);
   document.documentElement.style.setProperty('--font-size', size);
-  btn.closest('dialog').close();
+  closeDlg(btn);
   return;
 }
 

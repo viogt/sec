@@ -309,7 +309,7 @@ dialog button, dialog input[type="text"] {
 }
 
 .radioBtn:has(input[type="radio"]:checked) {
-  background-color: #fe4;
+  background-color: #bfb;
 }
 
 .radioBtn svg {
@@ -434,7 +434,7 @@ dialog button, dialog input[type="text"] {
       <div class="radioBtn"><input type="radio" name="tbl_opt" value="listDash">
         <svg><path d="M0 3h4 M6.5 2v14 M9 3h8 M9 7h8 M9 11h8 M9 15h4"/></svg>list</div>
       <div class="radioBtn"><input type="radio" name="tbl_opt" value="listDash_">
-        <svg><path d="M2 2v14 M6 3h11 M6 7h11 M6 11h11 M6 15h6"/></svg>list</div>
+        <svg><path d="M0 3h5 M9 3h8 M9 7h8 M9 11h8 M9 15h4"/></svg>list</div>
     </div>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap:10px; white-space: nowrap;">
@@ -457,39 +457,49 @@ dialog button, dialog input[type="text"] {
 
 
 
-<dialog id="insertImageDlg">
-  <button onclick="fileInput.click()" style="border-bottom: 1px solid #999;">&#x1F5BC; GET AN IMAGE</button><br>    
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;font:normal 15px Arial,sans-serif;">
+<dialog id="insertImageDlg">     
+<div style="display: grid; grid-template-columns: auto 168px; gap: 8px;font:normal 15px Arial,sans-serif;">
   <div>
+    <button onclick="fileInput.click()" style="background-color: #bfb;border-bottom: 1px solid #999;">&#x1F5BC; GET&nbsp;IMAGE</button><br>
     <img id="previewImage" style="width:100%"/>
     <div id="placeHolder"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="-1 -1 12 12" fill="#fff">
     <path stroke="#ddd" stroke-width=".4" d="M0 0h10v10h-10v-10Zl10 10M0 10l10-10 Z"/></svg></div>
-  </div>
-  <div style="overflow-x: auto; white-space: nowrap; scrollbar-width: none; line-height: 1.6;">
     <input type="file" id="fileInput" accept="image/*" style="display: none;"/>
-    <div>&#9662; Image width:</div>
-        <label><input type="radio" name="image_width" value="100%">100%</label>
-        <label><input type="radio" name="image_width" value="50%">50%</label><br>
-        <label><input type="radio" name="image_width" value="33.3%" checked>33.3%</label>
-        <label><input type="radio" name="image_width" value="25%">25%</label><br>
-        <label><input type="radio" name="image_width" value="lines">height by lines
-        <input id="byLines" type="number" min="2" max="40" value="5" step="1"/></label>
-        <hr>
-        <label><input type="checkbox" id="image_border" checked/> image border</label><br>
-        <label><input type="checkbox" id="image_radius" checked/> rounded edges<label><hr>
-    <div>&#9662; Image align:</div>
-        <label><input type="radio" name="image_align" value="left" checked> left</label>
-        <label><input type="radio" name="image_align" value="none"> none</label>
-        <label><input type="radio" name="image_align" value="right"> right</label>
-        <hr>
-    <div>&#9662; Image filter:</div>
-        <label><input type="radio" name="image_filter" value="normal" checked> normal</label>
-        <label><input type="radio" name="image_filter" value="grayscale(100%)"> grayscale</label>
-        <label><input type="radio" name="image_filter" value="sepia(100%)"> sepia</label><hr>
-        <label><input type="checkbox" id="image_shadow"/> image shadow</label><br>
-        <label><input type="checkbox" id="image_avatar"/> avatar, size (px):
-          <input id="avatar_size" type="number" value="100" style="width:60px"/>
-        </label>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 50% 50%; gap: 6px;width:160px;">
+
+    <div style="grid-column: span 2;">&#9662; Image width:</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="100%">100%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="50%">50%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="33.3%" checked>33.3%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="25%">25%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="lines">By lines</div>
+        <input id="byLines" type="number" min="2" max="30" value="5" step="1"/>
+        <div style="grid-column: span 2;border:1px solid #ccc;padding-left: 8px;border-radius: 6px;">
+          <div><input type="checkbox" id="image_border" checked/> image border</div>
+          <div><input type="checkbox" id="image_radius" checked/> rounded edges</div>
+          <div><input type="checkbox" id="image_shadow"/> image shadow</div>
+        </div>
+
+    <div style="grid-column: span 2;">&#9662; Image align:</div>
+    <div style="grid-column: span 2;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
+          <div class="radioBtn"><input type="radio" name="image_align" value="left" checked>left</div>
+          <div class="radioBtn"><input type="radio" name="image_align" value="none">none</div>
+          <div class="radioBtn"><input type="radio" name="image_align" value="right">right</div>
+        </div>
+    </div>
+    <div style="grid-column: span 2;">&#9662; Image filter:</div>
+    <div style="grid-column: span 2;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
+          <div class="radioBtn"><input type="radio" name="image_filter" value="normal" checked>none</div>
+          <div class="radioBtn"><input type="radio" name="image_filter" value="grayscale(100%)">gray</div>
+          <div class="radioBtn"><input type="radio" name="image_filter" value="sepia(100%)">sepia</div>
+        </div>        
+    </div>
+        <label><input type="checkbox" id="image_avatar"/> avatar</label>
+        <input id="avatar_size" type="number" value="100"/>
   </div>
   <button onclick="this.closest('dialog').close()">&#x2718; CANCEL</button>
   <button id="imageModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
@@ -512,7 +522,7 @@ dialog button, dialog input[type="text"] {
 </dialog>
 
 <dialog id="PromptModal" style="padding: 20px; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.5);">
-  <h3 id="promptMessage" style="margin-top: 0; text-align: center;">Enter value:</h3>
+  <div id="promptMessage" style="margin: 0 0 1em 0; text-align: center;">Enter value:</div>
   <input type="text" id="promptInput" style="width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none;" />
     <div style="display: flex; justify-content: flex-end; gap: 10px;">
         <button id="promptCancel">&#x2718; CANCEL</button>

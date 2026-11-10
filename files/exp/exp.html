@@ -255,7 +255,7 @@ dialog button, dialog input[type="text"] {
   #editor {
     width: 100%;
     padding: 15px;
-    margin: 15px 0;
+    margin: 0;
     font-size: 13px;
   }
 }
@@ -458,19 +458,24 @@ input { accent-color: #080; }
 
 
 
-<dialog id="insertImageDlg">     
+<dialog id="insertImageDlg" style="width:460px">     
 <div style="display: grid; grid-template-columns: auto 168px; gap: 8px;font:normal 15px Arial,sans-serif;">
   <div>
     <button onclick="fileInput.click()" style="background-color: #bfb;border-bottom: 1px solid #999;"><span class="material-symbols-outlined">add_photo_alternate</span>GET&nbsp;IMAGE</button>
     <img id="previewImage" style="width:100%"/>
-    <div id="placeHolder"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="-1 -1 12 12" fill="#fff">
-    <path stroke="#ddd" stroke-width=".4" d="M0 0h10v10h-10v-10Zl10 10M0 10l10-10 Z"/></svg></div>
+    <div id="placeHolder">
+      <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="-1 -1 12 12" fill="#fff">
+      <path stroke="#ddd" stroke-width=".4" d="M0 0h10v10h-10v-10Zl10 10M0 10l10-10 Z"/></svg>-->
+      <svg width="100%" viewBox="0 0 24 24">
+  <path d="M3 3 H21 V21 H3 V3 Z M5 19 H19 L14 11 L10 17 L8 14 L5 19 Z M7 8 A1.5 1.5 0 1 0 7 11 A1.5 1.5 0 1 0 7 8 Z" fill="none" stroke="#cec" stroke-width="1.5"/>
+</svg>
+    </div>
     <input type="file" id="fileInput" accept="image/*" style="display: none;"/>
   </div>
 
-  <div style="display: grid; grid-template-columns: 50% 50%; gap: 6px;width:160px;">
+  <div style="display: grid; grid-template-columns: 50% 50%; gap: 6px; width:160px;">
 
-    <div style="grid-column: span 2;">&#9662; Image width:</div>
+    <div style="grid-column: span 2;">&#8595; Image width:</div>
         <div class="radioBtn"><input type="radio" name="image_width" value="100%">100%</div>
         <div class="radioBtn"><input type="radio" name="image_width" value="50%">50%</div>
         <div class="radioBtn"><input type="radio" name="image_width" value="33.3%" checked>33.3%</div>
@@ -483,7 +488,7 @@ input { accent-color: #080; }
           <div><input type="checkbox" id="image_shadow"/> image shadow</div>
         </div>
 
-    <div style="grid-column: span 2;">&#9662; Image align:</div>
+    <div style="grid-column: span 2;">&#8595; Image align:</div>
     <div style="grid-column: span 2;">
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
           <div class="radioBtn"><input type="radio" name="image_align" value="left" checked>left</div>
@@ -491,7 +496,7 @@ input { accent-color: #080; }
           <div class="radioBtn"><input type="radio" name="image_align" value="right">right</div>
         </div>
     </div>
-    <div style="grid-column: span 2;">&#9662; Image filter:</div>
+    <div style="grid-column: span 2;">&#8595; Image filter:</div>
     <div style="grid-column: span 2;">
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
           <div class="radioBtn"><input type="radio" name="image_filter" value="normal" checked>none</div>
@@ -501,6 +506,11 @@ input { accent-color: #080; }
     </div>
         <label><input type="checkbox" id="image_avatar"/> avatar</label>
         <input id="avatar_size" type="number" value="100"/>
+        <div style="grid-column: span 2;display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
+          <div class="radioBtn"><input type="radio" name="avatar_tip" value="round" checked>> <svg><circle cx="9" cy="9" r="8"/></svg></div>
+          <div class="radioBtn"><input type="radio" name="avatar_tip" value="hexagon">> <svg><path d="M9 1L16 5L16 13L9 17L2 13L2 5Z"/></svg></div>
+          <div class="radioBtn"><input type="radio" name="avatar_tip" value="arrow">> <svg><path d="M1 1h10l6 8l-6 8h-10z"/></svg></div>
+        </div>
   </div>
   <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
   <button id="imageModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>

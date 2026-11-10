@@ -398,8 +398,12 @@ document.getElementById('imageModalInsert').addEventListener('click', (e) => {
     let algn = 'display:inline-block;';
     const avatar = document.getElementById('image_avatar').checked;
     if(avatar) {
-      const avSize = parseInt(document.getElementById('avatar_size').value);
-      algn += `width:${avSize}px;height:${avSize}px;border-radius: 50%;object-fit: cover;`;
+      const avSize = parseInt(document.getElementById('avatar_size').value,10);
+      const avTip = document.querySelector('dialog input[name="avatar_tip"]:checked').value;
+      let avT = 'border-radius: 50%;';
+      if(avTip == 'hexagon') avT = 'clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);'
+      else if(avTip == 'arrow') avT = 'clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);'
+      algn += `width:${avSize}px;height:${avSize}px;${avT}object-fit: cover;`;
     }
     else algn += (img_width == 'lines') ? `height:${document.getElementById('byLines').value}lh; width:auto;` : `width:${img_width};`;
     const shdw = document.querySelector('#image_shadow').checked;

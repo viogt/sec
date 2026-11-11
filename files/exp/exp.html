@@ -573,6 +573,14 @@ input { accent-color: #080; }
 </div>
 </dialog>
 
+<dialog id="answer" style="width:240px;">
+  <div name="titlu" style="text-align: center;margin-bottom: 1em;"></div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+    <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
+    <button name="confirm" style="background-color: #bfb;"></button>
+  </div>
+</dialog>
+
 <div id="paged-output-container"></div>
 
 <script>

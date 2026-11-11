@@ -52,7 +52,21 @@ document.querySelector('#titlu').addEventListener('click', () => {
 });
 
 document.querySelector('#clearAll').addEventListener('click', () => {
-  editorElement.innerHTML = `<p>${editorElement.textContent}</p>`;
+  const selection = window.getSelection();
+  if(!selection.isCollapsed) {
+    editorElement.focus();
+    document.execCommand('insertHTML', false, selection.toString());
+    return;
+  }
+  const dlg = document.getElementById('answer');
+  dlg.querySelector('div[name="titlu"]').innerHTML = '<b style="color:red">Remove</b> all format?';
+  const cnf = dlg.querySelector('button[name="confirm"]');
+  cnf.innerHTML = '&#x2714; REMOVE';
+  cnf.addEventListener('click', (e) => {
+    editorElement.innerHTML = `<p>${editorElement.textContent}</p>`;
+    closeDlg(e.target);
+  }, { once: true });
+  dlg.showModal();
 });
 
 function makeRemark(mod) {
@@ -249,35 +263,43 @@ function closeDlg(el) {
 
 document.getElementById('tableModalInsert').addEventListener('click', (e) => {
   const T = tableElement.closest('table');
-  const sel = savedRange.toString();
   const val = document.querySelector('dialog input[name="tbl_opt"]:checked').value;
+  const sel = savedRange.toString();
+  let lines = null, rows;
+  if(sel) {
+    lines = sel.replace(/\n{2}/g,'\n').replace(/\s+$/g, '').split('\n');
+    rows = lines.length;
+  }
+  else rows = document.getElementById('tableRows').value;
 
   if(val == 'one') {
     closeDlg(e.target);
     restoreSelection();
     editorElement.focus();
-    document.execCommand('insertHTML', false, `<br><p style="border: .8px solid #000; border-radius:6px;padding: 1em;">${sel ? sel : '...'}</p><br>`);
+    document.execCommand('insertHTML', false, `<br><p style="border: .8px solid #000; border-radius:6px;padding: 1em;">${lines?lines.join('<br>'):'...'}</p><br>`);
     return;
   }
+
   if(val == 'square') {
     closeDlg(e.target);
     restoreSelection();
     const t = `<br><div style="display:grid;grid-template-columns: 1em auto 1em;">
       <div style="border: .8px solid #000; border-right:none; border-radius: 6px 0 0 6px;"></div>
-      <p style="padding: .6em 0;">${sel ? sel : '...'}</p>
+      <p style="padding: .6em 0;">${lines?lines.join('<br>'):'...'}</p>
       <div style="border: .8px solid #000; border-left:none; border-radius:0 6px 6px 0;"></div></div><br><br>`;
     editorElement.focus();
     document.execCommand('insertHTML', false, t);
     return;
   }
+
   if(val.startsWith('listDash')) {
     closeDlg(e.target);
     restoreSelection();
-    const rows = document.getElementById('tableRows').value;
     const brd = (val == 'listDash') ? true : false;
     let t = '<table>';
     for(let r = 0; r < rows; r++) {
-        t += `<tr><td style="width:2em;${ brd ? 'padding:0 1em 1em 0;border-right:.8px solid #000;' : 'padding:0 1em 1em 0;' }">&ndash;</td><td style="width:100%;padding:${brd ? '0 0 1em 1em':'0 0 1em 0'};">...</td></tr>`;
+        t += `<tr><td style="width:2em;${ brd ? 'padding:0 1em 1em 0;border-right:.8px solid #000;' : 'padding:0 1em 1em 0;' }">&ndash;</td>
+        <td style="width:100%;padding:${brd ? '0 0 1em 1em':'0 0 1em 0'};">${lines?lines[r]:'...'}</td></tr>`;
     }
     editorElement.focus();
     document.execCommand('insertHTML', false, t + '</table><br>');
@@ -287,7 +309,6 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
   if(val == 'table') {
     closeDlg(e.target);
     restoreSelection();
-    const rows = document.getElementById('tableRows').value;
     const parts = document.getElementById('tableCols').value.split(' '), L = parts.length;
     let t = '<table>';
     for(let r = 0; r < rows; r++) {
@@ -307,8 +328,7 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
   if(val.startsWith('list_')) {
     closeDlg(e.target);
     restoreSelection();
-    const rows = document.getElementById('tableRows').value;
-    
+
     const lttr = document.querySelector('dialog input[name="list_lttr"]:checked').value;
     let lt, btm = ' style="padding-bottom: .8em;"', t = '<table renewable>';
     for (let r = 0; r < rows; r++) {
@@ -318,18 +338,20 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
       else if(lttr == 'A') lt = String.fromCharCode(r + 65);
       else lt = String.fromCharCode(r + 97);
 
+      let cnt = lines ? lines[r] : '...';
+
       if(val == 'list_1') t += `<tr><td style="width: 40px;">
         <div style="display:inline-block;text-align:center;line-height:2em;width:2em;height:2em;border:.8px solid #000;border-radius:50%;">${lt}</div>
-        </td><td${btm}>...</td></tr>`;
+        </td><td${btm}>${cnt}</td></tr>`;
       else if(val == 'list_A') t += `<tr><td style="width: 40px;">
         <div style="display:inline-block; height:2em; width:2em; line-height:2em; padding-left:.5em; border: .8px solid #000; border-top-right-radius: 50%; border-bottom-right-radius: 50%;">${lt}</div>
-        </td><td${btm}>...</td></tr>`;
+        </td><td${btm}>${cnt}</td></tr>`;
       else if(val == 'list_s') t += `<tr><td style="width: 40px;">
         <div style="display:inline-block;height:30px;aspect-ratio:1;padding:4px 8px;border-top:.8px solid #000;border-left:.8px solid #000;">${lt}</div>
-        </td><td${btm}>...</td></tr>`;
+        </td><td${btm}>${cnt}</td></tr>`;
       else t += `<tr><td style="width: 40px;">
         <div style="display:inline-block;width:1.4em;aspect-ratio:1;padding: 0 6px 6px 0;border-right: .8px solid #000;border-bottom: .8px solid #000;border-bottom-right-radius: 60%;">${lt}</div>
-        </td><td${btm}>...</td></tr>`;
+        </td><td${btm}>${cnt}</td></tr>`;
     }
     editorElement.focus();
     document.execCommand('insertHTML', false, t + '</table><br>');
@@ -339,12 +361,17 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
   if(val.startsWith('twoPanel')) {
     closeDlg(e.target);
     restoreSelection();
-    const rows = document.getElementById('tableRows').value;
     const flg = (val == 'twoPanel');
-    let t = '<table>';
-    for (let r = 0; r < rows; r++) {
-      t += `<tr><td style="${flg ? 'border-right: .8px solid #000;' : ''}padding: ${r==0?'0':'1em'} .6em 0 0; width: 50%;">...</td>
-        <td style="padding: ${r==0?'0':'1em'} 0 0 .6em;">...</td></tr>`;
+    let i = 0, t = '<table>';
+    if(lines) {
+      if(rows % 2 == 1) { rows++; lines[rows-1] = '...'; }
+      rows /= 2;
+    }
+    for (let r = 0, i = 0; r < rows; r++, i += 2) {
+      let lft = lines && lines[i] ? lines[i] : '...';
+      let rgh = lines && lines[i+1] ? lines[i+1] : '...';
+      t += `<tr><td style="${flg ? 'border-right: .8px solid #000;' : ''}padding: ${r==0?'0':'1em'} .6em 0 0; width: 50%;">${lines?lines[i++]:'...'}</td>
+        <td style="padding: ${r==0?'0':'1em'} 0 0 .6em;">${lines?lines[i++]:'...'}</td></tr>`;
     }
     editorElement.focus();
     document.execCommand('insertHTML', false, t + '</table><br>');
@@ -354,7 +381,7 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
 
 document.querySelector('#ribbon').addEventListener('click', () => {
   const selection = window.getSelection();
-  if (selection.isCollapsed) return;
+  if(selection.isCollapsed) return;
 const t = `<div style="text-align:center;">
 <svg xmlns="http://www.w3.org/2000/svg" width="340" viewBox="0 140 720 170">
 <g stroke="#000" stroke-width="2" fill="none">
@@ -363,7 +390,7 @@ const t = `<div style="text-align:center;">
 </g>
 <text fill="black" font-size="28" dominant-baseline="middle">
 <textPath path="M100 218 q260 -50 520 0" startOffset="50%" text-anchor="middle" textLength="450" lengthAdjust="spacingAndGlyphs">
-${selection.toString().toUpperCase()}</textPath></text>
+${selection.toString()}</textPath></text>
 </svg></div>`;
     editorElement.focus();
     document.execCommand('insertHTML', false, t);

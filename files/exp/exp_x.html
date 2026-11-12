@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRINT</title>
+<style>
+:root {
+  --doc-name: "";
+  --border-color: #ccc;
+  --font-size: 15px;
+  --page-text: "Pag.";
+  --of-text: "din";
+  --font-fam: Roboto, Arial, sans-serif;
+  --font-famH: "Roboto Condensed", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font:normal 15px Arial;
+  background-color: #e0e0e0;
+  font-family: var(--font-fam);
+  font-size: var(--font-size);
+  line-height: 1.4;
+}
+
+#editor {
+    min-height: 297mm;;
+    width: 210mm;
+    overflow-y: auto;
+    padding: 15mm 25mm;
+    outline: none;
+    margin: 20px auto;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .5);
+    background-color: #fff;
+}
+
+.wrapper {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,.3);
+  z-index: 100;
+  background-color: #fff;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  .toolbar::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.toolbar {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  width: fit-content;
+  margin: 0 auto;
+  font: normal 14px Arial, sans-serif;
+  padding: 6px;
+}
+.toolbar button {
+  border: none;
+  background-color: transparent;
+  margin: 0;
+}
+.toolbar .divider {
+    display: inline-block;
+    grid-row: span 2;
+    border-left: .6px solid #000;
+    margin: 4px 8px;
+}
+
+button .material-symbols-outlined {
+  font-size: 18px;
+}
+
+#paged-output-container {
+  display: block;
+}
+
+#printPdf {
+  display: inline-block;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  padding: 3px 8px;
+  margin-bottom: 2px;
+}
+
+#docNameInput {
+    grid-column: span 3;
+  width: 150px;
+  vertical-align: middle;
+  padding: 2px 6px;
+  border: 0.5px solid var(--border-color);
+  font-size: var(--font-size);
+  border-radius: 4px;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+p {
+  text-align: justify;
+  margin: 0;
+  line-height: 1.4;
+}
+
+p.fineprint {
+  font-weight: 100;
+  font-size: 13px;
+  line-height: 1.1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td {
+  vertical-align: top;
+  text-align: justify;
+}
+
+H1 {
+  font-family: var(--font-famH);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 1.6em;
+  line-height: 1;
+  margin: 0;
+}
+
+H2 {
+  font-family: var(--font-famH);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 1.4em;
+  line-height: 1;
+  margin: 0;
+}
+
+u {
+  text-decoration: none;
+  padding-bottom: 1px;
+  border-bottom: 0.8px solid #000;
+}
+
+ol li, ul li {
+  margin-bottom: 0.8em;
+}
+
+sub, sup {
+  font-size: 0.6em;
+}
+
+svg {
+  display: inline-block;
+}
+
+.hRule {
+  border: none;
+  border-top: 0.8px solid #000;
+  height: 1px;
+  width: 100%;
+}
+
+.chenar {
+  font-weight: normal;
+  border: 0.8px solid #000;
+  padding: 0 6px 1px 6px;
+  margin: 0 2px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/*---------------------- Modal dialog styling ----------------*/
+dialog {
+  width: min(90%, 600px);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.3s ease, transform 0.3s ease, display 0.3s allow-discrete;
+  transition-behavior: allow-discrete;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+dialog[open] {
+  opacity: 1;
+  transform: scale(1);
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease, display 0.3s allow-discrete;
+  transition-behavior: allow-discrete;
+}
+dialog[open]::backdrop {
+  background-color: rgba(0, 0, 0, .5);
+  @starting-style {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+}
+dialog button, dialog input[type="text"] {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: #ddd;
+  border: none;
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 0px;
+  font: normal 14px Arial, sans-serif;
+}
+
+.modal-overlay[hidden] {
+  display: none !important;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-dialog {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  padding: 10px;
+  background-color: #fff;
+  width: min(90%, 600px);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+}
+.modal-dialog button {
+  background-color: #ddd;
+  border: none;
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 0px;
+}
+
+@media screen and (max-width: 768px) {
+  #editor {
+    width: 100%;
+    padding: 15px;
+    margin: 0;
+    font-size: 13px;
+  }
+}
+
+@media screen {
+  #paged-output-container {
+    position: absolute;
+    left: -10000px;
+    top: 0;
+    width: 210mm;
+  }
+}
+
+@media print {
+  body > *:not(#paged-output-container) {
+    display: none !important;
+  }
+  body { background-color: #fff; }
+
+  #paged-output-container {
+    display: block !important;
+    position: static !important;
+    left: auto !important;
+    width: auto !important;
+  }
+}
+
+.radioBtn {
+  position: relative;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  /*margin: 4px;*/
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.radioBtn input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+input { accent-color: #080; }
+.radioBtn:has(input[type="radio"]:checked) {
+  background-color: #bfb;
+}
+
+.radioBtn svg {
+    stroke: currentColor;
+    fill: none;
+    width: 18px;
+    height: 18px;
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="curFonts" href="" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrapper">
+<div class="toolbar">
+
+    <button id="printPdf" title="Download the document as PDF">PDF &#9662;</button>
+    <input type="text" id="docNameInput" placeholder="Doc Name for Footer" title="Set Document Name for Footer">
+    <span>
+    <button data-command="undo" title="Undo (Ctrl+Z)"><span class="material-symbols-outlined">undo</span></button>
+    <button data-command="redo" title="Redo (Ctrl+Y)"><span class="material-symbols-outlined">redo</span></button>
+    <button id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">mop</span></button>
+    </span>
+
+<div class="divider"></div>
+
+<button data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
+    <button data-command="justifyLeft" title="Align left"><span class="material-symbols-outlined">format_align_left</span></button>
+<button data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">format_italic</span></button>
+    <button data-command="justifyCenter" title="Align center"><span class="material-symbols-outlined">format_align_center</span></button>
+<button data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">format_underlined</span></button>
+    <button data-command="justifyRight" title="Align right"><span class="material-symbols-outlined">format_align_right</span></button>
+<button id="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">link</span></button>
+    <button data-command="justifyFull" title="Justify"><span class="material-symbols-outlined">format_align_justify</span></button>
+<button id="chenar" title="Frame the selection"><span class="material-symbols-outlined">font_download</span></button>
+    <button data-command="removeFormat" title="Remove formatting from selection"><span class="material-symbols-outlined">format_clear</span></button>
+
+<div class="divider"></div>
+
+<button data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">format_paragraph</span></button>
+    <button data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">format_indent_decrease</span></button>
+<button data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">format_h1</span></button>
+    <button data-command="indent" title="Increase indent"><span class="material-symbols-outlined">format_indent_increase</span></button>
+<button data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">format_h2</span></button>
+    <button data-command="insertUnorderedList" title="Bulleted list"><span class="material-symbols-outlined">format_list_bulleted</span></button>
+<button data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">uppercase</span></button>
+    <button data-command="insertOrderedList" title="Numbered list"><span class="material-symbols-outlined">format_list_numbered</span></button>
+<button data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">lowercase</span></button>
+    <button id="horizontalRule" title="Insert a Horizontal line"><span class="material-symbols-outlined">horizontal_rule</span></button>
+
+<div class="divider"></div>
+
+<button data-command="superscript" title="Superscript"><span class="material-symbols-outlined">superscript</span></button>
+    <button id="insertTable" title="Insert Table"><span class="material-symbols-outlined">table</span></button>
+<button data-command="subscript" title="Subscript"><span class="material-symbols-outlined">subscript</span></button>
+    <button id="uploadFile" title="Insert an Image"><span class="material-symbols-outlined">add_photo_alternate</span></button>
+<button id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">space_bar</span></button>
+    <button id="fineprint" title="Insert Fine Print"><span class="material-symbols-outlined">manage_search</span></button>
+<button id="sect" title="Insert paragrpagh">&sect;</button>    
+    <button id="endash" title="Turn '--' into '—'"><span class="material-symbols-outlined">unknown_med</span></button>
+
+<div class="divider"></div>
+
+<button  id="address" title="Insert the Address block"><span class="material-symbols-outlined">outgoing_mail</span></button>
+    <button  data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">attach_file</span></button>
+<button data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">format_quote</span></button>
+    <button  id="signature" title="Insert the Signature block"><span class="material-symbols-outlined">signature</span></button>
+<button id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">page_header</span></button>
+    <button  data-remark="bulb" title="Insert an Idea"><span class="material-symbols-outlined">emoji_objects</span></button>
+<button data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">edit_square</span></button>
+    <button  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">gavel</span></button>
+<button data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">error</span></button>
+    <button  data-remark="blank" title="Insert an Blank quote"><span class="material-symbols-outlined">dock_to_right</span></button>
+
+<div class="divider"></div>
+
+<button id="inlineIcon" title="Insert an Inline Icon"><span class="material-symbols-outlined">design_services</span></button>
+    <button id="changeFont" title="Select fonts"><span class="material-symbols-outlined">brand_family</span></button>
+<button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">workspace_premium</span></button>
+    <button id="takeClipboard" title="Content into the Clipboard"><span class="material-symbols-outlined">inventory</span></button>
+<button id="footerLang" title="Toggle footer language">RO</button>
+    <button  id="pushClipboard" title="From Clipboard into Document"><span class="material-symbols-outlined">article_shortcut</span></button>
+</div>
+</div>
+
+<div id="editor" contenteditable="true" spellcheck="true">
+  <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
+  <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
+  <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
+</div>
+
+<!-- Table Insertion Modal Dialog -->
+<dialog id="insertTableDlg" style="width:400px;">
+  <button><span class="material-symbols-outlined">table</span>INSERT A TABLE:</button>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;gap:8px; white-space: nowrap;font:normal 15px Arial,sans-serif;padding:8px 0;">
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="one" checked>
+        <svg><path d="M1 1 h16 v16 h-16z M4 6h10 M4 9h10 M4 12h6"/></svg>text</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="square">
+        <svg><path d="M4 1 h-3 v16 h3 M14 1h3v16h-3 M4 6h10 M4 9h10 M4 12h6"/></svg>text</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="twoPanel">
+        <svg><path d="M1 1 h16 v16 h-16z M9 1 v16"/></svg>2-bar |</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_1">
+        <svg><circle cx="9" cy="9" r="8"/><path d="M9 13v-8 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_A">
+        <svg><path d="M1 1h10 q11 8 0 16 h-10z M8 13v-8 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="twoPanel_">
+        <svg><path d="M1 1 h16 v16 h-16z M9 1 v5 M9 12v4"/></svg>2-bar</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_r">
+        <svg><path d="M17 0 q0 17-17 17 M6 11v-8 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="list_s">
+        <svg><path d="M17 1h-16 v16 M11 16v-9 l-3 3"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="table">
+        <svg><path d="M1 1 h16 v16 h-16z M1 6h16 M9 6v11"/></svg>table</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="listDash">
+        <svg><path d="M0 3h4 M6.5 2v14 M9 3h8 M9 7h8 M9 11h8 M9 15h4"/></svg>list</div>
+      <div class="radioBtn"><input type="radio" name="tbl_opt" value="listDash_">
+        <svg><path d="M0 3h5 M9 3h8 M9 7h8 M9 11h8 M9 15h4"/></svg>list</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap:8px; white-space: nowrap;">
+
+      <div style="border: 1px solid #ccc;padding:4px;text-align: center;display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+          <div style="grid-column: span 3;">List letter:</div>
+          <div class="radioBtn"><input type="radio" name="list_lttr" value="1" checked>1.</div>
+          <div class="radioBtn"><input type="radio" name="list_lttr" value="A">A.</div>
+          <div class="radioBtn"><input type="radio" name="list_lttr" value="a">a.</div>
+      </div>
+      <div style="border: 1px solid #ccc;padding:4px;display: grid; grid-template-columns: auto auto; gap: 4px;">
+        <label>Rows:</label><input id="tableRows" style="width:40px" type="number" value="4"/>
+        <label>Cols:</label><input  id="tableCols" style="width:120px" value="10% 60% 30%"/>
+      </div>
+
+      <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
+      <button id="tableModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
+    </div>
+</dialog>
+
+
+
+<dialog id="insertImageDlg" style="width:460px">     
+<div style="display: grid; grid-template-columns: auto 168px; gap: 8px;font:normal 15px Arial,sans-serif;">
+  <div>
+    <button onclick="fileInput.click()" style="background-color: #bfb;border-bottom: 1px solid #999;"><span class="material-symbols-outlined">add_photo_alternate</span>GET&nbsp;IMAGE</button>
+    <img id="previewImage" style="width:100%"/>
+    <div id="placeHolder">
+      <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="-1 -1 12 12" fill="#fff">
+      <path stroke="#ddd" stroke-width=".4" d="M0 0h10v10h-10v-10Zl10 10M0 10l10-10 Z"/></svg>-->
+      <svg width="100%" viewBox="0 0 24 24">
+  <path d="M3 3 H21 V21 H3 V3 Z M5 19 H19 L14 11 L10 17 L8 14 L5 19 Z M7 8 A1.5 1.5 0 1 0 7 11 A1.5 1.5 0 1 0 7 8 Z" fill="none" stroke="#cec" stroke-width="1.5"/>
+</svg>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display: none;"/>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 50% 50%; gap: 6px; width:160px;">
+
+    <div style="grid-column: span 2;">&#8595; Image width:</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="100%">100%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="50%">50%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="33.3%" checked>33.3%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="25%">25%</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="lines">By lines</div>
+        <input id="byLines" type="number" min="2" max="30" value="5" step="1"/>
+        <div style="grid-column: span 2;border:1px solid #ccc;padding-left: 8px;border-radius: 6px;">
+          <div><input type="checkbox" id="image_border" checked/> image border</div>
+          <div><input type="checkbox" id="image_radius" checked/> rounded edges</div>
+          <div><input type="checkbox" id="image_shadow"/> image shadow</div>
+        </div>
+
+    <div style="grid-column: span 2;">&#8595; Image align:</div>
+    <div style="grid-column: span 2;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
+          <div class="radioBtn"><input type="radio" name="image_align" value="left" checked>left</div>
+          <div class="radioBtn"><input type="radio" name="image_align" value="none">none</div>
+          <div class="radioBtn"><input type="radio" name="image_align" value="right">right</div>
+        </div>
+    </div>
+    <div style="grid-column: span 2;">&#8595; Image filter:</div>
+    <div style="grid-column: span 2;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
+          <div class="radioBtn"><input type="radio" name="image_filter" value="normal" checked>none</div>
+          <div class="radioBtn"><input type="radio" name="image_filter" value="grayscale(100%)">gray</div>
+          <div class="radioBtn"><input type="radio" name="image_filter" value="sepia(100%)">sepia</div>
+        </div>        
+    </div>
+        <label><input type="checkbox" id="image_avatar"/> avatar</label>
+        <input id="avatar_size" type="number" value="100"/>
+        <div style="grid-column: span 2;display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
+          <div class="radioBtn"><input type="radio" name="avatar_tip" value="round" checked>> <svg><circle cx="9" cy="9" r="8"/></svg></div>
+          <div class="radioBtn"><input type="radio" name="avatar_tip" value="hexagon">> <svg><path d="M9 1L16 5L16 13L9 17L2 13L2 5Z"/></svg></div>
+          <div class="radioBtn"><input type="radio" name="avatar_tip" value="arrow">> <svg><path d="M1 1h10l6 8l-6 8h-10z"/></svg></div>
+        </div>
+  </div>
+  <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
+  <button id="imageModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>
+</div>
+</dialog>
+
+<dialog id="modifyTable" style="width:360px;">
+  <h3 style="margin-top: 0; text-align: center;">&#9662; MODIFY TABLE:</h3>
+  <div style="display:grid;gap:.5em;grid-template-columns: 1fr 1fr;">
+    <button onclick="modTable(this,6)">&#9650; Move row up</button>
+    <button onclick="modTable(this,7)">&#9660; Move row down</button>
+    <button onclick="modTable(this,0)" style="background-color: #afa;">&#9651; Insert row before</button>
+    <button onclick="modTable(this,1)" style="background-color: #4d4;">&#9661; Insert row after</button>
+    <button onclick="modTable(this,4)">+ Add borders</button>
+    <button onclick="modTable(this,5)">- Remove borders</button>
+    <button onclick="modTable(this,2)" style="background-color: #f80;">&#x2718; Delete current row</button>
+    <button onclick="modTable(this,3)" style="background-color: #f40;">&#x2718; Delete entire table</button>
+  </div>
+  <button onclick="closeDlg(this)" style="background-color: #0af;margin-top:1em;">&#x2718; CANCEL</button>
+</dialog>
+
+<dialog id="PromptModal" style="padding: 20px; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.5);">
+  <div id="promptMessage" style="margin: 0 0 1em 0; text-align: center;">Enter value:</div>
+  <input type="text" id="promptInput" style="width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none;" />
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button id="promptCancel">&#x2718; CANCEL</button>
+        <button id="promptSubmit" style="background: #bfb;">&#x2714; ENTER</button>
+    </div>
+</dialog>
+
+<dialog id="selectFontsDlg" style="width:360px;">
+  <button><span class="material-symbols-outlined">brand_family</span>SELECT FONT:</button>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin: 1em 0;font:normal 15px Arial,sans-serif;">
+  <div style="display: flex;flex-direction: column;">
+    <label>&#9662; BASE FONTS:</label>
+    <div class="radioBtn"><input type="radio" name="font_select" value="Default" checked> Default</div>
+    <div class="radioBtn"><input type="radio" name="font_select" value="Roboto:ital,wght@0,100..900;1,100..900"> Roboto</div>
+    <div class="radioBtn"><input type="radio" name="font_select" value="Open+Sans:ital,wght@0,300..800;1,300..800"> Open Sans</div>
+    <div class="radioBtn"><input type="radio" name="font_select" value="Arsenal:ital,wght@0,400;0,700;1,400;1,700"> Arsenal</div>
+    <div class="radioBtn"><input type="radio" name="font_select" value="PT+Sans:ital,wght@0,400;0,700;1,400;1,700"> PT Sans</div>
+
+    <div class="radioBtn"><input type="radio" name="font_select" value="PT+Serif:ital,wght@0,400;0,700;1,400;1,700"> PT Serif</div>
+    <div class="radioBtn"><input type="radio" name="font_select" value="Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900"> Source Serif</div>
+    <div class="radioBtn"><input type="radio" name="font_select" value="Alegreya:ital,wght@0,400..900;1,400..900"> Alegreya Serif</div>
+  </div>
+  <div style="display: flex;flex-direction: column;">
+    <label>&#9662; HEADING FONTS:</label>
+    <div class="radioBtn"><input type="radio" name="Hfont_select" value="Default" checked> Default</div>
+    <div class="radioBtn"><input type="radio" name="Hfont_select" value="Roboto+Condensed:ital,wght@0,100..900;1,100..900"> Roboto Condensed</div>
+    <div class="radioBtn"><input type="radio" name="Hfont_select" value="Oswald:wght@200..700"> Oswald</div>
+    <div class="radioBtn"><input type="radio" name="Hfont_select" value="Arsenal:ital,wght@0,400;0,700;1,400;1,700"> Arsenal</div>
+    <div class="radioBtn"><input type="radio" name="Hfont_select" value="Bebas+Neue"> Bebas Neue</div>
+    <div class="radioBtn"><input type="radio" name="Hfont_select" value="Cabin+Condensed:wght@400;500;600;700"> Cabin Condensed</div>
+  </div>
+</div>
+<div style="text-align: center;">Font size: 15px (11.25pt)</div><input type="range" style="width:100%;margin-bottom: 1.4em;" oninput='this.previousSibling.innerText=`Font size: ${this.value}px (${this.value * .75}pt)`' id="fSize" min="10" value="15" max="32"/>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+    <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
+    <button onclick="selectFont(this)" style="background-color: #bfb;">&#x2714; CHANGE</button>
+</div>
+</dialog>
+
+<dialog id="answer" style="width:240px;">
+  <div name="titlu" style="text-align: center;margin-bottom: 1em;"></div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+    <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
+    <button name="confirm" style="background-color: #bfb;"></button>
+  </div>
+</dialog>
+
+<div id="paged-output-container"></div>
+
+<script>
+  window.PagedConfig = {
+    auto: false
+  };
+
+async function printDocument() {
+  const editorElement = document.getElementById('editor');
+
+  const html = editorElement.innerHTML;
+  let output = document.getElementById('paged-output-container');
+  output.innerHTML = '';
+
+  try {
+    const paged = new window.Paged.Previewer();
+    const flow = await paged.preview(html,['exp/print.css'],output);
+
+    console.log('Pages generated:', flow.total);
+
+    window.print();
+  } catch (error) {
+    console.error('Printing failed:', error);
+  }
+}
+</script>
+<script src="exp/exp.js"></script>
+<script src="exp/paged.polyfill.js"></script>
+<!--<script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>-->
+
+</body>
+</html>

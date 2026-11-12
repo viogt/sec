@@ -261,16 +261,21 @@ function closeDlg(el) {
   editorElement.focus();
 }
 
+function getSelectedLines() {
+    if(savedRange.collapsed) return null;
+    const con = document.createElement("div");
+    con.appendChild(savedRange.cloneContents());
+    document.body.appendChild(con);
+    const txt = con.innerText;
+    document.body.removeChild(con);
+    return txt.split(/\r?\n/).filter(line => line.length > 0);
+}
+
 document.getElementById('tableModalInsert').addEventListener('click', (e) => {
   const T = tableElement.closest('table');
   const val = document.querySelector('dialog input[name="tbl_opt"]:checked').value;
-  const sel = savedRange.toString();
-  let lines = null, rows;
-  if(sel) {
-    lines = sel.replace(/\n{2}/g,'\n').replace(/\s+$/g, '').split('\n');
-    rows = lines.length;
-  }
-  else rows = document.getElementById('tableRows').value;
+  let lines = getSelectedLines(),
+      rows = lines ? lines.length : document.getElementById('tableRows').value;
 
   if(val == 'one') {
     closeDlg(e.target);
@@ -368,10 +373,8 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
       rows /= 2;
     }
     for (let r = 0, i = 0; r < rows; r++, i += 2) {
-      let lft = lines && lines[i] ? lines[i] : '...';
-      let rgh = lines && lines[i+1] ? lines[i+1] : '...';
-      t += `<tr><td style="${flg ? 'border-right: .8px solid #000;' : ''}padding: ${r==0?'0':'1em'} .6em 0 0; width: 50%;">${lines?lines[i++]:'...'}</td>
-        <td style="padding: ${r==0?'0':'1em'} 0 0 .6em;">${lines?lines[i++]:'...'}</td></tr>`;
+      t += `<tr><td style="${flg ? 'border-right: .8px solid #000;' : ''}padding: ${r==0?'0':'1em'} .6em 0 0; width: 50%;">${lines?lines[i]:'...'}</td>
+        <td style="padding: ${r==0?'0':'1em'} 0 0 .6em;">${lines?lines[i+1]:'...'}</td></tr>`;
     }
     editorElement.focus();
     document.execCommand('insertHTML', false, t + '</table><br>');

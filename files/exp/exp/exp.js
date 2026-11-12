@@ -146,6 +146,26 @@ document.querySelector('#footerLang').addEventListener('click', (event) => {
   }
 });
 
+document.querySelector('#signature').addEventListener('click', async () => {
+  const inp = await showPrompt('How many signatories? (1-3)', '2');
+  let x;
+  if (!inp || inp.trim() == '' || isNaN(x = parseInt(inp, 10)) || x < 1 || x > 3) return;
+  const fr = x < 3 ? '40%' : '30%';
+  const sgn = "Signatory,<br>position", ln = "border-top: .8px solid #000; padding-top: .2em;";
+
+  let t = '<table style="line-height: 1.1;"><tr>';
+  if(x == 1) t += `<td style="width:30%;${ln}">${sgn}</td><td style="width:70%"></td>`;
+  else if(x == 2) t += `<td style="width:30%;${ln}">${sgn}</td><td style="width:40%"></td><td style="width:30%;${ln}">${sgn}</td>`;
+  else t += `
+  <td style="width:30%;${ln}">${sgn}</td><td style="width:5%"></td>
+  <td style="width:30%;${ln}">${sgn}</td><td style="width:5%"></td>
+  <td style="width:30%;${ln}">${sgn}</td>`;
+  t += '</tr></table><br>';
+
+  editorElement.focus();
+  document.execCommand('insertHTML', false, t);
+});
+
 document.querySelector('#address').addEventListener('click', () => {
   const t = `<table><tr>
         <td>${getAddress('from')}</td>

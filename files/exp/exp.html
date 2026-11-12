@@ -36,6 +36,13 @@ body {
 }
 
 .toolbar {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    width: fit-content;
+    margin: 0 auto;
+
   position: sticky;
   top: 0;
   font: normal 14px Arial, sans-serif;
@@ -45,31 +52,24 @@ body {
   white-space: nowrap;
   padding: 6px;
   background-color: #fff;
-  /*border-bottom: 1px solid #ccc;*/
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,.5);
+  box-shadow: 0 2px 5px rgba(0,0,0,.3);
 
   .toolbar::-webkit-scrollbar {
     display: none;
   }
-  -ms-overflow-style: none; /* IE and Old Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-.menu-group {
-  display: inline-block;
-  padding: 0 4px;
-  border-left: 1px solid #ccc;
-}
-.menu-group:first-child {
-  border-left: none;
-}
-.menu-group button {
+.toolbar button {
   border: none;
   background-color: transparent;
   margin: 0;
 }
-.menu-group button:hover {
-  background-color: #dde;
+.toolbar .divider {
+    display: inline-block;
+    grid-row: span 2;
+    border-left: .6px solid #000;
+    margin: 4px 8px;
 }
 
 button .material-symbols-outlined {
@@ -79,16 +79,19 @@ button .material-symbols-outlined {
 #paged-output-container {
   display: block;
 }
+
 #printPdf {
   display: inline-block;
-  background-color: #67a;
+  background-color: #000;
   color: #fff;
   border-radius: 5px;
   padding: 3px 8px;
   margin-bottom: 2px;
 }
+
 #docNameInput {
-  width: 160px;
+    grid-column: span 3;
+  width: 150px;
   vertical-align: middle;
   padding: 2px 6px;
   border: 0.5px solid var(--border-color);
@@ -329,85 +332,79 @@ input { accent-color: #080; }
 
 <div class="toolbar">
 
-<div class="menu-group">
     <button id="printPdf" title="Download the document as PDF">PDF &#9662;</button>
+    <input type="text" id="docNameInput" placeholder="Doc Name for Footer" title="Set Document Name for Footer">
+    <span>
     <button data-command="undo" title="Undo (Ctrl+Z)"><span class="material-symbols-outlined">undo</span></button>
     <button data-command="redo" title="Redo (Ctrl+Y)"><span class="material-symbols-outlined">redo</span></button>
-    <button id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">mop</span></button><br>
-    <input type="text" id="docNameInput" placeholder="Doc Name for Footer" title="Set Document Name for Footer">
-</div>
+    <button id="clearAll" title="Remove all formatting from the document"><span class="material-symbols-outlined">mop</span></button>
+    </span>
 
-<div class="menu-group">
-    <button data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
-    <button data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">format_italic</span></button>
-    <button data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">format_underlined</span></button>
-    <button id="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">link</span></button>
-    <button id="chenar" title="Frame the selection"><span class="material-symbols-outlined">font_download</span></button><br>
+<div class="divider"></div>
 
+<button data-command="bold" title="Bold (Ctrl+B)"><span class="material-symbols-outlined">format_bold</span></button>
     <button data-command="justifyLeft" title="Align left"><span class="material-symbols-outlined">format_align_left</span></button>
+<button data-command="italic" title="Italic (Ctrl+I)"><span class="material-symbols-outlined">format_italic</span></button>
     <button data-command="justifyCenter" title="Align center"><span class="material-symbols-outlined">format_align_center</span></button>
+<button data-command="underline" title="Underline (Ctrl+U)"><span class="material-symbols-outlined">format_underlined</span></button>
     <button data-command="justifyRight" title="Align right"><span class="material-symbols-outlined">format_align_right</span></button>
+<button id="createLink" title="Insert/Edit Link"><span class="material-symbols-outlined">link</span></button>
     <button data-command="justifyFull" title="Justify"><span class="material-symbols-outlined">format_align_justify</span></button>
+<button id="chenar" title="Frame the selection"><span class="material-symbols-outlined">font_download</span></button>
     <button data-command="removeFormat" title="Remove formatting from selection"><span class="material-symbols-outlined">format_clear</span></button>
-</div>
 
-<div class="menu-group">
-    <button data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">format_paragraph</span></button>
-    <button data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">format_h1</span></button>
-    <button data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">format_h2</span></button>
-    <button data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">uppercase</span></button>
-    <button data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">lowercase</span></button><br>
+<div class="divider"></div>
 
+<button data-sel="p" title="Body text paragraph"><span class="material-symbols-outlined">format_paragraph</span></button>
     <button data-command="outdent" title="Decrease indent"><span class="material-symbols-outlined">format_indent_decrease</span></button>
+<button data-sel="H1" title="Title, Heading H1"><span class="material-symbols-outlined">format_h1</span></button>
     <button data-command="indent" title="Increase indent"><span class="material-symbols-outlined">format_indent_increase</span></button>
+<button data-sel="H2" title="Subtitle, Heading H2"><span class="material-symbols-outlined">format_h2</span></button>
     <button data-command="insertUnorderedList" title="Bulleted list"><span class="material-symbols-outlined">format_list_bulleted</span></button>
+<button data-sel="UpperCase" title="Body text paragraph"><span class="material-symbols-outlined">uppercase</span></button>
     <button data-command="insertOrderedList" title="Numbered list"><span class="material-symbols-outlined">format_list_numbered</span></button>
+<button data-sel="LowerCase" title="Body text paragraph"><span class="material-symbols-outlined">lowercase</span></button>
     <button id="horizontalRule" title="Insert a Horizontal line"><span class="material-symbols-outlined">horizontal_rule</span></button>
-</div>
 
-<div class="menu-group">
-    <button data-command="superscript" title="Superscript"><span class="material-symbols-outlined">superscript</span></button>
-    <button data-command="subscript" title="Subscript"><span class="material-symbols-outlined">subscript</span></button>
-    <button id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">space_bar</span></button>
-    <button id="sect" title="Insert paragrpagh">&sect;</button><br>
-    
+<div class="divider"></div>
+
+<button data-command="superscript" title="Superscript"><span class="material-symbols-outlined">superscript</span></button>
     <button id="insertTable" title="Insert Table"><span class="material-symbols-outlined">table</span></button>
+<button data-command="subscript" title="Subscript"><span class="material-symbols-outlined">subscript</span></button>
     <button id="uploadFile" title="Insert an Image"><span class="material-symbols-outlined">add_photo_alternate</span></button>
+<button id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">space_bar</span></button>
     <button id="fineprint" title="Insert Fine Print"><span class="material-symbols-outlined">manage_search</span></button>
+<button id="sect" title="Insert paragrpagh">&sect;</button>    
     <button id="endash" title="Turn '--' into '—'"><span class="material-symbols-outlined">unknown_med</span></button>
-</div>
 
-<div class="menu-group">
-    <button  id="address" title="Insert the Address block"><span class="material-symbols-outlined">outgoing_mail</span></button>
-    <button data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">format_quote</span></button>
-    <button id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">page_header</span></button>
-    <button data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">edit_square</span></button>
-    <button data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">error</span></button><br>
+<div class="divider"></div>
 
+<button  id="address" title="Insert the Address block"><span class="material-symbols-outlined">outgoing_mail</span></button>
     <button  data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">attach_file</span></button>
+<button data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">format_quote</span></button>
     <button  id="signature" title="Insert the Signature block"><span class="material-symbols-outlined">signature</span></button>
+<button id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">page_header</span></button>
     <button  data-remark="bulb" title="Insert an Idea"><span class="material-symbols-outlined">emoji_objects</span></button>
+<button data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">edit_square</span></button>
     <button  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">gavel</span></button>
+<button data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">error</span></button>
     <button  data-remark="blank" title="Insert an Blank quote"><span class="material-symbols-outlined">dock_to_right</span></button>
-</div>
 
-<div class="menu-group">
-    <button id="inlineIcon" title="Insert an Inline Icon"><span class="material-symbols-outlined">design_services</span></button>
-    <button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">workspace_premium</span></button>
-    <button id="footerLang" title="Toggle footer language">RO</button><br>
+<div class="divider"></div>
+
+<button id="inlineIcon" title="Insert an Inline Icon"><span class="material-symbols-outlined">design_services</span></button>
     <button id="changeFont" title="Select fonts"><span class="material-symbols-outlined">brand_family</span></button>
+<button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">workspace_premium</span></button>
     <button id="takeClipboard" title="Content into the Clipboard"><span class="material-symbols-outlined">inventory</span></button>
+<button id="footerLang" title="Toggle footer language">RO</button>
     <button  id="pushClipboard" title="From Clipboard into Document"><span class="material-symbols-outlined">article_shortcut</span></button>
 </div>
 
+<div id="editor" contenteditable="true" spellcheck="true">
+  <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
+  <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
+  <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
 </div>
-
-  <div id="editor" contenteditable="true">
-      <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
-      <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
-      <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
-
-  </div>
 
 <!-- Table Insertion Modal Dialog -->
 <dialog id="insertTableDlg" style="width:400px;">

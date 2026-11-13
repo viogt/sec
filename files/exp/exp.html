@@ -35,30 +35,31 @@ body {
     background-color: #fff;
 }
 
-.toolbar {
-    display: grid;
-    grid-template-rows: repeat(2, auto);
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-    /*width: fit-content;
-    margin: 0 auto;*/
-
+.wrapper {
+  width: 100%;
   position: sticky;
   top: 0;
-  font: normal 14px Arial, sans-serif;
   z-index: 100;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  padding: 6px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,.3);
-
   .toolbar::-webkit-scrollbar {
     display: none;
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+.toolbar {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  width: fit-content;
+  margin: 0 auto 5px auto;
+  font: normal 14px Arial, sans-serif;
+  padding: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,.3);
 }
 .toolbar button {
   border: none;
@@ -84,17 +85,17 @@ button .material-symbols-outlined {
   display: inline-block;
   background-color: #000;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 3px 8px;
   margin-bottom: 2px;
 }
 
 #docNameInput {
     grid-column: span 3;
-  width: 150px;
+  width: 147px;
   vertical-align: middle;
   padding: 2px 6px;
-  border: 0.5px solid var(--border-color);
+  border: 0.5px solid #bbb;
   font-size: var(--font-size);
   border-radius: 4px;
   outline: none;
@@ -330,6 +331,7 @@ input { accent-color: #080; }
 </head>
 <body>
 
+<div class="wrapper">
 <div class="toolbar">
 
     <button id="printPdf" title="Download the document as PDF">PDF &#9662;</button>
@@ -398,6 +400,7 @@ input { accent-color: #080; }
     <button id="takeClipboard" title="Content into the Clipboard"><span class="material-symbols-outlined">inventory</span></button>
 <button id="footerLang" title="Toggle footer language">RO</button>
     <button  id="pushClipboard" title="From Clipboard into Document"><span class="material-symbols-outlined">article_shortcut</span></button>
+</div>
 </div>
 
 <div id="editor" contenteditable="true" spellcheck="true">

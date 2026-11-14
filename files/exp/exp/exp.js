@@ -51,14 +51,17 @@ document.querySelector('#titlu').addEventListener('click', () => {
   document.execCommand('insertHTML', false, t);
 });
 
-document.querySelector('#clearAll').addEventListener('click', () => {
+document.querySelector('#clearAll').addEventListener('click', async() => {
   const selection = window.getSelection();
   if(!selection.isCollapsed) {
     editorElement.focus();
     document.execCommand('insertHTML', false, selection.toString());
     return;
   }
-  const dlg = document.getElementById('answer');
+  if(await showPrompt('<b style="color:red">Remove</b> all format?','','ask')) {
+    editorElement.innerHTML = `<p>${editorElement.innerText.replace(/(\r?\n)+/g,'<br>')}</p>`;
+  }
+  /*const dlg = document.getElementById('answer');
   dlg.querySelector('div[name="titlu"]').innerHTML = '<b style="color:red">Remove</b> all format?';
   const cnf = dlg.querySelector('button[name="confirm"]');
   cnf.innerHTML = '&#x2714; REMOVE';
@@ -66,7 +69,7 @@ document.querySelector('#clearAll').addEventListener('click', () => {
     editorElement.innerHTML = `<p>${editorElement.textContent}</p>`;
     closeDlg(e.target);
   }, { once: true });
-  dlg.showModal();
+  dlg.showModal();*/
 });
 
 function makeRemark(mod) {
@@ -147,19 +150,14 @@ document.querySelector('#footerLang').addEventListener('click', (event) => {
 });
 
 document.querySelector('#signature').addEventListener('click', async () => {
-  const inp = await showPrompt('How many signatories? (1-3)', '2');
-  let x;
-  if (!inp || inp.trim() == '' || isNaN(x = parseInt(inp, 10)) || x < 1 || x > 3) return;
-  const fr = x < 3 ? '40%' : '30%';
-  const sgn = "Signatory,<br>position", ln = "border-top: .8px solid #000; padding-top: .2em;";
+  const inp = await showPrompt('How many signatories?',['1','*2','3'], 'opt');
+  if (!inp) return;
+  const blk = '<td style="width:30%;border-top: .8px solid #000; padding-top: .2em;">Signatory,<br>position</td>';
 
   let t = '<table style="line-height: 1.1;"><tr>';
-  if(x == 1) t += `<td style="width:30%;${ln}">${sgn}</td><td style="width:70%"></td>`;
-  else if(x == 2) t += `<td style="width:30%;${ln}">${sgn}</td><td style="width:40%"></td><td style="width:30%;${ln}">${sgn}</td>`;
-  else t += `
-  <td style="width:30%;${ln}">${sgn}</td><td style="width:5%"></td>
-  <td style="width:30%;${ln}">${sgn}</td><td style="width:5%"></td>
-  <td style="width:30%;${ln}">${sgn}</td>`;
+  if(inp == 1) t += `${blk}<td style="width:70%"></td>`;
+  else if(inp == 2) t += `${blk}<td style="width:40%"></td>${blk}`;
+  else t += `${blk}<td style="width:5%"></td>${blk}<td style="width:5%"></td>${blk}`;
   t += '</tr></table><br>';
 
   editorElement.focus();
@@ -548,22 +546,50 @@ function restoreSelection() {
     }
 }
 
-function showPrompt(message, defaultValue = '') {
+function makeOptions(grp, arr) {
+  grp.replaceChildren();
+  for(let x of arr) {
+    const el = document.createElement('input'),
+      lb = document.createElement('label');
+    lb.className = 'radioBtn';
+    el.type = 'radio'; el.name = 'promptRadio';
+    lb.append(el);
+    if(x.startsWith('*')) { el.checked = true; lb.append(x.slice(1)); }
+    else lb.append(x);
+    grp.append(lb);
+  }
+}
+
+function showPrompt(message, defaultValue = '', tip = 'inp') {
     return new Promise((resolve) => {
         saveSelection();
         const modal = document.getElementById('PromptModal');
-        const msgEl = document.getElementById('promptMessage');
-        const inputEl = document.getElementById('promptInput');
-        const submitBtn = document.getElementById('promptSubmit');
-        const cancelBtn = document.getElementById('promptCancel');
+        const inputEl = modal.querySelector('#promptInput');
+        const grp = modal.querySelector('#radioGroup');
+        const submitBtn = modal.querySelector('#promptSubmit');
+        const cancelBtn = modal.querySelector('#promptCancel');
 
-        msgEl.innerHTML = message;
-        inputEl.value = defaultValue;
+        modal.querySelector('#promptMessage').innerHTML = message;
+        if(tip == 'inp') {
+          inputEl.style.display = 'block';
+          inputEl.value = defaultValue;
+          inputEl.focus();
+        }
+        else if(tip == 'opt') {
+          makeOptions(grp, defaultValue);
+          grp.style.display = 'grid';
+          grp.style.gridTemplateColumns = `repeat(${defaultValue.length}, auto)`;
+          grp.focus();
+        }
+        else submitBtn.focus();
+        
         modal.showModal();
-        inputEl.focus();
 
         const onSubmit = () => {
-            const val = inputEl.value;
+            let val;
+            if(tip == 'inp') val = inputEl.value;
+            else if(tip == 'opt') val = grp.querySelector('label:has(input:checked)').textContent;
+            else val = true;
             cleanup();
             resolve(val);
         };
@@ -577,7 +603,9 @@ function showPrompt(message, defaultValue = '') {
             modal.close();
             submitBtn.removeEventListener('click', onSubmit);
             cancelBtn.removeEventListener('click', onCancel);
-            inputEl.removeEventListener('keydown', onKeydown);
+            modal.removeEventListener('keydown', onKeydown);
+            inputEl.style.display = 'none';
+            grp.style.display = 'none';
             editorElement.focus();
             restoreSelection();
         };
@@ -589,7 +617,7 @@ function showPrompt(message, defaultValue = '') {
 
         submitBtn.addEventListener('click', onSubmit);
         cancelBtn.addEventListener('click', onCancel);
-        inputEl.addEventListener('keydown', onKeydown);
+        modal.addEventListener('keydown', onKeydown);
     });
 }
 

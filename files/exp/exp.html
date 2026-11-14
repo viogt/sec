@@ -180,7 +180,7 @@ svg {
 
 /*---------------------- Modal dialog styling ----------------*/
 dialog {
-  width: min(90%, 600px);
+  width: 300px;
   opacity: 0;
   transform: scale(0.85);
   transition: opacity 0.3s ease, transform 0.3s ease, display 0.3s allow-discrete;
@@ -534,10 +534,11 @@ input { accent-color: #080; }
 
 <dialog id="PromptModal" style="padding: 20px; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.5);">
   <div id="promptMessage" style="margin: 0 0 1em 0; text-align: center;">Enter value:</div>
-  <input type="text" id="promptInput" style="width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none;" />
-    <div style="display: flex; justify-content: flex-end; gap: 10px;">
-        <button id="promptCancel">&#x2718; CANCEL</button>
-        <button id="promptSubmit" style="background: #bfb;">&#x2714; ENTER</button>
+  <input type="text" id="promptInput" style="width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none;display:none;" />
+  <div id="radioGroup" style="display: none; gap: 8px; margin-bottom: 1em;"></div>
+  <div style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button id="promptCancel">&#x2718; CANCEL</button>
+        <button id="promptSubmit" style="background: #bfb;">&#x2714; CONFIRM</button>
     </div>
 </dialog>
 
@@ -571,14 +572,6 @@ input { accent-color: #080; }
     <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
     <button onclick="selectFont(this)" style="background-color: #bfb;">&#x2714; CHANGE</button>
 </div>
-</dialog>
-
-<dialog id="answer" style="width:240px;">
-  <div name="titlu" style="text-align: center;margin-bottom: 1em;"></div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-    <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
-    <button name="confirm" style="background-color: #bfb;"></button>
-  </div>
 </dialog>
 
 <div id="paged-output-container"></div>

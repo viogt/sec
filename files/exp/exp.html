@@ -210,11 +210,6 @@ dialog[open]::backdrop {
   }
 }
 
-.two-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1em;
-}
 dialog button, dialog input[type="text"] {
   display: flex; align-items: center; justify-content: center; gap: 6px;
   background: #ddd;
@@ -223,36 +218,6 @@ dialog button, dialog input[type="text"] {
   padding: 12px 0;
   border-radius: 0px;
   font: normal 14px Arial, sans-serif;
-}
-
-.modal-overlay[hidden] {
-  display: none !important;
-}
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.modal-dialog {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1em;
-  padding: 10px;
-  background-color: #fff;
-  width: min(90%, 600px);
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
-}
-.modal-dialog button {
-  background-color: #ddd;
-  border: none;
-  width: 100%;
-  padding: 12px 0;
-  border-radius: 0px;
 }
 
 @media screen and (max-width: 768px) {
@@ -381,16 +346,16 @@ input { accent-color: #080; }
 
 <div class="divider"></div>
 
-<button  id="address" title="Insert the Address block"><span class="material-symbols-outlined">outgoing_mail</span></button>
-    <button  data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">attach_file</span></button>
+<button id="address" title="Insert the Address block"><span class="material-symbols-outlined">outgoing_mail</span></button>
+    <button data-remark="attach" title="Insert an Attachment"><span class="material-symbols-outlined">attach_file</span></button>
 <button data-remark="quote" title="Insert a Quote"><span class="material-symbols-outlined">format_quote</span></button>
-    <button  id="signature" title="Insert the Signature block"><span class="material-symbols-outlined">signature</span></button>
+    <button id="signature" title="Insert the Signature block"><span class="material-symbols-outlined">signature</span></button>
 <button id="titlu" title="Insert a Heading"><span class="material-symbols-outlined">page_header</span></button>
-    <button  data-remark="bulb" title="Insert an Idea"><span class="material-symbols-outlined">emoji_objects</span></button>
+    <button data-remark="bulb" title="Insert an Idea"><span class="material-symbols-outlined">emoji_objects</span></button>
 <button data-remark="note" title="Insert a Note"><span class="material-symbols-outlined">edit_square</span></button>
-    <button  data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">gavel</span></button>
+    <button data-remark="decision" title="Insert a Decision"><span class="material-symbols-outlined">gavel</span></button>
 <button data-remark="warning" title="Insert a Warning"><span class="material-symbols-outlined">error</span></button>
-    <button  data-remark="blank" title="Insert an Blank quote"><span class="material-symbols-outlined">dock_to_right</span></button>
+    <button data-remark="keep" title="Insert an Blank quote"><span class="material-symbols-outlined">keep</span></button>
 
 <div class="divider"></div>
 

@@ -93,6 +93,9 @@ function makeRemark(mod) {
     case 'attach':
       svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" fill="currentColor" viewBox="0 -960 960 960"><path d="M720-330q0 104-73 177T470-80t-177-73-73-177v-370q0-75 53-127t127-53 128 53 52 127v350q0 46-32 78t-78 32-78-32-32-78v-370h80v370q0 13 9 22t21 8 22-8 8-22v-350q-1-42-29-71t-71-29-71 29-29 71v370q-1 71 49 121t121 49q70 0 119-49t51-121v-390h80z"/></svg>';
       break;
+    case 'keep':
+      svg = '<svg width="28" viewBox="0 0 24 24" fill="currentColor"><path d="M16,12l2,2v2H13v6l-1,1l-1-1V16H6V14l2-2V5H7V3H17V5H16v7ZM8.85,14h6.3L14,12.85V5H10v7.85L8.85,14ZM12,14Z"/></svg>';
+      break;
     default: svg = '>';
   }
   const selection = window.getSelection();
@@ -432,10 +435,6 @@ document.querySelector('#uploadFile').addEventListener('click', () => {
 
 document.getElementById('imageModalInsert').addEventListener('click', (e) => {
     const elm = getCurrentElement();
-    /*if(!elm || elm.tagName != 'P') {
-      document.querySelector('.modal-overlay').hidden = true;
-      return;
-    }*/
     const srcImg = document.querySelector('#previewImage');
     if(srcImg.src == '') return;
 

@@ -620,4 +620,70 @@ function showPrompt(message, defaultValue = '', tip = 'inp') {
     });
 }
 
+/* ------------------------ Local Storage --------------------- */
+const locPrefix = 'tipEditor';
+
+document.getElementById('saveDoc').addEventListener('click',  async () => {
+  const name = document.getElementById('docNameInput').value.trim();
+  if(name == '') { await showPrompt('Set the title (under PDF)','','ask'); return; }
+  saveDoc(name, { content: editorElement.innerHTML }, false);
+
+  async function saveDoc(key, jsn, ovrwr) {
+    const k = locPrefix + key;
+    if(!ovrwr) if(localStorage.getItem(k)) {
+      if(await showPrompt('Doc "' + key + '" already exists. Overwrite?','','ask'))
+        saveDoc(key, jsn, true);
+      else return;
+    }
+    const dt = new Date();
+    const d = dt.toLocaleDateString("de-DE") + '\n' + dt.toLocaleTimeString("de-DE", { hour12: false });;
+    const val = { name: key, date: d, content: jsn.content };
+    try {
+      localStorage.setItem(k, JSON.stringify(val));
+      document.getElementById('saveDoc').style.color = '#080';
+      setTimeout((e)=>{ document.getElementById('saveDoc').style.color = ''; }, 500);
+      isModified = false;
+      return true;
+    } catch(err) { return false; }
+  }
+});
+
+document.getElementById('openDoc').addEventListener('click',  async () => {
+  document.getElementById('loadFromFile').showModal();
+	const t = document.getElementById('locStorage'),
+		locLen = localStorage.length,
+		prefLen = locPrefix.length;
+	t.replaceChildren();
+
+	for (let i = 0; i < locLen; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith(locPrefix)) continue;
+
+	  const jsn = JSON.parse(localStorage.getItem(key));
+	  const r = t.insertRow();
+	  let c = r.insertCell();
+    c.textContent = key.slice(prefLen);
+    c.addEventListener('click', e => {
+      const name = e.target.closest('td').textContent;
+      const key = locPrefix + name;
+      const j = JSON.parse(localStorage.getItem(key));
+      editorElement.innerHTML = j.content;
+      document.getElementById('docNameInput').value = j.name;
+      document.documentElement.style.setProperty('--doc-name', `"${j.name}"`);
+      isModified = false;
+      e.target.closest('dialog').close();
+    });
+	  r.insertCell().innerText = jsn.date;
+	  c = r.insertCell();
+    c.textContent = '❌';
+	  c.addEventListener('click', async (e) => {
+      const curRow = e.target.closest('tr');
+      const key = curRow.cells[0].textContent;
+      if(await showPrompt('Delete ' + key + '?','','ask'))
+        localStorage.removeItem(locPrefix + key);
+        curRow.closest('dialog').close();
+    });
+  }
+});
+
 editorElement.focus();

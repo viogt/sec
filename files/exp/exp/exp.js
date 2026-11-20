@@ -28,8 +28,20 @@ document.querySelectorAll('[data-sel]').forEach(button => {
       });
 });
 
-document.getElementById('printPdf').addEventListener('click', () => {
-  printDocument();
+document.getElementById('printPdf').addEventListener('click', async () => {
+  const editorElement = document.getElementById('editor');
+
+  const html = editorElement.innerHTML;
+  let output = document.getElementById('paged-output-container');
+  output.innerHTML = '';
+
+  try {
+    const paged = new window.Paged.Previewer();
+    const flow = await paged.preview(html,['exp/print.css'],output);
+    window.print();
+  } catch (error) {
+    console.error('Printing failed:', error);
+  }
 });
 
 document.querySelector('#docNameInput').addEventListener('change', (event) => {
@@ -621,7 +633,7 @@ function showPrompt(message, defaultValue = '', tip = 'inp') {
 }
 
 /* ------------------------ Local Storage --------------------- */
-const locPrefix = 'tipEditor';
+const locPrefix = 'miniEditor';
 
 document.getElementById('saveDoc').addEventListener('click',  async () => {
   const name = document.getElementById('docNameInput').value.trim();
@@ -641,14 +653,16 @@ document.getElementById('saveDoc').addEventListener('click',  async () => {
     try {
       localStorage.setItem(k, JSON.stringify(val));
       document.getElementById('saveDoc').style.color = '#080';
-      setTimeout((e)=>{ document.getElementById('saveDoc').style.color = ''; }, 500);
       isModified = false;
-      return true;
-    } catch(err) { return false; }
+    } catch(err) {
+      document.getElementById('saveDoc').style.color = '#c00'
+    }
+    setTimeout((e)=>{ document.getElementById('saveDoc').style.color = ''; }, 500);
   }
 });
 
 document.getElementById('openDoc').addEventListener('click',  async () => {
+  if(isModified) if(! await showPrompt("You are about to loose changes. Proceed?",'','ask')) return;
   document.getElementById('loadFromFile').showModal();
 	const t = document.getElementById('locStorage'),
 		locLen = localStorage.length,

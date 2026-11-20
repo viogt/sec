@@ -1,6 +1,4 @@
-/**
- * @license Paged.js v0.4.3 | MIT | https://gitlab.coko.foundation/pagedjs/pagedjs
- */
+window.PagedConfig = { auto: false };
 
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -2344,15 +2342,6 @@ selectors.forEach(selector => {
     const rect = el.getBoundingClientRect();
     const css = getComputedStyle(el);
 
-    console.log(selector, {
-        width: rect.width,
-        height: rect.height,
-        display: css.display,
-        position: css.position,
-        visibility: css.visibility,
-        offsetParent: el.offsetParent,
-        parentWidth: el.parentElement?.getBoundingClientRect().width
-    });
 });
 /* ===================================================== */
 

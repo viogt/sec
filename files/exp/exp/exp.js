@@ -637,7 +637,7 @@ const locPrefix = 'miniEditor';
 
 document.getElementById('saveDoc').addEventListener('click',  async () => {
   const name = document.getElementById('docNameInput').value.trim();
-  if(name == '') { await showPrompt('Set the title (under PDF)','','ask'); return; }
+  if(name == '') { notif(false, 'Set the title (under PDF)', 1500); return; }
   saveDoc(name, { content: editorElement.innerHTML }, false);
 
   async function saveDoc(key, jsn, ovrwr) {
@@ -652,17 +652,16 @@ document.getElementById('saveDoc').addEventListener('click',  async () => {
     const val = { name: key, date: d, content: jsn.content };
     try {
       localStorage.setItem(k, JSON.stringify(val));
-      document.getElementById('saveDoc').style.color = '#080';
+      notif(true, "Saved!");
       isModified = false;
     } catch(err) {
-      document.getElementById('saveDoc').style.color = '#c00'
+      notif(false, "Error!");
     }
-    setTimeout((e)=>{ document.getElementById('saveDoc').style.color = ''; }, 500);
   }
 });
 
 document.getElementById('openDoc').addEventListener('click',  async () => {
-  if(isModified) if(! await showPrompt("You are about to loose changes. Proceed?",'','ask')) return;
+  if(isModified) if(! await showPrompt("You are about to loose changes. Proceed anyway?",'','ask')) return;
   document.getElementById('loadFromFile').showModal();
 	const t = document.getElementById('locStorage'),
 		locLen = localStorage.length,
@@ -699,5 +698,19 @@ document.getElementById('openDoc').addEventListener('click',  async () => {
     });
   }
 });
+
+function notif(poz, txt, tmp = 400) {
+  const d = document.createElement('div'), s = d.style;
+  d.textContent = txt;
+  s.position = "absolute";
+  s.backgroundColor = poz ? "rgb(0, 120, 0, .7)" : "rgb(180, 0, 0, .7)";
+  s.padding = "1em 2em";
+  s.borderRadius = '12px';
+  s.color = "#fff";
+  s.top = '50%'; s.left = '50%';
+  s.transform = 'translate(-50%, -50%)';
+  document.body.append(d);
+  setTimeout(()=>{ d.remove() }, tmp);
+}
 
 editorElement.focus();

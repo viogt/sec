@@ -118,7 +118,8 @@ p.fineprint {
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 table td {
@@ -294,6 +295,18 @@ input { accent-color: #080; }
   text-align: left;
   padding: 2px;
 }
+#img_descript {
+  width: 100%;
+  background-color: #fff;
+  font-size: .9em;
+  padding: 4px;
+  border: 1px solid #ccc;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: none;
+}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -349,7 +362,7 @@ input { accent-color: #080; }
     <button id="uploadFile" title="Insert an Image"><span class="material-symbols-outlined">add_photo_alternate</span></button>
 <button id="nbsp" title="Insert non-breaking space"><span class="material-symbols-outlined">space_bar</span></button>
     <button id="fineprint" title="Insert Fine Print"><span class="material-symbols-outlined">manage_search</span></button>
-<button id="sect" title="Insert paragrpagh"style=" line-height: 1; margin-bottom: 4px;font-size:15px;">&sect;</button>    
+<button id="sect" title="Insert paragrpagh" style=" line-height: 1; margin-bottom: 4px;font-size:15px;">&sect;</button>    
     <button id="endash" title="Turn '--' into '—'"><span class="material-symbols-outlined">unknown_med</span></button>
 
 <div class="divider"></div>
@@ -377,7 +390,7 @@ input { accent-color: #080; }
 </div>
 
 <div id="editor" contenteditable="true" spellcheck="true">
-  <p><span style="margin-right: .5rem; font-size: 3lh; font-weight: bold; line-height: 3lh; float: left;">Y</span>our Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
+  <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
   <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
   <p>Your Tiptap content. One detail worth checking: In this example, styles.css must be the stylesheet containing your @page rules and document formatting. Make sure the path is correct and that Paged.js can load it.</p>
 </div>
@@ -432,58 +445,32 @@ input { accent-color: #080; }
 
 
 <dialog id="insertImageDlg" style="width:460px">     
-<div style="display: grid; grid-template-columns: auto 168px; gap: 8px;font:normal 15px Arial,sans-serif;">
+<div style="display: grid; grid-template-columns: auto 134px; gap: 8px;font:normal 15px Arial,sans-serif;">
   <div>
     <button onclick="fileInput.click()" style="background-color: #bfb;border-bottom: 1px solid #999;"><span class="material-symbols-outlined">add_photo_alternate</span>GET&nbsp;IMAGE</button>
     <img id="previewImage" style="width:100%"/>
-    <div id="placeHolder">
-      <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="-1 -1 12 12" fill="#fff">
-      <path stroke="#ddd" stroke-width=".4" d="M0 0h10v10h-10v-10Zl10 10M0 10l10-10 Z"/></svg>-->
-      <svg width="100%" viewBox="0 0 24 24">
-  <path d="M3 3 H21 V21 H3 V3 Z M5 19 H19 L14 11 L10 17 L8 14 L5 19 Z M7 8 A1.5 1.5 0 1 0 7 11 A1.5 1.5 0 1 0 7 8 Z" fill="none" stroke="#cec" stroke-width="1.5"/>
-</svg>
-    </div>
+    <div id="placeHolder" style="text-align: center;"><span class="material-symbols-outlined" style="font-size:140px;color:#bfb">imagesmode</span></div>
+    <input id="img_descript" type="text" placeholder="Image description here..."/>
     <input type="file" id="fileInput" accept="image/*" style="display: none;"/>
   </div>
 
-  <div style="display: grid; grid-template-columns: 50% 50%; gap: 6px; width:160px;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
 
     <div style="grid-column: span 2;">&#8595; Image width:</div>
         <div class="radioBtn"><input type="radio" name="image_width" value="100%">100%</div>
         <div class="radioBtn"><input type="radio" name="image_width" value="50%">50%</div>
         <div class="radioBtn"><input type="radio" name="image_width" value="33.3%" checked>33.3%</div>
         <div class="radioBtn"><input type="radio" name="image_width" value="25%">25%</div>
-        <div class="radioBtn"><input type="radio" name="image_width" value="lines">By lines</div>
+        <div class="radioBtn"><input type="radio" name="image_width" value="lines"><span class="material-symbols-outlined">format_line_spacing</span></div>
         <input id="byLines" type="number" min="2" max="30" value="5" step="1"/>
-        <div style="grid-column: span 2;border:1px solid #ccc;padding-left: 8px;border-radius: 6px;">
-          <div><input type="checkbox" id="image_border" checked/> image border</div>
-          <div><input type="checkbox" id="image_radius" checked/> rounded edges</div>
-          <div><input type="checkbox" id="image_shadow"/> image shadow</div>
-        </div>
 
     <div style="grid-column: span 2;">&#8595; Image align:</div>
-    <div style="grid-column: span 2;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
-          <div class="radioBtn"><input type="radio" name="image_align" value="left" checked>left</div>
-          <div class="radioBtn"><input type="radio" name="image_align" value="none">none</div>
-          <div class="radioBtn"><input type="radio" name="image_align" value="right">right</div>
-        </div>
+    <div style="grid-column: span 2;display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
+          <div class="radioBtn"><input type="radio" name="image_align" value="left" checked><span class="material-symbols-outlined">format_image_left</span></div>
+          <div class="radioBtn"><input type="radio" name="image_align" value="none"><span class="material-symbols-outlined">format_image_inline_left</span></div>
+          <div class="radioBtn"><input type="radio" name="image_align" value="right"><span class="material-symbols-outlined">format_image_right</span></div>
     </div>
-    <div style="grid-column: span 2;">&#8595; Image filter:</div>
-    <div style="grid-column: span 2;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
-          <div class="radioBtn"><input type="radio" name="image_filter" value="normal" checked>none</div>
-          <div class="radioBtn"><input type="radio" name="image_filter" value="grayscale(100%)">gray</div>
-          <div class="radioBtn"><input type="radio" name="image_filter" value="sepia(100%)">sepia</div>
-        </div>        
-    </div>
-        <label><input type="checkbox" id="image_avatar"/> avatar</label>
-        <input id="avatar_size" type="number" value="100"/>
-        <div style="grid-column: span 2;display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px;">
-          <div class="radioBtn"><input type="radio" name="avatar_tip" value="round" checked>> <svg><circle cx="9" cy="9" r="8"/></svg></div>
-          <div class="radioBtn"><input type="radio" name="avatar_tip" value="hexagon">> <svg><path d="M9 1L16 5L16 13L9 17L2 13L2 5Z"/></svg></div>
-          <div class="radioBtn"><input type="radio" name="avatar_tip" value="arrow">> <svg><path d="M1 1h10l6 8l-6 8h-10z"/></svg></div>
-        </div>
+    <div style="grid-column: span 2;"><input type="checkbox" id="image_border"/> border</div>
   </div>
   <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
   <button id="imageModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>

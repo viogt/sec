@@ -497,9 +497,10 @@ document.querySelector('#fileInput').addEventListener('change', (event) => {
   if(!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
-    base64File = e.target.result;
+    const base64File = e.target.result;
     document.getElementById('placeHolder').style.display = "none";
-    document.getElementById('img_descript').style.display = "block";
+    const desc = document.getElementById('img_descript');
+    desc.style.display = "block"; desc.focus();
     document.getElementById('previewImage').src = base64File;
   };
   reader.readAsDataURL(file);

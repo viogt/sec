@@ -314,17 +314,18 @@ document.getElementById('tableModalInsert').addEventListener('click', (e) => {
     closeDlg(e.target);
     restoreSelection();
     editorElement.focus();
-    document.execCommand('insertHTML', false, `<br><p style="border: .8px solid #000; border-radius:6px;padding: 1em;">${lines?lines.join('<br>'):'...'}</p><br>`);
+    document.execCommand('insertHTML', false, `<br><table><tr><td style="border: .8px solid #000; border-radius:6px;padding: 1em;">${lines?lines.join('<br>'):'...'}</td></tr></table><br>`);
     return;
   }
 
   if(val == 'square') {
     closeDlg(e.target);
     restoreSelection();
-    const t = `<br><div style="display:grid;grid-template-columns: 1em auto 1em;">
-      <div style="border: .8px solid #000; border-right:none; border-radius: 6px 0 0 6px;"></div>
-      <p style="padding: .6em 0;">${lines?lines.join('<br>'):'...'}</p>
-      <div style="border: .8px solid #000; border-left:none; border-radius:0 6px 6px 0;"></div></div><br><br>`;
+    const t = `<br><table><tr>
+        <td style="width:1em;border: .8px solid #000; border-right:none; border-radius: 6px 0 0 6px;"><p></p></td>
+        <td style="width:auto;padding: .6em 0;">${lines?lines.join('<br>'):'...'}</td>
+        <td style="width:1em;border: .8px solid #000; border-left:none; border-radius:0 6px 6px 0;"><p></p></td>
+    </tr></table><br>`;
     editorElement.focus();
     document.execCommand('insertHTML', false, t);
     return;
@@ -446,38 +447,49 @@ document.querySelector('#uploadFile').addEventListener('click', () => {
 });
 
 document.getElementById('imageModalInsert').addEventListener('click', (e) => {
-    const elm = getCurrentElement();
-    const srcImg = document.querySelector('#previewImage');
-    if(srcImg.src == '') return;
+  const elm = getCurrentElement();
+  const srcImg = document.querySelector('#previewImage');
+  if(srcImg.src == '') {
+    const btn = e.target, btnCnt = btn.textContent, btnBkgr = btn.style.backgroundColor;
+    btn.style.backgroundColor = '#f86'; btn.textContent = 'NO IMAGE!';
+    setTimeout(()=>{btn.style.backgroundColor = btnBkgr; btn.textContent = btnCnt;}, 600);
+    return;
+  }
 
-    const img_width = document.querySelector('dialog input[name="image_width"]:checked').value;
-    const img_align = document.querySelector('dialog input[name="image_align"]:checked').value;
-    const img_filter = document.querySelector('dialog input[name="image_filter"]:checked').value;
-/* -- by HTML -- */
-    let algn = 'display:inline-block;';
-    const avatar = document.getElementById('image_avatar').checked;
-    if(avatar) {
-      const avSize = parseInt(document.getElementById('avatar_size').value,10);
-      const avTip = document.querySelector('dialog input[name="avatar_tip"]:checked').value;
-      let avT = 'border-radius: 50%;';
-      if(avTip == 'hexagon') avT = 'clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);'
-      else if(avTip == 'arrow') avT = 'clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);'
-      algn += `width:${avSize}px;height:${avSize}px;${avT}object-fit: cover;`;
-    }
-    else algn += (img_width == 'lines') ? `height:${document.getElementById('byLines').value}lh; width:auto;` : `width:${img_width};`;
-    const shdw = document.querySelector('#image_shadow').checked;
-    if(img_filter != 'normal' || shdw)
-      algn += `filter:${img_filter != 'normal' ? img_filter : ''}${shdw?' drop-shadow(0px 2px 3px #666)':''};`;
-    if(img_align == 'left') algn += 'margin-right:.8em; float:left;';
-    else if(img_align == 'right') algn += 'margin-left:.8em; float:right;';
-    else algn += 'margin:0;';
-    if(document.querySelector('#image_border').checked) algn += 'border:.5px solid #888;';
-    if(!avatar && document.querySelector('#image_radius').checked) algn += 'border-radius:.6em;';
+  let img_width = document.querySelector('#insertImageDlg input[name="image_width"]:checked').value;
+  let img_align = document.querySelector('#insertImageDlg input[name="image_align"]:checked').value;
+  const img_descript = document.getElementById('img_descript').value.trim();
+  const isBrd = document.querySelector('#image_border').checked;
 
-    closeDlg(e.target);
-    restoreSelection();
-    editorElement.focus();
-    document.execCommand('insertHTML', false, `<img src="${srcImg.src}" style="${algn}"/>`);
+  let st = 'display:inline-block;';
+  if(img_width == 'lines' && img_descript != '') img_width = '100%';
+  if(img_width == '100%') {
+    st += 'width: 100%; margin:0;';
+    img_align = 'none';
+  }
+  else {
+    if(img_width == 'lines') st += `height:${document.getElementById('byLines').value}lh; width:auto;`;
+    else st += `width: ${img_width};`;
+    if(img_align == 'left') st += 'margin-right:.8em; float:left;';
+    else if(img_align == 'right') st += 'margin-left:.8em; float:right;';
+  }
+  if(isBrd) st += 'border:.8px solid #888;';
+
+  closeDlg(e.target);
+  restoreSelection();
+  editorElement.focus();
+    
+  if(img_descript == '') {
+    const t = `<img src="${srcImg.src}" style="${st}"/>`;
+    document.execCommand('insertHTML', false, t);
+  }
+  else {
+    const s = `style="font-size:.9em;line-height:1;text-align:${img_align == 'none'?'center':img_align};${isBrd?'padding: 4px;':''}"`;
+    const t = `<table style="${st}"><tr><td>
+    <img src="${srcImg.src}" style="width:100%;height:auto;display:block;margin:0;"/>
+    </td></tr><tr><td ${s}>${img_descript}</td></tr></table>`;
+    document.execCommand('insertHTML', false, t);
+  }
 });
 
 document.querySelector('#fileInput').addEventListener('change', (event) => {
@@ -487,6 +499,7 @@ document.querySelector('#fileInput').addEventListener('change', (event) => {
   reader.onload = (e) => {
     base64File = e.target.result;
     document.getElementById('placeHolder').style.display = "none";
+    document.getElementById('img_descript').style.display = "block";
     document.getElementById('previewImage').src = base64File;
   };
   reader.readAsDataURL(file);
@@ -637,7 +650,7 @@ const locPrefix = 'miniEditor';
 
 document.getElementById('saveDoc').addEventListener('click',  async () => {
   const name = document.getElementById('docNameInput').value.trim();
-  if(name == '') { notif(false, 'Set the title (under PDF)', 1500); return; }
+  if(name == '') { notif(false, 'Set the title!', 1500); return; }
   saveDoc(name, { content: editorElement.innerHTML }, false);
 
   async function saveDoc(key, jsn, ovrwr) {
@@ -703,7 +716,7 @@ function notif(poz, txt, tmp = 400) {
   const d = document.createElement('div'), s = d.style;
   d.textContent = txt;
   s.position = "absolute";
-  s.backgroundColor = poz ? "rgb(0, 120, 0, .7)" : "rgb(180, 0, 0, .7)";
+  s.backgroundColor = poz ? "#080" : "#a00";
   s.padding = "1em 2em";
   s.borderRadius = '12px';
   s.color = "#fff";

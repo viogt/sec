@@ -9,8 +9,8 @@
   --doc-name: "";
   --border-color: #ccc;
   --font-size: 15px;
-  --page-text: "Pag.";
-  --of-text: "din";
+  --page-text: "Page";
+  --of-text: "of";
   --font-fam: Roboto, Arial, sans-serif;
   --font-famH: "Roboto Condensed", Arial, sans-serif;
 }
@@ -385,7 +385,7 @@ input { accent-color: #080; }
     <button id="changeFont" title="Select fonts"><span class="material-symbols-outlined">brand_family</span></button>
 <button id="ribbon" type="ribbon" title="Insert a Ribbon title"><span class="material-symbols-outlined">workspace_premium</span></button>
     <button id="takeClipboard" title="Content into the Clipboard"><span class="material-symbols-outlined">inventory</span></button>
-<button id="footerLang" title="Toggle footer language">RO</button>
+<button id="footerLang" title="Toggle footer language">EN</button>
     <button  id="pushClipboard" title="From Clipboard into Document"><span class="material-symbols-outlined">article_shortcut</span></button>
 </div>
 </div>
@@ -471,7 +471,8 @@ input { accent-color: #080; }
           <div class="radioBtn"><input type="radio" name="image_align" value="none"><span class="material-symbols-outlined">format_image_inline_left</span></div>
           <div class="radioBtn"><input type="radio" name="image_align" value="right"><span class="material-symbols-outlined">format_image_right</span></div>
     </div>
-    <div style="grid-column: span 2;"><input type="checkbox" id="image_border"/> border</div>
+    <div style="grid-column: span 2;"><input type="checkbox" id="image_border"/> border<br>
+    <input type="checkbox" id="title_inside"/> title inside</div>
   </div>
   <button onclick="closeDlg(this)">&#x2718; CANCEL</button>
   <button id="imageModalInsert" style="background-color: #bfb;">&#x2714; INSERT</button>

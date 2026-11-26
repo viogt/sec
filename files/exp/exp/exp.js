@@ -152,16 +152,18 @@ document.querySelector('#chenar').addEventListener('click', () => {
   }
 });
 document.querySelector('#footerLang').addEventListener('click', (event) => {
+  const lng = [
+    ['EN', '"Page"', '"of"'],
+    ['NO', '""', '"/"'],
+    ['RO', '"Pag."', '"din"'],
+    ['RU', '"Стр."', '"из"']
+  ];
   const el = event.target;
-  if (el.textContent === 'RO') {
-    document.documentElement.style.setProperty('--page-text', '"Page"');
-    document.documentElement.style.setProperty('--of-text', '"of"');
-    el.textContent = 'EN';
-  } else {
-    document.documentElement.style.setProperty('--page-text', '"Pag."');
-    document.documentElement.style.setProperty('--of-text', '"din"');
-    el.textContent = 'RO';
-  }
+  let ix = lng.findIndex(b => b[0] == el.textContent);
+  ix = (ix < lng.length - 1) ? ix+1 : 0;
+  el.textContent = lng[ix][0];
+  document.documentElement.style.setProperty('--page-text', lng[ix][1]);
+  document.documentElement.style.setProperty('--of-text', lng[ix][2]);
 });
 
 document.querySelector('#signature').addEventListener('click', async () => {
@@ -478,7 +480,15 @@ document.getElementById('imageModalInsert').addEventListener('click', (e) => {
   closeDlg(e.target);
   restoreSelection();
   editorElement.focus();
-    
+
+if(document.getElementById('title_inside').checked) {
+  const t = `<table style="${st}"><tr><td style="display: grid;">
+  <img style="grid-area: 1 / 1; width:100%; background-color:#ffa;" src="${srcImg.src}"/>
+  <p style="grid-area: 1 / 1; background: rgb(255 255 255 / .4);-webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border-top:.6px solid #ccc; align-self: end;text-align:center;padding:.6em 0;">${img_descript}</p>
+  </td></tr></table>`;
+  document.execCommand('insertHTML', false, t);
+  return;
+}
   if(img_descript == '') {
     const t = `<img src="${srcImg.src}" style="${st}"/>`;
     document.execCommand('insertHTML', false, t);

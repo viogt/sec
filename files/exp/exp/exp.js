@@ -482,9 +482,10 @@ document.getElementById('imageModalInsert').addEventListener('click', (e) => {
   editorElement.focus();
 
 if(document.getElementById('title_inside').checked) {
-  const t = `<table style="${st}"><tr><td style="display: grid;">
-  <img style="grid-area: 1 / 1; width:100%; background-color:#ffa;" src="${srcImg.src}"/>
-  <p style="grid-area: 1 / 1; background: rgb(255 255 255 / .4);-webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border-top:.6px solid #ccc; align-self: end;text-align:center;padding:.6em 0;">${img_descript}</p>
+  const t = `<table style="${st}"><tr><td style="display: grid;overflow: hidden;">
+  <img style="grid-area: 1 / 1; width:100%;display:block;" src="${srcImg.src}"/>
+  <img style="grid-area: 1 / 1; width:100%; transform: scaleX(1.06); filter: blur(6px); clip-path: inset(calc(100% - 2em) 0 0 0);" src="${srcImg.src}"/>
+  <p style="grid-area: 1 / 1; height:2em; background-color:rgb(255,255,255,.2); border-top:1px solid rgb(255,255,255,.4); align-self: end;text-align:center; line-height:2em; z-index:101;">${img_descript}</p>
   </td></tr></table>`;
   document.execCommand('insertHTML', false, t);
   return;
